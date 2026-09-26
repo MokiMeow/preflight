@@ -1,7 +1,7 @@
 """Frozen public contracts. Private evidence must use separate nonserializable types."""
 
 from enum import StrEnum
-from typing import Annotated, Any, Generic, Literal, TypeVar
+from typing import Annotated, Generic, Literal, TypeVar
 from uuid import UUID
 
 from pydantic import BaseModel, ConfigDict, Field, model_validator

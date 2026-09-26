@@ -74,6 +74,24 @@ The runtime policy is generated for the actual account, region, source ARN, run 
 | Fetch DB credentials | Secrets Manager GetSecretValue | Exact read/writer secret ARNs only; no secret enumeration capability |
 | Encrypted resources | Necessary KMS permissions only if customer-managed keys require them | Actual key ARNs and documented service grants; no blanket `kms:*` |
 
+The bootstrap validator now requires deletion ARNs to end in
+`db:preflight-*-clone` or `snapshot:preflight-*-snap`, with unconditional
+`StringEquals` conditions for `aws:ResourceTag/Project=Preflight` and the approved
+owner, plus `Null: {"aws:ResourceTag/RunId": "false"}`. A broad `preflight-*`
+instance wildcard can overlap the source and is refused. Required create,
+restore, observation and exact-secret capabilities must also be present;
+deletion permissions may be omitted to retain resources deliberately. These
+checks validate supplied policy structure; actual AWS authorization still needs
+connected proof. Condition support was checked against the
+[AWS RDS service authorization reference](https://docs.aws.amazon.com/service-authorization/latest/reference/list_rds.html).
+
+Source reconciliation requires observed allocated storage to equal the approved
+plan. Host reuse verifies the exact instance ID. For created and reused hosts,
+root-device mappings must establish persistent EBS storage, and `DescribeVolumes`
+must observe encrypted gp3 volumes attached to that exact host before bootstrap
+reports success. This is a bootstrap-identity read permission, not a runtime IAM
+grant. See [EC2 block device mappings](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/instance-block-device-mapping.html).
+
 Creating service-linked roles or attaching IAM policies is bootstrap work, not a runtime permission. Verify actual IAM policy behavior using safe reads, permitted creation on the synthetic source and negative service tests. IAM simulation alone does not establish that the full AWS operation will succeed. If a restore fails for KMS/role/subnet reasons, inspect the real error; do not add `AdministratorAccess` as a repair.
 
 ## 5. Database roles and synthetic seed

@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+from fnmatch import fnmatchcase
 from ipaddress import ip_network
 
 try:
@@ -13,8 +14,8 @@ except ImportError:
 def validate_runtime_documents(documents: list[dict], inputs: dict, deployment: dict) -> None:
     prefix = f"arn:aws:rds:{inputs['region']}:{inputs['account_id']}:"
     source = prefix + "db:" + inputs["source_instance_id"]
-    clone = prefix + "db:preflight-*"
-    snapshot = prefix + "snapshot:preflight-*"
+    clone = prefix + "db:preflight-*-clone"
+    snapshot = prefix + "snapshot:preflight-*-snap"
     scopes = {
         "rds:DescribeDBInstances": {"*", source, clone},
         "rds:DescribeDBSnapshots": {"*", snapshot},
@@ -36,6 +37,7 @@ def validate_runtime_documents(documents: list[dict], inputs: dict, deployment: 
             scopes[action] = {deployment["kms_key_arn"]}
     if not documents:
         raise PlanError("BOOTSTRAP_RUNTIME_POLICY_INVALID")
+    granted = {action: set() for action in scopes}
     for document in documents:
         if not isinstance(document, dict):
             raise PlanError("BOOTSTRAP_RUNTIME_POLICY_INVALID")
@@ -68,10 +70,37 @@ def validate_runtime_documents(documents: list[dict], inputs: dict, deployment: 
             for action in actions:
                 if set(resources) - scopes[action]:
                     raise PlanError("BOOTSTRAP_RUNTIME_POLICY_TARGET_TOO_BROAD")
+                if action in {"rds:DeleteDBInstance", "rds:DeleteDBSnapshot"}:
+                    if action == "rds:DeleteDBInstance" and any(
+                        fnmatchcase(source, resource) for resource in resources
+                    ):
+                        raise PlanError("BOOTSTRAP_RUNTIME_SOURCE_DELETE_FORBIDDEN")
+                    condition = statement.get("Condition", {})
+                    equals = condition.get("StringEquals", {})
+                    present = condition.get("Null", {})
+                    if (
+                        equals.get("aws:ResourceTag/Project") != "Preflight"
+                        or equals.get("aws:ResourceTag/Owner") != inputs["operator_label"]
+                        or present.get("aws:ResourceTag/RunId") not in {"false", False}
+                    ):
+                        raise PlanError("BOOTSTRAP_RUNTIME_DELETE_TAG_GUARDS_REQUIRED")
                 if action == "kms:CreateGrant":
                     condition = statement.get("Condition", {}).get("Bool", {})
                     if condition.get("kms:GrantIsForAWSResource") not in {"true", True}:
                         raise PlanError("BOOTSTRAP_RUNTIME_KMS_GRANT_TOO_BROAD")
+                granted[action].update(resources)
+    required = dict(scopes)
+    required["rds:DescribeDBInstances"] = {source, clone}
+    required["rds:DescribeDBSnapshots"] = {snapshot}
+    # Deletion is deliberately optional at bootstrap; missing deletion permission
+    # cannot widen access and the separate human cleanup gate still governs it.
+    for action in {"rds:DeleteDBInstance", "rds:DeleteDBSnapshot"}:
+        required.pop(action)
+    if any(
+        "*" not in granted[action] and not resources <= granted[action]
+        for action, resources in required.items()
+    ):
+        raise PlanError("BOOTSTRAP_RUNTIME_REQUIRED_PERMISSIONS_MISSING")
 
 
 def validate_role_trust(document: dict, role_arn: str, account_id: str) -> None:

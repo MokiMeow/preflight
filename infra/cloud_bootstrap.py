@@ -305,6 +305,7 @@ class BootstrapDriver:
             or source.get("PubliclyAccessible") is not False
             or source.get("StorageEncrypted") is not True
             or source.get("StorageType") != "gp3"
+            or source.get("AllocatedStorage") != i["allocated_storage_gib"]
             or source.get("DBSubnetGroup", {}).get("DBSubnetGroupName") != i["subnet_group"]
             or {g.get("VpcSecurityGroupId") for g in source.get("VpcSecurityGroups", [])}
             != set(i["security_group_ids"])
@@ -372,7 +373,10 @@ class BootstrapDriver:
         host = hosts[0]
         tags = {t.get("Key"): t.get("Value") for t in host.get("Tags", [])}
         if (
-            host.get("SubnetId") != d["host_subnet_id"]
+            not host.get("InstanceId")
+            or i["host_mode"] == "reuse"
+            and host.get("InstanceId") != d["host_instance_id"]
+            or host.get("SubnetId") != d["host_subnet_id"]
             or host.get("IamInstanceProfile", {}).get("Arn") != d["instance_profile_arn"]
             or {s.get("GroupId") for s in host.get("SecurityGroups", [])}
             != set(d["host_security_group_ids"])
@@ -384,6 +388,31 @@ class BootstrapDriver:
             and (host.get("ClientToken") != self.digest or tags.get("PlanDigest") != self.digest)
         ):
             raise PlanError("BOOTSTRAP_HOST_POLICY_MISMATCH")
+        mappings = host.get("BlockDeviceMappings", [])
+        root = [m for m in mappings if m.get("DeviceName") == host.get("RootDeviceName")]
+        if (
+            host.get("RootDeviceType") != "ebs"
+            or not host.get("RootDeviceName")
+            or len(root) != 1
+            or root[0].get("Ebs", {}).get("DeleteOnTermination") is not False
+            or any(not m.get("Ebs", {}).get("VolumeId") for m in mappings)
+        ):
+            raise PlanError("BOOTSTRAP_PERSISTENT_HOST_STORAGE_REQUIRED")
+        volume_ids = sorted(m["Ebs"]["VolumeId"] for m in mappings)
+        if len(volume_ids) != len(set(volume_ids)):
+            raise PlanError("BOOTSTRAP_HOST_STORAGE_IDENTITY_MISMATCH")
+        volumes = self.call("ec2", "describe_volumes", VolumeIds=volume_ids).get("Volumes", [])
+        if (
+            len(volumes) != len(volume_ids)
+            or {v.get("VolumeId") for v in volumes} != set(volume_ids)
+            or any(
+                v.get("Encrypted") is not True
+                or v.get("VolumeType") != "gp3"
+                or not any(a.get("InstanceId") == host["InstanceId"] for a in v.get("Attachments", []))
+                for v in volumes
+            )
+        ):
+            raise PlanError("BOOTSTRAP_ENCRYPTED_HOST_STORAGE_REQUIRED")
         return host["InstanceId"], host.get("State", {}).get("Name", "unknown")
 
     def run(self) -> dict:

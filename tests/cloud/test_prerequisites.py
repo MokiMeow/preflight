@@ -54,9 +54,37 @@ def groups(value):
 
 
 def document():
+    prefix = f"arn:aws:rds:{REGION}:{ACCOUNT}:"
+    source = prefix + "db:synthetic-source"
+    clone = prefix + "db:preflight-*-clone"
+    snapshot = prefix + "snapshot:preflight-*-snap"
     return {
         "Version": "2012-10-17",
         "Statement": [
+            {
+                "Effect": "Allow", "Action": "rds:CreateDBSnapshot",
+                "Resource": [source, snapshot],
+            },
+            {
+                "Effect": "Allow", "Action": "rds:RestoreDBInstanceFromDBSnapshot",
+                "Resource": [clone, snapshot],
+            },
+            {
+                "Effect": "Allow", "Action": "rds:ListTagsForResource",
+                "Resource": [source, clone, snapshot],
+            },
+            {
+                "Effect": "Allow", "Action": "rds:AddTagsToResource",
+                "Resource": [clone, snapshot],
+            },
+            {
+                "Effect": "Allow", "Action": "secretsmanager:GetSecretValue",
+                "Resource": [
+                    f"arn:aws:secretsmanager:{REGION}:{ACCOUNT}:secret:read-unit",
+                    f"arn:aws:secretsmanager:{REGION}:{ACCOUNT}:secret:writer-unit",
+                ],
+            },
+            {"Effect": "Allow", "Action": "sts:GetCallerIdentity", "Resource": "*"},
             {
                 "Effect": "Allow",
                 "Action": [
@@ -69,10 +97,52 @@ def document():
             {
                 "Effect": "Allow",
                 "Action": "rds:DeleteDBInstance",
-                "Resource": f"arn:aws:rds:{REGION}:{ACCOUNT}:db:preflight-*",
+                "Resource": f"arn:aws:rds:{REGION}:{ACCOUNT}:db:preflight-*-clone",
+                "Condition": {
+                    "StringEquals": {
+                        "aws:ResourceTag/Project": "Preflight",
+                        "aws:ResourceTag/Owner": "unit-owner",
+                    },
+                    "Null": {"aws:ResourceTag/RunId": "false"},
+                },
             },
         ],
     }
+
+
+@pytest.mark.parametrize("mutation", ["missing", "wrong_owner", "if_exists", "missing_run_id"])
+def test_runtime_delete_requires_unconditional_owner_and_run_tag_guards(driver, mutation):
+    value, _ = driver
+    policy = document()
+    deletion = next(s for s in policy["Statement"] if s["Action"] == "rds:DeleteDBInstance")
+    if mutation == "missing":
+        deletion.pop("Condition")
+    elif mutation == "wrong_owner":
+        deletion["Condition"]["StringEquals"]["aws:ResourceTag/Owner"] = "another-owner"
+    elif mutation == "if_exists":
+        deletion["Condition"]["StringEqualsIfExists"] = deletion["Condition"].pop("StringEquals")
+    else:
+        deletion["Condition"].pop("Null")
+    with pytest.raises(bootstrap.PlanError, match="BOOTSTRAP_RUNTIME_DELETE_TAG_GUARDS_REQUIRED"):
+        guards.validate_runtime_documents([policy], value.inputs, value.deployment)
+
+
+def test_runtime_source_prefix_collision_cannot_allow_source_delete(driver):
+    value, _ = driver
+    value.inputs["source_instance_id"] = "preflight-demo-source"
+    policy = document()
+    deletion = next(s for s in policy["Statement"] if s["Action"] == "rds:DeleteDBInstance")
+    deletion["Resource"] = f"arn:aws:rds:{REGION}:{ACCOUNT}:db:preflight-*"
+    with pytest.raises(bootstrap.PlanError, match="BOOTSTRAP_RUNTIME_POLICY_TARGET_TOO_BROAD"):
+        guards.validate_runtime_documents([policy], value.inputs, value.deployment)
+
+
+def test_runtime_policy_missing_restore_permissions_refused(driver):
+    value, _ = driver
+    policy = document()
+    policy["Statement"] = [s for s in policy["Statement"] if s["Action"] != "rds:RestoreDBInstanceFromDBSnapshot"]
+    with pytest.raises(bootstrap.PlanError, match="BOOTSTRAP_RUNTIME_REQUIRED_PERMISSIONS_MISSING"):
+        guards.validate_runtime_documents([policy], value.inputs, value.deployment)
 
 
 def stub_prerequisites(value, stubs, selected_groups):

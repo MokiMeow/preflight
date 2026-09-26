@@ -153,6 +153,7 @@ def test_source_create_explicit_encrypted_private_managed_master_no_reset(driver
         "StorageEncrypted": True,
         "StorageType": "gp3",
         "DBInstanceStatus": "creating",
+        "AllocatedStorage": 20,
         "DBSubnetGroup": {"DBSubnetGroupName": "private-subnets"},
         "VpcSecurityGroups": [{"VpcSecurityGroupId": "sg-0123456789abcdef0"}],
     }
@@ -214,9 +215,18 @@ def test_host_create_single_token_imds_and_encrypted_persistent_disk(driver):
         "MetadataOptions": {"HttpTokens": "required"},
         "Tags": value.tags(),
         "State": {"Name": "pending"},
+        "RootDeviceType": "ebs",
+        "RootDeviceName": "/dev/sda1",
+        "BlockDeviceMappings": [{"DeviceName": "/dev/sda1", "Ebs": {
+            "VolumeId": "vol-0123", "DeleteOnTermination": False,
+        }}],
     }
     for _ in range(2):
         ec2.add_response("describe_instances", {"Reservations": [{"Instances": [host]}]}, filters)
+        ec2.add_response("describe_volumes", {"Volumes": [{
+            "VolumeId": "vol-0123", "Encrypted": True, "VolumeType": "gp3",
+            "Attachments": [{"InstanceId": "i-0123"}],
+        }]}, {"VolumeIds": ["vol-0123"]})
     assert value.host() == ("i-0123", "pending")
     assert value.host() == ("i-0123", "pending")
 
@@ -279,3 +289,76 @@ def test_runtime_admin_policy_refused(driver):
     ).hexdigest()
     with pytest.raises(bootstrap.PlanError, match="BOOTSTRAP_RUNTIME_POLICY_TOO_BROAD"):
         value.validate_prerequisites()
+
+
+@pytest.mark.parametrize("allocated", [None, 1000, 20])
+def test_observed_source_storage_must_match_approved_plan(driver, allocated):
+    value, stubs = driver
+    value.inputs["source_mode"] = "reuse"
+    source_id = value.inputs["source_instance_id"]
+    source = {
+        "DBInstanceIdentifier": source_id,
+        "DBInstanceArn": f"arn:aws:rds:{REGION}:{ACCOUNT}:db:{source_id}",
+        "Engine": "postgres", "EngineVersion": "18.1", "DBName": "synthetic",
+        "DBInstanceClass": "db.t4g.micro", "PubliclyAccessible": False,
+        "StorageEncrypted": True, "StorageType": "gp3", "DBInstanceStatus": "available",
+        "DBSubnetGroup": {"DBSubnetGroupName": "private-subnets"},
+        "VpcSecurityGroups": [{"VpcSecurityGroupId": "sg-0123456789abcdef0"}],
+    }
+    if allocated is not None:
+        source["AllocatedStorage"] = allocated
+    stubs["rds"].add_response("describe_db_instances", {"DBInstances": [source]},
+                              {"DBInstanceIdentifier": source_id})
+    stubs["rds"].add_response("list_tags_for_resource", {"TagList": value.tags(True)},
+                              {"ResourceName": source["DBInstanceArn"]})
+    if allocated == 20:
+        assert value.source() == (source_id, "available")
+    else:
+        with pytest.raises(bootstrap.PlanError, match="BOOTSTRAP_SOURCE_POLICY_MISMATCH"):
+            value.source()
+
+
+@pytest.mark.parametrize("mutation", [
+    "wrong_host", "missing_mapping", "ephemeral_root", "delete_on_termination",
+    "unencrypted", "wrong_volume", "unattached", "wrong_storage", "valid",
+])
+def test_host_reuse_requires_exact_identity_and_observed_private_persistent_storage(driver, mutation):
+    value, stubs = driver
+    value.inputs["host_mode"] = "reuse"
+    value.deployment["host_instance_id"] = "i-approved"
+    d = value.deployment
+    host = {
+        "InstanceId": "i-approved", "SubnetId": d["host_subnet_id"],
+        "IamInstanceProfile": {"Arn": d["instance_profile_arn"]},
+        "SecurityGroups": [{"GroupId": s} for s in d["host_security_group_ids"]],
+        "InstanceType": "t3.medium", "MetadataOptions": {"HttpTokens": "required"},
+        "Tags": value.tags(), "State": {"Name": "running"},
+        "RootDeviceType": "ebs", "RootDeviceName": "/dev/sda1",
+        "BlockDeviceMappings": [{"DeviceName": "/dev/sda1", "Ebs": {
+            "VolumeId": "vol-approved", "DeleteOnTermination": False,
+        }}],
+    }
+    if mutation == "wrong_host":
+        host["InstanceId"] = "i-different"
+    elif mutation == "missing_mapping":
+        host.pop("BlockDeviceMappings")
+    elif mutation == "ephemeral_root":
+        host["RootDeviceType"] = "instance-store"
+    elif mutation == "delete_on_termination":
+        host["BlockDeviceMappings"][0]["Ebs"]["DeleteOnTermination"] = True
+    stubs["ec2"].add_response("describe_instances", {"Reservations": [{"Instances": [host]}]},
+                              {"InstanceIds": ["i-approved"]})
+    if mutation in {"unencrypted", "wrong_volume", "unattached", "wrong_storage", "valid"}:
+        volume = {
+            "VolumeId": "vol-different" if mutation == "wrong_volume" else "vol-approved",
+            "Encrypted": mutation != "unencrypted",
+            "VolumeType": "gp2" if mutation == "wrong_storage" else "gp3",
+            "Attachments": [] if mutation == "unattached" else [{"InstanceId": "i-approved"}],
+        }
+        stubs["ec2"].add_response("describe_volumes", {"Volumes": [volume]},
+                                  {"VolumeIds": ["vol-approved"]})
+    if mutation == "valid":
+        assert value.host() == ("i-approved", "running")
+    else:
+        with pytest.raises(bootstrap.PlanError):
+            value.host()
