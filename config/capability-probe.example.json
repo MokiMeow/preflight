@@ -1,0 +1,59 @@
+{
+  "schema_version": "3.0",
+  "state": "NOT_RUN",
+  "note": "T01/T20 create a local observed copy. These fields are not evidence of installed or account access.",
+  "observed_at": null,
+  "codex": {
+    "version": null,
+    "project_config_accepted": null,
+    "lead_model": null,
+    "role_models": {},
+    "max_children_effective": null,
+    "goal_command_supported": null,
+    "worktree_isolation_verified": null,
+    "skills_discovered": [],
+    "unrelated_mcp_tools_disabled_or_scoped": null,
+    "lead_effort": null,
+    "sol_model_availability": {
+      "gpt-6-sol": null,
+      "gpt-5.6-sol": null
+    },
+    "role_efforts": {},
+    "review_policy_admission_observed": null,
+    "astra_sessions_used": 0,
+    "premium_modes_observed": null,
+    "usage_before": null,
+    "usage_after": null,
+    "usage_units": null
+  },
+  "packages": {
+    "trueforge": null,
+    "trueforge_integrity": null,
+    "mcp_python": null,
+    "mcp_protocol_negotiated": null,
+    "pglast": null,
+    "postgres_major": null,
+    "psycopg": null,
+    "boto3": null
+  },
+  "runtime": {
+    "provider_adapter": null,
+    "api_family": null,
+    "base_url_redacted": null,
+    "gateway_model_id": null,
+    "resolved_model": null,
+    "reasoning_effort": null,
+    "sampling_parameters_checked": null,
+    "text_probe": false,
+    "streamed_tool_roundtrip": false,
+    "structured_result_decode": false,
+    "daytona_bridge": false,
+    "literal_approval_direct": false,
+    "literal_approval_code_mode": false,
+    "provider_log_privacy": false,
+    "semantic_response_cache_safe": false,
+    "astra_automatic_routing_disabled": null
+  },
+  "evidence_paths": [],
+  "blockers": []
+}

@@ -1,0 +1,528 @@
+{
+  "schema_version": "3.0",
+  "research_date": "2026-09-25",
+  "sources": [
+    {
+      "id": "S01",
+      "title": "Original user PRD",
+      "url": "../reference/Preflight-PRD.md",
+      "evidence_status": "USER_SOURCE_PRESERVED",
+      "checked_date": "2026-09-25",
+      "supported_use": "Product/problem, ten tools, real RDS rehearsal, safety boundaries and original source links. Kept byte-for-byte; changes are explicit kit amendments.",
+      "introduced_in": "V2"
+    },
+    {
+      "id": "S02",
+      "title": "Canonical HackCulture event page",
+      "url": "https://hackculture.io/hackathons/agents-that-act",
+      "evidence_status": "FETCH_INCOMPLETE",
+      "checked_date": "2026-09-25",
+      "supported_use": "Repeated canonical-page retrieval did not establish the full body. Do not present it as a fully recovered page. Final invitation/on-site rules remain the authority.",
+      "introduced_in": "V2"
+    },
+    {
+      "id": "S03",
+      "title": "Official organizer event page, Portuguese path",
+      "url": "https://www.truefoundry.com/pt/truefoundry-hackathon",
+      "evidence_status": "OFFICIAL_INDEXED_TEXT",
+      "checked_date": "2026-09-25",
+      "supported_use": "Indexed official English event text supplies provisional agenda, team/repo/disclosure/pitch rules, scoring weights and an explicit statement that Gateway is optional. Direct page fetch was inconsistent; cache may differ from final instructions.",
+      "introduced_in": "V2",
+      "v3_recheck": {
+        "date": "2026-09-25",
+        "evidence_status": "OFFICIAL_INDEXED_CURRENT",
+        "note": "Official organizer text re-retrieved for rubric/real systems/real code/human stop; canonical direct page remains incomplete."
+      }
+    },
+    {
+      "id": "S04",
+      "title": "Official organizer event page, Spanish path",
+      "url": "https://www.truefoundry.com/es/truefoundry-hackathon",
+      "evidence_status": "OFFICIAL_INDEXED_TEXT",
+      "checked_date": "2026-09-25",
+      "supported_use": "Additional official event description. Localized paths/cached revisions can differ. Do not convert general emphasis on Gateway into an invented mandatory rule.",
+      "introduced_in": "V2"
+    },
+    {
+      "id": "S05",
+      "title": "Codex release changelog",
+      "url": "https://learn.chatgpt.com/docs/changelog",
+      "evidence_status": "OFFICIAL_INDEXED_CURRENT",
+      "checked_date": "2026-09-25",
+      "supported_use": "Current indexed entry names CLI 0.157.0 on 25 September, GPT-6 Sol/Luna support and new session ergonomics. An opened copy was stale; the newer dated indexed entry and tagged source govern the researched baseline.",
+      "introduced_in": "V2"
+    },
+    {
+      "id": "S06",
+      "title": "Codex 0.157 configuration schema",
+      "url": "https://github.com/openai/codex/blob/rust-v0.157.0/codex-rs/core/config.schema.json",
+      "evidence_status": "PINNED_SOURCE_READ",
+      "checked_date": "2026-09-25",
+      "supported_use": "Agents schema confirms enabled, max_concurrent_threads_per_session, default_subagent_model and default_subagent_reasoning_effort. max_depth is backend-specific; max_spawn_depth is not defined. Installed parsing still needs T01.",
+      "introduced_in": "V2",
+      "v3_recheck": {
+        "date": "2026-09-25",
+        "evidence_status": "PINNED_SOURCE_READ",
+        "note": "rust-v0.157.0 agent-schema section re-read; whole installed config not executed."
+      }
+    },
+    {
+      "id": "S07",
+      "title": "Codex custom subagents",
+      "url": "https://learn.chatgpt.com/docs/agent-configuration/subagents",
+      "evidence_status": "OFFICIAL_DOC_READ",
+      "checked_date": "2026-09-25",
+      "supported_use": "Standalone role files require name, description and developer_instructions. Role model/effort can override spawn values; child-count limit excludes the primary. Older model examples on the page do not supersede current model releases.",
+      "introduced_in": "V2",
+      "v3_recheck": {
+        "date": "2026-09-25",
+        "evidence_status": "OFFICIAL_DOC_READ",
+        "note": "Current subagent docs re-read for role precedence, permissions and child count."
+      }
+    },
+    {
+      "id": "S08",
+      "title": "Codex repository instructions",
+      "url": "https://learn.chatgpt.com/docs/agent-configuration/agents-md",
+      "evidence_status": "BASELINE_DOCUMENTATION",
+      "checked_date": "2026-09-25",
+      "supported_use": "Repository instruction routing/scoping reference inherited from the first audit. V2 uses a small router; effective loaded instructions are checked in the actual harness.",
+      "introduced_in": "V2"
+    },
+    {
+      "id": "S09",
+      "title": "Codex skills",
+      "url": "https://developers.openai.com/codex/skills",
+      "evidence_status": "OFFICIAL_DOC_READ",
+      "checked_date": "2026-09-25",
+      "supported_use": "Repository .agents/skills discovery and SKILL.md guidance. Four narrow routers are the kit design, not a claim more skills improve performance.",
+      "introduced_in": "V2"
+    },
+    {
+      "id": "S10",
+      "title": "Goals in Codex",
+      "url": "https://developers.openai.com/cookbook/examples/codex/using_goals_in_codex",
+      "evidence_status": "OFFICIAL_DOC_READ",
+      "checked_date": "2026-09-25",
+      "supported_use": "Documented persistent thread Goal and interactive management commands. Thread scope/budget/pause behavior means the repository ledger remains necessary.",
+      "introduced_in": "V2"
+    },
+    {
+      "id": "S11",
+      "title": "Rethinking skills and prompts for Astra",
+      "url": "https://developers.openai.com/blog/rethinking-skills-and-prompts-for-gpt-6-astra",
+      "evidence_status": "OFFICIAL_INDEXED_CURRENT",
+      "checked_date": "2026-09-25",
+      "supported_use": "11 September article favors small task-relevant skill descriptions, progressive disclosure and explicit completion instead of excessive universal instructions. Detailed product contracts remain on-demand.",
+      "introduced_in": "V2"
+    },
+    {
+      "id": "S12",
+      "title": "Codex hooks",
+      "url": "https://learn.chatgpt.com/docs/hooks",
+      "evidence_status": "OFFICIAL_DOC_READ",
+      "checked_date": "2026-09-25",
+      "supported_use": "Lifecycle configuration requires review/trust and supported command behavior. Hooks are not a security boundary. This kit ships no active hook that calls nonexistent application scripts.",
+      "introduced_in": "V2"
+    },
+    {
+      "id": "S13",
+      "title": "Codex worktrees",
+      "url": "https://learn.chatgpt.com/docs/environments/git-worktrees",
+      "evidence_status": "BASELINE_DOCUMENTATION",
+      "checked_date": "2026-09-25",
+      "supported_use": "Reference for separate checkouts. T01 verifies native feature availability; ordinary Git worktrees and explicit cwd verification provide the planned fallback.",
+      "introduced_in": "V2"
+    },
+    {
+      "id": "S14",
+      "title": "OpenAI model catalog",
+      "url": "https://developers.openai.com/api/docs/models",
+      "evidence_status": "OFFICIAL_INDEXED_CURRENT",
+      "checked_date": "2026-09-25",
+      "supported_use": "Current catalog names Astra for difficult reasoning/coding, Sol for balanced work and Luna for focused efficiency. The exact task assignments are our recommendation, not a comparative benchmark.",
+      "introduced_in": "V2"
+    },
+    {
+      "id": "S15",
+      "title": "GPT-6 Astra model",
+      "url": "https://developers.openai.com/api/docs/models/gpt-6-astra",
+      "evidence_status": "OFFICIAL_INDEXED_CURRENT",
+      "checked_date": "2026-09-25",
+      "supported_use": "Current model identity and effort options verified through indexed official content after a direct-fetch error. Availability in this operator account is not established.",
+      "introduced_in": "V2"
+    },
+    {
+      "id": "S16",
+      "title": "GPT-6 Sol model",
+      "url": "https://developers.openai.com/api/docs/models/gpt-6-sol",
+      "evidence_status": "OFFICIAL_INDEXED_CURRENT",
+      "checked_date": "2026-09-25",
+      "supported_use": "Sol supports reasoning/tool work via Responses; Chat Completions functions require none. This is an API constraint, not a Codex setting or Gateway entitlement.",
+      "introduced_in": "V2",
+      "v3_recheck": {
+        "date": "2026-09-25",
+        "evidence_status": "OFFICIAL_INDEXED_CURRENT",
+        "note": "GPT-6 Sol model page re-retrieved from official indexed content; actual account/transport probe remains required."
+      }
+    },
+    {
+      "id": "S17",
+      "title": "GPT-6 Luna model",
+      "url": "https://developers.openai.com/api/docs/models/gpt-6-luna",
+      "evidence_status": "OFFICIAL_INDEXED_CURRENT",
+      "checked_date": "2026-09-25",
+      "supported_use": "Focused-task model and current tool/effort constraints. Optional clerical assignment only; not an additional product dependency.",
+      "introduced_in": "V2"
+    },
+    {
+      "id": "S18",
+      "title": "OpenAI API changelog",
+      "url": "https://developers.openai.com/api/docs/changelog",
+      "evidence_status": "OFFICIAL_INDEXED_CURRENT",
+      "checked_date": "2026-09-25",
+      "supported_use": "22 September entry verifies Sol/Luna release. New API/harness features were considered, but the event product remains TrueForge rather than being replaced by a managed coding harness.",
+      "introduced_in": "V2"
+    },
+    {
+      "id": "S19",
+      "title": "OpenAI deployment checklist",
+      "url": "https://developers.openai.com/api/docs/guides/deployment-checklist",
+      "evidence_status": "OFFICIAL_INDEXED_CURRENT",
+      "checked_date": "2026-09-25",
+      "supported_use": "Critical current constraints: Astra tools require Responses; Sol/Luna Chat Completions tools require none; unsupported sampling/log-probability parameters must be removed. Representative project probes precede migration.",
+      "introduced_in": "V2"
+    },
+    {
+      "id": "S20",
+      "title": "OpenAI code-generation guidance",
+      "url": "https://developers.openai.com/api/docs/guides/code-generation",
+      "evidence_status": "OFFICIAL_INDEXED_CURRENT",
+      "checked_date": "2026-09-25",
+      "supported_use": "Current general-purpose coding guidance supports Astra for complex end-to-end work. Does not prove every task needs the highest effort or every account has access.",
+      "introduced_in": "V2"
+    },
+    {
+      "id": "S21",
+      "title": "TrueForge package metadata at PRD commit",
+      "url": "https://github.com/truefoundry/trueforge/blob/de68a1643f4aafbefc80c6cbfe4bfda361459b29/packages/trueforge/package.json",
+      "evidence_status": "PINNED_SOURCE_READ",
+      "checked_date": "2026-09-25",
+      "supported_use": "Version 0.2.1 and Node >=22.14 source metadata verified. Package installation/integrity and all runtime integrations remain untested in this kit.",
+      "introduced_in": "V2"
+    },
+    {
+      "id": "S22",
+      "title": "TrueForge README at PRD commit",
+      "url": "https://github.com/truefoundry/trueforge/blob/de68a1643f4aafbefc80c6cbfe4bfda361459b29/README.md",
+      "evidence_status": "PINNED_SOURCE_READ",
+      "checked_date": "2026-09-25",
+      "supported_use": "Harness/tool/sandbox/UI separation and private local-mode warning. Preserve the real runtime, not a separate invented dashboard.",
+      "introduced_in": "V2"
+    },
+    {
+      "id": "S23",
+      "title": "TrueForge model configuration at PRD commit",
+      "url": "https://github.com/truefoundry/trueforge/blob/de68a1643f4aafbefc80c6cbfe4bfda361459b29/docs/models.mdx",
+      "evidence_status": "PINNED_SOURCE_READ",
+      "checked_date": "2026-09-25",
+      "supported_use": "Custom endpoints and stored model resources; automatic per-turn model selection is described as planned. Do not advertise implicit runtime model routing.",
+      "introduced_in": "V2"
+    },
+    {
+      "id": "S24",
+      "title": "TrueForge saved-agent and approval reference",
+      "url": "https://github.com/truefoundry/trueforge/blob/de68a1643f4aafbefc80c6cbfe4bfda361459b29/docs/create-agent/overview.mdx",
+      "evidence_status": "PRD_AND_BASELINE_REFERENCE",
+      "checked_date": "2026-09-25",
+      "supported_use": "Literal approval configuration is part of the original verified design. Final effective config and Code Mode gating must be observed in the installed package.",
+      "introduced_in": "V2"
+    },
+    {
+      "id": "S25",
+      "title": "TrueForge sandbox reference",
+      "url": "https://github.com/truefoundry/trueforge/blob/de68a1643f4aafbefc80c6cbfe4bfda361459b29/docs/sandbox.mdx",
+      "evidence_status": "PRD_AND_BASELINE_REFERENCE",
+      "checked_date": "2026-09-25",
+      "supported_use": "Daytona setup and sandbox/snapshot permissions. Provider quota/scopes and a real execution ID are T20 checks; do not assume the local model process is Daytona.",
+      "introduced_in": "V2"
+    },
+    {
+      "id": "S26",
+      "title": "TrueForge Code Mode reference",
+      "url": "https://github.com/truefoundry/trueforge/blob/de68a1643f4aafbefc80c6cbfe4bfda361459b29/docs/key-features/code-mode.mdx",
+      "evidence_status": "PRD_AND_BASELINE_REFERENCE",
+      "checked_date": "2026-09-25",
+      "supported_use": "Generated code calls tools through the harness bridge. Do not copy Python-client return wrappers into Code Mode without observing its actual shape.",
+      "introduced_in": "V2",
+      "v3_recheck": {
+        "date": "2026-09-25",
+        "evidence_status": "PINNED_SOURCE_READ",
+        "note": "Pinned Code Mode source re-read: programmatic MCP bridge, compact results and preserved approval checks."
+      }
+    },
+    {
+      "id": "S27",
+      "title": "TrueForge MCP setup reference",
+      "url": "https://github.com/truefoundry/trueforge/blob/de68a1643f4aafbefc80c6cbfe4bfda361459b29/docs/mcp-servers.mdx",
+      "evidence_status": "PRD_AND_BASELINE_REFERENCE",
+      "checked_date": "2026-09-25",
+      "supported_use": "Private connector setup reference. Its discovery/schema and streamable transport still need a live compatibility probe.",
+      "introduced_in": "V2"
+    },
+    {
+      "id": "S28",
+      "title": "TrueForge model adapter implementation",
+      "url": "https://github.com/truefoundry/trueforge/blob/de68a1643f4aafbefc80c6cbfe4bfda361459b29/packages/trueforge-core/src/core/llm/VercelAILLM.ts",
+      "evidence_status": "PINNED_SOURCE_READ",
+      "checked_date": "2026-09-25",
+      "supported_use": "The openai adapter calls client.responses; custom/truefoundry route to an OpenAI-compatible model adapter. Provider base URL/schema details must match the installed build and authorized Gateway.",
+      "introduced_in": "V2"
+    },
+    {
+      "id": "S29",
+      "title": "Gateway quickstart",
+      "url": "https://www.truefoundry.com/docs/ai-gateway/quick-start",
+      "evidence_status": "OFFICIAL_DOC_READ",
+      "checked_date": "2026-09-25",
+      "supported_use": "Copy real Playground base URL, key scope and model ID. Do not append guessed API prefixes or confuse saved TrueForge resource names with upstream provider IDs.",
+      "introduced_in": "V2"
+    },
+    {
+      "id": "S30",
+      "title": "Gateway Chat Completions",
+      "url": "https://www.truefoundry.com/docs/ai-gateway/chat-completions-overview",
+      "evidence_status": "OFFICIAL_DOC_READ",
+      "checked_date": "2026-09-25",
+      "supported_use": "Gateway provider-account/model identifiers and chat request shape. Compatible chat availability alone does not establish Responses or reasoning-tool support for a model.",
+      "introduced_in": "V2"
+    },
+    {
+      "id": "S31",
+      "title": "OpenAI latest-model migration guidance",
+      "url": "https://developers.openai.com/api/docs/guides/latest-model",
+      "evidence_status": "OFFICIAL_INDEXED_CURRENT",
+      "checked_date": "2026-09-25",
+      "supported_use": "Endpoint/effort migration and unsupported request fields. Use with the pinned adapter and actual Gateway test, not model-string replacement alone.",
+      "introduced_in": "V2"
+    },
+    {
+      "id": "S32",
+      "title": "Gateway request logging",
+      "url": "https://www.truefoundry.com/docs/ai-gateway/request-logging",
+      "evidence_status": "OFFICIAL_DOC_READ",
+      "checked_date": "2026-09-25",
+      "supported_use": "Review request/response logging and trace exposure; collect only actual permitted metadata. Logging is not permission to transmit DB rows or secrets.",
+      "introduced_in": "V2"
+    },
+    {
+      "id": "S33",
+      "title": "September 23 Gateway catalog announcement",
+      "url": "https://www.truefoundry.com/de/blog/claude-opus-5-5-gpt-6-sol-and-gpt-6-luna-are-now-live-on-truefoundry-ai-gateway",
+      "evidence_status": "OFFICIAL_INDEXED_CURRENT",
+      "checked_date": "2026-09-25",
+      "supported_use": "Publisher reports Sol/Luna catalog availability. This does not prove team access, the selected API route or the behavior of a cached/older provider configuration.",
+      "introduced_in": "V2"
+    },
+    {
+      "id": "S34",
+      "title": "Python MCP v2.2.0 package source",
+      "url": "https://github.com/modelcontextprotocol/python-sdk/blob/v2.2.0/pyproject.toml",
+      "evidence_status": "PINNED_SOURCE_READ",
+      "checked_date": "2026-09-25",
+      "supported_use": "Tag and Python requirement verified. A cached PyPI latest page showed an older snapshot, so fresh registry resolution/install must not be claimed complete.",
+      "introduced_in": "V2"
+    },
+    {
+      "id": "S35",
+      "title": "MCP Python v2 migration guide",
+      "url": "https://py.sdk.modelcontextprotocol.io/migration/",
+      "evidence_status": "OFFICIAL_DOC_READ",
+      "checked_date": "2026-09-25",
+      "supported_use": "Major API/lifecycle/transport/result changes and telemetry behavior need deliberate handling. Wire compatibility is tested against the actual TrueForge client, not inferred from matching SDK majors.",
+      "introduced_in": "V2"
+    },
+    {
+      "id": "S36",
+      "title": "pglast 8.4 metadata",
+      "url": "https://pypi.org/project/pglast/8.4/",
+      "evidence_status": "PACKAGE_PAGE_READ",
+      "checked_date": "2026-09-25",
+      "supported_use": "Version-specific metadata and GPL-3.0-or-later inventory note. No source upgrade or distribution-license decision is made by this kit.",
+      "introduced_in": "V2"
+    },
+    {
+      "id": "S37",
+      "title": "pglast maintainer version mapping",
+      "url": "https://pglast.readthedocs.io/en/latest/changes.html",
+      "evidence_status": "BASELINE_DOCUMENTATION",
+      "checked_date": "2026-09-25",
+      "supported_use": "The inherited pairing is v8/PostgreSQL18 and v7/PostgreSQL17. Revalidate the exact available parser distribution and actual engine at T01.",
+      "introduced_in": "V2"
+    },
+    {
+      "id": "S38",
+      "title": "AWS RDS snapshot restore",
+      "url": "https://docs.aws.amazon.com/AmazonRDS/latest/UserGuide/USER_RestoreFromSnapshot.html",
+      "evidence_status": "OFFICIAL_DOC_READ",
+      "checked_date": "2026-09-25",
+      "supported_use": "New instance restore, lazy loading and current storage restrictions. Actual source/clone identity, storage, network and encryption are independently checked before readiness.",
+      "introduced_in": "V2",
+      "v3_recheck": {
+        "date": "2026-09-25",
+        "evidence_status": "OFFICIAL_INDEXED_CURRENT",
+        "note": "AWS restore guidance rechecked; independent instance and storage lazy loading remain relevant."
+      }
+    },
+    {
+      "id": "S39",
+      "title": "AWS RDS snapshot creation",
+      "url": "https://docs.aws.amazon.com/AmazonRDS/latest/UserGuide/USER_CreateSnapshot.html",
+      "evidence_status": "PRD_AND_BASELINE_REFERENCE",
+      "checked_date": "2026-09-25",
+      "supported_use": "Snapshot is an instance-level AWS operation, not a single-database export. Observe the real asynchronous job and provenance.",
+      "introduced_in": "V2"
+    },
+    {
+      "id": "S40",
+      "title": "RDS PostgreSQL SSL",
+      "url": "https://docs.aws.amazon.com/AmazonRDS/latest/UserGuide/PostgreSQL.Concepts.General.SSL.html",
+      "evidence_status": "OFFICIAL_DOC_READ",
+      "checked_date": "2026-09-25",
+      "supported_use": "Encryption and endpoint/CA verification must be treated separately. Negative CA/hostname tests are our deployment acceptance requirement.",
+      "introduced_in": "V2"
+    },
+    {
+      "id": "S41",
+      "title": "EC2 IAM roles",
+      "url": "https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/iam-roles-for-amazon-ec2.html",
+      "evidence_status": "PRD_AND_BASELINE_REFERENCE",
+      "checked_date": "2026-09-25",
+      "supported_use": "Instance-role runtime credentials rather than static AWS secrets. Account-specific policies and grants remain operator-authorized implementation work.",
+      "introduced_in": "V2"
+    },
+    {
+      "id": "S42",
+      "title": "Boto3 snapshot restore API",
+      "url": "https://docs.aws.amazon.com/boto3/latest/reference/services/rds/client/restore_db_instance_from_db_snapshot.html",
+      "evidence_status": "BASELINE_DOCUMENTATION",
+      "checked_date": "2026-09-25",
+      "supported_use": "Target request fields must be verified against the installed compatible boto3/botocore pair. Do not assume IAM/KMS/engine/class choices are universally valid.",
+      "introduced_in": "V2"
+    },
+    {
+      "id": "S43",
+      "title": "PostgreSQL explicit locking",
+      "url": "https://www.postgresql.org/docs/current/explicit-locking.html",
+      "evidence_status": "BASELINE_DOCUMENTATION",
+      "checked_date": "2026-09-25",
+      "supported_use": "Locks motivate the conservative static-source recheck/write design. That design is not a claim of an online migration strategy for live production traffic.",
+      "introduced_in": "V2",
+      "v3_recheck": {
+        "date": "2026-09-25",
+        "evidence_status": "OFFICIAL_DOC_READ",
+        "note": "PostgreSQL 18 lock documentation re-read to support conservative locked source recheck."
+      }
+    },
+    {
+      "id": "S44",
+      "title": "PostgreSQL 18 ALTER TABLE",
+      "url": "https://www.postgresql.org/docs/18/sql-altertable.html",
+      "evidence_status": "BASELINE_DOCUMENTATION",
+      "checked_date": "2026-09-25",
+      "supported_use": "Constraint/locking reference. Exact allowed subcommands and nested-expression policy are defined by this product, not delegated to the model.",
+      "introduced_in": "V2"
+    },
+    {
+      "id": "S45",
+      "title": "Psycopg transactions",
+      "url": "https://www.psycopg.org/psycopg3/docs/basic/transactions.html",
+      "evidence_status": "OFFICIAL_DOC_READ",
+      "checked_date": "2026-09-25",
+      "supported_use": "Explicit transaction behavior reference. The retrieved docs advertised a development version; no development version is asserted as the installed stable release.",
+      "introduced_in": "V2"
+    },
+    {
+      "id": "S46",
+      "title": "Psycopg multiple statements",
+      "url": "https://www.psycopg.org/psycopg3/docs/basic/from_pg2.html#multiple-results-returned-from-multiple-statements",
+      "evidence_status": "PRD_AND_BASELINE_REFERENCE",
+      "checked_date": "2026-09-25",
+      "supported_use": "Exact-script execution needs actual multi-result/error/rollback tests. Do not assume a later-statement error is handled because the first result succeeded.",
+      "introduced_in": "V2"
+    },
+    {
+      "id": "S47",
+      "title": "RDS recovery reference",
+      "url": "https://docs.aws.amazon.com/AmazonRDS/latest/UserGuide/USER_PIT.html",
+      "evidence_status": "PRD_AND_BASELINE_REFERENCE",
+      "checked_date": "2026-09-25",
+      "supported_use": "A recovery restore is not an automatic SQL undo. Retention and unknown-outcome rules remain explicit; no live recovery drill was performed by this kit.",
+      "introduced_in": "V2"
+    },
+    {
+      "id": "S48",
+      "title": "GPT-5.6 Sol model reference",
+      "url": "https://developers.openai.com/api/docs/models/gpt-5.6-sol",
+      "evidence_status": "OFFICIAL_DOC_READ",
+      "checked_date": "2026-09-25",
+      "introduced_in": "V3",
+      "supported_use": "Exact model family/ID and tool interfaces support the requested Sol alternative. API prices are not converted into a promised Codex allowance saving; account access/effective High still require T01."
+    },
+    {
+      "id": "S49",
+      "title": "ChatGPT Work and Codex allowance",
+      "url": "https://help.openai.com/en/articles/20001275-chatgpt-work-and-codex",
+      "evidence_status": "OFFICIAL_DOC_READ",
+      "checked_date": "2026-09-25",
+      "introduced_in": "V3",
+      "supported_use": "Astra can consume Work/Codex allowance faster; consumption depends on workload/settings and sign-in/billing route. Supports bounded expert use, not a universal savings percentage."
+    },
+    {
+      "id": "S50",
+      "title": "PostgreSQL 18 transaction isolation",
+      "url": "https://www.postgresql.org/docs/18/transaction-iso.html",
+      "evidence_status": "OFFICIAL_DOC_READ",
+      "checked_date": "2026-09-25",
+      "introduced_in": "V3",
+      "supported_use": "Supports consistent baseline captures and the distinct locked READ COMMITTED source apply procedure. V3 coverage and offline-verifier logic are our design, not a PostgreSQL feature claim."
+    },
+    {
+      "id": "S51",
+      "title": "Atlas migration tests",
+      "url": "https://atlasgo.io/testing/migrate",
+      "evidence_status": "OFFICIAL_INDEXED_CURRENT",
+      "checked_date": "2026-09-25",
+      "introduced_in": "V3",
+      "supported_use": "Documents executing migrations and assertions on a development database. Establishes that migration testing already exists; not an exhaustive competitive comparison."
+    },
+    {
+      "id": "S52",
+      "title": "Flyway dry-run tutorial",
+      "url": "https://documentation.red-gate.com/flyway/reference/tutorials/tutorial-dry-runs",
+      "evidence_status": "OFFICIAL_DOC_READ",
+      "checked_date": "2026-09-25",
+      "introduced_in": "V3",
+      "supported_use": "Official tutorial updated 24 September 2026 describes read-only assessment and generated SQL for review. Distinguish SQL preview from Preflight's proposed executed clone evidence without claiming all other Flyway capabilities absent."
+    },
+    {
+      "id": "S53",
+      "title": "OpenAI reasoning guidance",
+      "url": "https://developers.openai.com/api/docs/guides/reasoning",
+      "evidence_status": "OFFICIAL_INDEXED_CURRENT",
+      "checked_date": "2026-09-25",
+      "introduced_in": "V3",
+      "supported_use": "Reasoning/effort and service choices have model-specific support. V3 defaults to High and avoids automatic premium escalation; test actual provider requests."
+    },
+    {
+      "id": "S54",
+      "title": "PostgreSQL 18 row security",
+      "url": "https://www.postgresql.org/docs/18/ddl-rowsecurity.html",
+      "evidence_status": "OFFICIAL_INDEXED_CURRENT",
+      "checked_date": "2026-09-25",
+      "introduced_in": "V3",
+      "supported_use": "Role-dependent row visibility reinforces the existing fail-closed unsupported-RLS policy. No new claim of general RLS-safe migration support."
+    }
+  ],
+  "revision": "V3 Sol-first and project-strengthening audit"
+}

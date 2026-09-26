@@ -1,0 +1,42 @@
+# Secrets and local account/provider configuration
+.env
+.env.*
+!.env.example
+config/*.local.json
+*.pem
+*.key
+*.p12
+.aws/
+# Runtime state and unsanitized evidence
+var/
+evidence/
+*.sqlite
+*.sqlite3
+*.sqlite3-*
+*.db
+*.db-*
+*.log
+*.har
+# Python and tooling
+.venv/
+__pycache__/
+*.pyc
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.coverage
+htmlcov/
+dist/
+build/
+*.egg-info/
+# Node / local editor
+node_modules/
+.DS_Store
+Thumbs.db
+# Only deliberately sanitized final evidence may be force-added after review.
+
+# Isolated coding checkouts / browser auth and local model bindings
+.worktrees/
+.codex/worktrees/
+*.auth-state.json
+playwright/.auth/

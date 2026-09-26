@@ -1,0 +1,102 @@
+{
+  "schema_version": "3.0",
+  "researched_at": "2026-09-25",
+  "is_runtime_lockfile": false,
+  "policy": "Resolve installed stable package availability and compatibility at T01/T20; freeze exact successful versions/integrities at T30. Source tags and indexed latest pages are different evidence levels.",
+  "python": {
+    "baseline": "3.12",
+    "exact_patch": "RESOLVE_AT_T01"
+  },
+  "node": {
+    "minimum_trueforge": "22.14.0",
+    "exact_supported_patch": "RESOLVE_AT_T01"
+  },
+  "codex": {
+    "researched_release": "0.157.0",
+    "release_date": "2026-09-25",
+    "source_schema_tag": "rust-v0.157.0",
+    "installed_tested": false,
+    "project_config": ".codex/config.toml",
+    "max_concurrent_child_threads": 3,
+    "source_schema_rechecked_v3": true
+  },
+  "coding_models": {
+    "lead": "gpt-6-sol",
+    "database": "gpt-6-sol",
+    "cloud": "gpt-6-sol",
+    "integration": "gpt-5.6-sol",
+    "independent_reviewer": "gpt-6-sol",
+    "exceptional_reviewer": "gpt-6-astra",
+    "default_effort": "high",
+    "astra_policy": "config/model-policy.json: at most two admitted review sessions; no normal implementation",
+    "account_available": "VERIFY_AT_T01"
+  },
+  "trueforge": {
+    "baseline": "0.2.1",
+    "source_commit": "de68a1643f4aafbefc80c6cbfe4bfda361459b29",
+    "package_json_verified": true,
+    "registry_install_verified": false,
+    "api_adapter_note": "Pinned source openai adapter uses Responses; custom/truefoundry use OpenAI-compatible model adapter. Probe actual gateway endpoint and model parameters."
+  },
+  "runtime_model": {
+    "preferred": "gpt-6-sol",
+    "preferred_effort": "high",
+    "preferred_api_family": "responses",
+    "chat_compat_fallback_model": "gpt-6-sol",
+    "chat_compat_fallback_effort": "none",
+    "automatic_silent_switching": false,
+    "actual_gateway_model_id": "COPY_FROM_AUTHORIZED_PLAYGROUND",
+    "tested_responses_fallback": "gpt-5.6-sol",
+    "tested_responses_fallback_effort": "high",
+    "astra_allowed": false,
+    "chat_compat_fallback_requires_explicit_operator_choice": true
+  },
+  "mcp_python": {
+    "baseline": "2.2.0",
+    "api_major": 2,
+    "source_tag_verified": true,
+    "fresh_registry_resolution": "REQUIRED",
+    "apis": "MCPServer / Client / structured_content; verify pinned docs",
+    "wire_compatibility": "NEGOTIATE_WITH_ACTUAL_TRUEFORGE_CLIENT",
+    "legacy_fallback": "Only documented v1 compatibility requirement, exact maintained patch resolved and a consistently v1 implementation; never silently mix imports."
+  },
+  "postgres_parser_pairs": [
+    {
+      "postgres_major": 18,
+      "pglast_baseline": "8.4",
+      "source_or_package_evidence": "PyPI version page plus maintainer major mapping; install test pending"
+    },
+    {
+      "postgres_major": 17,
+      "pglast_baseline": "7.18",
+      "source_or_package_evidence": "Inherited researched pair; revalidate distribution metadata at T01"
+    }
+  ],
+  "psycopg": {
+    "major": 3,
+    "exact_stable": "RESOLVE_AND_TEST",
+    "warning": "Fetched development docs do not establish an installed stable release."
+  },
+  "boto3_botocore": {
+    "exact_compatible_pair": "RESOLVE_AND_LOCK"
+  },
+  "daytona": {
+    "integration": "TrueForge-managed SDK and provider",
+    "standalone_python_sdk_required": false,
+    "actual_permissions_and_execution": "VERIFY_AT_T20"
+  },
+  "aws_storage": {
+    "new_fixture_preference": "gp3",
+    "encrypted_snapshot_policy": "owned account only; preserve compatible encryption/KMS settings"
+  },
+  "license_inventory": {
+    "pglast": "GPL-3.0-or-later metadata; preserve notices and review chosen distribution/license",
+    "project_license": "OPERATOR_DECISION_NOT_ASSUMED"
+  },
+  "freeze_after": [
+    "official Python MCP transport probe",
+    "actual TrueForge model/tool/Daytona/approval probe",
+    "PostgreSQL transaction/AST/evidence integration",
+    "authorized RDS snapshot/restore/TLS check"
+  ]
+}

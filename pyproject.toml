@@ -1,0 +1,27 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "preflight-rehearsal"
+version = "0.1.0"
+description = "Controlled PostgreSQL migration rehearsal with immutable evidence"
+requires-python = ">=3.12,<3.13"
+dependencies = ["mcp==2.2.0", "pydantic>=2.11,<3", "psycopg[binary]>=3.2,<4", "pglast==8.4", "boto3>=1.40,<2", "typer>=0.16,<1", "filelock>=3.18,<4"]
+
+[project.scripts]
+preflight = "preflight.cli:app"
+
+[dependency-groups]
+dev = ["pytest>=8,<10", "pytest-asyncio>=1,<2", "ruff>=0.12,<1", "mypy>=1.17,<2"]
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/preflight"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+markers = ["postgres: disposable real PostgreSQL", "live: requires authorized connected providers"]
+
+[tool.ruff]
+line-length = 100
+target-version = "py312"

@@ -1,0 +1,49 @@
+{
+  "schema_version": "1.1",
+  "database": "preflight_demo",
+  "tables": [
+    {
+      "name": "public.customers",
+      "primary_key": [
+        "id"
+      ],
+      "preserve_columns": [
+        "id",
+        "email",
+        "created_at"
+      ],
+      "expected_schema": {
+        "added_columns": [
+          {
+            "name": "account_tier",
+            "type": "text",
+            "nullable": false
+          }
+        ],
+        "removed_columns": [],
+        "allow_other_changes": false
+      },
+      "checks": [
+        {
+          "type": "row_count_unchanged"
+        },
+        {
+          "type": "no_nulls",
+          "column": "account_tier"
+        },
+        {
+          "type": "all_equal",
+          "column": "account_tier",
+          "value": "standard"
+        },
+        {
+          "type": "column_not_null",
+          "column": "account_tier"
+        }
+      ]
+    }
+  ],
+  "max_migration_seconds": 60,
+  "max_rows_per_table": 10000,
+  "max_bytes_per_table": 10485760
+}

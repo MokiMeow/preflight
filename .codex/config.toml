@@ -1,0 +1,14 @@
+# Project configuration; researched schema baseline: Codex CLI 0.157.0.
+# Preserve personal/global configuration. T01 verifies installed and effective settings.
+model = "gpt-6-sol"
+model_reasoning_effort = "high"
+approval_policy = "on-request"
+sandbox_mode = "workspace-write"
+
+[agents]
+enabled = true
+max_concurrent_threads_per_session = 3
+default_subagent_model = "gpt-5.6-sol"
+default_subagent_reasoning_effort = "high"
+# Primary thread is additional. No grandchildren by workflow.
+# Astra admission is defined in config/model-policy.json, NOT an invented native key.

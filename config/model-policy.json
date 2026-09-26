@@ -1,0 +1,112 @@
+{
+  "schema_version": "3.0",
+  "policy_kind": "PREFLIGHT_BUILD_WORKFLOW_NOT_NATIVE_CODEX_CONFIG",
+  "basis": "User instruction of 25 September 2026: use GPT-6 Sol and GPT-5.6 Sol High; reserve Astra for bounded review or critical blockers.",
+  "default_lead": {
+    "model": "gpt-6-sol",
+    "reasoning_effort": "high"
+  },
+  "default_child": {
+    "model": "gpt-5.6-sol",
+    "reasoning_effort": "high"
+  },
+  "primary_task_model_allowlist": [
+    "gpt-6-sol",
+    "gpt-5.6-sol"
+  ],
+  "primary_task_effort": "high",
+  "roles": {
+    "lead": "gpt-6-sol",
+    "database": "gpt-6-sol",
+    "cloud": "gpt-6-sol",
+    "integration": "gpt-5.6-sol",
+    "routine_reviewer": "gpt-6-sol",
+    "exceptional_reviewer": "gpt-6-astra"
+  },
+  "fallback": {
+    "between_sol_models_allowed": true,
+    "record_effective_model_and_reason": true,
+    "silent_astra_promotion": false,
+    "automatic_new_provider_purchase": false,
+    "preserve_acceptance": true
+  },
+  "concurrency": {
+    "max_child_threads": 3,
+    "lead_is_additional": true,
+    "max_active_astra_threads": 1,
+    "grandchildren_allowed": false,
+    "one_writer_per_owned_path": true,
+    "one_shared_cloud_mutation_owner": true
+  },
+  "astra": {
+    "model": "gpt-6-astra",
+    "reasoning_effort": "high",
+    "sandbox_mode": "read-only",
+    "automatic_implementation_assignment": false,
+    "max_review_sessions_without_further_user_authorization": 2,
+    "slots": [
+      {
+        "id": "A1",
+        "task": "T27",
+        "trigger": "Focused audit of implemented SQL/validation, report, source-apply and cleanup boundaries before T24.",
+        "status": "NOT_USED"
+      },
+      {
+        "id": "A2",
+        "task": "T34",
+        "trigger": "Delta-only final safety audit if material safety changes since A1; otherwise skip. May instead be spent on a qualifying critical blocker.",
+        "status": "NOT_USED"
+      }
+    ],
+    "critical_blocker_trigger": "Reproducible unresolved defect threatening SQL confinement, data validation, credential boundaries, approval, at-most-once apply or recovery; provide a minimal reproducer and two materially different failed Sol repair/diagnosis attempts unless immediate data safety warrants earlier expert review.",
+    "critical_blocker_consumes_existing_slot": true,
+    "excluded_triggers": [
+      "routine syntax or formatting",
+      "ordinary package installation",
+      "known permission or quota error",
+      "missing credentials",
+      "long AWS restore with known pending state",
+      "generic research",
+      "routine report polish",
+      "a test failure without diagnosis"
+    ],
+    "one_session_completion": "One bounded investigation and findings handoff, then close. Do not keep Astra running to implement fixes, poll status or do follow-up chores. A reopened/new extended investigation consumes another slot.",
+    "packet_target_input_tokens": 12000,
+    "findings_target_max_words": 1500,
+    "packet_targets_are_hard_provider_limits": false,
+    "packet_contents": [
+      "task and exact commit",
+      "specific safety question",
+      "relevant diff and interfaces",
+      "minimal repro and expected/actual results",
+      "sanitized traces",
+      "Sol attempts and unresolved facts"
+    ],
+    "require_log_before_spawn": true,
+    "after_limit": "Do not spawn Astra again without an explicit user extension. Continue safe Sol work and keep any unresolved safety gate blocked.",
+    "unavailable_behavior": "Use a genuinely independent Sol High review with the same test/evidence bar and disclose the substitute; never claim Astra ran or waive a safety defect.",
+    "admitting_owner": "lead only, never a child",
+    "critical_blocker_preferred_slot": "A2; retain A1 for pre-apply boundary review where possible"
+  },
+  "premium_mode_policy": {
+    "auto_enable_fast": false,
+    "auto_enable_pro_or_ultra": false,
+    "auto_raise_to_xhigh_or_max": false
+  },
+  "budget_enforcement": "Workflow admission rule and observable ledger, not a native Codex spend cap. Actual vendor account limits and usage telemetry are separate. No monetary or allowance savings percentage is promised.",
+  "runtime": {
+    "preferred_model": "gpt-6-sol",
+    "reasoning_effort": "high",
+    "api_family": "responses",
+    "tested_sol_fallback": "gpt-5.6-sol",
+    "astra_enabled": false,
+    "automatic_per_turn_routing": false,
+    "explicit_compatibility_only_none_fallback_requires_operator_choice": true
+  },
+  "invariants": [
+    "All 36 primary tasks remain Sol High.",
+    "Same mandatory tests and human gates as V2 plus V3 additions.",
+    "No model opinion resolves an unknown database commit.",
+    "An Astra review is never human product approval."
+  ]
+}
