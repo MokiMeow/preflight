@@ -188,7 +188,7 @@ Fill a local copy of `config/capability-probe.example.json`. Record actual model
 
 | Slot | Trigger/task | Reviewed commit and question | Actual model/effort | Usage, units | Findings/repair/retest | State |
 |---|---|---|---|---|---|---|
-| A1 | T27 focused pre-live-apply safety boundary audit | — | NOT_OBSERVED | NOT_OBSERVED | — | NOT_USED |
+| A1 | T27 focused pre-live-apply safety boundary audit | Ticket T27-A1-20260926 recorded before dispatch; review 0e39cf7; residual SQL/coverage/report/source/cleanup boundaries after Sol review | Requested gpt-6-astra/high; effective pending | NOT_OBSERVED | No implementation/cloud/gate authority; findings packet only | ADMITTED_NOT_STARTED |
 | A2 | Conditional T34 safety delta or qualifying critical blocker | — | NOT_OBSERVED | NOT_OBSERVED | — | NOT_USED |
 
 Write the ticket from docs 10 **before** spawning the exceptional reviewer. A slot spent on a blocker is not available again for the final audit. Skip repeated Astra review when there is no material safety change; record why. If an independent Sol review substitutes because Astra is unavailable, say so and retain the same acceptance bar. Never imply an AI audit is the engineer's product approval.
@@ -210,3 +210,7 @@ Write the ticket from docs 10 **before** spawning the exceptional reviewer. A sl
 - Operator completed browser IAM sign-in initiated with `aws login --region us-east-1 --profile default`. No console password or credential material was captured in repository evidence.
 - Configured default profile region `us-east-1` and output `json`. `aws sts get-caller-identity --profile default --query Account --output text` succeeded; account identifier omitted from recorded evidence. CLI authentication: CONNECTED_VERIFIED. Authentication tokens are temporary; no permanent authentication claim.
 - This setup establishes CLI identity only. Cloud footprint approval, resource permissions, private runtime connectivity, provider setup and T27/T24 acceptance remain unverified. No resources created, cloud spend initiated, database mutation or cleanup performed. No application changes or test rerun required for this host tool setup.
+
+### A1 focused admission ticket — T27-A1-20260926
+
+Ordinary separate Sol reviews found no remaining critical/high source boundary defect. A1 is admitted before T24 at frozen `0e39cf7`, isolated `.worktrees/critical-a1`. Review only residual recursive SQL/written-column coverage, sealed evidence/offline trust, exact source apply, durable unknown-outcome and cleanup boundaries. Local gate: 668 passed/248.38s; manifest delta13 passed/5.44s. Actual private snapshot/cleanup and corrected scoped IAM traces exist, replacement clone still RESTORING; no source SQL or PASS cloud rehearsal is inferred. Requested role critical_reviewer, gpt-6-astra/high, read-only/no cloud tools/no implementation/no approval. Target focused input12k/findings1500words; no extra expert session. Actual model/usage/result remains pending until its trace.

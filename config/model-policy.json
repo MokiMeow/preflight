@@ -49,7 +49,10 @@
         "id": "A1",
         "task": "T27",
         "trigger": "Focused audit of implemented SQL/validation, report, source-apply and cleanup boundaries before T24.",
-        "status": "NOT_USED"
+        "status": "ADMITTED",
+        "reviewed_commit": "0e39cf7",
+        "ticket": "T27-A1-20260926",
+        "scope": "Read-only residual review after independent Sol: SQL/written-column coverage, sealed report trust, exact source apply and cleanup/unknown-outcome boundaries. No implementation, cloud action or approval."
       },
       {
         "id": "A2",
