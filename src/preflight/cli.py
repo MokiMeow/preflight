@@ -154,7 +154,7 @@ def verify_local():
     import sys
 
     result = subprocess.run(
-        [sys.executable, "-m", "pytest", "tests/unit", "tests/postgres", "tests/mcp", "-q"],
+        [sys.executable, "-m", "pytest", "tests", "-q"],
         check=False,
     )
     raise typer.Exit(result.returncode)

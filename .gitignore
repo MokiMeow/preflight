@@ -19,6 +19,7 @@ evidence/
 *.har
 # Python and tooling
 .venv/
+.venv-clean/
 __pycache__/
 *.pyc
 .pytest_cache/

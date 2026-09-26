@@ -6,8 +6,9 @@ from datetime import UTC, datetime
 from pathlib import Path
 
 import pytest
-from test_bootstrap_driver import ACCOUNT, REGION, bootstrap
-from test_bootstrap_driver import driver as driver_fixture
+
+from tests.cloud.test_bootstrap_driver import ACCOUNT, REGION, bootstrap
+from tests.cloud.test_bootstrap_driver import driver as driver_fixture
 
 spec = importlib.util.spec_from_file_location(
     "prerequisites", Path(__file__).parents[2] / "infra/prerequisites.py"

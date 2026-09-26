@@ -1,15 +1,15 @@
 # 09 — Live build status and resume ledger (V3)
 
-**Initial state:** planning starter only. No application implemented, installed, tested or deployed by creating this archive. Update this file during the actual build; do not overwrite the original PRD.
+**Current state:** implemented Python service, deterministic evidence, guarded AWS adapters and pinned native TrueForge integration. Local verification is ongoing; connected deployment and human demonstrations await operator access. The archive began as specifications only.
 
 ## Current checkpoint
 
 - Event start: operator confirmed organizer authorizes coding now on 2026-09-26, before first application edit. Final submission fields remain unconfirmed.
-- Implementation checkpoint: 5790a6a (typed interfaces); build ongoing.
+- Implementation checkpoint: 2867449; report, database, service, MCP and cloud adapter implementations integrated.
 - Toolchain: uv.lock installed; Python 3.12.10 / MCP 2.2.0 / pglast 8.4 / PostgreSQL18 target.
-- Active isolated lanes: database preflight/db, cloud preflight/cloud, integration preflight/integration at 5790a6a; max three children, no grandchildren.
-- Next: T03/T06/T10 lead implementation; T07–09 DB; T04/T12–13/T17 cloud preparation; T11/T20 integration.
-- Latest passing gate: NONE.
+- Active isolated lanes: database (fresh synthetic fixture initializer), cloud (bootstrap prerequisites), integration (runtime probe/handoff/submission artifacts); no grandchildren.
+- Next: integrate remaining lane commits, independently recheck, recreate locked environment, run final local regression and record sanitized evidence.
+- Latest full passing gate: 155 tests in 111.21s on real local PostgreSQL18 plus local AWS Stubber, unit, MCP and TrueForge checks, before the latest inventory/storage/role delta. New role/database/MCP targeted gate: 35 passed in 70.01s; real HTTP MCP bad-to-good flow: 1 passed in 3.16s; runtime composition: 1 passed in 0.30s. Final combined gate pending.
 - Source apply enabled: false.
 - Actual run/candidate/resource IDs: NONE.
 - Current irreversible action awaiting a human: NONE.
@@ -21,41 +21,41 @@ Use status `NOT_STARTED`, `IN_PROGRESS`, `BLOCKED_EXTERNAL`, `FAILED`, `LOCAL_VE
 | Task | Owner | Initial status | Evidence / commit / blocker |
 |---|---|---|---|
 | T00 — Establish event rules, clean workspace and build provenance | lead | LOCAL_VERIFIED | evidence/setup/event-and-provenance.md; operator timing override; PRD original hash retained |
-| T01 — Resolve and record one compatible toolchain | lead | IN_PROGRESS | Python official MCP HTTP probe passed, lock installed; JS/runtime probe pending |
-| T02 — Freeze shared domain models and service interfaces | lead | IN_PROGRESS | 5790a6a; 3 typed contract tests passed; independent review pending |
-| T03 — Implement configuration, doctor and runnable service shell | lead | NOT_STARTED | Not executed |
-| T04 — Authorize and plan the bounded AWS footprint | cloud | NOT_STARTED | Not executed |
-| T05 — Provision or validate private host, source and runtime identity | cloud | NOT_STARTED | Not executed |
-| T06 — Build immutable candidates, durable state and idempotency | lead | NOT_STARTED | Not executed |
-| T07 — Implement recursive PostgreSQL AST and object policy | database | NOT_STARTED | Not executed |
-| T08 — Build real DB sessions, fixtures and transactional runner | database | NOT_STARTED | Not executed |
-| T09 — Implement canonical row/schema evidence and typed checks | database | NOT_STARTED | Not executed |
-| T10 — Implement the pure verdict and eligibility rules | lead | NOT_STARTED | Not executed |
-| T11 — Implement sealed JSON evidence and readable report rendering | integration | NOT_STARTED | Not executed |
-| T12 — Implement the narrowly scoped RDS adapter | cloud | NOT_STARTED | Not executed |
-| T13 — Build asynchronous snapshot/restore jobs and restart reconciliation | cloud | NOT_STARTED | Not executed |
-| T14 — Connect baseline, clone execution and validation use cases | lead | NOT_STARTED | Not executed |
-| T15 — Implement safe candidate revision and report history | lead | NOT_STARTED | Not executed |
-| T16 — Implement the guarded source transaction and durable outcomes | lead | NOT_STARTED | Not executed |
-| T17 — Implement guarded cleanup and recovery retention | cloud | NOT_STARTED | Not executed |
-| T18 — Expose and contract-test the complete MCP surface | lead | NOT_STARTED | Not executed |
-| T19 — Pass the complete local end-to-end gate | lead | NOT_STARTED | Not executed |
-| T20 — Prove TrueForge, OpenAI and Daytona compatibility early | integration | NOT_STARTED | Not executed |
-| T21 — Deploy the service and saved agent on the EC2 host | integration | NOT_STARTED | Not executed |
-| T22 — Create and verify the real synthetic RDS rehearsal | cloud | NOT_STARTED | Not executed |
-| T23 — Run the real bad-to-good migration proof | integration | NOT_STARTED | Not executed |
-| T24 — Demonstrate denial, approved apply and replay refusal | integration | NOT_STARTED | Not executed |
-| T25 — Prove successful SQL can still fail correctness, and drift blocks apply | database | NOT_STARTED | Not executed |
-| T26 — Exercise crash, timeout and uncertain-commit recovery | lead | NOT_STARTED | Not executed |
-| T27 — Perform independent privacy, IAM and boundary review | reviewer | NOT_STARTED | Not executed |
-| T28 — Polish the report and native TrueForge experience | integration | NOT_STARTED | Not executed |
-| T29 — Exercise cleanup guards and record deliberate retention | cloud | NOT_STARTED | Not executed |
-| T30 — Verify reproducible installation and operational handoff | lead | NOT_STARTED | Not executed |
-| T31 — Run the final regression and close review findings | lead | NOT_STARTED | Not executed |
-| T32 — Prepare the complete repository submission | integration | NOT_STARTED | Not executed |
-| T33 — Record and rehearse the evidence-led pitch | integration | NOT_STARTED | Not executed |
-| T34 — Perform the final read-only demo-readiness audit | lead | NOT_STARTED | Not executed |
-| T35 — Close out resources after the demonstration | cloud | NOT_STARTED | Not executed |
+| T01 — Resolve and record one compatible toolchain | lead | LOCAL_VERIFIED | uv.lock installed; Python MCP2.2 HTTP and pinned TrueForge JS MCP roundtrip passed; paid model route pending |
+| T02 — Freeze shared domain models and service interfaces | lead | LOCAL_VERIFIED | 5790a6a frozen types; strict schemas and integrated safety tests |
+| T03 — Implement configuration, doctor and runnable service shell | lead | LOCAL_VERIFIED | b068fc5, settings/doctor/CLI/loopback official MCP runnable; defaults disabled |
+| T04 — Authorize and plan the bounded AWS footprint | cloud | BLOCKED_EXTERNAL | Bounded bootstrap plan/approval implementation; missing approved account/region/budget/scope |
+| T05 — Provision or validate private host, source and runtime identity | cloud | BLOCKED_EXTERNAL | Private host/source/IAM bootstrap code and Stubber checks; cloud inputs missing |
+| T06 — Build immutable candidates, durable state and idempotency | lead | LOCAL_VERIFIED | 12cfc72, immutable artifacts/CAS/idempotency and atomic report publication 9bb5841 |
+| T07 — Implement recursive PostgreSQL AST and object policy | database | LOCAL_VERIFIED | 19cb6ad/e5d7368, recursive PG18 AST confinement; real metadata refusal tests |
+| T08 — Build real DB sessions, fixtures and transactional runner | database | LOCAL_VERIFIED | e5d7368/77113a0, real PG18 TLS/role/transaction/timeout/outcome tests |
+| T09 — Implement canonical row/schema evidence and typed checks | database | LOCAL_VERIFIED | e5d7368, complete canonical typed evidence and written-column coverage |
+| T10 — Implement the pure verdict and eligibility rules | lead | LOCAL_VERIFIED | 12cfc72, deterministic complete manifest verdict and eligibility |
+| T11 — Implement sealed JSON evidence and readable report rendering | integration | LOCAL_VERIFIED | f69addf/9bb5841, sealed report/offline trust-anchor checks and interruption repair |
+| T12 — Implement the narrowly scoped RDS adapter | cloud | LOCAL_VERIFIED | d41712a, injected boto Stubber only; storage/private ownership/inventory guards; no AWS |
+| T13 — Build asynchronous snapshot/restore jobs and restart reconciliation | cloud | LOCAL_VERIFIED | ea477ac/d41712a, persistent leases/reservations/async reconciliation; no AWS |
+| T14 — Connect baseline, clone execution and validation use cases | lead | LOCAL_VERIFIED | b9696bc, real local DB baseline/clone/validation causal chain |
+| T15 — Implement safe candidate revision and report history | lead | LOCAL_VERIFIED | 9bb5841, same-contract rollback-only revision and immutable history |
+| T16 — Implement the guarded source transaction and durable outcomes | lead | LOCAL_VERIFIED | 77113a0, local fixture locked guard/apply/replay tests; actual human/AWS apply NOT_RUN |
+| T17 — Implement guarded cleanup and recovery retention | cloud | LOCAL_VERIFIED | d41712a, local Stubber guarded cleanup/retention/absence reconciliation; live deletion NOT_RUN |
+| T18 — Expose and contract-test the complete MCP surface | lead | LOCAL_VERIFIED | 77113a0, ten flat strict tools via real HTTP official MCP with sanitized invalid-input test |
+| T19 — Pass the complete local end-to-end gate | lead | LOCAL_VERIFIED | 77113a0, real HTTP MCP bad rollback/BLOCK -> revision good commit/PASS -> report/AWAITING_APPROVAL; local DB only |
+| T20 — Prove TrueForge, OpenAI and Daytona compatibility early | integration | BLOCKED_EXTERNAL | Pinned native bundled JS MCP to Python roundtrip passed; OpenAI/Gateway and Daytona missing |
+| T21 — Deploy the service and saved agent on the EC2 host | integration | BLOCKED_EXTERNAL | Deployment/agent configuration prepared; approved host/provider setup missing |
+| T22 — Create and verify the real synthetic RDS rehearsal | cloud | BLOCKED_EXTERNAL | No cloud source/snapshot/clone exists from this build; AWS access/authorization missing |
+| T23 — Run the real bad-to-good migration proof | integration | BLOCKED_EXTERNAL | Local bad-to-good proof passed; real snapshot-restored RDS proof missing |
+| T24 — Demonstrate denial, approved apply and replay refusal | integration | BLOCKED_EXTERNAL | Backend local guards tested; actual saved human deny/allow gate missing; T27 must precede |
+| T25 — Prove successful SQL can still fail correctness, and drift blocks apply | database | LOCAL_VERIFIED | e5d7368, real PG wrong-data commit/BLOCK, uncovered-column WARN, drift refusal |
+| T26 — Exercise crash, timeout and uncertain-commit recovery | lead | LOCAL_VERIFIED | 9bb5841, actual local PG fault injection and durable restart/publication tests; AWS uncertainty not connected |
+| T27 — Perform independent privacy, IAM and boundary review | reviewer | BLOCKED_EXTERNAL | Independent Sol local findings F1-F4 repaired/rechecked; composition/role delta recheck pending; connected IAM/UI/privacy and A1 pending |
+| T28 — Polish the report and native TrueForge experience | integration | IN_PROGRESS | Report/native TrueForge templates implemented; handoff/demo polish in progress |
+| T29 — Exercise cleanup guards and record deliberate retention | cloud | BLOCKED_EXTERNAL | Local cleanup guard tests passed; actual operator cleanup choice/resources absent |
+| T30 — Verify reproducible installation and operational handoff | lead | IN_PROGRESS | Locks installed and pinned SDK tested; fresh isolated locked install pending |
+| T31 — Run the final regression and close review findings | lead | IN_PROGRESS | 155 full local tests passed before latest safety delta; final regression pending |
+| T32 — Prepare the complete repository submission | integration | IN_PROGRESS | Repository built locally; license/SBOM/submission artifacts in progress; no remote publication authorized |
+| T33 — Record and rehearse the evidence-led pitch | integration | BLOCKED_EXTERNAL | Demo material preparation; actual connected proof/recording pending |
+| T34 — Perform the final read-only demo-readiness audit | lead | BLOCKED_EXTERNAL | Final connected evidence/A1 audit pending; local review ongoing |
+| T35 — Close out resources after the demonstration | cloud | BLOCKED_EXTERNAL | No AWS resources created; connected deliberate cleanup/retention not demonstrated |
 
 ## Consolidated external inputs
 
@@ -64,7 +64,7 @@ Record presence and nonsecret IDs only. Never paste an API key/password/private 
 | Input | Status | Resolved by / nonsecret reference |
 |---|---|---|
 | Actual organizer rules/submission fields | Unknown | User URL; see docs 00 limitations |
-| Allowed implementation start | Unknown | Organizer confirmation |
+| Allowed implementation start | Confirmed | Operator: organizer authorized coding now, before application edits |
 | Team-owned AWS account and region | Missing | Operator JSON |
 | Creation scope, budget and resource caps | Missing | Explicit operator authorization |
 | Source/database or creation permission | Missing | Operator JSON / cloud discovery |
@@ -74,6 +74,8 @@ Record presence and nonsecret IDs only. Never paste an API key/password/private 
 | Daytona provider access | Missing | TrueForge settings, never key text |
 | Human approver present | Pending | Real UI decision |
 | Submission remote and visibility | Unknown | Organizer/team decision |
+
+Operator requests independent implementation while credits/access are pending. No cloud spend, source reset, publishing or product approval is inferred. No real AWS/provider/Daytona request has been executed.
 
 ## Accepted implementation deviations
 
@@ -85,24 +87,29 @@ Record presence and nonsecret IDs only. Never paste an API key/password/private 
 
 | Finding | Severity | Reproduction/evidence | Owning task | Repair commit | Recheck |
 |---|---|---|---|---|---|
-| — | — | No implementation review performed yet | — | — | — |
+| F1 invalid request ID echoed | MEDIUM | Secret-like invalid-input sentinel | lead | bb7b05c | Independent Sol closed at 9bb5841 |
+| F2 contradictory aggregate report could seal PASS | MEDIUM | Row count/root contradiction with rehashed report | integration | f69addf | Independent Sol closed at 9bb5841 |
+| F3 interrupted report publication retry changed seal | MEDIUM | Markdown write interruption and restart | lead | 9bb5841 | Independent Sol closed at 9bb5841 |
+| F4 unsupported RDS storage accepted | MEDIUM | Stubber source/clone magnetic storage | cloud | d41712a | Independent Sol closed at d41712a |
+| F5 missing tagging client in deployed composition | MEDIUM | Static composition, new creation refused | lead | 77113a0/2867449 | Inert composition test passed; independent recheck pending |
+| RDS inherited administrative membership | Safety concern | Local rolsuper=false rds_superuser and server-file membership | lead | 77113a0 | Real PG tests refused both; independent recheck pending |
 
 ## Evidence checkpoints
 
 | Gate | Status | Exact command or real observation | Commit/time/backend |
 |---|---|---|---|
-| Local unit/policy/evidence | NOT_RUN | — | — |
-| Real local PostgreSQL | NOT_RUN | — | — |
-| MCP contract + end-to-end | NOT_RUN | — | — |
-| TrueForge/OpenAI/Daytona | NOT_RUN | — | — |
+| Local unit/policy/evidence | LOCAL_VERIFIED | Integrated 155-test run plus targeted repairs | Local only |
+| Real local PostgreSQL | LOCAL_VERIFIED | PG18.6, loopback TLS, separate nonsuperuser fixtures | e5d7368/77113a0 |
+| MCP contract + end-to-end | LOCAL_VERIFIED | Actual HTTP official client and bad-to-good chain | 77113a0 |
+| TrueForge/OpenAI/Daytona | BLOCKED_EXTERNAL | Bundled JS MCP roundtrip LOCAL_VERIFIED; paid route/Daytona NOT_RUN | No external credentials |
 | AWS snapshot/private clone | NOT_RUN | — | — |
-| Bad/BLOCK and good/PASS | NOT_RUN | — | — |
+| Bad/BLOCK and good/PASS | LOCAL_VERIFIED | Actual disposable PostgreSQL, exact bytes, historical reports | AWS version NOT_RUN |
 | Human denial / no source change | NOT_RUN | — | — |
 | Human allow / exact source apply | NOT_RUN | — | — |
-| Replay/tamper/drift | NOT_RUN | — | — |
-| Crash/uncertain outcome | NOT_RUN | — | — |
-| Privacy/network/IAM review | NOT_RUN | — | — |
-| Cleanup/retention | NOT_RUN | — | — |
+| Replay/tamper/drift | LOCAL_VERIFIED | Actual local DB and trusted/unanchored offline verifier | Connected NOT_RUN |
+| Crash/uncertain outcome | LOCAL_VERIFIED | Actual PG fault injection; durable restart and report publication | Connected NOT_RUN |
+| Privacy/network/IAM review | BLOCKED_EXTERNAL | Independent Sol local review/Stubber checks; AWS and saved human gates unobserved | T27 not accepted connected |
+| Cleanup/retention | LOCAL_VERIFIED | Guarded local Stubber deletion/absence/retention tests | No live cleanup performed |
 | Final submission/recording | NOT_RUN | — | — |
 
 ## Resume packet — replace at a meaningful checkpoint
@@ -125,13 +132,13 @@ A restarted coding session first reads this ledger, verifies Git and the referen
 ## V3 setup/compatibility ledger
 
 - Archive: V3 specifications only; no product implementation, installed-provider probe or live cloud test has been performed by preparing this kit.
-- Coding CLI baseline: 0.157.0 source/docs; installed version NOT_OBSERVED.
-- Requested lead: GPT-6 Sol/high; actual model NOT_OBSERVED.
+- Coding CLI baseline: 0.157.0 source/docs; installed version 0.153.0, retained without replacing global binary.
+- Requested lead: GPT-6 Sol/high; actual session trace observed GPT-6 Sol/high.
 - Runtime route: preferred Gateway + verified Responses adapter + GPT-6 Sol/high; actual route NOT_RUN.
-- Gateway optionality/final event schedule: final operator/on-site confirmation pending.
-- `.codex` role configuration accepted: NOT_RUN. Four `.agents/skills` discovered: NOT_RUN.
-- Source-tag verification: TrueForge 0.2.1 and MCP v2.2.0 confirmed; registry install/integrity and interoperability pending.
-- Current instruction: start T00 after authorized event start, then T01/T04 and the dependency graph. Do not mark any task done merely because a specification was revised.
+- Gateway optionality/final submission fields: final operator/on-site confirmation pending; coding start authorized.
+- Effective DB/cloud/reviewer GPT-6 Sol/high and integration GPT-5.6 Sol/high observed from role/session traces. Narrow repository skill routers used; explicit isolated worktrees and no grandchildren.
+- TrueForge 0.2.1 and MCP v2.2.0 installed from pinned locks; registry integrity and real cross-language MCP interoperability verified locally.
+- Current instruction: finish independent authorized work while operator obtains credits; connected acceptance remains gated.
 
 Fill a local copy of `config/capability-probe.example.json`. Record actual model/effort per assignment, checkout/base commit, worker evidence, integrated evidence and reviewer result. Keep a consolidated operator-input list rather than repeatedly interrupting for the same missing access.
 
@@ -139,7 +146,7 @@ Fill a local copy of `config/capability-probe.example.json`. Record actual model
 ## Model admission and observed usage
 
 - Primary implementation: GPT-6 Sol/high and GPT-5.6 Sol/high only.
-- Routine independent reviewer: GPT-6 Sol/high; exact observed model: NOT_OBSERVED.
+- Routine independent reviewer: GPT-6 Sol/high; exact observed role/session model: gpt-6-sol/high.
 - Exceptional expert policy: [model-policy.json](../config/model-policy.json); at most two admitted sessions without a further user extension.
 - Astra sessions actually used: **0**. Additional user-authorized sessions: **0**.
 - Vendor allowance/usage before and after: **NOT_OBSERVED**. The template is not a billing measurement.
@@ -155,10 +162,9 @@ Write the ticket from docs 10 **before** spawning the exceptional reviewer. A sl
 
 | Gate | Initial status | Required evidence |
 |---|---|---|
-| Sol role/effective-model agreement | NOT_RUN | Actual lead/child model and effort, no silent Astra/premium routing |
-| Column-level coverage | NOT_RUN | Unasserted mutation WARN; protected wrong-data BLOCK; explicit value/schema coverage PASS control |
-| Offline report verifier | NOT_RUN | No network; tamper and forged rehash/trusted-anchor checks; historical/unanchored labels |
+| Sol role/effective-model agreement | LOCAL_VERIFIED | Actual lead/child session traces; Astra sessions 0 |
+| Column-level coverage | LOCAL_VERIFIED | Real PG unasserted mutation WARN, protected wrong-data BLOCK, explicit value/schema PASS |
+| Offline report verifier | LOCAL_VERIFIED | Strict parse/tamper/rehashed-contradiction/trusted-anchor and historical/unanchored tests |
 | Pre-apply review order | NOT_RUN | Accepted T27 evidence precedes first T24 live write |
 | Agent behavior evaluations | NOT_RUN | Real trace/state results for config/agent-evaluation-plan.json |
 | Expert budget accounting | NOT_RUN | Admitted/used/skipped A1/A2 tickets, actual evidence, no fabricated savings |
-

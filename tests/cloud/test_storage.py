@@ -1,7 +1,7 @@
 import pytest
-from test_rds import cloud as cloud_fixture
 
 from preflight.models import PreflightError
+from tests.cloud.test_rds import cloud as cloud_fixture
 
 cloud = cloud_fixture
 

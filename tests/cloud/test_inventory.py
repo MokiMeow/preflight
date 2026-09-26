@@ -5,11 +5,11 @@ import time
 from uuid import uuid4
 
 import pytest
-from test_rds import ACCOUNT, REGION
-from test_rds import cloud as cloud_fixture
 
 from preflight.jobs import JobStore, ResourceIntent
 from preflight.models import PreflightError
+from tests.cloud.test_rds import ACCOUNT, REGION
+from tests.cloud.test_rds import cloud as cloud_fixture
 
 cloud = cloud_fixture
 

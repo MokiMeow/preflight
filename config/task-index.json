@@ -22,7 +22,7 @@
       "skill": null,
       "independent_review_required": false,
       "review_model": null,
-      "status": "NOT_STARTED",
+      "status": "LOCAL_VERIFIED",
       "max_child_agents": 0,
       "execution_note": "Use the matching Sol High role and verify effective settings. No automatic Astra promotion. Exceptional review only through an admitted A1/A2 ticket in config/model-policy.json; Sol implements and repairs.",
       "review_reasoning_effort": null
@@ -52,7 +52,7 @@
       "skill": "preflight-integration",
       "independent_review_required": false,
       "review_model": null,
-      "status": "NOT_STARTED",
+      "status": "LOCAL_VERIFIED",
       "max_child_agents": 0,
       "execution_note": "Use the matching Sol High role and verify effective settings. No automatic Astra promotion. Exceptional review only through an admitted A1/A2 ticket in config/model-policy.json; Sol implements and repairs.",
       "review_reasoning_effort": null
@@ -82,7 +82,7 @@
       "skill": null,
       "independent_review_required": true,
       "review_model": "gpt-6-sol",
-      "status": "NOT_STARTED",
+      "status": "LOCAL_VERIFIED",
       "max_child_agents": 0,
       "execution_note": "Use the matching Sol High role and verify effective settings. No automatic Astra promotion. Exceptional review only through an admitted A1/A2 ticket in config/model-policy.json; Sol implements and repairs.",
       "review_reasoning_effort": "high"
@@ -111,7 +111,7 @@
       "skill": "preflight-integration",
       "independent_review_required": false,
       "review_model": null,
-      "status": "NOT_STARTED",
+      "status": "LOCAL_VERIFIED",
       "max_child_agents": 0,
       "execution_note": "Use the matching Sol High role and verify effective settings. No automatic Astra promotion. Exceptional review only through an admitted A1/A2 ticket in config/model-policy.json; Sol implements and repairs.",
       "review_reasoning_effort": null
@@ -139,7 +139,7 @@
       "skill": "preflight-rds",
       "independent_review_required": true,
       "review_model": "gpt-6-sol",
-      "status": "NOT_STARTED",
+      "status": "BLOCKED_EXTERNAL",
       "max_child_agents": 0,
       "execution_note": "Use the matching Sol High role and verify effective settings. No automatic Astra promotion. Exceptional review only through an admitted A1/A2 ticket in config/model-policy.json; Sol implements and repairs.",
       "review_reasoning_effort": "high"
@@ -169,7 +169,7 @@
       "skill": "preflight-rds",
       "independent_review_required": true,
       "review_model": "gpt-6-sol",
-      "status": "NOT_STARTED",
+      "status": "BLOCKED_EXTERNAL",
       "max_child_agents": 0,
       "execution_note": "Use the matching Sol High role and verify effective settings. No automatic Astra promotion. Exceptional review only through an admitted A1/A2 ticket in config/model-policy.json; Sol implements and repairs.",
       "review_reasoning_effort": "high"
@@ -197,7 +197,7 @@
       "skill": null,
       "independent_review_required": true,
       "review_model": "gpt-6-sol",
-      "status": "NOT_STARTED",
+      "status": "LOCAL_VERIFIED",
       "max_child_agents": 0,
       "execution_note": "Use the matching Sol High role and verify effective settings. No automatic Astra promotion. Exceptional review only through an admitted A1/A2 ticket in config/model-policy.json; Sol implements and repairs.",
       "review_reasoning_effort": "high"
@@ -226,7 +226,7 @@
       "skill": "preflight-db",
       "independent_review_required": true,
       "review_model": "gpt-6-sol",
-      "status": "NOT_STARTED",
+      "status": "LOCAL_VERIFIED",
       "max_child_agents": 0,
       "execution_note": "Use the matching Sol High role and verify effective settings. No automatic Astra promotion. Exceptional review only through an admitted A1/A2 ticket in config/model-policy.json; Sol implements and repairs.",
       "review_reasoning_effort": "high"
@@ -255,7 +255,7 @@
       "skill": "preflight-db",
       "independent_review_required": true,
       "review_model": "gpt-6-sol",
-      "status": "NOT_STARTED",
+      "status": "LOCAL_VERIFIED",
       "max_child_agents": 0,
       "execution_note": "Use the matching Sol High role and verify effective settings. No automatic Astra promotion. Exceptional review only through an admitted A1/A2 ticket in config/model-policy.json; Sol implements and repairs.",
       "review_reasoning_effort": "high"
@@ -284,7 +284,7 @@
       "skill": "preflight-db",
       "independent_review_required": true,
       "review_model": "gpt-6-sol",
-      "status": "NOT_STARTED",
+      "status": "LOCAL_VERIFIED",
       "max_child_agents": 0,
       "execution_note": "Use the matching Sol High role and verify effective settings. No automatic Astra promotion. Exceptional review only through an admitted A1/A2 ticket in config/model-policy.json; Sol implements and repairs.",
       "review_reasoning_effort": "high"
@@ -314,7 +314,7 @@
       "skill": "preflight-db",
       "independent_review_required": true,
       "review_model": "gpt-6-sol",
-      "status": "NOT_STARTED",
+      "status": "LOCAL_VERIFIED",
       "max_child_agents": 0,
       "execution_note": "Use the matching Sol High role and verify effective settings. No automatic Astra promotion. Exceptional review only through an admitted A1/A2 ticket in config/model-policy.json; Sol implements and repairs.",
       "review_reasoning_effort": "high"
@@ -346,7 +346,7 @@
       "skill": "preflight-integration",
       "independent_review_required": false,
       "review_model": null,
-      "status": "NOT_STARTED",
+      "status": "LOCAL_VERIFIED",
       "max_child_agents": 0,
       "execution_note": "Use the matching Sol High role and verify effective settings. No automatic Astra promotion. Exceptional review only through an admitted A1/A2 ticket in config/model-policy.json; Sol implements and repairs.",
       "review_reasoning_effort": null
@@ -374,7 +374,7 @@
       "skill": "preflight-rds",
       "independent_review_required": false,
       "review_model": null,
-      "status": "NOT_STARTED",
+      "status": "LOCAL_VERIFIED",
       "max_child_agents": 0,
       "execution_note": "Use the matching Sol High role and verify effective settings. No automatic Astra promotion. Exceptional review only through an admitted A1/A2 ticket in config/model-policy.json; Sol implements and repairs.",
       "review_reasoning_effort": null
@@ -404,7 +404,7 @@
       "skill": "preflight-rds",
       "independent_review_required": false,
       "review_model": null,
-      "status": "NOT_STARTED",
+      "status": "LOCAL_VERIFIED",
       "max_child_agents": 0,
       "execution_note": "Use the matching Sol High role and verify effective settings. No automatic Astra promotion. Exceptional review only through an admitted A1/A2 ticket in config/model-policy.json; Sol implements and repairs.",
       "review_reasoning_effort": null
@@ -437,7 +437,7 @@
       "skill": "preflight-db",
       "independent_review_required": true,
       "review_model": "gpt-6-sol",
-      "status": "NOT_STARTED",
+      "status": "LOCAL_VERIFIED",
       "max_child_agents": 0,
       "execution_note": "Use the matching Sol High role and verify effective settings. No automatic Astra promotion. Exceptional review only through an admitted A1/A2 ticket in config/model-policy.json; Sol implements and repairs.",
       "review_reasoning_effort": "high"
@@ -465,7 +465,7 @@
       "skill": "preflight-db",
       "independent_review_required": true,
       "review_model": "gpt-6-sol",
-      "status": "NOT_STARTED",
+      "status": "LOCAL_VERIFIED",
       "max_child_agents": 0,
       "execution_note": "Use the matching Sol High role and verify effective settings. No automatic Astra promotion. Exceptional review only through an admitted A1/A2 ticket in config/model-policy.json; Sol implements and repairs.",
       "review_reasoning_effort": "high"
@@ -495,7 +495,7 @@
       "skill": "preflight-db",
       "independent_review_required": true,
       "review_model": "gpt-6-sol",
-      "status": "NOT_STARTED",
+      "status": "LOCAL_VERIFIED",
       "max_child_agents": 0,
       "execution_note": "Use the matching Sol High role and verify effective settings. No automatic Astra promotion. Exceptional review only through an admitted A1/A2 ticket in config/model-policy.json; Sol implements and repairs.",
       "review_reasoning_effort": "high"
@@ -526,7 +526,7 @@
       "skill": "preflight-rds",
       "independent_review_required": true,
       "review_model": "gpt-6-sol",
-      "status": "NOT_STARTED",
+      "status": "LOCAL_VERIFIED",
       "max_child_agents": 0,
       "execution_note": "Use the matching Sol High role and verify effective settings. No automatic Astra promotion. Exceptional review only through an admitted A1/A2 ticket in config/model-policy.json; Sol implements and repairs.",
       "review_reasoning_effort": "high"
@@ -558,7 +558,7 @@
       "skill": "preflight-integration",
       "independent_review_required": true,
       "review_model": "gpt-6-sol",
-      "status": "NOT_STARTED",
+      "status": "LOCAL_VERIFIED",
       "max_child_agents": 0,
       "execution_note": "Use the matching Sol High role and verify effective settings. No automatic Astra promotion. Exceptional review only through an admitted A1/A2 ticket in config/model-policy.json; Sol implements and repairs.",
       "review_reasoning_effort": "high"
@@ -586,7 +586,7 @@
       "skill": "preflight-verification",
       "independent_review_required": true,
       "review_model": "gpt-6-sol",
-      "status": "NOT_STARTED",
+      "status": "LOCAL_VERIFIED",
       "max_child_agents": 0,
       "execution_note": "Use the matching Sol High role and verify effective settings. No automatic Astra promotion. Exceptional review only through an admitted A1/A2 ticket in config/model-policy.json; Sol implements and repairs.",
       "review_reasoning_effort": "high"
@@ -619,7 +619,7 @@
       "skill": "preflight-integration",
       "independent_review_required": true,
       "review_model": "gpt-6-sol",
-      "status": "NOT_STARTED",
+      "status": "BLOCKED_EXTERNAL",
       "max_child_agents": 0,
       "execution_note": "Use the matching Sol High role and verify effective settings. No automatic Astra promotion. Exceptional review only through an admitted A1/A2 ticket in config/model-policy.json; Sol implements and repairs.",
       "review_reasoning_effort": "high"
@@ -650,7 +650,7 @@
       "skill": "preflight-integration",
       "independent_review_required": true,
       "review_model": "gpt-6-sol",
-      "status": "NOT_STARTED",
+      "status": "BLOCKED_EXTERNAL",
       "max_child_agents": 0,
       "execution_note": "Use the matching Sol High role and verify effective settings. No automatic Astra promotion. Exceptional review only through an admitted A1/A2 ticket in config/model-policy.json; Sol implements and repairs.",
       "review_reasoning_effort": "high"
@@ -680,7 +680,7 @@
       "skill": "preflight-rds",
       "independent_review_required": false,
       "review_model": null,
-      "status": "NOT_STARTED",
+      "status": "BLOCKED_EXTERNAL",
       "max_child_agents": 0,
       "execution_note": "Use the matching Sol High role and verify effective settings. No automatic Astra promotion. Exceptional review only through an admitted A1/A2 ticket in config/model-policy.json; Sol implements and repairs.",
       "review_reasoning_effort": null
@@ -712,7 +712,7 @@
       "skill": "preflight-integration",
       "independent_review_required": false,
       "review_model": null,
-      "status": "NOT_STARTED",
+      "status": "BLOCKED_EXTERNAL",
       "max_child_agents": 0,
       "execution_note": "Use the matching Sol High role and verify effective settings. No automatic Astra promotion. Exceptional review only through an admitted A1/A2 ticket in config/model-policy.json; Sol implements and repairs.",
       "review_reasoning_effort": null
@@ -744,7 +744,7 @@
       "skill": "preflight-integration",
       "independent_review_required": false,
       "review_model": null,
-      "status": "NOT_STARTED",
+      "status": "BLOCKED_EXTERNAL",
       "max_child_agents": 0,
       "execution_note": "Use the matching Sol High role and verify effective settings. No automatic Astra promotion. Exceptional review only through an admitted A1/A2 ticket in config/model-policy.json; Sol implements and repairs.",
       "review_reasoning_effort": null
@@ -774,7 +774,7 @@
       "skill": "preflight-db",
       "independent_review_required": true,
       "review_model": "gpt-6-sol",
-      "status": "NOT_STARTED",
+      "status": "LOCAL_VERIFIED",
       "max_child_agents": 0,
       "execution_note": "Use the matching Sol High role and verify effective settings. No automatic Astra promotion. Exceptional review only through an admitted A1/A2 ticket in config/model-policy.json; Sol implements and repairs.",
       "review_reasoning_effort": "high"
@@ -803,7 +803,7 @@
       "skill": "preflight-verification",
       "independent_review_required": true,
       "review_model": "gpt-6-sol",
-      "status": "NOT_STARTED",
+      "status": "LOCAL_VERIFIED",
       "max_child_agents": 0,
       "execution_note": "Use the matching Sol High role and verify effective settings. No automatic Astra promotion. Exceptional review only through an admitted A1/A2 ticket in config/model-policy.json; Sol implements and repairs.",
       "review_reasoning_effort": "high"
@@ -835,7 +835,7 @@
       "skill": "preflight-verification",
       "independent_review_required": true,
       "review_model": "gpt-6-sol",
-      "status": "NOT_STARTED",
+      "status": "BLOCKED_EXTERNAL",
       "max_child_agents": 0,
       "execution_note": "Use the matching Sol High role and verify effective settings. No automatic Astra promotion. Exceptional review only through an admitted A1/A2 ticket in config/model-policy.json; Sol implements and repairs.",
       "review_reasoning_effort": "high",
@@ -864,7 +864,7 @@
       "skill": "preflight-integration",
       "independent_review_required": false,
       "review_model": null,
-      "status": "NOT_STARTED",
+      "status": "IN_PROGRESS",
       "max_child_agents": 0,
       "execution_note": "Use the matching Sol High role and verify effective settings. No automatic Astra promotion. Exceptional review only through an admitted A1/A2 ticket in config/model-policy.json; Sol implements and repairs.",
       "review_reasoning_effort": null
@@ -893,7 +893,7 @@
       "skill": "preflight-rds",
       "independent_review_required": true,
       "review_model": "gpt-6-sol",
-      "status": "NOT_STARTED",
+      "status": "BLOCKED_EXTERNAL",
       "max_child_agents": 0,
       "execution_note": "Use the matching Sol High role and verify effective settings. No automatic Astra promotion. Exceptional review only through an admitted A1/A2 ticket in config/model-policy.json; Sol implements and repairs.",
       "review_reasoning_effort": "high"
@@ -925,7 +925,7 @@
       "skill": null,
       "independent_review_required": true,
       "review_model": "gpt-6-sol",
-      "status": "NOT_STARTED",
+      "status": "IN_PROGRESS",
       "max_child_agents": 0,
       "execution_note": "Use the matching Sol High role and verify effective settings. No automatic Astra promotion. Exceptional review only through an admitted A1/A2 ticket in config/model-policy.json; Sol implements and repairs.",
       "review_reasoning_effort": "high"
@@ -958,7 +958,7 @@
       "skill": "preflight-verification",
       "independent_review_required": true,
       "review_model": "gpt-6-sol",
-      "status": "NOT_STARTED",
+      "status": "IN_PROGRESS",
       "max_child_agents": 0,
       "execution_note": "Use the matching Sol High role and verify effective settings. No automatic Astra promotion. Exceptional review only through an admitted A1/A2 ticket in config/model-policy.json; Sol implements and repairs.",
       "review_reasoning_effort": "high"
@@ -989,7 +989,7 @@
       "skill": "preflight-verification",
       "independent_review_required": false,
       "review_model": null,
-      "status": "NOT_STARTED",
+      "status": "IN_PROGRESS",
       "max_child_agents": 0,
       "execution_note": "Use the matching Sol High role and verify effective settings. No automatic Astra promotion. Exceptional review only through an admitted A1/A2 ticket in config/model-policy.json; Sol implements and repairs.",
       "review_reasoning_effort": null
@@ -1020,7 +1020,7 @@
       "skill": "preflight-verification",
       "independent_review_required": false,
       "review_model": null,
-      "status": "NOT_STARTED",
+      "status": "BLOCKED_EXTERNAL",
       "max_child_agents": 0,
       "execution_note": "Use the matching Sol High role and verify effective settings. No automatic Astra promotion. Exceptional review only through an admitted A1/A2 ticket in config/model-policy.json; Sol implements and repairs.",
       "review_reasoning_effort": null
@@ -1039,7 +1039,7 @@
         "07"
       ],
       "subtasks": [
-        "Inspect current resources, source schema, backup status, saved-agent configuration and evidence hashes. Do not replay an applied migration to “check readiness.”",
+        "Inspect current resources, source schema, backup status, saved-agent configuration and evidence hashes. Do not replay an applied migration to \u201ccheck readiness.\u201d",
         "Confirm which session/run is staged for live judging versus recorded evidence and whether the source has already been mutated. A fresh live re-run requires an explicitly reset synthetic fixture/new rehearsal, not hidden state changes.",
         "Provide a clear completion report naming passed gates, exact run/candidate/hashes and any remaining external action.",
         "Verify final organizer submission details, actual model route, all effective gates, report/receipt hashes, model degradation status and retained resource owner. Do not start another source migration to make the screen look fresh.",
@@ -1052,7 +1052,7 @@
       "skill": "preflight-verification",
       "independent_review_required": true,
       "review_model": "gpt-6-sol",
-      "status": "NOT_STARTED",
+      "status": "BLOCKED_EXTERNAL",
       "max_child_agents": 0,
       "execution_note": "Use the matching Sol High role and verify effective settings. No automatic Astra promotion. Exceptional review only through an admitted A1/A2 ticket in config/model-policy.json; Sol implements and repairs.",
       "review_reasoning_effort": "high",
@@ -1083,7 +1083,7 @@
       "skill": "preflight-rds",
       "independent_review_required": false,
       "review_model": null,
-      "status": "NOT_STARTED",
+      "status": "BLOCKED_EXTERNAL",
       "max_child_agents": 0,
       "execution_note": "Use the matching Sol High role and verify effective settings. No automatic Astra promotion. Exceptional review only through an admitted A1/A2 ticket in config/model-policy.json; Sol implements and repairs.",
       "review_reasoning_effort": null

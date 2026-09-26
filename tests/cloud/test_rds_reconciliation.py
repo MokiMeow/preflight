@@ -1,8 +1,8 @@
 import pytest
-from test_rds import cloud as cloud_fixture
 
 from preflight.aws_rds import CleanupPolicy
 from preflight.models import PreflightError
+from tests.cloud.test_rds import cloud as cloud_fixture
 
 cloud = cloud_fixture
 
