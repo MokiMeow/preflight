@@ -1,5 +1,7 @@
 """Deployment composition test with inert clients, no network or credentials."""
 
+from types import SimpleNamespace
+
 from preflight.config import Settings
 from preflight.runtime import build_runtime
 
@@ -15,7 +17,7 @@ def test_cloud_runtime_wires_tag_inventory_client(monkeypatch, tmp_path):
 
         def client(self, name, **kwargs):
             assert kwargs["config"].retries["max_attempts"] == 0
-            clients[name] = object()
+            clients[name] = SimpleNamespace(meta=SimpleNamespace(region_name="ap-south-1"))
             return clients[name]
 
     monkeypatch.setattr(boto3, "Session", Session)
