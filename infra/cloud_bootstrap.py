@@ -211,7 +211,9 @@ class BootstrapDriver:
 
     def inspect_host_image(self):
         d = self.deployment
-        images = self.call("ec2", "describe_images", ImageIds=[d["host_image_id"]]).get("Images", [])
+        images = self.call("ec2", "describe_images", ImageIds=[d["host_image_id"]]).get(
+            "Images", []
+        )
         if (
             len(images) != 1
             or images[0].get("ImageId") != d["host_image_id"]
@@ -339,6 +341,7 @@ class BootstrapDriver:
         hosts = [v for r in response.get("Reservations", []) for v in r.get("Instances", [])]
         if not hosts and i["host_mode"] == "create":
             root_device = getattr(self, "approved_root_device", None) or self.inspect_host_image()
+            self.approved_root_device = root_device
             self.identity()
             self.call(
                 "ec2",
@@ -378,6 +381,14 @@ class BootstrapDriver:
         if len(hosts) != 1:
             raise PlanError("BOOTSTRAP_HOST_IDENTITY_MISMATCH")
         host = hosts[0]
+        if i["host_mode"] == "create":
+            approved_root = getattr(self, "approved_root_device", None) or self.inspect_host_image()
+            self.approved_root_device = approved_root
+            if (
+                host.get("ImageId") != d["host_image_id"]
+                or host.get("RootDeviceName") != approved_root
+            ):
+                raise PlanError("BOOTSTRAP_HOST_IMAGE_MISMATCH")
         tags = {t.get("Key"): t.get("Value") for t in host.get("Tags", [])}
         if (
             not host.get("InstanceId")
@@ -415,11 +426,15 @@ class BootstrapDriver:
             or any(
                 v.get("Encrypted") is not True
                 or v.get("VolumeType") != "gp3"
-                or not any(a.get("InstanceId") == host["InstanceId"] for a in v.get("Attachments", []))
+                or not any(
+                    a.get("InstanceId") == host["InstanceId"] for a in v.get("Attachments", [])
+                )
                 for v in volumes
             )
         ):
             raise PlanError("BOOTSTRAP_ENCRYPTED_HOST_STORAGE_REQUIRED")
+        if i["host_mode"] == "create" and (len(volumes) != 1 or volumes[0].get("Size") != 30):
+            raise PlanError("BOOTSTRAP_HOST_STORAGE_SCOPE_MISMATCH")
         return host["InstanceId"], host.get("State", {}).get("Name", "unknown")
 
     def run(self) -> dict:

@@ -18,6 +18,7 @@ from preflight.artifacts import sha256
 from preflight.config import Settings
 from preflight.models import PreflightError
 from preflight.service import RehearsalService
+from preflight.storage import utc_now
 
 
 def test_real_http_mcp_bad_revision_good_report(service_pair, contract):
@@ -123,6 +124,7 @@ class LocalRuntime:
             dbname=database,
             user="preflight_test_owner",
             autocommit=True,
+            connect_timeout=10,
         )
         try:
             yield con
@@ -136,7 +138,12 @@ def service_pair(tmp_path):
     if not port:
         pytest.fail("Real PostgreSQL18 port required")
     admin = psycopg.connect(
-        host="127.0.0.1", port=port, dbname="postgres", user="postgres", autocommit=True
+        host="127.0.0.1",
+        port=port,
+        dbname="postgres",
+        user="postgres",
+        autocommit=True,
+        connect_timeout=10,
     )
     assert admin.info.server_version // 10000 == 18
     if not admin.execute(
@@ -156,6 +163,7 @@ def service_pair(tmp_path):
             dbname=database,
             user="preflight_test_owner",
             autocommit=True,
+            connect_timeout=10,
         ) as con:
             con.execute(
                 "CREATE TABLE public.customers(id integer PRIMARY KEY,email text NOT NULL,created_at timestamptz NOT NULL)"
@@ -209,6 +217,7 @@ def ready_run(service, candidate):
             "clone_instance_id": "local-clone",
             "snapshot_id": "local-snapshot",
             "database_name": "preflight_demo",
+            "created_at": utc_now(),
         }
     )
     for old, new in [

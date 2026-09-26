@@ -62,23 +62,28 @@ def document():
         "Version": "2012-10-17",
         "Statement": [
             {
-                "Effect": "Allow", "Action": "rds:CreateDBSnapshot",
+                "Effect": "Allow",
+                "Action": "rds:CreateDBSnapshot",
                 "Resource": [source, snapshot],
             },
             {
-                "Effect": "Allow", "Action": "rds:RestoreDBInstanceFromDBSnapshot",
+                "Effect": "Allow",
+                "Action": "rds:RestoreDBInstanceFromDBSnapshot",
                 "Resource": [clone, snapshot],
             },
             {
-                "Effect": "Allow", "Action": "rds:ListTagsForResource",
+                "Effect": "Allow",
+                "Action": "rds:ListTagsForResource",
                 "Resource": [source, clone, snapshot],
             },
             {
-                "Effect": "Allow", "Action": "rds:AddTagsToResource",
+                "Effect": "Allow",
+                "Action": "rds:AddTagsToResource",
                 "Resource": [clone, snapshot],
             },
             {
-                "Effect": "Allow", "Action": "secretsmanager:GetSecretValue",
+                "Effect": "Allow",
+                "Action": "secretsmanager:GetSecretValue",
                 "Resource": [
                     f"arn:aws:secretsmanager:{REGION}:{ACCOUNT}:secret:read-unit",
                     f"arn:aws:secretsmanager:{REGION}:{ACCOUNT}:secret:writer-unit",
@@ -140,7 +145,9 @@ def test_runtime_source_prefix_collision_cannot_allow_source_delete(driver):
 def test_runtime_policy_missing_restore_permissions_refused(driver):
     value, _ = driver
     policy = document()
-    policy["Statement"] = [s for s in policy["Statement"] if s["Action"] != "rds:RestoreDBInstanceFromDBSnapshot"]
+    policy["Statement"] = [
+        s for s in policy["Statement"] if s["Action"] != "rds:RestoreDBInstanceFromDBSnapshot"
+    ]
     with pytest.raises(bootstrap.PlanError, match="BOOTSTRAP_RUNTIME_REQUIRED_PERMISSIONS_MISSING"):
         guards.validate_runtime_documents([policy], value.inputs, value.deployment)
 
@@ -330,3 +337,41 @@ def test_runtime_role_trust_cannot_admit_external_principal():
     }
     with pytest.raises(bootstrap.PlanError, match="BOOTSTRAP_RUNTIME_TRUST_TOO_BROAD"):
         guards.validate_role_trust(trust, f"arn:aws:iam::{ACCOUNT}:role/unit-role", ACCOUNT)
+
+
+@pytest.mark.parametrize(
+    "condition",
+    [
+        False,
+        [],
+        {"StringEquals": []},
+        {"UnknownOperator": {}},
+        {"StringEquals": {"aws:RequestedRegion": "us-west-2"}},
+    ],
+)
+def test_runtime_unmodeled_or_malformed_grant_conditions_fail_closed(driver, condition):
+    value, _ = driver
+    policy = document()
+    policy["Statement"][1]["Condition"] = condition
+    with pytest.raises(bootstrap.PlanError):
+        guards.validate_runtime_documents([policy], value.inputs, value.deployment)
+
+
+def test_runtime_malformed_run_tag_is_safe_error(driver):
+    value, _ = driver
+    policy = document()
+    policy["Statement"][-1]["Condition"]["Null"]["aws:ResourceTag/RunId"] = ["false"]
+    with pytest.raises(bootstrap.PlanError):
+        guards.validate_runtime_documents([policy], value.inputs, value.deployment)
+
+
+def test_conditional_delete_statement_cannot_supply_required_restore_grant(driver):
+    value, _ = driver
+    policy = document()
+    policy["Statement"][1]["Resource"] = [policy["Statement"][1]["Resource"][1]]
+    policy["Statement"][-1]["Action"] = [
+        "rds:DeleteDBInstance",
+        "rds:RestoreDBInstanceFromDBSnapshot",
+    ]
+    with pytest.raises(bootstrap.PlanError, match="BOOTSTRAP_RUNTIME_POLICY_CONDITION_UNSUPPORTED"):
+        guards.validate_runtime_documents([policy], value.inputs, value.deployment)

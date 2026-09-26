@@ -67,6 +67,42 @@ def validate_runtime_documents(documents: list[dict], inputs: dict, deployment: 
                 or any(not isinstance(resource, str) for resource in resources)
             ):
                 raise PlanError("BOOTSTRAP_RUNTIME_POLICY_TOO_BROAD")
+            condition = statement.get("Condition", {})
+            if not isinstance(condition, dict) or any(
+                not isinstance(values, dict) for values in condition.values()
+            ):
+                raise PlanError("BOOTSTRAP_RUNTIME_POLICY_INVALID")
+            allowed_condition = {}
+            if any(
+                action in {"rds:DeleteDBInstance", "rds:DeleteDBSnapshot"} for action in actions
+            ):
+                if not set(actions) <= {"rds:DeleteDBInstance", "rds:DeleteDBSnapshot"}:
+                    raise PlanError("BOOTSTRAP_RUNTIME_POLICY_CONDITION_UNSUPPORTED")
+                allowed_condition = {
+                    "StringEquals": {
+                        "aws:ResourceTag/Project": "Preflight",
+                        "aws:ResourceTag/Owner": inputs["operator_label"],
+                    },
+                    "Null": {"aws:ResourceTag/RunId": "false"},
+                }
+                normalized = {key: dict(values) for key, values in condition.items()}
+                if normalized.get("Null", {}).get("aws:ResourceTag/RunId") is False:
+                    normalized["Null"]["aws:ResourceTag/RunId"] = "false"
+                if normalized != allowed_condition:
+                    raise PlanError("BOOTSTRAP_RUNTIME_DELETE_TAG_GUARDS_REQUIRED")
+            elif "kms:CreateGrant" in actions:
+                if actions != ["kms:CreateGrant"]:
+                    raise PlanError("BOOTSTRAP_RUNTIME_POLICY_CONDITION_UNSUPPORTED")
+                allowed_condition = {"Bool": {"kms:GrantIsForAWSResource": "true"}}
+                normalized = {key: dict(values) for key, values in condition.items()}
+                if normalized.get("Bool", {}).get("kms:GrantIsForAWSResource") is True:
+                    normalized["Bool"]["kms:GrantIsForAWSResource"] = "true"
+                if normalized != allowed_condition:
+                    raise PlanError("BOOTSTRAP_RUNTIME_KMS_GRANT_TOO_BROAD")
+            elif condition:
+                # Conditional grants cannot establish required permission coverage
+                # without evaluating the condition in its real request context.
+                raise PlanError("BOOTSTRAP_RUNTIME_POLICY_CONDITION_UNSUPPORTED")
             for action in actions:
                 if set(resources) - scopes[action]:
                     raise PlanError("BOOTSTRAP_RUNTIME_POLICY_TARGET_TOO_BROAD")
@@ -75,19 +111,6 @@ def validate_runtime_documents(documents: list[dict], inputs: dict, deployment: 
                         fnmatchcase(source, resource) for resource in resources
                     ):
                         raise PlanError("BOOTSTRAP_RUNTIME_SOURCE_DELETE_FORBIDDEN")
-                    condition = statement.get("Condition", {})
-                    equals = condition.get("StringEquals", {})
-                    present = condition.get("Null", {})
-                    if (
-                        equals.get("aws:ResourceTag/Project") != "Preflight"
-                        or equals.get("aws:ResourceTag/Owner") != inputs["operator_label"]
-                        or present.get("aws:ResourceTag/RunId") not in {"false", False}
-                    ):
-                        raise PlanError("BOOTSTRAP_RUNTIME_DELETE_TAG_GUARDS_REQUIRED")
-                if action == "kms:CreateGrant":
-                    condition = statement.get("Condition", {}).get("Bool", {})
-                    if condition.get("kms:GrantIsForAWSResource") not in {"true", True}:
-                        raise PlanError("BOOTSTRAP_RUNTIME_KMS_GRANT_TOO_BROAD")
                 granted[action].update(resources)
     required = dict(scopes)
     required["rds:DescribeDBInstances"] = {source, clone}
