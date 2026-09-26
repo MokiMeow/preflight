@@ -1,6 +1,6 @@
 # 09 — Live build status and resume ledger (V3)
 
-**Current state:** private AWS host/source are running; supplied Gateway Responses and native TrueForge/MCP read-only model sessions are connected and verified. Implementation/review and remaining scenario repairs continue. Full RDS clone rehearsal, Daytona Code Mode, product-agent evaluations and real human demonstrations are not complete. Source apply remains disabled.
+**Current state:** private AWS host/source are running; supplied Gateway Responses and native TrueForge/MCP read-only model sessions are connected and verified. Implementation/review and remaining scenario repairs continue. Full RDS clone rehearsal, native local Linux Code Mode isolation/execution, product-agent evaluations and real human demonstrations are not complete. D26 replaces Daytona with the installed local fallback. Source apply remains disabled.
 
 **Current continuation:** [Detailed implementation and pending-work report](audit/CONTINUATION_REPORT.md). Frozen application revision `9f75cc1` passed **485 tests, zero failures/errors/skips, 236.95s** and is deployed on the private host. Included bootstrap transport repair `e200a8a` passed six affected tests and independent ten-test review. New work requires its own integration gate; these counts do not assert every scenario or connected product acceptance.
 
@@ -10,7 +10,8 @@
 - Reviewed automatic-backup inventory repair is deployed and verified against real AWS. The source-managed automated backup is separate from disposable run resources. No clone/snapshot was created or deleted during this continuation.
 - Private service state retained. Host root-volume DeleteOnTermination corrected to false and read back. MCP/TrueForge remain loopback-only through SSH; no public service ingress added.
 - TrueForge process allows the single loopback hostname `127.0.0.1` with network policy enabled; pinned guard is hostname-only, not a port/path rule. Stored MCP connector is exactly port8000 `/mcp`, ten tools. Bootstrap transport proxies/redirects are refused after independent privacy review.
-- External inputs pending: numeric AWS spending ceiling (creation remains false/budget unset); protected Daytona credentials/configuration. Preserve genuine source-apply and cleanup operator gates. No subscription authentication used.
+- Operator D26 authorizes the native TrueForge local Linux sandbox; no Daytona setup is required. D27 sets a USD100 continuation ceiling. Durable atomic budget reservations are implemented and provider creation refuses unknown/stale full-scope cost facts; creation remains disabled. AWS Cost Explorer returned DataUnavailableException, so no zero-spend claim or invented cost baseline is accepted. Preserve genuine source-apply and cleanup operator gates. No subscription authentication used.
+- Current local sandbox repair: Linux dependencies and cgroup limits installed; Python3.9 incompatibility, shared Code Mode socket-parent visibility, stale helper and ESM/CJS variant defects identified. Corrective patches are under independent review; new application changes are not yet deployed or accepted by the final suite. Host-side launcher environment isolation is also under review before sandbox activation.
 
 **Historical comprehensive audit:** `221a79a` passed 314 tests, zero failures/errors/skips, 182.74s. [Original whole-project audit](11_PROJECT_AUDIT.md) and file/task/scenario appendices retain that historical scope; continuation receipts and rechecks supersede stale missing-provider/AWS statements. PRD bytes remain unchanged.
 
@@ -41,7 +42,7 @@ Use status `NOT_STARTED`, `IN_PROGRESS`, `BLOCKED_EXTERNAL`, `FAILED`, `LOCAL_VE
 | T01 — Resolve and record one compatible toolchain | lead | LOCAL_VERIFIED | uv.lock installed; Python MCP2.2 HTTP and pinned TrueForge JS MCP roundtrip passed; paid model route pending |
 | T02 — Freeze shared domain models and service interfaces | lead | LOCAL_VERIFIED | 5790a6a frozen types; strict schemas and integrated safety tests |
 | T03 — Implement configuration, doctor and runnable service shell | lead | LOCAL_VERIFIED | b068fc5, settings/doctor/CLI/loopback official MCP runnable; defaults disabled |
-| T04 — Authorize and plan the bounded AWS footprint | cloud | BLOCKED_EXTERNAL | Owned account/region/host/source observed; numeric continuation spending ceiling still pending; creation disabled |
+| T04 — Authorize and plan the bounded AWS footprint | cloud | BLOCKED_EXTERNAL | Owned account/region/host/source observed; USD100 continuation ceiling authorized D27; complete current cost facts unavailable; guarded creation disabled |
 | T05 — Provision or validate private host, source and runtime identity | cloud | BLOCKED_EXTERNAL | Private host/source/instance profile/TLS source read observed; host volume retention repaired; restore/creation IAM effectiveness remains unproved |
 | T06 — Build immutable candidates, durable state and idempotency | lead | LOCAL_VERIFIED | 12cfc72, immutable artifacts/CAS/idempotency and atomic report publication 9bb5841 |
 | T07 — Implement recursive PostgreSQL AST and object policy | database | LOCAL_VERIFIED | 19cb6ad/e5d7368, recursive PG18 AST confinement; real metadata refusal tests |

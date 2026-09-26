@@ -16,7 +16,7 @@ That audit supersedes older readiness summaries; local implementation is not con
 ## Safety and product boundary
 
 Preflight has one native surface: the bundled TrueForge chat, tool trace, Markdown report, Code Mode,
-and approval panel. Daytona is an orchestration sandbox; it is not the database clone. The private
+and approval panel. Operator amendment D26 uses TrueForge’s native local Linux sandbox for Code Mode; the private RDS clone remains separate. The private
 MCP service owns credentials, allowlists, SQL policy, exact bytes, checks, state, report hashes, and
 write guards.
 
@@ -26,7 +26,7 @@ operator. A chat statement cannot approve a write. A model explanation cannot ch
 
 SQL comments, database labels, external pages, and tool results are untrusted data. Raw rows,
 customer values, database/AWS credentials, connector tokens, DSNs, private endpoints, and
-credential-bearing traces must not enter prompts, logs, reports, Daytona, or Git.
+credential-bearing traces must not enter prompts, logs, reports, the sandbox, or Git.
 
 ## Architecture
 
@@ -36,7 +36,7 @@ Engineer → private TrueForge UI → Preflight MCP service → owned synthetic 
                                   ├→ exact SQL / deterministic checks / immutable report
                                   └→ literal human gate → guarded source transaction
 
-TrueForge Code Mode → Daytona sandbox → typed MCP bridge only (no DB or AWS credentials)
+TrueForge Code Mode → native local Linux sandbox → typed MCP bridge only (no DB or AWS credentials)
 ```
 
 The report envelope is `{payload, report_sha256}`. The SHA-256 covers canonical payload bytes only.
@@ -66,8 +66,7 @@ The implementation has been locally verified with:
 
 The package, schema, and local MCP results are `LOCAL_VERIFIED`. The native TrueForge connector
 was also observed connected to the local fail-closed service with ten tools and no configured agent.
-Gateway/OpenAI Responses, TrueForge model streaming, Daytona execution, private deployment,
-real RDS rehearsal, and human approval behavior are `BLOCKED_EXTERNAL`. Local AWS client stubs
+Gateway/OpenAI Responses, native model streaming, private deployment and read-only RDS source status are connected and verified in the continuation evidence. Native local sandbox isolation/execution, real RDS rehearsal and human approval behavior require their own acceptance gates; see [the live ledger](docs/09_BUILD_STATUS.md). Local AWS client stubs
 and disposable PostgreSQL fault tests are explicitly labeled; they are not connected provider,
 RDS source-write, cleanup, or human-approval evidence.
 
@@ -98,7 +97,7 @@ uv run preflight doctor --json
 Fill `settings.local.json` only from the authorized operator/cloud handoff. It is ignored by Git.
 Keep actual database/AWS credentials in the named Secrets Manager entries, not this file. The doctor
 reports configuration and presence of references; it does not claim connected AWS, TLS, Gateway,
-Daytona, or approval proof.
+sandbox execution, or approval proof.
 
 Prepare exact candidate bytes locally:
 

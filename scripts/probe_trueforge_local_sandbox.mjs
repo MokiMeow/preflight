@@ -142,6 +142,15 @@ print(json.dumps(checks))`;
   assert.ok(Object.values(summary.checks).every(value => value === true), 'all isolation canaries required');
   for (const file of files.slice(0, 2)) assert.equal(await fs.readFile(file, 'utf8'), nonce);
   assert.equal(await fs.readFile(sibling, 'utf8'), nonce);
+  const escaped = path.join(parent, 'launcher-escaped-marker');
+  const startup = path.join(a.sandboxId, 'inert-startup.sh');
+  await fs.writeFile(startup, `printf inert > '${escaped}'\n`, {flag: 'wx', mode: 0o600});
+  const refused = await provider.exec({sandboxId: a.sandboxId, command: 'true',
+    env: {BASH_ENV: startup}, timeoutSeconds: 2});
+  assert.equal(refused.success, false);
+  assert.equal(refused.error, 'Local sandbox environment key is not permitted');
+  summary.launcher_environment_refused = await fs.stat(escaped).then(() => false, () => true);
+  assert.equal(summary.launcher_environment_refused, true);
   const delayed = path.join(a.sandboxId, 'delayed-child-marker');
   const childReady = path.join(a.sandboxId, 'child-ready');
   const parentReady = path.join(a.sandboxId, 'parent-ready');
