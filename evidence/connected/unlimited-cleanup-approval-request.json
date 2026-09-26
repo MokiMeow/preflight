@@ -1,0 +1,60 @@
+{
+  "state": "AWAITING_HUMAN_APPROVAL",
+  "scope": "Native saved preflight agent inspected cleanup_run schema and requested the exact direct cleanup_run business tool through TrueForge lazy loading; no Code Mode/system exec and no approval decision by the coding agent",
+  "implementation_commit": "d3715ca",
+  "pre_request_state": {
+    "run_phase": "ERROR",
+    "clone_status": "ABSENT",
+    "snapshot_status": "AVAILABLE",
+    "snapshot_progress_percent": 100,
+    "restore_error_code": "AWS_REQUEST_DENIED"
+  },
+  "request": {
+    "request_id": "1308447b-1329-445b-b0d5-f4f52ded7676",
+    "run_id": "fef79c61-dcea-42c3-a760-c2f9c4235abc",
+    "expected_clone_id": "preflight-fef79c61dcea42c3a760c2f9c4235abc-clone",
+    "expected_snapshot_id": "preflight-fef79c61dcea42c3a760c2f9c4235abc-snap",
+    "delete_clone": true,
+    "delete_snapshot": true
+  },
+  "session_id": "01m3epcx51s9nrtk3ssrnafye9",
+  "turn_id": "01m3epcxxv8ackgdmwkfq8y7d2",
+  "thread_id": "main",
+  "schema_inspection": {
+    "outer_native_tool": "call_tool",
+    "mcp_server": "preflight",
+    "tool_name": "get_tool_info",
+    "inspected_tool": "cleanup_run",
+    "tool_call_id": "call_LNptWWxVsbaJyoIZoEhpMXcX",
+    "response_linked": true
+  },
+  "cleanup_invocation": {
+    "outer_native_tool": "call_tool",
+    "mcp_server": "preflight",
+    "tool_name": "cleanup_run",
+    "tool_call_id": "call_g1AEWm8on7z7BQnZ5WMPybhr",
+    "source_event_id": "01m3epcz20f281wzjj8j297xma",
+    "code_mode": false,
+    "system_exec": false
+  },
+  "required_action": {
+    "type": "tool.approval_required",
+    "event_id": "01m3epd13g1q5dsvsamnn48fmr",
+    "tool_call_id": "call_g1AEWm8on7z7BQnZ5WMPybhr",
+    "created_at": "2026-09-26T11:07:58.448Z"
+  },
+  "turn_status": "done",
+  "required_action_count": 1,
+  "human_decision": "NOT_OBSERVED",
+  "coding_agent_clicked": false,
+  "cleanup_tool_response_observed": false,
+  "event_types": [
+    "turn.created",
+    "model.message",
+    "tool.response",
+    "model.message",
+    "tool.approval_required",
+    "turn.done"
+  ],
+  "ui_url": "http://127.0.0.1:8790/"
+}
