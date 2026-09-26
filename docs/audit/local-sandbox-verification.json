@@ -88,12 +88,19 @@
     "coding_agent_clicked_gate": false
   },
   "operator_budget_amendment": {
-    "status": "AUTHORIZED_IMPLEMENTATION_IN_PROGRESS",
-    "ceiling_removed": true,
-    "human_gates_preserved": true
+    "decision": "D28",
+    "status": "DEPLOYED_AND_AFFECTED_TESTED",
+    "revision": "d3715ca",
+    "unlimited_budget_authorized": true,
+    "numeric_ceiling_enforced": false,
+    "creation_authorized": true,
+    "human_gates_preserved": true,
+    "affected_tests_passed": 172,
+    "elapsed_seconds": 6.6,
+    "independent_affected_tests_passed": 111
   },
   "additional_profile_diagnostic": {
-    "status": "RUNNING_WITH_TWO_FAILURES",
-    "scope": "Optional sys.setprofile-instrumented unit/cloud run; not the standard full acceptance gate. Failure details pending; no current function coverage claimed."
+    "status": "INTERRUPTED_WITH_TWO_FAILURES",
+    "scope": "Optional sys.setprofile-instrumented unit/cloud run was stopped after two failures and before its summary; exact failure reasons were not established. This is not the standard acceptance command. No new whole-function execution or coverage claimed."
   }
 }

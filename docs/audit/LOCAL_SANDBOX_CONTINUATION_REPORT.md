@@ -1,5 +1,7 @@
 # Local sandbox continuation report
 
+**Latest state:** D28 is implemented and deployed at `d3715ca`: the operator-authorized unlimited mode removes financial admission without fabricated billing data. Creation is enabled; source apply remains disabled. The actual encrypted AWS snapshot for run `fef79c61-dcea-42c3-a760-c2f9c4235abc` is creating (provider reported 1% at 11:01:02 UTC). A clone, migration result and source approval are still pending. New affected tests: 172 passed in 6.60s; independent review: 111 passed in 3.14s, no blocking finding. A new full gate is running. [Actual run receipt](../../evidence/connected/unlimited-rehearsal.json) and [three-minute walkthrough](THREE_MINUTE_WALKTHROUGH.md).
+
 ## Scope and provenance
 
 This report records the continuation state after replacing Daytona with the installed TrueForge local Linux sandbox under decision D26. It is a handoff, not a declaration that Preflight is complete. The application and documentation snapshot reviewed here is root commit `8048e79`; the protected budget-fact publisher was introduced at `d45e41a`. The saved-agent instruction correction is included at `8048e79`. The immutable PRD was not changed.
@@ -132,10 +134,10 @@ The successful native turn is not a substitute for the specified E01–E10 case 
 
 ## Remaining dependency-ordered work
 
-1. Land and review the three sanitized evidence files, verify their hashes, and bind them to the exact deployed application, TrueForge package/patch hash, provider resource, session, turn, and tool call without secrets or raw rows.
-2. Finish deployment of the reviewed application and re-run the narrow post-deploy doctor, native MCP/saved-agent read-only probe, and state-restart checks. Do not infer success from systemd starting.
-3. Obtain complete protected budget facts. Cost Explorer `DataUnavailable` and an unproved finite-retention bound must keep publication and billable creation blocked. Never enter guessed zero spend or an unbounded retention promise.
-4. After budget admission, create only the approved run-owned snapshot and private clone, then verify TLS, ownership, provenance, exact baseline, and the 1,000-row/three-column starting state. Do not touch the source with SQL.
+1. Sanitized native sandbox, two generated Code Mode traces, genuine cleanup Allow/COMPLETE receipt and the actual snapshot-start receipt are committed. Continue recording subsequent actual results.
+2. The reviewed application and unlimited-budget delta are deployed, private state retained, both services active; the native read-only Code Mode probe returned exact aggregate values. Continue checking the same live run, not creating replacements.
+3. D28 removes the numeric budget ceiling and authorizes the existing scoped run. Missing billing data remains unknown, but does not block this explicitly unlimited mode. Do not fabricate cost observations.
+4. Wait for the actual creating snapshot, restore its one private run-owned clone, then verify TLS, ownership, provenance and exact baseline. No clone result is inferred from snapshot creation.
 5. Run the real bad-to-good clone rehearsal and seal BLOCK then PASS evidence with distinct exact hashes. Complete remaining provider/runtime/privacy scenarios and E01–E04/E08–E10.
 6. Obtain final independent T27 acceptance on the exact deployed build and evidence before T24.
 7. With the human operator present, demonstrate E05 denial/no source change. Only under explicit approved scope demonstrate allow/one exact source apply, receipt, source recheck, and replay refusal. The coding agent does not click the gate.
@@ -158,4 +160,4 @@ The successful native turn is not a substitute for the specified E01–E10 case 
 
 ## Latest operator amendment and remaining proof
 
-The operator has explicitly removed the USD100 ceiling. An explicit unlimited-budget configuration and deployment amendment is in progress; this does not fabricate unavailable billing facts or waive ownership, private networking, SQL validation, or human source/cleanup gates. The previous budget blocker is historical once that amendment is deployed. Real snapshot/clone, bad/good migrations, source Allow/Deny and the three-minute recording are still not claimed complete. An optional heavily instrumented function-call diagnostic showed two failures while still running; the standard 641-test gate passed, and no current whole-function coverage is inferred.
+The operator has explicitly removed the USD100 ceiling. The explicit unlimited-budget configuration is implemented and deployed; this does not fabricate unavailable billing facts or waive ownership, private networking, SQL validation, or human source/cleanup gates. The previous budget blocker is historical once that amendment is deployed. Real snapshot/clone, bad/good migrations, source Allow/Deny and the three-minute recording are still not claimed complete. An optional heavily instrumented function-call diagnostic was interrupted after two failures, before its summary; the exact failure reasons were not established; the standard 641-test gate passed, and no current whole-function coverage is inferred.
