@@ -1,7 +1,7 @@
 """Frozen public contracts. Private evidence must use separate nonserializable types."""
 
 from enum import StrEnum
-from typing import Annotated, Any, Literal
+from typing import Annotated, Any, Generic, Literal, TypeVar
 from uuid import UUID
 
 from pydantic import BaseModel, ConfigDict, Field, model_validator
@@ -216,12 +216,19 @@ TOOL_INPUTS: dict[str, type[Request]] = {
 }
 
 
-class ToolEnvelope(StrictModel):
+class ToolErrorData(StrictModel):
+    message: str
+
+
+ResultData = TypeVar("ResultData")
+
+
+class ToolEnvelope(StrictModel, Generic[ResultData]):
     ok: bool
-    request_id: UUID
+    request_id: UUID | None
     run_id: UUID | None = None
     state: Phase | None = None
-    data: dict[str, Any]
+    data: ResultData | ToolErrorData
     error_code: str | None = None
     retryable: bool = False
 
@@ -348,3 +355,121 @@ class PreflightError(Exception):
     def __init__(self, code: str):
         super().__init__(code)
         self.code = code
+
+
+class RegistrationResult(StrictModel):
+    candidate_id: UUID
+    parent_candidate_id: UUID | None
+    migration_sha256: Digest
+    contract_sha256: Digest
+    byte_size: int = Field(ge=1, le=65536)
+    policy_version: Literal["1.1"]
+    declared_tables: list[TableName]
+    coverage_warnings: list[str] = Field(max_length=128)
+    attached: bool
+
+
+class StartResult(StrictModel):
+    run_id: UUID
+    phase: Literal["REGISTERED"]
+    snapshot_id: ResourceId
+    clone_instance_id: ResourceId
+    resource_expires_at: str
+    poll_after_seconds: int = Field(ge=1, le=30)
+
+
+class RunStatus(StrictModel):
+    run_id: UUID
+    candidate_id: UUID
+    phase: Phase
+    revision: int = Field(ge=0)
+    source_instance_id: ResourceId | None = None
+    snapshot_id: ResourceId | None = None
+    clone_instance_id: ResourceId | None = None
+    created_at: str | None = None
+    updated_at: str | None = None
+    cleanup_state: str
+    clone_outcome: Literal["committed", "rolled_back", "unknown"] | None = None
+    report_sha256: Digest | None = None
+    verdict: Literal["PASS", "WARN", "BLOCK"] | None = None
+    last_error: str | None = None
+    last_resource_status: str | None = None
+    migration_sha256: Digest
+    contract_sha256: Digest
+    progress_label: Phase
+    elapsed_seconds: int = Field(ge=0)
+    last_observed_at: str | None
+    apply_eligible_now: bool
+    eligibility_is_preliminary: Literal[True]
+    eligibility_reason: str
+
+
+class SourceStatusResult(StrictModel):
+    evidence: PublicEvidence
+    comparison_status: Literal["NOT_REQUESTED", "BASELINE_UNAVAILABLE", "MATCH", "DIFFERENT"]
+
+
+class BaselineResult(StrictModel):
+    baseline_id: Digest
+    baseline: PublicEvidence
+    coverage: list[CoverageEntry]
+
+
+class CloneResult(StrictModel):
+    transaction: TxOutcome
+    baseline_unchanged: bool | None
+    next_permitted_operation: Literal["validate_rehearsal", "manual_resolution"]
+
+
+class ValidationResult(StrictModel):
+    verdict: Literal["PASS", "WARN", "BLOCK"]
+    report_sha256: Digest
+    report_reference: str
+    apply_eligible_at_report_time: bool
+    checks: list[CheckResult]
+
+
+class ReportResult(SealedReport):
+    markdown: str
+    current_state: RunStatus
+
+
+class ApplyReceipt(StrictModel):
+    receipt_id: UUID
+    run_id: UUID
+    report_sha256: Digest
+    migration_sha256: Digest
+    source_instance_id: ResourceId
+    transaction: TxOutcome
+    confirmation: bool
+    state: Phase
+    created_at: str
+    precheck_status: Literal["NOT_RUN", "MATCH", "DRIFT"]
+
+
+class CleanupActions(StrictModel):
+    clone: str | None = None
+    snapshot: str | None = None
+
+
+class CleanupReceipt(StrictModel):
+    receipt_id: UUID
+    run_id: UUID
+    kind: Literal["cleanup"]
+    created_at: str
+    actions: CleanupActions
+    cleanup_state: str
+
+
+TOOL_OUTPUTS: dict[str, type[StrictModel]] = {
+    "register_candidate": RegistrationResult,
+    "start_rehearsal": StartResult,
+    "get_run": RunStatus,
+    "get_source_status": SourceStatusResult,
+    "capture_baseline": BaselineResult,
+    "apply_to_clone": CloneResult,
+    "validate_rehearsal": ValidationResult,
+    "get_report": ReportResult,
+    "apply_to_demo_source": ApplyReceipt,
+    "cleanup_run": CleanupReceipt,
+}
