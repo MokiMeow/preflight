@@ -34,14 +34,20 @@ function validateConfig(value) {
   if (value.adapter !== "openai" || value.api_family !== "responses") {
     fail("ROUTE_NOT_RESPONSES");
   }
-  if (value.reasoning_effort !== "high") fail("ROUTE_EFFORT_NOT_HIGH");
+  if (typeof value.model !== "string") fail("ROUTE_MODEL_INVALID");
+  const exactAuthorizedGatewayAlias = value.model === "vm-polaris/openai";
   if (
-    typeof value.model !== "string" ||
-    !value.model.toLowerCase().includes("sol") ||
+    (!exactAuthorizedGatewayAlias && !value.model.toLowerCase().includes("sol")) ||
     value.model.toLowerCase().includes("astra") ||
     value.model.startsWith("REPLACE_")
   ) {
     fail("ROUTE_MODEL_INVALID");
+  }
+  if (exactAuthorizedGatewayAlias && value.reasoning_effort !== "none") {
+    fail("ROUTE_EFFORT_NOT_NONE");
+  }
+  if (!exactAuthorizedGatewayAlias && value.reasoning_effort !== "high") {
+    fail("ROUTE_EFFORT_NOT_HIGH");
   }
   let endpoint;
   try {
@@ -89,8 +95,18 @@ async function loadConfig(path) {
 }
 
 async function consume(stream, state) {
-  for await (const event of stream) state.accept(event);
-  return state.finish();
+  let observedResponseModel;
+  for await (const event of stream) {
+    const eventModel = event?.response?.model;
+    if (typeof eventModel === "string" && eventModel.length > 0) {
+      if (observedResponseModel !== undefined && observedResponseModel !== eventModel) {
+        throw new ProbeProtocolError("RESPONSE_MODEL_CHANGED");
+      }
+      observedResponseModel = eventModel;
+    }
+    state.accept(event);
+  }
+  return { ...state.finish(), observedResponseModel };
 }
 
 function providerFailure(error) {
@@ -119,11 +135,12 @@ async function execute(config) {
     baseURL: config.base_url,
     timeout: config.timeout_seconds * 1000,
     maxRetries: 0,
+    defaultHeaders: { "User-Agent": "Preflight/0.1 authorized-gateway-probe" },
   });
   try {
     const initial = await client.responses.create({
       model: config.model,
-      reasoning: { effort: "high" },
+      reasoning: { effort: config.reasoning_effort },
       input: "Call status exactly once, then summarize the returned status in one sentence.",
       tools: [
         {
@@ -140,7 +157,7 @@ async function execute(config) {
     const tool = await consume(initial, new ToolCallState());
     const continued = await client.responses.create({
       model: config.model,
-      reasoning: { effort: "high" },
+      reasoning: { effort: config.reasoning_effort },
       previous_response_id: tool.responseId,
       input: [
         {
@@ -158,7 +175,9 @@ async function execute(config) {
       api_family: "responses",
       adapter: "openai",
       model: config.model,
-      reasoning_effort: "high",
+      reasoning_effort: config.reasoning_effort,
+      observed_response_model:
+        final.observedResponseModel ?? tool.observedResponseModel ?? "NOT_OBSERVED",
       initial_response_id: tool.responseId,
       tool_call_id: tool.callId,
       continued_response_id: final.responseId,
@@ -187,7 +206,7 @@ async function main() {
           api_family: "responses",
           adapter: "openai",
           model: config.model,
-          reasoning_effort: "high",
+          reasoning_effort: config.reasoning_effort,
         })}\n`,
       );
       process.exitCode = 4;
