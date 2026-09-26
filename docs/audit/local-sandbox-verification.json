@@ -1,13 +1,13 @@
 {
   "schema_version": "1.0",
   "full_gate": {
-    "revision": "878d64a",
+    "revision": "db34940",
     "command": "UV_PROJECT_ENVIRONMENT=.venv-clean PREFLIGHT_TEST_PG_PORT=55438 PREFLIGHT_TEST_PG_CA=<retained-local-CA> py -3.12 -m uv run --locked preflight verify local",
-    "passed": 641,
+    "passed": 648,
     "failed": 0,
     "errors": 0,
     "skipped": 0,
-    "elapsed_seconds": 263.6,
+    "elapsed_seconds": 265.83,
     "exit_code": 0,
     "backend": "Actual disposable PostgreSQL18.6/TLS and local official MCP; cloud cases use boto Stubber. Pinned native JS and configuration checks are local."
   },
@@ -101,6 +101,15 @@
   },
   "additional_profile_diagnostic": {
     "status": "INTERRUPTED_WITH_TWO_FAILURES",
-    "scope": "Optional sys.setprofile-instrumented unit/cloud run was stopped after two failures and before its summary; exact failure reasons were not established. This is not the standard acceptance command. No new whole-function execution or coverage claimed."
+    "scope": "Optional sys.setprofile-instrumented unit/cloud run was stopped after two failures and before its summary; exact failure reasons were not established. This is not the standard acceptance command. No new whole-function execution or coverage claimed.",
+    "corrected_rerun": {
+      "entry_point_main_guard": true,
+      "fast_filename_filter": true,
+      "passed": 455,
+      "elapsed_seconds": 38.7,
+      "profiled_symbols": 225,
+      "exit_code": 0,
+      "scope": "Selected unit/cloud tests only, not branch coverage/all-function execution"
+    }
   }
 }

@@ -13,7 +13,7 @@
   "affected_verification": {
     "command": "py -3.12 -m uv run --locked pytest tests/unit/test_runtime.py tests/unit/test_readonly_runtime.py tests/unit/test_budget.py tests/cloud/test_budget_boundaries.py tests/cloud/test_budget_publication.py -q",
     "passed": 172,
-    "elapsed_seconds": 6.60,
+    "elapsed_seconds": 6.6,
     "independent_passed": 111,
     "independent_elapsed_seconds": 3.14,
     "independent_blocking_findings": 0
@@ -22,14 +22,29 @@
     "run_id": "fef79c61-dcea-42c3-a760-c2f9c4235abc",
     "snapshot_id": "preflight-fef79c61dcea42c3a760c2f9c4235abc-snap",
     "clone_id": "preflight-fef79c61dcea42c3a760c2f9c4235abc-clone",
-    "phase": "SNAPSHOTTING",
-    "snapshot_provider_status": "creating",
-    "snapshot_provider_percent_progress": 1,
+    "phase": "ERROR",
+    "snapshot_provider_status": "available",
+    "snapshot_provider_percent_progress": 100,
     "snapshot_encrypted": true,
     "provider_observed_at_utc": "2026-09-26 11:01:02 UTC",
     "source_apply_called": false,
     "cleanup_called": false,
-    "migration_result": "NOT_RUN"
+    "migration_result": "NOT_RUN",
+    "error_code": "AWS_REQUEST_DENIED",
+    "provider_error_code": "AccessDenied",
+    "provider_denial_scope": "subgrp:preflight-db-subnets",
+    "clone_provider_status": "ABSENT"
   },
-  "scope": "A real encrypted AWS snapshot is creating. Clone availability, bad/good migration and human source apply are not inferred. Removed financial admission does not remove scoped resource or human gates."
+  "scope": "Real encrypted AWS snapshot reached available/100. Restore denied absent exact subnet-group permission; narrow policy repair attached/readback. ERROR history retained. Real clone/migration/source gates remain unrun; cleanup decision pending.",
+  "restore_policy_repair": {
+    "status": "ATTACHED_READBACK_MATCH",
+    "action": "rds:RestoreDBInstanceFromDBSnapshot",
+    "specific_scopes": [
+      "subgrp:preflight-db-subnets",
+      "og:default:postgres-18",
+      "pg:default.postgres18"
+    ],
+    "admin_granted": false,
+    "source_delete_granted": false
+  }
 }

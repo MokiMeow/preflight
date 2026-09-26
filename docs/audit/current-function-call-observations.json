@@ -1,0 +1,1133 @@
+{
+  "revision": "0af9337028f49d09ecd91e5051859a9b412f871a",
+  "command": "py -3.12 -m uv run --locked python var/profile_current_unit_cloud.py",
+  "scope": "Call events for selected unit/cloud tests only. Excludes PG/MCP/JS and child processes. Coroutine resume may add events. Not branch coverage or every-function execution.",
+  "test_exit_code": 0,
+  "calls": [
+    {
+      "file": "src/preflight/__init__.py",
+      "function": "<module>",
+      "calls": 1
+    },
+    {
+      "file": "src/preflight/artifacts.py",
+      "function": "<module>",
+      "calls": 1
+    },
+    {
+      "file": "src/preflight/artifacts.py",
+      "function": "ArtifactStore",
+      "calls": 1
+    },
+    {
+      "file": "src/preflight/artifacts.py",
+      "function": "ArtifactStore.__init__",
+      "calls": 22
+    },
+    {
+      "file": "src/preflight/artifacts.py",
+      "function": "ArtifactStore.path",
+      "calls": 34
+    },
+    {
+      "file": "src/preflight/artifacts.py",
+      "function": "ArtifactStore.read",
+      "calls": 9
+    },
+    {
+      "file": "src/preflight/artifacts.py",
+      "function": "ArtifactStore.write_once",
+      "calls": 25
+    },
+    {
+      "file": "src/preflight/artifacts.py",
+      "function": "canonical_json",
+      "calls": 271
+    },
+    {
+      "file": "src/preflight/artifacts.py",
+      "function": "sha256",
+      "calls": 150
+    },
+    {
+      "file": "src/preflight/artifacts.py",
+      "function": "strict_json",
+      "calls": 181
+    },
+    {
+      "file": "src/preflight/artifacts.py",
+      "function": "strict_json.<locals>.depth",
+      "calls": 5959
+    },
+    {
+      "file": "src/preflight/artifacts.py",
+      "function": "strict_json.<locals>.invalid_constant",
+      "calls": 2
+    },
+    {
+      "file": "src/preflight/artifacts.py",
+      "function": "strict_json.<locals>.pairs",
+      "calls": 830
+    },
+    {
+      "file": "src/preflight/aws_rds.py",
+      "function": "<module>",
+      "calls": 1
+    },
+    {
+      "file": "src/preflight/aws_rds.py",
+      "function": "CleanupPolicy",
+      "calls": 1
+    },
+    {
+      "file": "src/preflight/aws_rds.py",
+      "function": "CloudPolicy",
+      "calls": 1
+    },
+    {
+      "file": "src/preflight/aws_rds.py",
+      "function": "CloudPolicy.__post_init__",
+      "calls": 84
+    },
+    {
+      "file": "src/preflight/aws_rds.py",
+      "function": "CloudPolicy.__post_init__.<locals>.<genexpr>",
+      "calls": 168
+    },
+    {
+      "file": "src/preflight/aws_rds.py",
+      "function": "RdsAdapter",
+      "calls": 1
+    },
+    {
+      "file": "src/preflight/aws_rds.py",
+      "function": "RdsAdapter.__init__",
+      "calls": 83
+    },
+    {
+      "file": "src/preflight/aws_rds.py",
+      "function": "RdsAdapter._arn",
+      "calls": 125
+    },
+    {
+      "file": "src/preflight/aws_rds.py",
+      "function": "RdsAdapter._automatic_source_backup",
+      "calls": 11
+    },
+    {
+      "file": "src/preflight/aws_rds.py",
+      "function": "RdsAdapter._automatic_source_backup.<locals>.<genexpr>",
+      "calls": 34
+    },
+    {
+      "file": "src/preflight/aws_rds.py",
+      "function": "RdsAdapter._call",
+      "calls": 385
+    },
+    {
+      "file": "src/preflight/aws_rds.py",
+      "function": "RdsAdapter._creation",
+      "calls": 26
+    },
+    {
+      "file": "src/preflight/aws_rds.py",
+      "function": "RdsAdapter._enforce_live_inventory",
+      "calls": 13
+    },
+    {
+      "file": "src/preflight/aws_rds.py",
+      "function": "RdsAdapter._enforce_live_inventory.<locals>.<genexpr>",
+      "calls": 8
+    },
+    {
+      "file": "src/preflight/aws_rds.py",
+      "function": "RdsAdapter._engine_encryption",
+      "calls": 98
+    },
+    {
+      "file": "src/preflight/aws_rds.py",
+      "function": "RdsAdapter._identity",
+      "calls": 141
+    },
+    {
+      "file": "src/preflight/aws_rds.py",
+      "function": "RdsAdapter._instance",
+      "calls": 74
+    },
+    {
+      "file": "src/preflight/aws_rds.py",
+      "function": "RdsAdapter._intent",
+      "calls": 139
+    },
+    {
+      "file": "src/preflight/aws_rds.py",
+      "function": "RdsAdapter._observation",
+      "calls": 64
+    },
+    {
+      "file": "src/preflight/aws_rds.py",
+      "function": "RdsAdapter._owned",
+      "calls": 26
+    },
+    {
+      "file": "src/preflight/aws_rds.py",
+      "function": "RdsAdapter._owned.<locals>.<genexpr>",
+      "calls": 122
+    },
+    {
+      "file": "src/preflight/aws_rds.py",
+      "function": "RdsAdapter._reserve_budget",
+      "calls": 6
+    },
+    {
+      "file": "src/preflight/aws_rds.py",
+      "function": "RdsAdapter._resource_registry",
+      "calls": 33
+    },
+    {
+      "file": "src/preflight/aws_rds.py",
+      "function": "RdsAdapter._snapshot",
+      "calls": 42
+    },
+    {
+      "file": "src/preflight/aws_rds.py",
+      "function": "RdsAdapter._tags",
+      "calls": 83
+    },
+    {
+      "file": "src/preflight/aws_rds.py",
+      "function": "RdsAdapter.cleanup",
+      "calls": 22
+    },
+    {
+      "file": "src/preflight/aws_rds.py",
+      "function": "RdsAdapter.cleanup.<locals>.<genexpr>",
+      "calls": 12
+    },
+    {
+      "file": "src/preflight/aws_rds.py",
+      "function": "RdsAdapter.ensure_clone",
+      "calls": 11
+    },
+    {
+      "file": "src/preflight/aws_rds.py",
+      "function": "RdsAdapter.ensure_snapshot",
+      "calls": 15
+    },
+    {
+      "file": "src/preflight/aws_rds.py",
+      "function": "RdsAdapter.inspect_clone",
+      "calls": 20
+    },
+    {
+      "file": "src/preflight/aws_rds.py",
+      "function": "RdsAdapter.inspect_snapshot",
+      "calls": 33
+    },
+    {
+      "file": "src/preflight/aws_rds.py",
+      "function": "RdsAdapter.inspect_source",
+      "calls": 53
+    },
+    {
+      "file": "src/preflight/aws_rds.py",
+      "function": "RdsAdapter.observe_cleanup",
+      "calls": 4
+    },
+    {
+      "file": "src/preflight/aws_rds.py",
+      "function": "RdsAdapter.owned_resource_inventory",
+      "calls": 27
+    },
+    {
+      "file": "src/preflight/aws_rds.py",
+      "function": "RdsAdapter.owned_resource_inventory.<locals>.<genexpr>",
+      "calls": 70
+    },
+    {
+      "file": "src/preflight/aws_rds.py",
+      "function": "RdsAdapter.owned_resource_inventory.<locals>.<lambda>",
+      "calls": 13
+    },
+    {
+      "file": "src/preflight/aws_rds.py",
+      "function": "RdsAdapter.verify_recovery_snapshot",
+      "calls": 2
+    },
+    {
+      "file": "src/preflight/aws_rds.py",
+      "function": "ResourceObservation",
+      "calls": 1
+    },
+    {
+      "file": "src/preflight/aws_rds.py",
+      "function": "valid_id",
+      "calls": 374
+    },
+    {
+      "file": "src/preflight/budget.py",
+      "function": "<module>",
+      "calls": 1
+    },
+    {
+      "file": "src/preflight/budget.py",
+      "function": "BudgetDecision",
+      "calls": 1
+    },
+    {
+      "file": "src/preflight/budget.py",
+      "function": "BudgetLedger",
+      "calls": 1
+    },
+    {
+      "file": "src/preflight/budget.py",
+      "function": "BudgetLedger.__init__",
+      "calls": 46
+    },
+    {
+      "file": "src/preflight/budget.py",
+      "function": "BudgetLedger._assert_ceiling",
+      "calls": 75
+    },
+    {
+      "file": "src/preflight/budget.py",
+      "function": "BudgetLedger._total",
+      "calls": 56
+    },
+    {
+      "file": "src/preflight/budget.py",
+      "function": "BudgetLedger._total.<locals>.<genexpr>",
+      "calls": 90
+    },
+    {
+      "file": "src/preflight/budget.py",
+      "function": "BudgetLedger._transaction",
+      "calls": 293
+    },
+    {
+      "file": "src/preflight/budget.py",
+      "function": "BudgetLedger.authorize",
+      "calls": 47
+    },
+    {
+      "file": "src/preflight/budget.py",
+      "function": "BudgetLedger.authorize.<locals>.refuse",
+      "calls": 16
+    },
+    {
+      "file": "src/preflight/budget.py",
+      "function": "BudgetLedger.ceiling",
+      "calls": 195
+    },
+    {
+      "file": "src/preflight/budget.py",
+      "function": "BudgetLedger.record_observation",
+      "calls": 39
+    },
+    {
+      "file": "src/preflight/budget.py",
+      "function": "BudgetLedger.total_reserved_usd",
+      "calls": 26
+    },
+    {
+      "file": "src/preflight/budget.py",
+      "function": "BudgetSnapshot",
+      "calls": 1
+    },
+    {
+      "file": "src/preflight/budget.py",
+      "function": "_known_amount",
+      "calls": 743
+    },
+    {
+      "file": "src/preflight/budget.py",
+      "function": "accrue_usd",
+      "calls": 17
+    },
+    {
+      "file": "src/preflight/budget.py",
+      "function": "admit",
+      "calls": 96
+    },
+    {
+      "file": "src/preflight/budget.py",
+      "function": "admit.<locals>.<genexpr>",
+      "calls": 403
+    },
+    {
+      "file": "src/preflight/budget.py",
+      "function": "admit.<locals>.refuse",
+      "calls": 70
+    },
+    {
+      "file": "src/preflight/cli.py",
+      "function": "<module>",
+      "calls": 1
+    },
+    {
+      "file": "src/preflight/cli.py",
+      "function": "intake",
+      "calls": 2
+    },
+    {
+      "file": "src/preflight/config.py",
+      "function": "<module>",
+      "calls": 1
+    },
+    {
+      "file": "src/preflight/config.py",
+      "function": "Settings",
+      "calls": 1
+    },
+    {
+      "file": "src/preflight/config.py",
+      "function": "Settings.<lambda>",
+      "calls": 63
+    },
+    {
+      "file": "src/preflight/config.py",
+      "function": "Settings.authorization_dependencies",
+      "calls": 54
+    },
+    {
+      "file": "src/preflight/config.py",
+      "function": "state_storage_status",
+      "calls": 7
+    },
+    {
+      "file": "src/preflight/db.py",
+      "function": "<module>",
+      "calls": 1
+    },
+    {
+      "file": "src/preflight/evidence.py",
+      "function": "<module>",
+      "calls": 1
+    },
+    {
+      "file": "src/preflight/evidence.py",
+      "function": "EvidenceBundle",
+      "calls": 1
+    },
+    {
+      "file": "src/preflight/evidence.py",
+      "function": "EvidenceBundle.__init__",
+      "calls": 1
+    },
+    {
+      "file": "src/preflight/evidence.py",
+      "function": "EvidenceBundle.__repr__",
+      "calls": 1
+    },
+    {
+      "file": "src/preflight/evidence.py",
+      "function": "_digest",
+      "calls": 6
+    },
+    {
+      "file": "src/preflight/evidence.py",
+      "function": "_root",
+      "calls": 2
+    },
+    {
+      "file": "src/preflight/evidence.py",
+      "function": "_root.<locals>.<genexpr>",
+      "calls": 10
+    },
+    {
+      "file": "src/preflight/evidence.py",
+      "function": "canonical",
+      "calls": 9
+    },
+    {
+      "file": "src/preflight/evidence.py",
+      "function": "typed_value",
+      "calls": 18
+    },
+    {
+      "file": "src/preflight/jobs.py",
+      "function": "<module>",
+      "calls": 1
+    },
+    {
+      "file": "src/preflight/jobs.py",
+      "function": "JobStore",
+      "calls": 1
+    },
+    {
+      "file": "src/preflight/jobs.py",
+      "function": "JobStore.__init__",
+      "calls": 142
+    },
+    {
+      "file": "src/preflight/jobs.py",
+      "function": "JobStore._db",
+      "calls": 1640
+    },
+    {
+      "file": "src/preflight/jobs.py",
+      "function": "JobStore.enqueue",
+      "calls": 90
+    },
+    {
+      "file": "src/preflight/jobs.py",
+      "function": "JobStore.get",
+      "calls": 303
+    },
+    {
+      "file": "src/preflight/jobs.py",
+      "function": "JobStore.mutation_lease",
+      "calls": 93
+    },
+    {
+      "file": "src/preflight/jobs.py",
+      "function": "JobStore.release_reservation",
+      "calls": 8
+    },
+    {
+      "file": "src/preflight/jobs.py",
+      "function": "JobStore.require_reservation",
+      "calls": 139
+    },
+    {
+      "file": "src/preflight/jobs.py",
+      "function": "JobStore.resource_registry",
+      "calls": 34
+    },
+    {
+      "file": "src/preflight/jobs.py",
+      "function": "JobStore.update",
+      "calls": 12
+    },
+    {
+      "file": "src/preflight/jobs.py",
+      "function": "ResourceIntent",
+      "calls": 1
+    },
+    {
+      "file": "src/preflight/jobs.py",
+      "function": "ResourceIntent.for_run",
+      "calls": 228
+    },
+    {
+      "file": "src/preflight/jobs.py",
+      "function": "ResourceIntent.tags",
+      "calls": 76
+    },
+    {
+      "file": "src/preflight/jobs.py",
+      "function": "_tick_job",
+      "calls": 9
+    },
+    {
+      "file": "src/preflight/jobs.py",
+      "function": "tick_job",
+      "calls": 9
+    },
+    {
+      "file": "src/preflight/models.py",
+      "function": "<module>",
+      "calls": 1
+    },
+    {
+      "file": "src/preflight/models.py",
+      "function": "AddedColumn",
+      "calls": 1
+    },
+    {
+      "file": "src/preflight/models.py",
+      "function": "ApplyClone",
+      "calls": 1
+    },
+    {
+      "file": "src/preflight/models.py",
+      "function": "ApplyReceipt",
+      "calls": 1
+    },
+    {
+      "file": "src/preflight/models.py",
+      "function": "ApplySource",
+      "calls": 1
+    },
+    {
+      "file": "src/preflight/models.py",
+      "function": "BaselineResult",
+      "calls": 1
+    },
+    {
+      "file": "src/preflight/models.py",
+      "function": "Candidate",
+      "calls": 1
+    },
+    {
+      "file": "src/preflight/models.py",
+      "function": "CheckResult",
+      "calls": 1
+    },
+    {
+      "file": "src/preflight/models.py",
+      "function": "CheckSet",
+      "calls": 1
+    },
+    {
+      "file": "src/preflight/models.py",
+      "function": "CleanupActions",
+      "calls": 1
+    },
+    {
+      "file": "src/preflight/models.py",
+      "function": "CleanupReceipt",
+      "calls": 1
+    },
+    {
+      "file": "src/preflight/models.py",
+      "function": "CleanupRun",
+      "calls": 1
+    },
+    {
+      "file": "src/preflight/models.py",
+      "function": "CloneResult",
+      "calls": 1
+    },
+    {
+      "file": "src/preflight/models.py",
+      "function": "ColumnCheck",
+      "calls": 1
+    },
+    {
+      "file": "src/preflight/models.py",
+      "function": "Contract",
+      "calls": 1
+    },
+    {
+      "file": "src/preflight/models.py",
+      "function": "Contract.unique_tables",
+      "calls": 118
+    },
+    {
+      "file": "src/preflight/models.py",
+      "function": "CoverageEntry",
+      "calls": 1
+    },
+    {
+      "file": "src/preflight/models.py",
+      "function": "EqualCheck",
+      "calls": 1
+    },
+    {
+      "file": "src/preflight/models.py",
+      "function": "ExpectedSchema",
+      "calls": 1
+    },
+    {
+      "file": "src/preflight/models.py",
+      "function": "GetReport",
+      "calls": 1
+    },
+    {
+      "file": "src/preflight/models.py",
+      "function": "GetSourceStatus",
+      "calls": 1
+    },
+    {
+      "file": "src/preflight/models.py",
+      "function": "Phase",
+      "calls": 1
+    },
+    {
+      "file": "src/preflight/models.py",
+      "function": "PreflightError",
+      "calls": 1
+    },
+    {
+      "file": "src/preflight/models.py",
+      "function": "PreflightError.__init__",
+      "calls": 281
+    },
+    {
+      "file": "src/preflight/models.py",
+      "function": "PublicEvidence",
+      "calls": 1
+    },
+    {
+      "file": "src/preflight/models.py",
+      "function": "PublicTableEvidence",
+      "calls": 1
+    },
+    {
+      "file": "src/preflight/models.py",
+      "function": "RegisterCandidate",
+      "calls": 1
+    },
+    {
+      "file": "src/preflight/models.py",
+      "function": "RegisterCandidate.one_payload",
+      "calls": 18
+    },
+    {
+      "file": "src/preflight/models.py",
+      "function": "RegistrationResult",
+      "calls": 1
+    },
+    {
+      "file": "src/preflight/models.py",
+      "function": "ReportPayload",
+      "calls": 1
+    },
+    {
+      "file": "src/preflight/models.py",
+      "function": "ReportResult",
+      "calls": 1
+    },
+    {
+      "file": "src/preflight/models.py",
+      "function": "Request",
+      "calls": 1
+    },
+    {
+      "file": "src/preflight/models.py",
+      "function": "Requirement",
+      "calls": 1
+    },
+    {
+      "file": "src/preflight/models.py",
+      "function": "RowCountCheck",
+      "calls": 1
+    },
+    {
+      "file": "src/preflight/models.py",
+      "function": "RunRequest",
+      "calls": 1
+    },
+    {
+      "file": "src/preflight/models.py",
+      "function": "RunStatus",
+      "calls": 1
+    },
+    {
+      "file": "src/preflight/models.py",
+      "function": "SealedReport",
+      "calls": 1
+    },
+    {
+      "file": "src/preflight/models.py",
+      "function": "SourceStatusResult",
+      "calls": 1
+    },
+    {
+      "file": "src/preflight/models.py",
+      "function": "SqlPlan",
+      "calls": 1
+    },
+    {
+      "file": "src/preflight/models.py",
+      "function": "StartRehearsal",
+      "calls": 1
+    },
+    {
+      "file": "src/preflight/models.py",
+      "function": "StartResult",
+      "calls": 1
+    },
+    {
+      "file": "src/preflight/models.py",
+      "function": "StrictModel",
+      "calls": 1
+    },
+    {
+      "file": "src/preflight/models.py",
+      "function": "TableContract",
+      "calls": 1
+    },
+    {
+      "file": "src/preflight/models.py",
+      "function": "TableContract.valid_keys",
+      "calls": 107
+    },
+    {
+      "file": "src/preflight/models.py",
+      "function": "ToolEnvelope",
+      "calls": 1
+    },
+    {
+      "file": "src/preflight/models.py",
+      "function": "ToolErrorData",
+      "calls": 1
+    },
+    {
+      "file": "src/preflight/models.py",
+      "function": "TxOutcome",
+      "calls": 1
+    },
+    {
+      "file": "src/preflight/models.py",
+      "function": "TypeCheck",
+      "calls": 1
+    },
+    {
+      "file": "src/preflight/models.py",
+      "function": "ValidationResult",
+      "calls": 1
+    },
+    {
+      "file": "src/preflight/models.py",
+      "function": "WriteEntry",
+      "calls": 1
+    },
+    {
+      "file": "src/preflight/offline.py",
+      "function": "<module>",
+      "calls": 1
+    },
+    {
+      "file": "src/preflight/offline.py",
+      "function": "ReportVerificationError",
+      "calls": 1
+    },
+    {
+      "file": "src/preflight/offline.py",
+      "function": "ReportVerificationError.__init__",
+      "calls": 17
+    },
+    {
+      "file": "src/preflight/offline.py",
+      "function": "_fail",
+      "calls": 12
+    },
+    {
+      "file": "src/preflight/offline.py",
+      "function": "_schema_versions",
+      "calls": 19
+    },
+    {
+      "file": "src/preflight/offline.py",
+      "function": "_schema_versions.<locals>.<genexpr>",
+      "calls": 72
+    },
+    {
+      "file": "src/preflight/offline.py",
+      "function": "_validate_manifest",
+      "calls": 11
+    },
+    {
+      "file": "src/preflight/offline.py",
+      "function": "verify_report",
+      "calls": 24
+    },
+    {
+      "file": "src/preflight/report.py",
+      "function": "<module>",
+      "calls": 1
+    },
+    {
+      "file": "src/preflight/report.py",
+      "function": "_cell",
+      "calls": 236
+    },
+    {
+      "file": "src/preflight/report.py",
+      "function": "_evidence_rows",
+      "calls": 2
+    },
+    {
+      "file": "src/preflight/report.py",
+      "function": "_has_complete_evidence",
+      "calls": 21
+    },
+    {
+      "file": "src/preflight/report.py",
+      "function": "_has_observable_evidence_failure",
+      "calls": 26
+    },
+    {
+      "file": "src/preflight/report.py",
+      "function": "_has_observable_evidence_failure.<locals>.<genexpr>",
+      "calls": 50
+    },
+    {
+      "file": "src/preflight/report.py",
+      "function": "_payload_bytes",
+      "calls": 16
+    },
+    {
+      "file": "src/preflight/report.py",
+      "function": "_redact_credential_url",
+      "calls": 2
+    },
+    {
+      "file": "src/preflight/report.py",
+      "function": "_redact_credential_url.<locals>.<genexpr>",
+      "calls": 2
+    },
+    {
+      "file": "src/preflight/report.py",
+      "function": "_requirements_consistent",
+      "calls": 31
+    },
+    {
+      "file": "src/preflight/report.py",
+      "function": "_requirements_consistent.<locals>.<genexpr>",
+      "calls": 314
+    },
+    {
+      "file": "src/preflight/report.py",
+      "function": "recompute_report_verdict",
+      "calls": 26
+    },
+    {
+      "file": "src/preflight/report.py",
+      "function": "render_report",
+      "calls": 2
+    },
+    {
+      "file": "src/preflight/report.py",
+      "function": "seal_report",
+      "calls": 20
+    },
+    {
+      "file": "src/preflight/runtime.py",
+      "function": "<module>",
+      "calls": 1
+    },
+    {
+      "file": "src/preflight/runtime.py",
+      "function": "AwsRuntime",
+      "calls": 1
+    },
+    {
+      "file": "src/preflight/runtime.py",
+      "function": "AwsRuntime.__init__",
+      "calls": 7
+    },
+    {
+      "file": "src/preflight/runtime.py",
+      "function": "AwsRuntime.connection",
+      "calls": 7
+    },
+    {
+      "file": "src/preflight/runtime.py",
+      "function": "build_runtime",
+      "calls": 21
+    },
+    {
+      "file": "src/preflight/runtime.py",
+      "function": "build_runtime.<locals>.reserve_budget",
+      "calls": 4
+    },
+    {
+      "file": "src/preflight/service.py",
+      "function": "<module>",
+      "calls": 1
+    },
+    {
+      "file": "src/preflight/service.py",
+      "function": "RehearsalService",
+      "calls": 1
+    },
+    {
+      "file": "src/preflight/service.py",
+      "function": "RehearsalService.__init__",
+      "calls": 22
+    },
+    {
+      "file": "src/preflight/service.py",
+      "function": "RehearsalService._source_guard",
+      "calls": 1
+    },
+    {
+      "file": "src/preflight/service.py",
+      "function": "RehearsalService.call",
+      "calls": 25
+    },
+    {
+      "file": "src/preflight/service.py",
+      "function": "RehearsalService.candidate",
+      "calls": 4
+    },
+    {
+      "file": "src/preflight/service.py",
+      "function": "RehearsalService.get_run",
+      "calls": 2
+    },
+    {
+      "file": "src/preflight/service.py",
+      "function": "RehearsalService.lock",
+      "calls": 17
+    },
+    {
+      "file": "src/preflight/service.py",
+      "function": "RehearsalService.register_candidate",
+      "calls": 16
+    },
+    {
+      "file": "src/preflight/service.py",
+      "function": "RehearsalService.start_rehearsal",
+      "calls": 1
+    },
+    {
+      "file": "src/preflight/service.py",
+      "function": "UnconfiguredRuntime",
+      "calls": 1
+    },
+    {
+      "file": "src/preflight/sql_policy.py",
+      "function": "<module>",
+      "calls": 1
+    },
+    {
+      "file": "src/preflight/sql_policy.py",
+      "function": "_deny",
+      "calls": 59
+    },
+    {
+      "file": "src/preflight/sql_policy.py",
+      "function": "_expr",
+      "calls": 52
+    },
+    {
+      "file": "src/preflight/sql_policy.py",
+      "function": "_expr.<locals>.<genexpr>",
+      "calls": 3
+    },
+    {
+      "file": "src/preflight/sql_policy.py",
+      "function": "_fields",
+      "calls": 282
+    },
+    {
+      "file": "src/preflight/sql_policy.py",
+      "function": "_name",
+      "calls": 215
+    },
+    {
+      "file": "src/preflight/sql_policy.py",
+      "function": "inspect_sql",
+      "calls": 84
+    },
+    {
+      "file": "src/preflight/sql_policy.py",
+      "function": "inspect_sql.<locals>.<genexpr>",
+      "calls": 284
+    },
+    {
+      "file": "src/preflight/sql_policy.py",
+      "function": "resolve_coverage",
+      "calls": 10
+    },
+    {
+      "file": "src/preflight/sql_policy.py",
+      "function": "resolve_coverage.<locals>.<genexpr>",
+      "calls": 26
+    },
+    {
+      "file": "src/preflight/sql_policy.py",
+      "function": "resolve_coverage.<locals>.<genexpr>.<genexpr>",
+      "calls": 8
+    },
+    {
+      "file": "src/preflight/storage.py",
+      "function": "<module>",
+      "calls": 1
+    },
+    {
+      "file": "src/preflight/storage.py",
+      "function": "StateStore",
+      "calls": 1
+    },
+    {
+      "file": "src/preflight/storage.py",
+      "function": "StateStore.__init__",
+      "calls": 27
+    },
+    {
+      "file": "src/preflight/storage.py",
+      "function": "StateStore.begin_apply",
+      "calls": 2
+    },
+    {
+      "file": "src/preflight/storage.py",
+      "function": "StateStore.begin_cleanup",
+      "calls": 2
+    },
+    {
+      "file": "src/preflight/storage.py",
+      "function": "StateStore.claim_request",
+      "calls": 21
+    },
+    {
+      "file": "src/preflight/storage.py",
+      "function": "StateStore.create_run",
+      "calls": 10
+    },
+    {
+      "file": "src/preflight/storage.py",
+      "function": "StateStore.finish_request",
+      "calls": 18
+    },
+    {
+      "file": "src/preflight/storage.py",
+      "function": "StateStore.get",
+      "calls": 4
+    },
+    {
+      "file": "src/preflight/storage.py",
+      "function": "StateStore.get_run",
+      "calls": 41
+    },
+    {
+      "file": "src/preflight/storage.py",
+      "function": "StateStore.list_records",
+      "calls": 9
+    },
+    {
+      "file": "src/preflight/storage.py",
+      "function": "StateStore.list_runs",
+      "calls": 29
+    },
+    {
+      "file": "src/preflight/storage.py",
+      "function": "StateStore.publish_candidate",
+      "calls": 11
+    },
+    {
+      "file": "src/preflight/storage.py",
+      "function": "StateStore.reconcile_restart",
+      "calls": 22
+    },
+    {
+      "file": "src/preflight/storage.py",
+      "function": "StateStore.transaction",
+      "calls": 418
+    },
+    {
+      "file": "src/preflight/storage.py",
+      "function": "StateStore.transition",
+      "calls": 36
+    },
+    {
+      "file": "src/preflight/storage.py",
+      "function": "utc_now",
+      "calls": 98
+    },
+    {
+      "file": "src/preflight/verdict.py",
+      "function": "<module>",
+      "calls": 1
+    },
+    {
+      "file": "src/preflight/verdict.py",
+      "function": "evaluate",
+      "calls": 35
+    },
+    {
+      "file": "src/preflight/verdict.py",
+      "function": "evaluate.<locals>.<genexpr>",
+      "calls": 731
+    },
+    {
+      "file": "src/preflight/verdict.py",
+      "function": "invariant_requirements",
+      "calls": 23
+    }
+  ]
+}

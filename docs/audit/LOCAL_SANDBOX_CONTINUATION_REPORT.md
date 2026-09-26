@@ -1,6 +1,6 @@
 # Local sandbox continuation report
 
-**Latest state:** D28 is implemented and deployed at `d3715ca`: the operator-authorized unlimited mode removes financial admission without fabricated billing data. Creation is enabled; source apply remains disabled. The actual encrypted AWS snapshot for run `fef79c61-dcea-42c3-a760-c2f9c4235abc` is creating (provider reported 1% at 11:01:02 UTC). A clone, migration result and source approval are still pending. New affected tests: 172 passed in 6.60s; independent review: 111 passed in 3.14s, no blocking finding. A new full gate is running. [Actual run receipt](../../evidence/connected/unlimited-rehearsal.json) and [three-minute walkthrough](THREE_MINUTE_WALKTHROUGH.md).
+**Latest state:** D28 is implemented and deployed at `d3715ca`: the operator-authorized unlimited mode removes financial admission without fabricated billing data. Creation is enabled; source apply remains disabled. The actual encrypted AWS snapshot for run `fef79c61-dcea-42c3-a760-c2f9c4235abc` is creating (provider reported 1% at 11:01:02 UTC). A clone, migration result and source approval are still pending. New affected tests: 172 passed in 6.60s; independent review: 111 passed in 3.14s, no blocking finding. The new full gate passed 648 tests, zero failures/errors/skips, 265.83s, at `db34940`. [Actual run receipt](../../evidence/connected/unlimited-rehearsal.json) and [three-minute walkthrough](THREE_MINUTE_WALKTHROUGH.md).
 
 ## Scope and provenance
 
@@ -161,3 +161,7 @@ The successful native turn is not a substitute for the specified E01–E10 case 
 ## Latest operator amendment and remaining proof
 
 The operator has explicitly removed the USD100 ceiling. The explicit unlimited-budget configuration is implemented and deployed; this does not fabricate unavailable billing facts or waive ownership, private networking, SQL validation, or human source/cleanup gates. The previous budget blocker is historical once that amendment is deployed. Real snapshot/clone, bad/good migrations, source Allow/Deny and the three-minute recording are still not claimed complete. An optional heavily instrumented function-call diagnostic was interrupted after two failures, before its summary; the exact failure reasons were not established; the standard 641-test gate passed, and no current whole-function coverage is inferred.
+
+## Actual restore failure and repair
+
+The real encrypted snapshot reached AVAILABLE/100. The restore failed with AWS_REQUEST_DENIED; actual CloudTrail reported AccessDenied because the runtime role lacked restore authorization for the exact `preflight-db-subnets` subnet group. The root attached and read back restore-only grants for that exact subnet group and PostgreSQL18 default option/parameter groups. No admin or source-delete permission was added. The failed run retains ERROR, clone ABSENT, snapshot AVAILABLE; native cleanup is pending before a new run. The corrected diagnostic (main guard and fast event filter) passed 455 unit/cloud tests in 38.70s and recorded calls to 225 symbols; it is not whole-function or branch coverage. The original interrupted diagnostic is retained as a failed diagnostic, not hidden.
