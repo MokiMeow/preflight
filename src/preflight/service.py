@@ -107,11 +107,22 @@ class RehearsalService:
                 if replay is not None:
                     return replay
                 claimed = True
-            with self.lock(run_id or tool):
+            if tool == "get_run":
+                # Observe persisted progress while SQL holds the mutation lock.
+                # This read cannot confer approval or replay a SQL operation.
                 data = getattr(self, tool)(model)
+            else:
+                with self.lock(run_id or tool):
+                    data = getattr(self, tool)(model)
             validated_data = output_model.model_validate(data)
             result_id = run_id or data.get("run_id")
-            state = self.store.get_run(result_id)["phase"] if result_id else None
+            state = (
+                data["phase"]
+                if tool == "get_run"
+                else self.store.get_run(result_id)["phase"]
+                if result_id
+                else None
+            )
             result = envelope_model(
                 ok=True,
                 request_id=model.request_id,
@@ -213,25 +224,18 @@ class RehearsalService:
         coverage_warnings = []
         for write in plan.writes:
             table = tables[write.table]
-            checks = {
-                (check.type, getattr(check, "column", None)) for check in table.checks
-            }
+            checks = {(check.type, getattr(check, "column", None)) for check in table.checks}
             expected = {
                 column.name: column
-                for column in (
-                    table.expected_schema.added_columns if table.expected_schema else []
-                )
+                for column in (table.expected_schema.added_columns if table.expected_schema else [])
             }
             complete = False
             if write.operation == "update":
                 complete = (
-                    write.column in table.preserve_columns
-                    or ("all_equal", write.column) in checks
+                    write.column in table.preserve_columns or ("all_equal", write.column) in checks
                 )
             elif write.operation == "add_column":
-                complete = (
-                    write.column in expected and ("all_equal", write.column) in checks
-                )
+                complete = write.column in expected and ("all_equal", write.column) in checks
             elif write.operation == "set_not_null":
                 complete = (
                     write.column in expected
@@ -292,14 +296,23 @@ class RehearsalService:
     def get_run(self, request):
         run = self.store.get_run(str(request.run_id))
         if run["cleanup_state"] in {"DELETING_CLONE", "DELETING_SNAPSHOT"}:
-            try:
-                observation = self.runtime.observe_cleanup(run)
-                state = observation["cleanup_state"]
-                if state != run["cleanup_state"]:
-                    self.store.set_cleanup(run["run_id"], state)
+            cleanup_lock = self.lock(run["run_id"])
+            if cleanup_lock.acquire(blocking=False):
+                try:
+                    # Recheck under the lock: a new human cleanup selection may
+                    # have arrived after the first snapshot. Never overwrite it
+                    # with an observation derived from the old selection.
                     run = self.store.get_run(run["run_id"])
-            except PreflightError:
-                pass  # A failed read is not evidence of absence.
+                    if run["cleanup_state"] in {"DELETING_CLONE", "DELETING_SNAPSHOT"}:
+                        observation = self.runtime.observe_cleanup(run)
+                        state = observation["cleanup_state"]
+                        if state != run["cleanup_state"]:
+                            self.store.set_cleanup(run["run_id"], state)
+                            run = self.store.get_run(run["run_id"])
+                except PreflightError:
+                    pass  # A failed read is not evidence of absence.
+                finally:
+                    cleanup_lock.release()
         result = {
             key: value
             for key, value in run.items()
@@ -432,9 +445,7 @@ class RehearsalService:
                 observed_tables = {
                     table.name: table.model_dump(mode="json") for table in evidence.public.tables
                 }
-                comparison_status = (
-                    "MATCH" if baseline_tables == observed_tables else "DIFFERENT"
-                )
+                comparison_status = "MATCH" if baseline_tables == observed_tables else "DIFFERENT"
         return {
             "evidence": evidence.public.model_dump(mode="json"),
             "comparison_status": comparison_status,

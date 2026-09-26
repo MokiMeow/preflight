@@ -79,3 +79,63 @@ def readiness(settings: Settings) -> dict:
         "provider_roundtrip_verified": False,
         "human_approval_verified": False,
     }
+
+
+def state_storage_status(settings: Settings) -> dict:
+    """Read-only local diagnostics; empty state is never proof of no AWS resources."""
+    import sqlite3
+    from contextlib import closing
+
+    if settings.source_instance_id is None:
+        return {"status": "NOT_CONFIGURED", "warning": None, "cloud_absence_verified": False}
+    counts = {}
+    for filename, table in (("preflight.sqlite3", "runs"), ("cloud.sqlite", "jobs")):
+        path = settings.state_dir / filename
+        try:
+            if not path.is_file():
+                return {
+                    "status": "STATE_FILES_MISSING",
+                    "warning": "CONFIGURED_SOURCE_WITH_MISSING_STATE",
+                    "cloud_absence_verified": False,
+                }
+            wal = path.with_name(path.name + "-wal")
+            if wal.is_file() and wal.stat().st_size:
+                return {
+                    "status": "STATE_WAL_PRESENT",
+                    "warning": "STATE_COUNTS_REQUIRE_RUNTIME_RECONCILIATION",
+                    "cloud_absence_verified": False,
+                }
+            with closing(
+                sqlite3.connect(path.resolve().as_uri() + "?mode=ro&immutable=1", uri=True)
+            ) as database:
+                # Inspect a static main-file snapshot without creating WAL/SHM.
+                # A pending WAL above must be reconciled by the running service.
+                # Both table names are fixed internal literals, never configuration input.
+                counts[table] = database.execute(f"SELECT COUNT(*) FROM {table}").fetchone()[0]
+        except (sqlite3.Error, OSError):
+            return {
+                "status": "STATE_UNREADABLE",
+                "warning": "CONFIGURED_SOURCE_STATE_REQUIRES_RECONCILIATION",
+                "cloud_absence_verified": False,
+            }
+    try:
+        for filename in ("preflight.sqlite3-wal", "cloud.sqlite-wal"):
+            wal = settings.state_dir / filename
+            if wal.is_file() and wal.stat().st_size:
+                return {
+                    "status": "STATE_WAL_PRESENT",
+                    "warning": "STATE_COUNTS_REQUIRE_RUNTIME_RECONCILIATION",
+                    "cloud_absence_verified": False,
+                }
+    except OSError:
+        return {
+            "status": "STATE_UNREADABLE",
+            "warning": "CONFIGURED_SOURCE_STATE_REQUIRES_RECONCILIATION",
+            "cloud_absence_verified": False,
+        }
+    empty = counts["runs"] == 0 and counts["jobs"] == 0
+    return {
+        "status": "EMPTY_CONFIGURED_STATE" if empty else "STATE_RECORDS_PRESENT",
+        "warning": "CONFIGURED_SOURCE_WITH_EMPTY_STATE" if empty else None,
+        "cloud_absence_verified": False,
+    }

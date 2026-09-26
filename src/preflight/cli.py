@@ -9,7 +9,7 @@ from uuid import uuid4
 import typer
 
 from .artifacts import canonical_json, sha256, strict_json
-from .config import load_settings, readiness
+from .config import load_settings, readiness, state_storage_status
 from .models import Contract, PreflightError, RegisterCandidate
 
 app = typer.Typer(no_args_is_help=True)
@@ -31,6 +31,7 @@ def doctor(json_output: bool = typer.Option(False, "--json")):
         data = {
             "configuration_valid": True,
             **checks,
+            "state_storage": state_storage_status(settings),
             "versions": {name: version(name) for name in ["mcp", "pglast", "psycopg", "boto3"]},
             "engine_major_target": settings.postgres_major,
             "engine_major_connected": "NOT_OBSERVED",
