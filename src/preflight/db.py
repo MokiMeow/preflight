@@ -8,7 +8,7 @@ from typing import Literal
 import psycopg
 from psycopg.pq import TransactionStatus
 
-from .models import Contract, PreflightError, SqlPlan, TxOutcome
+from .models import CheckSet, Contract, PreflightError, SqlPlan, TxOutcome
 
 SUPPORTED_TYPES = {
     20: "bigint",
@@ -59,6 +59,18 @@ def connect_database(host, port, database, user, password, sslrootcert, postgres
             raise PreflightError("DATABASE_MAJOR_MISMATCH")
         try:
             _validate_role(conn)
+            with conn.cursor() as cur:
+                cur.execute(
+                    """SELECT
+                    EXISTS(SELECT 1 FROM pg_catalog.pg_database d
+                      WHERE pg_catalog.pg_has_role(current_user,d.datdba,'USAGE')
+                      OR pg_catalog.has_database_privilege(current_user,d.oid,'CREATE')),
+                    EXISTS(SELECT 1 FROM pg_catalog.pg_namespace n
+                      WHERE pg_catalog.pg_has_role(current_user,n.nspowner,'USAGE')
+                      OR pg_catalog.has_schema_privilege(current_user,n.oid,'CREATE'))"""
+                )
+                if any(cur.fetchone()):
+                    raise PreflightError("DATABASE_RUNTIME_SCOPE_UNSAFE")
             if not conn.pgconn.ssl_in_use:
                 raise PreflightError("DATABASE_SESSION_UNSAFE")
         except Exception:
@@ -151,15 +163,17 @@ def _validate_catalog(connection, contract: Contract, plan: SqlPlan | None = Non
                     }
                 )
             cur.execute(
-                """SELECT contype,conkey,condeferrable,condeferred,convalidated,conenforced
+                """SELECT contype,conkey,condeferrable,condeferred,convalidated,conenforced,connoinherit
                 FROM pg_catalog.pg_constraint WHERE conrelid=%s ORDER BY contype,conkey""",
                 (oid,),
             )
             constraints = []
             pk = None
             bynum = {c["position"]: c["name"] for c in columns}
-            for kind, keys, defer, deferred, valid, enforced in cur.fetchall():
+            for kind, keys, defer, deferred, valid, enforced, noinherit in cur.fetchall():
                 if kind not in {"p", "u", "n"} or defer or deferred or not valid or not enforced:
+                    raise PreflightError("UNSUPPORTED_CONSTRAINT")
+                if kind == "n" and noinherit:
                     raise PreflightError("UNSUPPORTED_CONSTRAINT")
                 names = [bynum[k] for k in keys or []]
                 if kind == "p":
@@ -175,7 +189,11 @@ def _validate_catalog(connection, contract: Contract, plan: SqlPlan | None = Non
                 """SELECT i.indkey::smallint[],i.indisunique,i.indisprimary,i.indisvalid,i.indisready,
                 i.indexprs IS NOT NULL,i.indpred IS NOT NULL,am.amname,i.indnkeyatts,i.indnatts,
                 EXISTS(SELECT 1 FROM unnest(i.indclass::oid[]) x JOIN pg_catalog.pg_opclass o ON o.oid=x WHERE o.opcnamespace<>11),
-                EXISTS(SELECT 1 FROM unnest(i.indcollation::oid[]) x JOIN pg_catalog.pg_collation co ON co.oid=x WHERE co.collnamespace<>11 OR co.collname<>'default')
+                EXISTS(SELECT 1 FROM unnest(i.indcollation::oid[]) x JOIN pg_catalog.pg_collation co ON co.oid=x WHERE co.collnamespace<>11 OR co.collname<>'default'),
+                i.indoption::smallint[],
+                ARRAY(SELECT n.nspname||'.'||o.opcname FROM unnest(i.indclass::oid[]) WITH ORDINALITY x(oid,position)
+                  JOIN pg_catalog.pg_opclass o ON o.oid=x.oid JOIN pg_catalog.pg_namespace n ON n.oid=o.opcnamespace ORDER BY x.position),
+                i.indnullsnotdistinct,i.indimmediate,i.indisexclusion
                 FROM pg_catalog.pg_index i JOIN pg_catalog.pg_class c ON c.oid=i.indexrelid
                 JOIN pg_catalog.pg_am am ON am.oid=c.relam WHERE i.indrelid=%s ORDER BY i.indkey::text""",
                 (oid,),
@@ -194,6 +212,11 @@ def _validate_catalog(connection, contract: Contract, plan: SqlPlan | None = Non
                 natts,
                 customop,
                 customcoll,
+                options,
+                opclasses,
+                nulls_not_distinct,
+                immediate,
+                exclusion,
             ) in cur.fetchall():
                 if (
                     not unique
@@ -205,6 +228,8 @@ def _validate_catalog(connection, contract: Contract, plan: SqlPlan | None = Non
                     or nkeys != natts
                     or customop
                     or customcoll
+                    or not immediate
+                    or exclusion
                     or any(k <= 0 for k in keys)
                 ):
                     raise PreflightError("UNSUPPORTED_INDEX")
@@ -214,9 +239,20 @@ def _validate_catalog(connection, contract: Contract, plan: SqlPlan | None = Non
                         "unique": unique,
                         "primary": primary,
                         "method": method,
+                        "options": list(options),
+                        "opclasses": list(opclasses),
+                        "nulls_not_distinct": nulls_not_distinct,
                     }
                 )
-            indexes.sort(key=lambda index: (tuple(index["columns"]), index["primary"]))
+            indexes.sort(
+                key=lambda index: (
+                    tuple(index["columns"]),
+                    index["primary"],
+                    tuple(index["options"]),
+                    tuple(index["opclasses"]),
+                    index["nulls_not_distinct"],
+                )
+            )
             result[table.name] = {
                 "columns": columns,
                 "constraints": constraints,
@@ -243,6 +279,67 @@ def validate_catalog(connection, contract: Contract, plan: SqlPlan | None = None
         raise
     except Exception:
         raise PreflightError("CATALOG_INSPECTION_FAILED") from None
+
+
+def _precommit_checks_pass(checks, contract: Contract, plan: SqlPlan) -> bool:
+    """A callback is an explicit gate, never a truthy/empty object convention."""
+    if checks is True:
+        return True
+    if not isinstance(checks, CheckSet) or not checks.checks or not checks.requirements:
+        return False
+    requirements = {r.id: r for r in checks.requirements}
+    results = {r.id: r for r in checks.checks}
+    if (
+        len(requirements) != len(checks.requirements)
+        or len(results) != len(checks.checks)
+        or requirements.keys() != results.keys()
+        or any(r.mandatory is not True for r in requirements.values())
+        or any(
+            r.status != "pass" or r.mandatory is not True or r.category != requirements[r.id].kind
+            for r in results.values()
+        )
+    ):
+        return False
+    core = {
+        "pk_set_unchanged",
+        "preserved_values_unchanged",
+        "schema_expected",
+        "coverage_complete",
+        "within_budgets",
+        "declared_checks_complete",
+    }
+    for kind in core:
+        requirement = requirements.get("invariant:" + kind)
+        if (
+            requirement is None
+            or requirement.kind != kind
+            or requirement.policy_role != "invariant"
+        ):
+            return False
+    for table in contract.tables:
+        for i, check in enumerate(table.checks):
+            requirement = requirements.get(f"declared:{table.name}:{i}:{check.type}")
+            if (
+                requirement is None
+                or requirement.kind != check.type
+                or requirement.policy_role != "declared"
+            ):
+                return False
+        for kind in ("missing_keys", "extra_keys", "changed_preserved_rows"):
+            requirement = requirements.get(f"coverage:{table.name}:{kind}")
+            if (
+                requirement is None
+                or requirement.kind != kind
+                or requirement.policy_role != "coverage"
+            ):
+                return False
+    expected = {(w.table, w.column, w.operation) for w in plan.writes}
+    actual = {(c.table, c.column, c.operation) for c in checks.coverage}
+    return (
+        bool(checks.coverage)
+        and actual == expected
+        and all(c.complete and c.rule != "missing" for c in checks.coverage)
+    )
 
 
 def execute_migration(
@@ -298,13 +395,9 @@ def execute_migration(
                 if cur.description:
                     while cur.fetchmany(128):
                         pass
-            if checks_before_commit:
+            if checks_before_commit is not None:
                 checks = checks_before_commit(connection)
-                if (
-                    checks is False
-                    or hasattr(checks, "checks")
-                    and any(c.status != "pass" for c in checks.checks)
-                ):
+                if not _precommit_checks_pass(checks, limits, plan):
                     raise PreflightError("PRECOMMIT_CHECK_FAILED")
             if expired.is_set() or time.monotonic() - start >= limits.max_migration_seconds:
                 raise PreflightError("MIGRATION_DEADLINE_EXCEEDED")

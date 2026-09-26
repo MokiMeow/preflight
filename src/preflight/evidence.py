@@ -154,6 +154,8 @@ def capture_evidence(
     fresh = connection.info.transaction_status == TransactionStatus.IDLE
     if in_transaction and fresh:
         raise PreflightError("EVIDENCE_TRANSACTION_REQUIRED")
+    if not in_transaction and not fresh:
+        raise PreflightError("EVIDENCE_SESSION_NOT_FRESH")
     try:
         if fresh:
             with connection.transaction():
@@ -206,6 +208,29 @@ def compare_evidence(
         if table.name not in before._tables or table.name not in after._tables:
             raise PreflightError("BASELINE_EVIDENCE_MISSING")
         b, a = before._tables[table.name], after._tables[table.name]
+        before_keys, after_keys = b["preserved"].keys(), a["preserved"].keys()
+        counts = {
+            "missing_keys": len(before_keys - after_keys),
+            "extra_keys": len(after_keys - before_keys),
+            "changed_preserved_rows": sum(
+                b["preserved"][key] != a["preserved"][key] for key in before_keys & after_keys
+            ),
+        }
+        for kind, count in counts.items():
+            id = f"coverage:{table.name}:{kind}"
+            requirements.append(
+                Requirement(id=id, kind=kind, table=table.name, policy_role="coverage")
+            )
+            results.append(
+                CheckResult(
+                    id=id,
+                    category=kind,
+                    status="pass" if count == 0 else "fail",
+                    before=0,
+                    after=count,
+                    reason_code="ROW_COMPARISON_FAILED" if count else None,
+                )
+            )
         keys_match = b["preserved"].keys() == a["preserved"].keys()
         pk_pass &= keys_match
         protected_pass &= b["preserved"] == a["preserved"]

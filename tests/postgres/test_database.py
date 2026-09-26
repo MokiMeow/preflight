@@ -8,7 +8,7 @@ from psycopg import sql
 
 from preflight.db import connect_database, execute_migration, validate_catalog
 from preflight.evidence import baseline_matches, capture_evidence, compare_evidence
-from preflight.models import Contract, PreflightError
+from preflight.models import CheckSet, Contract, PreflightError
 from preflight.sql_policy import inspect_sql
 
 pytestmark = pytest.mark.postgres
@@ -274,9 +274,10 @@ def test_tls_hostname_ca_major_and_role(db):
     def connect(host="localhost", ca=cert, user=db.info.user, major=18):
         return connect_database(host, db.info.port, db.info.dbname, user, None, str(ca), major)
 
-    conn = connect()
-    assert conn.pgconn.ssl_in_use
-    conn.close()
+    # This deliberately broad local setup role owns the database, so it is not
+    # eligible as a runtime login even though it has no administrative flags.
+    with pytest.raises(PreflightError, match="DATABASE_RUNTIME_SCOPE_UNSAFE"):
+        connect()
     with pytest.raises(PreflightError, match="DATABASE_CONNECTION_FAILED"):
         connect(host="127.0.0.1")
     with pytest.raises(PreflightError, match="DATABASE_CONNECTION_FAILED"):
@@ -285,6 +286,99 @@ def test_tls_hostname_ca_major_and_role(db):
         connect(major=17)
     with pytest.raises(PreflightError, match="DATABASE_SESSION_UNSAFE"):
         connect(user="postgres")
+
+
+@pytest.mark.parametrize(
+    "definition",
+    [
+        "(email DESC)",
+        "(email ASC NULLS FIRST)",
+        "(email text_pattern_ops)",
+        "(email) NULLS NOT DISTINCT",
+    ],
+)
+def test_index_semantic_drift_changes_schema_root(db, contract, definition):
+    db.execute("CREATE UNIQUE INDEX semantic_email ON public.customers (email)")
+    before = capture_evidence(db, contract)
+    db.execute("DROP INDEX public.semantic_email")
+    db.execute("CREATE UNIQUE INDEX semantic_email ON public.customers " + definition)
+    after = capture_evidence(db, contract)
+    assert before.public.tables[0].preserved_sha256 == after.public.tables[0].preserved_sha256
+    assert before.public.tables[0].schema_sha256 != after.public.tables[0].schema_sha256
+    assert not baseline_matches(before, after)
+
+
+@pytest.mark.parametrize("mode", ["implicit", "READ COMMITTED", "REPEATABLE READ READ WRITE"])
+def test_default_capture_refuses_existing_transaction(db, contract, mode):
+    if mode == "implicit":
+        db.autocommit = False
+        db.execute("SELECT 1")
+    else:
+        db.execute("BEGIN ISOLATION LEVEL " + mode)
+    try:
+        with pytest.raises(PreflightError, match="EVIDENCE_SESSION_NOT_FRESH"):
+            capture_evidence(db, contract)
+        # An explicitly chosen source pre/postcheck transaction remains usable.
+        assert (
+            capture_evidence(db, contract, in_transaction=True).public.tables[0].row_count == 1000
+        )
+    finally:
+        db.execute("ROLLBACK")
+        db.autocommit = True
+    assert capture_evidence(db, contract).public.tables[0].row_count == 1000
+
+
+@pytest.mark.parametrize("capability", ["none", "schema_owner", "schema_create", "database_create"])
+def test_tls_runtime_role_scope_preserves_table_ownership(db, capability):
+    role = "preflight_narrow_" + uuid4().hex[:16]
+    admin = psycopg.connect(
+        host="127.0.0.1", port=db.info.port, dbname=db.info.dbname, user="postgres", autocommit=True
+    )
+    admin.execute(sql.SQL("CREATE ROLE {} LOGIN").format(sql.Identifier(role)))
+    admin.execute(sql.SQL("GRANT USAGE ON SCHEMA public TO {}").format(sql.Identifier(role)))
+    admin.execute(sql.SQL("ALTER TABLE public.customers OWNER TO {}").format(sql.Identifier(role)))
+    try:
+        if capability == "schema_owner":
+            admin.execute(
+                sql.SQL("CREATE SCHEMA runtime_owned AUTHORIZATION {}").format(sql.Identifier(role))
+            )
+        elif capability == "schema_create":
+            admin.execute(
+                sql.SQL("GRANT CREATE ON SCHEMA public TO {}").format(sql.Identifier(role))
+            )
+        elif capability == "database_create":
+            admin.execute(
+                sql.SQL("GRANT CREATE ON DATABASE {} TO {}").format(
+                    sql.Identifier(db.info.dbname), sql.Identifier(role)
+                )
+            )
+        args = (
+            "localhost",
+            db.info.port,
+            db.info.dbname,
+            role,
+            None,
+            os.environ["PREFLIGHT_TEST_PG_CA"],
+        )
+        if capability == "none":
+            connection = connect_database(*args)
+            try:
+                assert connection.pgconn.ssl_in_use
+                connection.execute("ALTER TABLE public.customers ADD COLUMN owned_alter text")
+            finally:
+                connection.close()
+        else:
+            with pytest.raises(PreflightError, match="DATABASE_RUNTIME_SCOPE_UNSAFE"):
+                connect_database(*args)
+    finally:
+        admin.execute(
+            sql.SQL("ALTER TABLE public.customers OWNER TO {}").format(sql.Identifier(db.info.user))
+        )
+        if capability == "schema_owner":
+            admin.execute("DROP SCHEMA runtime_owned")
+        admin.execute(sql.SQL("DROP OWNED BY {}").format(sql.Identifier(role)))
+        admin.execute(sql.SQL("DROP ROLE {}").format(sql.Identifier(role)))
+        admin.close()
 
 
 def test_repeatable_read_snapshot_survives_concurrent_writer(db, contract, monkeypatch):
@@ -510,3 +604,117 @@ def test_non_utf8_session_rejected_before_execution(db, contract):
             execute_migration(db, raw, inspect_sql(raw, contract), contract)
     finally:
         db.execute("SET client_encoding='UTF8'")
+
+
+@pytest.mark.parametrize("value", [None, False, 0, {}, CheckSet(checks=[], requirements=[])])
+def test_precommit_empty_or_implicit_return_rolls_back(db, contract, value):
+    before = capture_evidence(db, contract)
+    raw = script("good")
+    outcome = execute_migration(
+        db, raw, inspect_sql(raw, contract), contract, checks_before_commit=lambda con: value
+    )
+    assert outcome.outcome == "rolled_back"
+    assert outcome.reason_code == "PRECOMMIT_CHECK_FAILED"
+    assert baseline_matches(before, capture_evidence(db, contract))
+
+
+@pytest.mark.parametrize(
+    "corruption",
+    [
+        "duplicate_result",
+        "duplicate_requirement",
+        "missing_result",
+        "kind",
+        "coverage",
+        "core",
+        "mandatory_result",
+        "mandatory_requirement",
+        "coverage_rule",
+    ],
+)
+def test_precommit_typed_manifest_fail_closed(db, contract, corruption):
+    before = capture_evidence(db, contract)
+    raw = script("good")
+    plan = inspect_sql(raw, contract)
+
+    def check(con):
+        checks = compare_evidence(
+            before, capture_evidence(con, contract, in_transaction=True), contract, plan
+        )
+        if corruption == "duplicate_result":
+            checks.checks.append(checks.checks[0])
+        elif corruption == "duplicate_requirement":
+            checks.requirements.append(checks.requirements[0])
+        elif corruption == "missing_result":
+            checks.checks.pop()
+        elif corruption == "kind":
+            checks.checks[0] = checks.checks[0].model_copy(update={"category": "invented"})
+        elif corruption == "coverage":
+            checks.coverage[0] = checks.coverage[0].model_copy(update={"complete": False})
+        elif corruption == "core":
+            checks.checks[:] = [r for r in checks.checks if r.id != "invariant:pk_set_unchanged"]
+            checks.requirements[:] = [
+                r for r in checks.requirements if r.id != "invariant:pk_set_unchanged"
+            ]
+        elif corruption == "mandatory_result":
+            checks.checks[0] = checks.checks[0].model_copy(update={"mandatory": False})
+        elif corruption == "mandatory_requirement":
+            checks.requirements[0] = checks.requirements[0].model_copy(update={"mandatory": False})
+        elif corruption == "coverage_rule":
+            checks.coverage[0] = checks.coverage[0].model_copy(update={"rule": "missing"})
+        return checks
+
+    outcome = execute_migration(db, raw, plan, contract, checks_before_commit=check)
+    assert outcome.outcome == "rolled_back"
+    assert outcome.reason_code == "PRECOMMIT_CHECK_FAILED"
+    assert baseline_matches(before, capture_evidence(db, contract))
+
+
+@pytest.mark.parametrize("mode", ["literal", "typed"])
+def test_precommit_explicit_passing_return_commits(db, contract, mode):
+    before = capture_evidence(db, contract)
+    raw = script("good")
+    plan = inspect_sql(raw, contract)
+
+    def check(con):
+        return (
+            True
+            if mode == "literal"
+            else compare_evidence(
+                before, capture_evidence(con, contract, in_transaction=True), contract, plan
+            )
+        )
+
+    assert (
+        execute_migration(db, raw, plan, contract, checks_before_commit=check).outcome
+        == "committed"
+    )
+
+
+def test_aggregate_missing_extra_and_changed_rows_are_safe_counts(db, contract):
+    before = capture_evidence(db, contract)
+    raw = script("good")
+    plan = inspect_sql(raw, contract)
+    assert execute_migration(db, raw, plan, contract).outcome == "committed"
+    db.execute("UPDATE public.customers SET id=2001 WHERE id=1")
+    db.execute("UPDATE public.customers SET email='changed@example.invalid' WHERE id=2")
+    checks = compare_evidence(before, capture_evidence(db, contract), contract, plan)
+    counts = {
+        r.category: r.after for r in checks.checks if r.id.startswith("coverage:public.customers:")
+    }
+    assert counts == {"missing_keys": 1, "extra_keys": 1, "changed_preserved_rows": 1}
+    assert all(
+        r.before == 0 and r.status == "fail" for r in checks.checks if r.id.startswith("coverage:")
+    )
+    assert all(
+        r.policy_role == "coverage" for r in checks.requirements if r.id.startswith("coverage:")
+    )
+    assert "changed@example.invalid" not in checks.model_dump_json()
+
+
+def test_no_inherit_notnull_constraint_rejected(db, contract):
+    db.execute("ALTER TABLE public.customers ADD COLUMN notes text")
+    db.execute("UPDATE public.customers SET notes='synthetic'")
+    db.execute("ALTER TABLE public.customers ADD CONSTRAINT notes_nn NOT NULL notes NO INHERIT")
+    with pytest.raises(PreflightError, match="UNSUPPORTED_CONSTRAINT"):
+        capture_evidence(db, contract)

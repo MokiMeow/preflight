@@ -24,7 +24,12 @@ def db():
     assert 1024 < int(port) < 65536
     database = "preflight_test_" + uuid4().hex
     admin = psycopg.connect(
-        host="127.0.0.1", port=port, dbname="postgres", user="postgres", autocommit=True
+        host="127.0.0.1",
+        port=port,
+        dbname="postgres",
+        user="postgres",
+        autocommit=True,
+        connect_timeout=5,
     )
     assert admin.info.server_version // 10000 == 18
     role = "preflight_test_owner"
@@ -40,7 +45,7 @@ def db():
         )
     )
     connection = psycopg.connect(
-        host="127.0.0.1", port=port, dbname=database, user=role, autocommit=True
+        host="127.0.0.1", port=port, dbname=database, user=role, autocommit=True, connect_timeout=5
     )
     connection.execute(
         "CREATE TABLE public.customers (id integer PRIMARY KEY, email text NOT NULL, created_at timestamptz NOT NULL)"
