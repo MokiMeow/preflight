@@ -18,6 +18,17 @@ dev = ["pytest>=8,<10", "pytest-asyncio>=1,<2", "ruff>=0.12,<1", "mypy>=1.17,<2"
 [tool.hatch.build.targets.wheel]
 packages = ["src/preflight"]
 
+[tool.hatch.build.targets.sdist]
+skip-excluded-dirs = true
+exclude = ["/.worktrees", "/.venv", "/.venv-clean", "/var", "/dist", "**/node_modules", "**/*.local.json", "**/*.pem", "**/*.key", "**/*.sqlite*", "**/*.log", "/.env"]
+
+[tool.hatch.build.targets.sdist.force-include]
+"evidence/local/verification.json" = "evidence/local/verification.json"
+"evidence/local/pass-mcp-report.json" = "evidence/local/pass-mcp-report.json"
+"evidence/local/pass-mcp-report.md" = "evidence/local/pass-mcp-report.md"
+"evidence/local/block-mcp-report.json" = "evidence/local/block-mcp-report.json"
+"evidence/local/block-mcp-report.md" = "evidence/local/block-mcp-report.md"
+
 [tool.pytest.ini_options]
 testpaths = ["tests"]
 addopts = "--import-mode=importlib"

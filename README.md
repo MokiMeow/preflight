@@ -115,6 +115,8 @@ uv run pytest tests/unit tests/mcp tests/trueforge -q
 uv run pytest tests/cloud -q
 uv run ruff check src scripts tests infra
 uv run mypy src/preflight
+uv build --no-sources
+uv run python scripts/verify_distribution.py
 node scripts/probe_trueforge_package.mjs
 uv run python scripts/probe_trueforge_config.py config/trueforge-agent.example.json --template
 ```

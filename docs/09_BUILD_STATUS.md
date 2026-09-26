@@ -14,6 +14,7 @@
 - Connected run/candidate/resource IDs: NONE. Historical disposable local MCP report IDs/digests are retained in `evidence/local/verification.json`; those test databases were dropped. Live UI probe state is empty, source NONE, cloud/apply disabled.
 - Current irreversible action awaiting a human: NONE.
 - Local handoff: native TrueForge UI remains on loopback port 18790 with `preflight-local-probe` Connected to empty/fail-closed MCP port 18000; zero agent/model/tool/gate calls in that native probe. Disposable PG18 cluster was stopped after all tests; its unexported test log was removed. No AWS cleanup occurred.
+- Distribution gate: explicit source-archive directory exclusion and five individually selected reviewed evidence files; `uv build --no-sources` and `python scripts/verify_distribution.py` passed (130 source members, zero private/worktree artifacts, 17 wheel modules, unchanged PRD). Initial nested worktree `.env.example` inclusion was detected and repaired before handoff.
 
 ## Task ledger
 
