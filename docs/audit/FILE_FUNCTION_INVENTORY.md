@@ -1,6 +1,6 @@
 # First-party file and function inventory
 
-Snapshot: `ac9f5ea770534ecf4f7b7639e6fbd76904e0e16d`. 152 files; 869 declared symbols.
+Snapshot: `83526f6576cc64f4c266cefee5d07012f9483f58`. 179 files; 1036 declared symbols.
 
 Every file below was read as UTF-8 and hashed. JSON and Python were parsed. This inventory is static accounting, not a claim that every branch/function was executed. Private ignored configuration and vendor/runtime directories are excluded. Audit outputs do not hash themselves.
 
@@ -48,7 +48,7 @@ configuration or documented contract. 571 bytes; TEXT_INVENTORIED. SHA-256: `37c
 
 ## .env.example
 
-configuration or documented contract. 685 bytes; TEXT_INVENTORIED. SHA-256: `a2b2334cbbda6df9bc3c164e4d874410dd5e2467ce64070314fa3113c86b4b8a`.
+configuration or documented contract. 747 bytes; TEXT_INVENTORIED. SHA-256: `704edd9c98948e4af8fda8f428caef7ff5d11fcc44c6c57942b0662cde1c6b36`.
 
 ## .gitignore
 
@@ -60,7 +60,7 @@ configuration or documented contract. 5 bytes; TEXT_INVENTORIED. SHA-256: `7b55f
 
 ## AGENTS.md
 
-configuration or documented contract. 4499 bytes; TEXT_INVENTORIED. SHA-256: `e14275631f030d2633e68c4b9014e74c407026c1c9b5fd5ec22d8afa7d312206`.
+configuration or documented contract. 4562 bytes; TEXT_INVENTORIED. SHA-256: `2b9f336cc9add02f00916c21640b0d3a79f3bfd8d1a2971a4300617d1f767cf7`.
 
 ## CLAUDE.md
 
@@ -76,7 +76,7 @@ historical kit metadata; not current implementation evidence. 6528 bytes; JSON_P
 
 ## README.md
 
-configuration or documented contract. 11080 bytes; TEXT_INVENTORIED. SHA-256: `c740c7a4fc2c53209c4c6fed1ae5dc824cbc27cc15fce04a4d75be0df36e5284`.
+configuration or documented contract. 11329 bytes; TEXT_INVENTORIED. SHA-256: `354b4b2253a86251138d23a501e7cc0e53ae5ae481300dc2d7bd070776ba9851`.
 
 ## START_HERE.md
 
@@ -102,6 +102,10 @@ configuration or documented contract. 4691 bytes; JSON_PARSED. SHA-256: `84db978
 
 configuration or documented contract. 4031 bytes; JSON_PARSED. SHA-256: `a7350d234a2fd42c9b55bb3c45eca24f9b4b7eaa24d5a9df200cb61d1c639c9e`.
 
+## config/preflight-agent.yaml
+
+configuration or documented contract. 9581 bytes; TEXT_INVENTORIED. SHA-256: `9933674d4ca3d2e3122f185fce5e1271094eef6c6db9a1ec5804b1e63f524cf7`.
+
 ## config/research-index.json
 
 configuration or documented contract. 27234 bytes; JSON_PARSED. SHA-256: `6d9e54ec9315452da1be4b93cc457de82b61eca98a6a1e122bbd31be2f10b15d`.
@@ -116,15 +120,15 @@ configuration or documented contract. 3901 bytes; JSON_PARSED. SHA-256: `18d240b
 
 ## config/settings.example.json
 
-configuration or documented contract. 724 bytes; JSON_PARSED. SHA-256: `7f8b19a7e6c95dc50079890696c85b2dab574c22d64d3fa1bc55b4d2c63bd4e7`.
+configuration or documented contract. 731 bytes; JSON_PARSED. SHA-256: `06a8382399e4efbf398afa6be6e9d5acc4b18c5e855d3dded1c20c0065dfd047`.
 
 ## config/task-index.json
 
-configuration or documented contract. 67858 bytes; JSON_PARSED. SHA-256: `d5c57f74ecd23f5c8059501e127c5e4ec5b6aa7f0e1e21e8f5345a8c74991727`.
+configuration or documented contract. 67970 bytes; JSON_PARSED. SHA-256: `45956966eb175e0db5c5eb28129af72c98ba79ee672f4aaa9ac4cec183093b88`.
 
 ## config/test-index.json
 
-configuration or documented contract. 37752 bytes; JSON_PARSED. SHA-256: `c8f2224a52bf29439ab50fe6f65a3cde3b0793c5f1071286f09bbbf881177eb2`.
+configuration or documented contract. 37784 bytes; JSON_PARSED. SHA-256: `6f063b888ae08edd50cfa6790625f25c67867e6174d48d5ad68e6b5da04457b0`.
 
 ## config/trueforge-agent.example.json
 
@@ -136,11 +140,11 @@ configuration or documented contract. 225 bytes; JSON_PARSED. SHA-256: `983918df
 
 ## docs/00_PRODUCT_AND_DECISIONS.md
 
-configuration or documented contract. 18944 bytes; TEXT_INVENTORIED. SHA-256: `dc250497aad2b8c5555e5d33d1faf4b4ceef6bf7d8f7f9f4a40118048d6eded7`.
+configuration or documented contract. 20486 bytes; TEXT_INVENTORIED. SHA-256: `23fedbab6c2f131d777c44697404696230f9fff744332fd6bedb75b9a43cbc4d`.
 
 ## docs/01_ARCHITECTURE.md
 
-configuration or documented contract. 20475 bytes; TEXT_INVENTORIED. SHA-256: `dc3b7ee90b4c319c9e817a3690b12ca124eee9c6b214644e5a9fdae8be251e03`.
+configuration or documented contract. 20829 bytes; TEXT_INVENTORIED. SHA-256: `60e5179ed5ba697f705dd37daf2a1072e128f2567d654738704c3bff9586a75c`.
 
 ## docs/02_CONTRACTS_AND_SAFETY.md
 
@@ -148,23 +152,23 @@ configuration or documented contract. 40735 bytes; TEXT_INVENTORIED. SHA-256: `6
 
 ## docs/03_BUILD_PLAN.md
 
-configuration or documented contract. 54399 bytes; TEXT_INVENTORIED. SHA-256: `63cc7ed915f2c4a57d2b45848b53b267ef7999f65bb3be5d5acdec822a528179`.
+configuration or documented contract. 54817 bytes; TEXT_INVENTORIED. SHA-256: `79ba58056f4c2262b47d6c7caa2498a410208fd0f88a34a0a0b5ce389e5c7be9`.
 
 ## docs/04_CLOUD_RUNBOOK.md
 
-configuration or documented contract. 22770 bytes; TEXT_INVENTORIED. SHA-256: `8d5db5c11f76c6d856e7a69846d5350948b799ab59dfa58d09b5428030a7d15e`.
+configuration or documented contract. 23204 bytes; TEXT_INVENTORIED. SHA-256: `055a10795303a48634128839d14b30f8dd921e4af5f4256956a5b1db6102017f`.
 
 ## docs/05_TRUEFORGE_AGENT.md
 
-configuration or documented contract. 19885 bytes; TEXT_INVENTORIED. SHA-256: `94768c143f1e9c6f35ac3b73d400f4fbd96fbdcd9f31656b9949ef1b897985d7`.
+configuration or documented contract. 21352 bytes; TEXT_INVENTORIED. SHA-256: `bcb4661cfa37c88bbd09abd0b7da110b3c2f2fe5d1f13efdd00c325568be1409`.
 
 ## docs/06_TEST_AND_EVIDENCE.md
 
-configuration or documented contract. 29412 bytes; TEXT_INVENTORIED. SHA-256: `3e7288c6b693981aac8e183e43f506a170d1837c7bbb5682225f486cb6ef440e`.
+configuration or documented contract. 29766 bytes; TEXT_INVENTORIED. SHA-256: `68c7f1037ef3039179fafc76b6b269f5578b0bca7bdfc8f18a24370f16cade33`.
 
 ## docs/07_DEMO_AND_SUBMISSION.md
 
-configuration or documented contract. 22719 bytes; TEXT_INVENTORIED. SHA-256: `42b7bb5c7922a1b03647500a807504137a2fe6c76ec548563afc0a7d7ca6b5eb`.
+configuration or documented contract. 23121 bytes; TEXT_INVENTORIED. SHA-256: `16f1322d23475a5342828bb6189aea34d4dfd10847f42d0a4a11ef8f275f7828`.
 
 ## docs/08_RESEARCH.md
 
@@ -172,15 +176,83 @@ configuration or documented contract. 25654 bytes; TEXT_INVENTORIED. SHA-256: `d
 
 ## docs/09_BUILD_STATUS.md
 
-configuration or documented contract. 25274 bytes; TEXT_INVENTORIED. SHA-256: `f34434f91264eab7ecb555aa3992375d5e445a13d23747a63d4ce7707b6f2666`.
+configuration or documented contract. 26346 bytes; TEXT_INVENTORIED. SHA-256: `1d3f6da3a9866a70e9202aa1852439afc4616a9bf7048a68e20acc5182a6b947`.
 
 ## docs/10_CODEX_OPERATING_SYSTEM.md
 
-configuration or documented contract. 21416 bytes; TEXT_INVENTORIED. SHA-256: `4efe513b5cebc7dc5a7ab851a9fc27500510d09c0eae05e35bba9c9ef9a6c4ed`.
+configuration or documented contract. 21770 bytes; TEXT_INVENTORIED. SHA-256: `6028fc0b48d7787ac9f4943eafafdbda8a57a7e84f697865cd0d7427be22d31c`.
 
 ## docs/11_PROJECT_AUDIT.md
 
 configuration or documented contract. 17650 bytes; TEXT_INVENTORIED. SHA-256: `d38f5f9b4751d8b5a5e660fcddf56fad911dd72df78fab937f698b5d0d7ec0d5`.
+
+## docs/audit/CONTINUATION_REPORT.md
+
+configuration or documented contract. 11486 bytes; TEXT_INVENTORIED. SHA-256: `1f639386535b21aa6f0200e6522bb933fb133688a06204f619a98d2c3550f544`.
+
+## docs/audit/DB_SCENARIO_RECHECK.md
+
+configuration or documented contract. 23216 bytes; TEXT_INVENTORIED. SHA-256: `87033807bc4f3d56b05a20aafab51a49806d22d5ed9cee4e89c2b34c4fd75c3b`.
+
+## docs/audit/INTEGRATION_SCENARIO_RECHECK.md
+
+configuration or documented contract. 4331 bytes; TEXT_INVENTORIED. SHA-256: `5b29ab19860504a5d6eccde9a44989accd9639214b5f3a00e89ca46c8663b4d9`.
+
+## docs/audit/LOCAL_SANDBOX_CONTINUATION_REPORT.md
+
+configuration or documented contract. 23855 bytes; TEXT_INVENTORIED. SHA-256: `b15ccc643f3544e9cd6fc350d0bae523b47ce3db50223dec01be89dbd380c501`.
+
+## docs/audit/SCENARIO_MATRIX.md
+
+configuration or documented contract. 83813 bytes; TEXT_INVENTORIED. SHA-256: `723e795a77a2bc4dafa5a7d555e86974bfc67b2768c71685a1c3cf50bff045b8`.
+
+## docs/audit/TASK_MATRIX.md
+
+configuration or documented contract. 58270 bytes; TEXT_INVENTORIED. SHA-256: `a05f7ee7e7758fdb67c4eeeab02cb50ef83205ca6ac9f4374158f5c299503c4a`.
+
+## docs/audit/continuation-distribution.json
+
+configuration or documented contract. 1690 bytes; JSON_PARSED. SHA-256: `01d558779cf7822ace2b121567c5ac5c95290164ff5e4d5ce3946238ab0520a6`.
+
+## docs/audit/continuation-verification.json
+
+configuration or documented contract. 1562 bytes; JSON_PARSED. SHA-256: `9dc270d2ac4d0c2bc8a6cfcb5e6427aa081b722e113b5062975dfefd7bbb7d69`.
+
+## docs/audit/distribution.json
+
+configuration or documented contract. 2249 bytes; JSON_PARSED. SHA-256: `450d2ca911f460322449c51510f1d6e9db0fabf0b330ce6a944005c58f231526`.
+
+## docs/audit/function-call-observations.json
+
+configuration or documented contract. 32584 bytes; JSON_PARSED. SHA-256: `b6aa8b17d13077a73a15757ba89c7a37f330880cc997815da2406d6f08173dd1`.
+
+## docs/audit/local-sandbox-verification.json
+
+configuration or documented contract. 3463 bytes; JSON_PARSED. SHA-256: `c5ef9780283a058bbfd30d7aff23d93d8e84d4df2d5e0fafcb65fdb6b4c38f2a`.
+
+## docs/audit/review-notes.json
+
+configuration or documented contract. 184627 bytes; JSON_PARSED. SHA-256: `a2d29b12716fe0510bd26c67eb949da21437f719656a5c3dcecc91f683845a22`.
+
+## docs/audit/scenario-matrix.json
+
+configuration or documented contract. 132955 bytes; JSON_PARSED. SHA-256: `41e500dfdfa2ee19884e5738928405f10a40195d9d4d9a7f88541ed22c6823e4`.
+
+## docs/audit/task-matrix.json
+
+configuration or documented contract. 71252 bytes; JSON_PARSED. SHA-256: `84625e6c81611be4dc4b0a1888df282e09809932e651679f0f8065eba4f8f874`.
+
+## docs/audit/verification.json
+
+configuration or documented contract. 34099 bytes; JSON_PARSED. SHA-256: `4e51166cfc9dbbf6007b21363b863abbfc52f26d793d5b0f4ea08ccdf4b142c9`.
+
+## evidence/connected/cleanup-approval-request.json
+
+local historical report; not AWS/human proof. 1292 bytes; JSON_PARSED. SHA-256: `9393ba2d75dce99219d43f00be045321a0c5ccf4c8a78efbac958353c4d34ab5`.
+
+## evidence/connected/local-sandbox-canaries.json
+
+local historical report; not AWS/human proof. 2176 bytes; JSON_PARSED. SHA-256: `7ffb3956f0ea54ff249d6633cbb0c534d72571303ca4b1224631e0b9cd50f71f`.
 
 ## evidence/connected/native-compatibility.json
 
@@ -193,6 +265,10 @@ local historical report; not AWS/human proof. 1770 bytes; JSON_PARSED. SHA-256: 
 ## evidence/connected/postdeployment-source-status.json
 
 local historical report; not AWS/human proof. 1737 bytes; JSON_PARSED. SHA-256: `d8450e439e9f0ff360b4d800c141312bf7e36784a31060b5b5d6998e43d3210e`.
+
+## evidence/connected/saved-agent-code-mode.json
+
+local historical report; not AWS/human proof. 2162 bytes; JSON_PARSED. SHA-256: `7e1a528657cf23bf9f56ad3999b58c2593ecfee215d9ccf51d6f9e72fca8f1ad`.
 
 ## evidence/local/block-mcp-report.json
 
@@ -329,7 +405,7 @@ configuration or documented contract. 6296 bytes; TEXT_INVENTORIED. SHA-256: `87
 
 ## integration/DEPLOYMENT.md
 
-configuration or documented contract. 13079 bytes; TEXT_INVENTORIED. SHA-256: `c462cc4e80131f4d9f4cec19346e19d768267ddb24e056dcdab158fda88169f8`.
+configuration or documented contract. 17878 bytes; TEXT_INVENTORIED. SHA-256: `46201bb559fb1af9dc2052b4b56e4ba24d830048a67e26993cdce0bf3aa94167`.
 
 ## integration/THIRD_PARTY_NOTICES.md
 
@@ -361,38 +437,39 @@ immutable source requirement. 45711 bytes; TEXT_INVENTORIED. SHA-256: `5f607b53b
 
 ## scripts/configure_trueforge_host.py
 
-probe/build/audit tooling. 16901 bytes; PYTHON_AST_PARSED. SHA-256: `42d722a34215cfa0da6c50627fb71f60a257f6637dfbfeb670409ac947e132ec`.
+probe/build/audit tooling. 19615 bytes; PYTHON_AST_PARSED. SHA-256: `dfd8ded8c6c3a848e4f0488937f9f10b3e211dfb2818f04bf118c5978fb42dba`.
 
 | Symbol | Line | Purpose | Unit/cloud calls at older commit | Review test references |
 |---|---:|---|---:|---|
-| `BootstrapError` (class) | 46 | A fixed, credential-safe bootstrap failure. | 0 | No standalone mapping; see scenario matrix |
-| `BootstrapError.__init__` (function) | 49 | init | 0 | No standalone mapping; see scenario matrix |
-| `_NoRedirectHandler` (class) | 57 | NoRedirectHandler | 0 | No standalone mapping; see scenario matrix |
-| `_NoRedirectHandler.redirect_request` (function) | 58 | redirect request | 0 | No standalone mapping; see scenario matrix |
-| `_reject_duplicate_keys` (function) | 62 | reject duplicate keys | 0 | No standalone mapping; see scenario matrix |
-| `_load_json` (function) | 71 | load json | 0 | No standalone mapping; see scenario matrix |
-| `_read_secret` (function) | 92 | read secret | 0 | No standalone mapping; see scenario matrix |
-| `_validate_trueforge_url` (function) | 111 | validate trueforge url | 0 | No standalone mapping; see scenario matrix |
-| `_agent_payload` (function) | 127 | agent payload | 0 | No standalone mapping; see scenario matrix |
-| `TrueForgeClient` (class) | 162 | TrueForgeClient | 0 | No standalone mapping; see scenario matrix |
-| `TrueForgeClient.__init__` (function) | 163 | init | 0 | No standalone mapping; see scenario matrix |
-| `TrueForgeClient.request` (function) | 170 | request | 0 | No standalone mapping; see scenario matrix |
-| `_provider_body` (function) | 209 | provider body | 0 | No standalone mapping; see scenario matrix |
-| `_mcp_body` (function) | 226 | mcp body | 0 | No standalone mapping; see scenario matrix |
-| `_sandbox_body` (function) | 237 | sandbox body | 0 | No standalone mapping; see scenario matrix |
-| `_verify_tools` (function) | 250 | verify tools | 0 | No standalone mapping; see scenario matrix |
-| `_save_agent` (function) | 263 | save agent | 0 | No standalone mapping; see scenario matrix |
-| `_step` (function) | 291 | step | 0 | No standalone mapping; see scenario matrix |
-| `_plan` (function) | 300 | plan | 0 | No standalone mapping; see scenario matrix |
-| `execute` (function) | 330 | execute | 0 | No standalone mapping; see scenario matrix |
-| `execute.<lambda@346:12>` (lambda) | 346 | Anonymous callback/expression; inspect its enclosing function and scenario tests. | 0 | No standalone mapping; see scenario matrix |
-| `execute.<lambda@354:8>` (lambda) | 354 | Anonymous callback/expression; inspect its enclosing function and scenario tests. | 0 | No standalone mapping; see scenario matrix |
-| `execute.<lambda@362:8>` (lambda) | 362 | Anonymous callback/expression; inspect its enclosing function and scenario tests. | 0 | No standalone mapping; see scenario matrix |
-| `execute.<lambda@368:8>` (lambda) | 368 | Anonymous callback/expression; inspect its enclosing function and scenario tests. | 0 | No standalone mapping; see scenario matrix |
-| `execute.<lambda@370:40>` (lambda) | 370 | Anonymous callback/expression; inspect its enclosing function and scenario tests. | 0 | No standalone mapping; see scenario matrix |
-| `execute.<lambda@388:28>` (lambda) | 388 | Anonymous callback/expression; inspect its enclosing function and scenario tests. | 0 | No standalone mapping; see scenario matrix |
-| `parse_args` (function) | 407 | parse args | 0 | No standalone mapping; see scenario matrix |
-| `main` (function) | 428 | main | 0 | No standalone mapping; see scenario matrix |
+| `BootstrapError` (class) | 67 | A fixed, credential-safe bootstrap failure. | 0 | No standalone mapping; see scenario matrix |
+| `BootstrapError.__init__` (function) | 70 | init | 0 | No standalone mapping; see scenario matrix |
+| `_NoRedirectHandler` (class) | 78 | NoRedirectHandler | 0 | No standalone mapping; see scenario matrix |
+| `_NoRedirectHandler.redirect_request` (function) | 79 | redirect request | 0 | No standalone mapping; see scenario matrix |
+| `_reject_duplicate_keys` (function) | 83 | reject duplicate keys | 0 | No standalone mapping; see scenario matrix |
+| `_load_json` (function) | 92 | load json | 0 | No standalone mapping; see scenario matrix |
+| `_read_secret` (function) | 113 | read secret | 0 | No standalone mapping; see scenario matrix |
+| `_validate_trueforge_url` (function) | 132 | validate trueforge url | 0 | No standalone mapping; see scenario matrix |
+| `_agent_payload` (function) | 148 | agent payload | 0 | No standalone mapping; see scenario matrix |
+| `TrueForgeClient` (class) | 188 | TrueForgeClient | 0 | No standalone mapping; see scenario matrix |
+| `TrueForgeClient.__init__` (function) | 189 | init | 0 | No standalone mapping; see scenario matrix |
+| `TrueForgeClient.request` (function) | 196 | request | 0 | No standalone mapping; see scenario matrix |
+| `_provider_body` (function) | 235 | provider body | 0 | No standalone mapping; see scenario matrix |
+| `_mcp_body` (function) | 252 | mcp body | 0 | No standalone mapping; see scenario matrix |
+| `_verify_tools` (function) | 263 | verify tools | 0 | No standalone mapping; see scenario matrix |
+| `_save_agent` (function) | 276 | save agent | 0 | No standalone mapping; see scenario matrix |
+| `_step` (function) | 304 | step | 0 | No standalone mapping; see scenario matrix |
+| `_verify_local_sandbox_patch` (function) | 313 | verify local sandbox patch | 0 | No standalone mapping; see scenario matrix |
+| `_verify_local_sandbox` (function) | 331 | verify local sandbox | 0 | No standalone mapping; see scenario matrix |
+| `_plan` (function) | 352 | plan | 0 | No standalone mapping; see scenario matrix |
+| `execute` (function) | 385 | execute | 0 | No standalone mapping; see scenario matrix |
+| `execute.<lambda@396:12>` (lambda) | 396 | Anonymous callback/expression; inspect its enclosing function and scenario tests. | 0 | No standalone mapping; see scenario matrix |
+| `execute.<lambda@402:8>` (lambda) | 402 | Anonymous callback/expression; inspect its enclosing function and scenario tests. | 0 | No standalone mapping; see scenario matrix |
+| `execute.<lambda@410:8>` (lambda) | 410 | Anonymous callback/expression; inspect its enclosing function and scenario tests. | 0 | No standalone mapping; see scenario matrix |
+| `execute.<lambda@416:8>` (lambda) | 416 | Anonymous callback/expression; inspect its enclosing function and scenario tests. | 0 | No standalone mapping; see scenario matrix |
+| `execute.<lambda@418:40>` (lambda) | 418 | Anonymous callback/expression; inspect its enclosing function and scenario tests. | 0 | No standalone mapping; see scenario matrix |
+| `execute.<lambda@439:28>` (lambda) | 439 | Anonymous callback/expression; inspect its enclosing function and scenario tests. | 0 | No standalone mapping; see scenario matrix |
+| `parse_args` (function) | 459 | parse args | 0 | No standalone mapping; see scenario matrix |
+| `main` (function) | 480 | main | 0 | No standalone mapping; see scenario matrix |
 
 ## scripts/generate_dependency_inventory.py
 
@@ -410,7 +487,7 @@ probe/build/audit tooling. 6071 bytes; PYTHON_AST_PARSED. SHA-256: `7c39e2d8e09e
 
 ## scripts/generate_project_audit.py
 
-probe/build/audit tooling. 12613 bytes; PYTHON_AST_PARSED. SHA-256: `8c0c3d9a7cb351bee1b43963adcaacd243d11ac1bdca65a1195441fe5b36ccf2`.
+probe/build/audit tooling. 12675 bytes; PYTHON_AST_PARSED. SHA-256: `ab022758b6b160ec4b3a5280ccaa4cb88fcbcabde9361e7a78337a918cb4e790`.
 
 | Symbol | Line | Purpose | Unit/cloud calls at older commit | Review test references |
 |---|---:|---|---:|---|
@@ -418,6 +495,25 @@ probe/build/audit tooling. 12613 bytes; PYTHON_AST_PARSED. SHA-256: `8c0c3d9a7cb
 | `main` (function) | 28 | main | 0 | No standalone mapping; see scenario matrix |
 | `main.walk` (function) | 83 | walk | 0 | No standalone mapping; see scenario matrix |
 | `main.walk_js` (function) | 129 | walk js | 0 | No standalone mapping; see scenario matrix |
+
+## scripts/patch_trueforge_local_sandbox.py
+
+probe/build/audit tooling. 11700 bytes; PYTHON_AST_PARSED. SHA-256: `bcd7e9db3820fc7ffefa47426a9a162e0e1183a439e53e34c378f2b37e135850`.
+
+| Symbol | Line | Purpose | Unit/cloud calls at older commit | Review test references |
+|---|---:|---|---:|---|
+| `PatchError` (class) | 34 | A stable patch refusal without file contents. | 0 | No standalone mapping; see scenario matrix |
+| `Target` (class) | 39 | Target | 0 | No standalone mapping; see scenario matrix |
+| `_sha256` (function) | 184 | sha256 | 0 | No standalone mapping; see scenario matrix |
+| `_core_path` (function) | 188 | core path | 0 | No standalone mapping; see scenario matrix |
+| `_targets` (function) | 196 | targets | 0 | No standalone mapping; see scenario matrix |
+| `_transform` (function) | 223 | transform | 0 | No standalone mapping; see scenario matrix |
+| `_read_regular_file` (function) | 233 | read regular file | 0 | No standalone mapping; see scenario matrix |
+| `_prepare` (function) | 246 | prepare | 0 | No standalone mapping; see scenario matrix |
+| `_write_atomic` (function) | 262 | write atomic | 0 | No standalone mapping; see scenario matrix |
+| `run` (function) | 279 | run | 0 | No standalone mapping; see scenario matrix |
+| `parse_args` (function) | 311 | parse args | 0 | No standalone mapping; see scenario matrix |
+| `main` (function) | 318 | main | 0 | No standalone mapping; see scenario matrix |
 
 ## scripts/probe_gateway_responses.mjs
 
@@ -459,6 +555,48 @@ probe/build/audit tooling. 4837 bytes; PYTHON_AST_PARSED. SHA-256: `3122a2d0dc97
 | `validate_agent_config` (function) | 36 | validate agent config | 0 | No standalone mapping; see scenario matrix |
 | `main` (function) | 105 | main | 0 | No standalone mapping; see scenario matrix |
 
+## scripts/probe_trueforge_local_sandbox.mjs
+
+probe/build/audit tooling. 11115 bytes; JAVASCRIPT_SYNTAX_TREE_PARSED. SHA-256: `8edc43b92af4d0986bb2ec1864707eacf3f10f37662fc790041766e2bf821b72`.
+
+| Symbol | Line | Purpose | Unit/cloud calls at older commit | Review test references |
+|---|---:|---|---:|---|
+| `<anonymous@34:70>` (javascript arrow_function) | 34 | Anonymous callback; inspect enclosing definition. | 0 | No standalone mapping; see scenario matrix |
+| `child` (javascript method_definition) | 41 | child | 0 | No standalone mapping; see scenario matrix |
+| `info` (javascript method_definition) | 41 | info | 0 | No standalone mapping; see scenario matrix |
+| `warn` (javascript method_definition) | 41 | warn | 0 | No standalone mapping; see scenario matrix |
+| `error` (javascript method_definition) | 41 | error | 0 | No standalone mapping; see scenario matrix |
+| `debug` (javascript method_definition) | 41 | debug | 0 | No standalone mapping; see scenario matrix |
+| `listen` (javascript function_declaration) | 43 | listen | 0 | No standalone mapping; see scenario matrix |
+| `listen.<anonymous@44:57>` (javascript arrow_function) | 44 | Anonymous callback; inspect enclosing definition. | 0 | No standalone mapping; see scenario matrix |
+| `listen.<anonymous@44:57>.<anonymous@45:23>` (javascript arrow_function) | 45 | Anonymous callback; inspect enclosing definition. | 0 | No standalone mapping; see scenario matrix |
+| `listen.<anonymous@44:57>.<anonymous@46:22>` (javascript arrow_function) | 46 | Anonymous callback; inspect enclosing definition. | 0 | No standalone mapping; see scenario matrix |
+| `listen.<anonymous@44:57>.<anonymous@47:21>` (javascript arrow_function) | 47 | Anonymous callback; inspect enclosing definition. | 0 | No standalone mapping; see scenario matrix |
+| `listen.<anonymous@49:20>` (javascript arrow_function) | 49 | Anonymous callback; inspect enclosing definition. | 0 | No standalone mapping; see scenario matrix |
+| `reachable` (javascript function_declaration) | 57 | reachable | 0 | No standalone mapping; see scenario matrix |
+| `reachable.<anonymous@58:27>` (javascript arrow_function) | 58 | Anonymous callback; inspect enclosing definition. | 0 | No standalone mapping; see scenario matrix |
+| `reachable.<anonymous@58:27>.finish` (javascript arrow_function) | 60 | finish | 0 | No standalone mapping; see scenario matrix |
+| `reachable.<anonymous@58:27>.<anonymous@61:28>` (javascript arrow_function) | 61 | Anonymous callback; inspect enclosing definition. | 0 | No standalone mapping; see scenario matrix |
+| `reachable.<anonymous@58:27>.<anonymous@62:27>` (javascript arrow_function) | 62 | Anonymous callback; inspect enclosing definition. | 0 | No standalone mapping; see scenario matrix |
+| `reachable.<anonymous@58:27>.<anonymous@63:25>` (javascript arrow_function) | 63 | Anonymous callback; inspect enclosing definition. | 0 | No standalone mapping; see scenario matrix |
+| `python` (javascript function_declaration) | 67 | python | 0 | No standalone mapping; see scenario matrix |
+| `run` (javascript function_declaration) | 71 | run | 0 | No standalone mapping; see scenario matrix |
+| `<anonymous@93:31>` (javascript arrow_function) | 93 | Anonymous callback; inspect enclosing definition. | 0 | No standalone mapping; see scenario matrix |
+| `<anonymous@93:31>.<anonymous@94:23>` (javascript arrow_function) | 94 | Anonymous callback; inspect enclosing definition. | 0 | No standalone mapping; see scenario matrix |
+| `<anonymous@97:20>` (javascript arrow_function) | 97 | Anonymous callback; inspect enclosing definition. | 0 | No standalone mapping; see scenario matrix |
+| `<anonymous@108:64>` (javascript arrow_function) | 108 | Anonymous callback; inspect enclosing definition. | 0 | No standalone mapping; see scenario matrix |
+| `<anonymous@177:62>` (javascript arrow_function) | 177 | Anonymous callback; inspect enclosing definition. | 0 | No standalone mapping; see scenario matrix |
+| `<anonymous@178:43>` (javascript arrow_function) | 178 | Anonymous callback; inspect enclosing definition. | 0 | No standalone mapping; see scenario matrix |
+| `<anonymous@181:48>` (javascript arrow_function) | 181 | Anonymous callback; inspect enclosing definition. | 0 | No standalone mapping; see scenario matrix |
+| `<anonymous@191:69>` (javascript arrow_function) | 191 | Anonymous callback; inspect enclosing definition. | 0 | No standalone mapping; see scenario matrix |
+| `<anonymous@191:82>` (javascript arrow_function) | 191 | Anonymous callback; inspect enclosing definition. | 0 | No standalone mapping; see scenario matrix |
+| `<anonymous@210:20>` (javascript arrow_function) | 210 | Anonymous callback; inspect enclosing definition. | 0 | No standalone mapping; see scenario matrix |
+| `<anonymous@211:66>` (javascript arrow_function) | 211 | Anonymous callback; inspect enclosing definition. | 0 | No standalone mapping; see scenario matrix |
+| `<anonymous@211:79>` (javascript arrow_function) | 211 | Anonymous callback; inspect enclosing definition. | 0 | No standalone mapping; see scenario matrix |
+| `<anonymous@219:50>` (javascript arrow_function) | 219 | Anonymous callback; inspect enclosing definition. | 0 | No standalone mapping; see scenario matrix |
+| `<anonymous@220:76>` (javascript arrow_function) | 220 | Anonymous callback; inspect enclosing definition. | 0 | No standalone mapping; see scenario matrix |
+| `<anonymous@221:67>` (javascript arrow_function) | 221 | Anonymous callback; inspect enclosing definition. | 0 | No standalone mapping; see scenario matrix |
+
 ## scripts/probe_trueforge_mcp_client.mjs
 
 probe/build/audit tooling. 1492 bytes; JAVASCRIPT_SYNTAX_TREE_PARSED. SHA-256: `b58644f55e539bf7e3cef9789435bc55c826f58ce1463ddfb318f9190c70a10f`.
@@ -481,6 +619,21 @@ probe/build/audit tooling. 789 bytes; PYTHON_AST_PARSED. SHA-256: `9ff4d034262fd
 
 probe/build/audit tooling. 1069 bytes; JAVASCRIPT_SYNTAX_TREE_PARSED. SHA-256: `b230429bff3f5d3eea2d7f9b1b1f28dafbf1969dcdf903382c395cb33d4b104b`.
 
+## scripts/publish_preflight_budget.py
+
+probe/build/audit tooling. 13169 bytes; PYTHON_AST_PARSED. SHA-256: `c348ea48ed040beb69af5f2e0f6cd313e53ea9164a6f7a08d06a512036aca618`.
+
+| Symbol | Line | Purpose | Unit/cloud calls at older commit | Review test references |
+|---|---:|---|---:|---|
+| `_refuse` (function) | 31 | refuse | 0 | No standalone mapping; see scenario matrix |
+| `_amount` (function) | 35 | amount | 0 | No standalone mapping; see scenario matrix |
+| `_time` (function) | 47 | time | 0 | No standalone mapping; see scenario matrix |
+| `validate_operator_config` (function) | 57 | Validate attestations, never claim they are provider-measured guarantees. | 0 | No standalone mapping; see scenario matrix |
+| `read_protected_config` (function) | 139 | OS boundary: root only, no symlinks, no writable ancestor or config. | 0 | No standalone mapping; see scenario matrix |
+| `prepare_ledger_writer` (function) | 163 | Use the runtime-created private ledger as its existing service account. | 0 | No standalone mapping; see scenario matrix |
+| `publish` (function) | 197 | Fetch whole-account costs; create/update ledger ONLY after all checks. | 0 | No standalone mapping; see scenario matrix |
+| `main` (function) | 300 | main | 0 | No standalone mapping; see scenario matrix |
+
 ## scripts/responses_stream_state.mjs
 
 probe/build/audit tooling. 5703 bytes; JAVASCRIPT_SYNTAX_TREE_PARSED. SHA-256: `13810b9553e4faff97dbf1b98b625aa42ee8e4210e5bcb16d0ac3a4b7dd3ac5b`.
@@ -502,7 +655,7 @@ probe/build/audit tooling. 5703 bytes; JAVASCRIPT_SYNTAX_TREE_PARSED. SHA-256: `
 
 ## scripts/verify_distribution.py
 
-probe/build/audit tooling. 3765 bytes; PYTHON_AST_PARSED. SHA-256: `2a30f3ffb4b08b3dc9fb3ea1ae6453c35180b838bb28338ea5646cc9fbc713ba`.
+probe/build/audit tooling. 3765 bytes; PYTHON_AST_PARSED. SHA-256: `979be3c230a0197d6b137e460e6b83938160469952736f4a2272ee475b51e2e8`.
 
 | Symbol | Line | Purpose | Unit/cloud calls at older commit | Review test references |
 |---|---:|---|---:|---|
@@ -535,7 +688,7 @@ implementation. 3492 bytes; PYTHON_AST_PARSED. SHA-256: `672980417b293f7d160e95d
 
 ## src/preflight/aws_rds.py
 
-implementation. 34876 bytes; PYTHON_AST_PARSED. SHA-256: `682c699924b4ce0acdb0e03f40182afb7bd27aa98b0a1ee228273444cf850248`.
+implementation. 35314 bytes; PYTHON_AST_PARSED. SHA-256: `f5ad04e5215319690f1d0fa4c2a81338c2b9162f7f5d31c0c2767ca367f24b7b`.
 
 | Symbol | Line | Purpose | Unit/cloud calls at older commit | Review test references |
 |---|---:|---|---:|---|
@@ -546,31 +699,55 @@ implementation. 34876 bytes; PYTHON_AST_PARSED. SHA-256: `682c699924b4ce0acdb0e0
 | `CleanupPolicy` (class) | 80 | Server-only inputs computed under the lead's exclusive run CAS lock. | 1 | No standalone mapping; see scenario matrix |
 | `RdsAdapter` (class) | 100 | RdsAdapter | 1 | No standalone mapping; see scenario matrix |
 | `RdsAdapter.__init__` (function) | 103 | init | 49 | test_rds.py; test_rds_reconciliation.py; test_inventory.py; test_storage.py |
-| `RdsAdapter._resource_registry` (function) | 121 | resource registry | 15 | test_rds.py; test_rds_reconciliation.py; test_inventory.py; test_storage.py |
-| `RdsAdapter.owned_resource_inventory` (function) | 138 | Doctor metadata only: paginated owned tags plus fresh exact-resource reads. | 12 | test_rds.py; test_rds_reconciliation.py; test_inventory.py; test_storage.py |
-| `RdsAdapter.owned_resource_inventory.<lambda@263:27>` (lambda) | 263 | Anonymous callback/expression; inspect its enclosing function and scenario tests. | 0 | No standalone mapping; see scenario matrix |
-| `RdsAdapter.owned_resource_inventory.<lambda@267:70>` (lambda) | 267 | Anonymous callback/expression; inspect its enclosing function and scenario tests. | 0 | No standalone mapping; see scenario matrix |
-| `RdsAdapter._enforce_live_inventory` (function) | 277 | enforce live inventory | 8 | test_rds.py; test_rds_reconciliation.py; test_inventory.py; test_storage.py |
-| `RdsAdapter._call` (function) | 302 | call | 227 | test_rds.py; test_rds_reconciliation.py; test_inventory.py; test_storage.py |
-| `RdsAdapter._identity` (function) | 331 | identity | 84 | test_rds.py; test_rds_reconciliation.py; test_inventory.py; test_storage.py |
-| `RdsAdapter._arn` (function) | 336 | arn | 65 | test_rds.py; test_rds_reconciliation.py; test_inventory.py; test_storage.py |
-| `RdsAdapter._tags` (function) | 344 | tags | 51 | test_rds.py; test_rds_reconciliation.py; test_inventory.py; test_storage.py |
-| `RdsAdapter._owned` (function) | 352 | owned | 15 | test_rds.py; test_rds_reconciliation.py; test_inventory.py; test_storage.py |
-| `RdsAdapter._intent` (function) | 357 | intent | 79 | test_rds.py; test_rds_reconciliation.py; test_inventory.py; test_storage.py |
-| `RdsAdapter._engine_encryption` (function) | 377 | engine encryption | 56 | test_rds.py; test_rds_reconciliation.py; test_inventory.py; test_storage.py |
-| `RdsAdapter._instance` (function) | 394 | instance | 48 | test_rds.py; test_rds_reconciliation.py; test_inventory.py; test_storage.py |
-| `RdsAdapter._observation` (function) | 412 | observation | 40 | test_rds.py; test_rds_reconciliation.py; test_inventory.py; test_storage.py |
-| `RdsAdapter.inspect_source` (function) | 450 | inspect source | 36 | test_rds.py; test_rds_reconciliation.py; test_inventory.py; test_storage.py |
-| `RdsAdapter._automatic_source_backup` (function) | 467 | Observe only AWS-managed backups of the exact source, never run resources. | 0 | No standalone mapping; see scenario matrix |
-| `RdsAdapter._snapshot` (function) | 510 | snapshot | 26 | test_rds.py; test_rds_reconciliation.py; test_inventory.py; test_storage.py |
-| `RdsAdapter.inspect_snapshot` (function) | 524 | inspect snapshot | 19 | test_rds.py; test_rds_reconciliation.py; test_inventory.py; test_storage.py |
-| `RdsAdapter.inspect_clone` (function) | 531 | inspect clone | 12 | test_rds.py; test_rds_reconciliation.py; test_inventory.py; test_storage.py |
-| `RdsAdapter._creation` (function) | 560 | creation | 13 | test_rds.py; test_rds_reconciliation.py; test_inventory.py; test_storage.py |
-| `RdsAdapter.ensure_snapshot` (function) | 567 | ensure snapshot | 9 | test_rds.py; test_rds_reconciliation.py; test_inventory.py; test_storage.py |
-| `RdsAdapter.ensure_clone` (function) | 595 | ensure clone | 4 | test_rds.py; test_rds_reconciliation.py; test_inventory.py; test_storage.py |
-| `RdsAdapter.verify_recovery_snapshot` (function) | 637 | verify recovery snapshot | 2 | test_rds.py; test_rds_reconciliation.py; test_inventory.py; test_storage.py |
-| `RdsAdapter.cleanup` (function) | 665 | cleanup | 15 | test_rds.py; test_rds_reconciliation.py; test_inventory.py; test_storage.py |
-| `RdsAdapter.observe_cleanup` (function) | 759 | Read-only AWS reconciliation; never issues another deletion request. | 4 | test_rds.py; test_rds_reconciliation.py; test_inventory.py; test_storage.py |
+| `RdsAdapter._resource_registry` (function) | 123 | resource registry | 15 | test_rds.py; test_rds_reconciliation.py; test_inventory.py; test_storage.py |
+| `RdsAdapter.owned_resource_inventory` (function) | 140 | Doctor metadata only: paginated owned tags plus fresh exact-resource reads. | 12 | test_rds.py; test_rds_reconciliation.py; test_inventory.py; test_storage.py |
+| `RdsAdapter.owned_resource_inventory.<lambda@265:27>` (lambda) | 265 | Anonymous callback/expression; inspect its enclosing function and scenario tests. | 0 | No standalone mapping; see scenario matrix |
+| `RdsAdapter.owned_resource_inventory.<lambda@269:70>` (lambda) | 269 | Anonymous callback/expression; inspect its enclosing function and scenario tests. | 0 | No standalone mapping; see scenario matrix |
+| `RdsAdapter._enforce_live_inventory` (function) | 279 | enforce live inventory | 8 | test_rds.py; test_rds_reconciliation.py; test_inventory.py; test_storage.py |
+| `RdsAdapter._call` (function) | 304 | call | 227 | test_rds.py; test_rds_reconciliation.py; test_inventory.py; test_storage.py |
+| `RdsAdapter._identity` (function) | 333 | identity | 84 | test_rds.py; test_rds_reconciliation.py; test_inventory.py; test_storage.py |
+| `RdsAdapter._arn` (function) | 338 | arn | 65 | test_rds.py; test_rds_reconciliation.py; test_inventory.py; test_storage.py |
+| `RdsAdapter._tags` (function) | 346 | tags | 51 | test_rds.py; test_rds_reconciliation.py; test_inventory.py; test_storage.py |
+| `RdsAdapter._owned` (function) | 354 | owned | 15 | test_rds.py; test_rds_reconciliation.py; test_inventory.py; test_storage.py |
+| `RdsAdapter._intent` (function) | 359 | intent | 79 | test_rds.py; test_rds_reconciliation.py; test_inventory.py; test_storage.py |
+| `RdsAdapter._engine_encryption` (function) | 379 | engine encryption | 56 | test_rds.py; test_rds_reconciliation.py; test_inventory.py; test_storage.py |
+| `RdsAdapter._instance` (function) | 396 | instance | 48 | test_rds.py; test_rds_reconciliation.py; test_inventory.py; test_storage.py |
+| `RdsAdapter._observation` (function) | 414 | observation | 40 | test_rds.py; test_rds_reconciliation.py; test_inventory.py; test_storage.py |
+| `RdsAdapter.inspect_source` (function) | 452 | inspect source | 36 | test_rds.py; test_rds_reconciliation.py; test_inventory.py; test_storage.py |
+| `RdsAdapter._automatic_source_backup` (function) | 469 | Observe only AWS-managed backups of the exact source, never run resources. | 0 | No standalone mapping; see scenario matrix |
+| `RdsAdapter._snapshot` (function) | 512 | snapshot | 26 | test_rds.py; test_rds_reconciliation.py; test_inventory.py; test_storage.py |
+| `RdsAdapter.inspect_snapshot` (function) | 526 | inspect snapshot | 19 | test_rds.py; test_rds_reconciliation.py; test_inventory.py; test_storage.py |
+| `RdsAdapter.inspect_clone` (function) | 533 | inspect clone | 12 | test_rds.py; test_rds_reconciliation.py; test_inventory.py; test_storage.py |
+| `RdsAdapter._creation` (function) | 562 | creation | 13 | test_rds.py; test_rds_reconciliation.py; test_inventory.py; test_storage.py |
+| `RdsAdapter._reserve_budget` (function) | 569 | reserve budget | 0 | No standalone mapping; see scenario matrix |
+| `RdsAdapter.ensure_snapshot` (function) | 574 | ensure snapshot | 9 | test_rds.py; test_rds_reconciliation.py; test_inventory.py; test_storage.py |
+| `RdsAdapter.ensure_clone` (function) | 603 | ensure clone | 4 | test_rds.py; test_rds_reconciliation.py; test_inventory.py; test_storage.py |
+| `RdsAdapter.verify_recovery_snapshot` (function) | 646 | verify recovery snapshot | 2 | test_rds.py; test_rds_reconciliation.py; test_inventory.py; test_storage.py |
+| `RdsAdapter.cleanup` (function) | 674 | cleanup | 15 | test_rds.py; test_rds_reconciliation.py; test_inventory.py; test_storage.py |
+| `RdsAdapter.observe_cleanup` (function) | 768 | Read-only AWS reconciliation; never issues another deletion request. | 4 | test_rds.py; test_rds_reconciliation.py; test_inventory.py; test_storage.py |
+
+## src/preflight/budget.py
+
+implementation. 16988 bytes; PYTHON_AST_PARSED. SHA-256: `2c9aa009a344a694196234610881c25e599a30af09aa14f5c0f2a1c735623d09`.
+
+| Symbol | Line | Purpose | Unit/cloud calls at older commit | Review test references |
+|---|---:|---|---:|---|
+| `_known_amount` (function) | 39 | known amount | 0 | No standalone mapping; see scenario matrix |
+| `accrue_usd` (function) | 43 | Conservative cents for one caller-verified rate and billing minimum. | 0 | No standalone mapping; see scenario matrix |
+| `BudgetSnapshot` (class) | 77 | BudgetSnapshot | 0 | No standalone mapping; see scenario matrix |
+| `BudgetDecision` (class) | 90 | BudgetDecision | 0 | No standalone mapping; see scenario matrix |
+| `admit` (function) | 100 | Refuse unknown/stale/incomplete/unbounded costs or projected overspend. | 0 | No standalone mapping; see scenario matrix |
+| `admit.refuse` (function) | 121 | refuse | 0 | No standalone mapping; see scenario matrix |
+| `BudgetLedger` (class) | 182 | Trusted server bookkeeping with durable, never auto-released reservations. | 0 | No standalone mapping; see scenario matrix |
+| `BudgetLedger.__init__` (function) | 194 | init | 0 | No standalone mapping; see scenario matrix |
+| `BudgetLedger.ceiling` (function) | 221 | ceiling | 0 | No standalone mapping; see scenario matrix |
+| `BudgetLedger._assert_ceiling` (function) | 224 | assert ceiling | 0 | No standalone mapping; see scenario matrix |
+| `BudgetLedger._transaction` (function) | 232 | transaction | 0 | No standalone mapping; see scenario matrix |
+| `BudgetLedger.record_observation` (function) | 250 | Publish trusted nonsecret facts; None costs persist as unknown. | 0 | No standalone mapping; see scenario matrix |
+| `BudgetLedger._total` (function) | 298 | total | 0 | No standalone mapping; see scenario matrix |
+| `BudgetLedger.total_reserved_usd` (function) | 310 | total reserved usd | 0 | No standalone mapping; see scenario matrix |
+| `BudgetLedger.authorize` (function) | 314 | Atomically check fresh facts and persist funds before a billable intent. | 0 | No standalone mapping; see scenario matrix |
+| `BudgetLedger.authorize.refuse` (function) | 329 | refuse | 0 | No standalone mapping; see scenario matrix |
 
 ## src/preflight/cli.py
 
@@ -588,7 +765,7 @@ implementation. 6472 bytes; PYTHON_AST_PARSED. SHA-256: `0acdafc5a527b2fa8b90faf
 
 ## src/preflight/config.py
 
-implementation. 6161 bytes; PYTHON_AST_PARSED. SHA-256: `613b8f2890ad1e22c586079c70cd7bc6a0f018ffe5095b3aa7878d69e1ee1e07`.
+implementation. 6181 bytes; PYTHON_AST_PARSED. SHA-256: `beae715a5705747361b2651e88b33c50749e2920bb93c4557ea721aec96b9297`.
 
 | Symbol | Line | Purpose | Unit/cloud calls at older commit | Review test references |
 |---|---:|---|---:|---|
@@ -747,7 +924,7 @@ implementation. 10462 bytes; PYTHON_AST_PARSED. SHA-256: `9fb3860af1b2a09d3a762d
 
 ## src/preflight/runtime.py
 
-implementation. 11480 bytes; PYTHON_AST_PARSED. SHA-256: `0f053a1821754119e0fb267b5c879dd1d2a0f7ab06b075625b1c0b848e73cb04`.
+implementation. 11946 bytes; PYTHON_AST_PARSED. SHA-256: `019539c77144f4cb40414174d814e5c344d1ce2179fd2178e89b4dabaa72dc6f`.
 
 | Symbol | Line | Purpose | Unit/cloud calls at older commit | Review test references |
 |---|---:|---|---:|---|
@@ -762,6 +939,7 @@ implementation. 11480 bytes; PYTHON_AST_PARSED. SHA-256: `0f053a1821754119e0fb26
 | `AwsRuntime.cleanup` (function) | 155 | cleanup | 0 | No standalone mapping; see scenario matrix |
 | `AwsRuntime.observe_cleanup` (function) | 185 | observe cleanup | 0 | No standalone mapping; see scenario matrix |
 | `build_runtime` (function) | 207 | build runtime | 1 | No standalone mapping; see scenario matrix |
+| `build_runtime.reserve_budget` (function) | 258 | reserve budget | 0 | No standalone mapping; see scenario matrix |
 
 ## src/preflight/server.py
 
@@ -908,6 +1086,65 @@ test assertion. 16147 bytes; PYTHON_AST_PARSED. SHA-256: `21f00ac4dd24ad339c78d7
 | `test_observed_source_storage_must_match_approved_plan` (function) | 336 | test observed source storage must match approved plan | 0 | No standalone mapping; see scenario matrix |
 | `test_host_reuse_requires_exact_identity_and_observed_private_persistent_storage` (function) | 385 | test host reuse requires exact identity and observed private persistent storage | 0 | No standalone mapping; see scenario matrix |
 
+## tests/cloud/test_budget_boundaries.py
+
+test assertion. 1370 bytes; PYTHON_AST_PARSED. SHA-256: `e2cdccf642621387396aec9676423d7574e7a5a30fbb8f8b0967fe9e3ddd239f`.
+
+| Symbol | Line | Purpose | Unit/cloud calls at older commit | Review test references |
+|---|---:|---|---:|---|
+| `test_missing_budget_admission_refuses_snapshot_create` (function) | 9 | test missing budget admission refuses snapshot create | 0 | No standalone mapping; see scenario matrix |
+| `test_failed_budget_admission_refuses_clone_restore` (function) | 20 | test failed budget admission refuses clone restore | 0 | No standalone mapping; see scenario matrix |
+| `test_failed_budget_admission_refuses_clone_restore.deny` (function) | 21 | deny | 0 | No standalone mapping; see scenario matrix |
+| `test_existing_snapshot_is_observed_without_a_new_cost_reservation` (function) | 36 | test existing snapshot is observed without a new cost reservation | 0 | No standalone mapping; see scenario matrix |
+
+## tests/cloud/test_budget_publication.py
+
+test assertion. 15368 bytes; PYTHON_AST_PARSED. SHA-256: `6f2f2e5c3e87c8247137817abe8a08871a5296ff991c4905c121fea4caf9bfbb`.
+
+| Symbol | Line | Purpose | Unit/cloud calls at older commit | Review test references |
+|---|---:|---|---:|---|
+| `config` (function) | 24 | config | 0 | No standalone mapping; see scenario matrix |
+| `clients` (function) | 47 | clients | 0 | No standalone mapping; see scenario matrix |
+| `queue_identity` (function) | 60 | queue identity | 0 | No standalone mapping; see scenario matrix |
+| `request` (function) | 68 | request | 0 | No standalone mapping; see scenario matrix |
+| `response` (function) | 77 | response | 0 | No standalone mapping; see scenario matrix |
+| `test_provider_spend_operator_bounds_publish_without_reserving` (function) | 96 | test provider spend operator bounds publish without reserving | 0 | No standalone mapping; see scenario matrix |
+| `test_provider_error_has_no_ledger_or_raw_error` (function) | 117 | test provider error has no ledger or raw error | 0 | No standalone mapping; see scenario matrix |
+| `test_incomplete_ambiguous_or_estimated_cost_never_published` (function) | 145 | test incomplete ambiguous or estimated cost never published | 0 | No standalone mapping; see scenario matrix |
+| `test_invalid_operator_config_no_provider_call_or_ledger` (function) | 199 | test invalid operator config no provider call or ledger | 0 | No standalone mapping; see scenario matrix |
+| `test_zero_lag_default_cannot_treat_fetch_time_as_fresh` (function) | 209 | test zero lag default cannot treat fetch time as fresh | 0 | No standalone mapping; see scenario matrix |
+| `test_wrong_identity_never_queries_costs` (function) | 217 | test wrong identity never queries costs | 0 | No standalone mapping; see scenario matrix |
+| `test_unknown_billing_preserves_existing_observation_and_reservations` (function) | 225 | test unknown billing preserves existing observation and reservations | 0 | No standalone mapping; see scenario matrix |
+| `test_root_protected_config_required` (function) | 241 | test root protected config required | 0 | No standalone mapping; see scenario matrix |
+| `test_root_protected_config_required.<lambda@245:46>` (lambda) | 245 | Anonymous callback/expression; inspect its enclosing function and scenario tests. | 0 | No standalone mapping; see scenario matrix |
+| `test_bounds_cover_full_ledger_freshness_horizon` (function) | 250 | test bounds cover full ledger freshness horizon | 0 | No standalone mapping; see scenario matrix |
+| `test_ledger_writer_refuses_unprotected_existing_state` (function) | 256 | test ledger writer refuses unprotected existing state | 0 | No standalone mapping; see scenario matrix |
+| `test_ledger_writer_refuses_unprotected_existing_state.<lambda@270:20>` (lambda) | 270 | Anonymous callback/expression; inspect its enclosing function and scenario tests. | 0 | No standalone mapping; see scenario matrix |
+| `test_ledger_writer_refuses_unprotected_existing_state.<lambda@271:22>` (lambda) | 271 | Anonymous callback/expression; inspect its enclosing function and scenario tests. | 0 | No standalone mapping; see scenario matrix |
+| `test_ledger_writer_refuses_unprotected_existing_state.<lambda@272:19>` (lambda) | 272 | Anonymous callback/expression; inspect its enclosing function and scenario tests. | 0 | No standalone mapping; see scenario matrix |
+| `test_ledger_writer_refuses_unprotected_existing_state.<lambda@273:19>` (lambda) | 273 | Anonymous callback/expression; inspect its enclosing function and scenario tests. | 0 | No standalone mapping; see scenario matrix |
+| `test_ledger_writer_refuses_unprotected_existing_state.<lambda@279:33>` (lambda) | 279 | Anonymous callback/expression; inspect its enclosing function and scenario tests. | 0 | No standalone mapping; see scenario matrix |
+| `test_ledger_writer_refuses_unprotected_existing_state.metadata` (function) | 283 | metadata | 0 | No standalone mapping; see scenario matrix |
+| `test_cli_blocked_result_sanitizes_and_constructs_no_clients` (function) | 301 | test cli blocked result sanitizes and constructs no clients | 0 | No standalone mapping; see scenario matrix |
+| `test_cli_blocked_result_sanitizes_and_constructs_no_clients.<lambda@310:8>` (lambda) | 310 | Anonymous callback/expression; inspect its enclosing function and scenario tests. | 0 | No standalone mapping; see scenario matrix |
+| `test_cli_blocked_result_sanitizes_and_constructs_no_clients.<lambda@312:42>` (lambda) | 312 | Anonymous callback/expression; inspect its enclosing function and scenario tests. | 0 | No standalone mapping; see scenario matrix |
+| `test_ledger_writer_uses_existing_runtime_identity_and_drops_groups` (function) | 319 | test ledger writer uses existing runtime identity and drops groups | 0 | No standalone mapping; see scenario matrix |
+| `test_ledger_writer_uses_existing_runtime_identity_and_drops_groups.<lambda@333:20>` (lambda) | 333 | Anonymous callback/expression; inspect its enclosing function and scenario tests. | 0 | No standalone mapping; see scenario matrix |
+| `test_ledger_writer_uses_existing_runtime_identity_and_drops_groups.<lambda@334:22>` (lambda) | 334 | Anonymous callback/expression; inspect its enclosing function and scenario tests. | 0 | No standalone mapping; see scenario matrix |
+| `test_ledger_writer_uses_existing_runtime_identity_and_drops_groups.<lambda@335:19>` (lambda) | 335 | Anonymous callback/expression; inspect its enclosing function and scenario tests. | 0 | No standalone mapping; see scenario matrix |
+| `test_ledger_writer_uses_existing_runtime_identity_and_drops_groups.<lambda@336:19>` (lambda) | 336 | Anonymous callback/expression; inspect its enclosing function and scenario tests. | 0 | No standalone mapping; see scenario matrix |
+| `test_ledger_writer_uses_existing_runtime_identity_and_drops_groups.<lambda@342:33>` (lambda) | 342 | Anonymous callback/expression; inspect its enclosing function and scenario tests. | 0 | No standalone mapping; see scenario matrix |
+| `test_ledger_writer_uses_existing_runtime_identity_and_drops_groups.<lambda@348:8>` (lambda) | 348 | Anonymous callback/expression; inspect its enclosing function and scenario tests. | 0 | No standalone mapping; see scenario matrix |
+| `test_short_billing_window_is_not_invented_as_zero` (function) | 357 | test short billing window is not invented as zero | 0 | No standalone mapping; see scenario matrix |
+| `test_missing_protected_configuration_has_stable_cli_refusal` (function) | 366 | test missing protected configuration has stable cli refusal | 0 | No standalone mapping; see scenario matrix |
+| `test_missing_protected_configuration_has_stable_cli_refusal.<lambda@375:76>` (lambda) | 375 | Anonymous callback/expression; inspect its enclosing function and scenario tests. | 0 | No standalone mapping; see scenario matrix |
+| `test_missing_protected_configuration_has_stable_cli_refusal.metadata` (function) | 377 | metadata | 0 | No standalone mapping; see scenario matrix |
+| `test_missing_protected_configuration_has_stable_cli_refusal.<lambda@386:42>` (lambda) | 386 | Anonymous callback/expression; inspect its enclosing function and scenario tests. | 0 | No standalone mapping; see scenario matrix |
+| `test_missing_protected_configuration_has_stable_cli_refusal.<lambda@388:41>` (lambda) | 388 | Anonymous callback/expression; inspect its enclosing function and scenario tests. | 0 | No standalone mapping; see scenario matrix |
+| `test_inaccessible_or_invalid_configuration_is_protected_refusal` (function) | 405 | test inaccessible or invalid configuration is protected refusal | 0 | No standalone mapping; see scenario matrix |
+| `test_inaccessible_or_invalid_configuration_is_protected_refusal.<lambda@411:76>` (lambda) | 411 | Anonymous callback/expression; inspect its enclosing function and scenario tests. | 0 | No standalone mapping; see scenario matrix |
+| `test_inaccessible_or_invalid_configuration_is_protected_refusal.metadata` (function) | 413 | metadata | 0 | No standalone mapping; see scenario matrix |
+
 ## tests/cloud/test_inventory.py
 
 test assertion. 7319 bytes; PYTHON_AST_PARSED. SHA-256: `94d3e0e5c352816d5abc71adabd2655112727dc40e20f418df5a3167f552372a`.
@@ -972,39 +1209,40 @@ test assertion. 13868 bytes; PYTHON_AST_PARSED. SHA-256: `2b5a4647182eb4527966f9
 
 ## tests/cloud/test_rds.py
 
-test assertion. 15744 bytes; PYTHON_AST_PARSED. SHA-256: `b580e41c54aef20f934892a3a8ca59283c794c391c5f833d1570b3aed5c27c9e`.
+test assertion. 16007 bytes; PYTHON_AST_PARSED. SHA-256: `a220c0059f74b90978d150ad5b728a7430f489c607961a9d6f7f6853b05b9caa`.
 
 | Symbol | Line | Purpose | Unit/cloud calls at older commit | Review test references |
 |---|---:|---|---:|---|
 | `cloud` (function) | 22 | cloud | 0 | No standalone mapping; see scenario matrix |
-| `Harness` (class) | 60 | Harness | 0 | No standalone mapping; see scenario matrix |
-| `Harness.__init__` (function) | 61 | init | 0 | No standalone mapping; see scenario matrix |
-| `Harness.inventory` (function) | 66 | inventory | 0 | No standalone mapping; see scenario matrix |
-| `Harness.identity` (function) | 85 | identity | 0 | No standalone mapping; see scenario matrix |
-| `Harness.instance` (function) | 93 | instance | 0 | No standalone mapping; see scenario matrix |
-| `Harness.snapshot` (function) | 119 | snapshot | 0 | No standalone mapping; see scenario matrix |
-| `Harness.tags` (function) | 135 | tags | 0 | No standalone mapping; see scenario matrix |
-| `Harness.source` (function) | 142 | source | 0 | No standalone mapping; see scenario matrix |
-| `Harness.snap_read` (function) | 155 | snap read | 0 | No standalone mapping; see scenario matrix |
-| `Harness.clone_read` (function) | 165 | clone read | 0 | No standalone mapping; see scenario matrix |
-| `Harness.absent_snapshot` (function) | 179 | absent snapshot | 0 | No standalone mapping; see scenario matrix |
-| `Harness.absent_clone` (function) | 187 | absent clone | 0 | No standalone mapping; see scenario matrix |
-| `cleanup` (function) | 196 | cleanup | 0 | No standalone mapping; see scenario matrix |
-| `test_source_exact_owned_private_identity` (function) | 207 | test source exact owned private identity | 0 | No standalone mapping; see scenario matrix |
-| `test_wrong_account_before_resource_call` (function) | 215 | test wrong account before resource call | 0 | No standalone mapping; see scenario matrix |
-| `test_source_negative_before_tags` (function) | 234 | test source negative before tags | 0 | No standalone mapping; see scenario matrix |
-| `test_creation_not_authorized_no_calls` (function) | 245 | test creation not authorized no calls | 0 | No standalone mapping; see scenario matrix |
-| `test_snapshot_create_exact_reconciled_once` (function) | 251 | test snapshot create exact reconciled once | 0 | No standalone mapping; see scenario matrix |
-| `test_restore_private_exact_args_then_restart_reconciles` (function) | 272 | test restore private exact args then restart reconciles | 0 | No standalone mapping; see scenario matrix |
-| `test_provider_message_sanitized` (function) | 306 | test provider message sanitized | 0 | No standalone mapping; see scenario matrix |
-| `test_snapshot_collision_wrong_owner_blocks` (function) | 319 | test snapshot collision wrong owner blocks | 0 | No standalone mapping; see scenario matrix |
-| `test_cleanup_static_refusals_no_aws` (function) | 347 | test cleanup static refusals no aws | 0 | No standalone mapping; see scenario matrix |
-| `test_delete_exact_clone_then_observe_absence` (function) | 353 | test delete exact clone then observe absence | 0 | No standalone mapping; see scenario matrix |
-| `test_approved_absent_cleanup_releases_only_selected_reservations` (function) | 376 | test approved absent cleanup releases only selected reservations | 0 | No standalone mapping; see scenario matrix |
-| `test_preflight_all_selections_before_any_delete` (function) | 394 | test preflight all selections before any delete | 0 | No standalone mapping; see scenario matrix |
-| `test_source_apply_attempt_retains_backup_without_independent_attestation` (function) | 404 | test source apply attempt retains backup without independent attestation | 0 | No standalone mapping; see scenario matrix |
-| `test_verified_preapply_independent_backup` (function) | 420 | test verified preapply independent backup | 0 | No standalone mapping; see scenario matrix |
-| `test_verified_preapply_independent_backup.<lambda@421:41>` (lambda) | 421 | Anonymous callback/expression; inspect its enclosing function and scenario tests. | 0 | No standalone mapping; see scenario matrix |
+| `cloud.<lambda@55:67>` (lambda) | 55 | Anonymous callback/expression; inspect its enclosing function and scenario tests. | 0 | No standalone mapping; see scenario matrix |
+| `Harness` (class) | 70 | Harness | 0 | No standalone mapping; see scenario matrix |
+| `Harness.__init__` (function) | 71 | init | 0 | No standalone mapping; see scenario matrix |
+| `Harness.inventory` (function) | 76 | inventory | 0 | No standalone mapping; see scenario matrix |
+| `Harness.identity` (function) | 95 | identity | 0 | No standalone mapping; see scenario matrix |
+| `Harness.instance` (function) | 103 | instance | 0 | No standalone mapping; see scenario matrix |
+| `Harness.snapshot` (function) | 129 | snapshot | 0 | No standalone mapping; see scenario matrix |
+| `Harness.tags` (function) | 145 | tags | 0 | No standalone mapping; see scenario matrix |
+| `Harness.source` (function) | 152 | source | 0 | No standalone mapping; see scenario matrix |
+| `Harness.snap_read` (function) | 165 | snap read | 0 | No standalone mapping; see scenario matrix |
+| `Harness.clone_read` (function) | 175 | clone read | 0 | No standalone mapping; see scenario matrix |
+| `Harness.absent_snapshot` (function) | 189 | absent snapshot | 0 | No standalone mapping; see scenario matrix |
+| `Harness.absent_clone` (function) | 197 | absent clone | 0 | No standalone mapping; see scenario matrix |
+| `cleanup` (function) | 206 | cleanup | 0 | No standalone mapping; see scenario matrix |
+| `test_source_exact_owned_private_identity` (function) | 217 | test source exact owned private identity | 0 | No standalone mapping; see scenario matrix |
+| `test_wrong_account_before_resource_call` (function) | 225 | test wrong account before resource call | 0 | No standalone mapping; see scenario matrix |
+| `test_source_negative_before_tags` (function) | 244 | test source negative before tags | 0 | No standalone mapping; see scenario matrix |
+| `test_creation_not_authorized_no_calls` (function) | 255 | test creation not authorized no calls | 0 | No standalone mapping; see scenario matrix |
+| `test_snapshot_create_exact_reconciled_once` (function) | 261 | test snapshot create exact reconciled once | 0 | No standalone mapping; see scenario matrix |
+| `test_restore_private_exact_args_then_restart_reconciles` (function) | 282 | test restore private exact args then restart reconciles | 0 | No standalone mapping; see scenario matrix |
+| `test_provider_message_sanitized` (function) | 316 | test provider message sanitized | 0 | No standalone mapping; see scenario matrix |
+| `test_snapshot_collision_wrong_owner_blocks` (function) | 329 | test snapshot collision wrong owner blocks | 0 | No standalone mapping; see scenario matrix |
+| `test_cleanup_static_refusals_no_aws` (function) | 357 | test cleanup static refusals no aws | 0 | No standalone mapping; see scenario matrix |
+| `test_delete_exact_clone_then_observe_absence` (function) | 363 | test delete exact clone then observe absence | 0 | No standalone mapping; see scenario matrix |
+| `test_approved_absent_cleanup_releases_only_selected_reservations` (function) | 386 | test approved absent cleanup releases only selected reservations | 0 | No standalone mapping; see scenario matrix |
+| `test_preflight_all_selections_before_any_delete` (function) | 404 | test preflight all selections before any delete | 0 | No standalone mapping; see scenario matrix |
+| `test_source_apply_attempt_retains_backup_without_independent_attestation` (function) | 414 | test source apply attempt retains backup without independent attestation | 0 | No standalone mapping; see scenario matrix |
+| `test_verified_preapply_independent_backup` (function) | 430 | test verified preapply independent backup | 0 | No standalone mapping; see scenario matrix |
+| `test_verified_preapply_independent_backup.<lambda@431:41>` (lambda) | 431 | Anonymous callback/expression; inspect its enclosing function and scenario tests. | 0 | No standalone mapping; see scenario matrix |
 
 ## tests/cloud/test_rds_reconciliation.py
 
@@ -1336,30 +1574,35 @@ test assertion. 2687 bytes; PYTHON_AST_PARSED. SHA-256: `b46cf053c4ef82c5157dbc2
 
 ## tests/trueforge/test_configure_trueforge_host.py
 
-test assertion. 11299 bytes; PYTHON_AST_PARSED. SHA-256: `b0b877abd7e7f1e0788484d5372ef037d4a0f07295222cd31397190d12414a3e`.
+test assertion. 14688 bytes; PYTHON_AST_PARSED. SHA-256: `546fa2cecbf25de69e44b82925f1617a959eac66b1745d95ed3fad495f0b22ca`.
 
 | Symbol | Line | Purpose | Unit/cloud calls at older commit | Review test references |
 |---|---:|---|---:|---|
-| `_load_module` (function) | 14 | load module | 0 | No standalone mapping; see scenario matrix |
-| `_TrueForgeHandler` (class) | 22 | TrueForgeHandler | 0 | No standalone mapping; see scenario matrix |
-| `_TrueForgeHandler.log_message` (function) | 26 | log message | 0 | No standalone mapping; see scenario matrix |
-| `_TrueForgeHandler._body` (function) | 29 | body | 0 | No standalone mapping; see scenario matrix |
-| `_TrueForgeHandler._reply` (function) | 37 | reply | 0 | No standalone mapping; see scenario matrix |
-| `_TrueForgeHandler.do_PUT` (function) | 45 | do PUT | 0 | No standalone mapping; see scenario matrix |
-| `_TrueForgeHandler.do_GET` (function) | 62 | do GET | 0 | No standalone mapping; see scenario matrix |
-| `_TrueForgeHandler.do_POST` (function) | 81 | do POST | 0 | No standalone mapping; see scenario matrix |
-| `_CaptureHandler` (class) | 90 | CaptureHandler | 0 | No standalone mapping; see scenario matrix |
-| `_CaptureHandler.log_message` (function) | 93 | log message | 0 | No standalone mapping; see scenario matrix |
-| `_CaptureHandler._record` (function) | 96 | record | 0 | No standalone mapping; see scenario matrix |
-| `fake_trueforge` (function) | 110 | fake trueforge | 0 | No standalone mapping; see scenario matrix |
-| `capture_server` (function) | 125 | capture server | 0 | No standalone mapping; see scenario matrix |
-| `_secret` (function) | 138 | secret | 0 | No standalone mapping; see scenario matrix |
-| `test_dry_run_never_reads_credentials_or_sends_requests` (function) | 143 | test dry run never reads credentials or sends requests | 0 | No standalone mapping; see scenario matrix |
-| `test_execute_requires_daytona_before_any_http_request` (function) | 156 | test execute requires daytona before any http request | 0 | No standalone mapping; see scenario matrix |
-| `test_provider_mcp_stage_continues_without_daytona_and_stops_before_agent` (function) | 180 | test provider mcp stage continues without daytona and stops before agent | 0 | No standalone mapping; see scenario matrix |
-| `test_transport_ignores_proxy_environment` (function) | 214 | test transport ignores proxy environment | 0 | No standalone mapping; see scenario matrix |
-| `test_transport_refuses_redirect_without_forwarding_secret` (function) | 243 | test transport refuses redirect without forwarding secret | 0 | No standalone mapping; see scenario matrix |
-| `test_execute_sends_exact_safe_manifests_without_running_tools` (function) | 281 | test execute sends exact safe manifests without running tools | 0 | No standalone mapping; see scenario matrix |
+| `_load_module` (function) | 19 | load module | 0 | No standalone mapping; see scenario matrix |
+| `_TrueForgeHandler` (class) | 27 | TrueForgeHandler | 0 | No standalone mapping; see scenario matrix |
+| `_TrueForgeHandler.log_message` (function) | 33 | log message | 0 | No standalone mapping; see scenario matrix |
+| `_TrueForgeHandler._body` (function) | 36 | body | 0 | No standalone mapping; see scenario matrix |
+| `_TrueForgeHandler._reply` (function) | 44 | reply | 0 | No standalone mapping; see scenario matrix |
+| `_TrueForgeHandler.do_PUT` (function) | 52 | do PUT | 0 | No standalone mapping; see scenario matrix |
+| `_TrueForgeHandler.do_GET` (function) | 68 | do GET | 0 | No standalone mapping; see scenario matrix |
+| `_TrueForgeHandler.do_POST` (function) | 104 | do POST | 0 | No standalone mapping; see scenario matrix |
+| `_CaptureHandler` (class) | 113 | CaptureHandler | 0 | No standalone mapping; see scenario matrix |
+| `_CaptureHandler.log_message` (function) | 116 | log message | 0 | No standalone mapping; see scenario matrix |
+| `_CaptureHandler._record` (function) | 119 | record | 0 | No standalone mapping; see scenario matrix |
+| `fake_trueforge` (function) | 133 | fake trueforge | 0 | No standalone mapping; see scenario matrix |
+| `capture_server` (function) | 150 | capture server | 0 | No standalone mapping; see scenario matrix |
+| `_secret` (function) | 163 | secret | 0 | No standalone mapping; see scenario matrix |
+| `_execute_args` (function) | 168 | execute args | 0 | No standalone mapping; see scenario matrix |
+| `_patched_runtime` (function) | 182 | patched runtime | 0 | No standalone mapping; see scenario matrix |
+| `test_dry_run_never_reads_credentials_or_sends_requests` (function) | 205 | test dry run never reads credentials or sends requests | 0 | No standalone mapping; see scenario matrix |
+| `test_provider_mcp_stage_stops_before_sandbox_and_agent` (function) | 220 | test provider mcp stage stops before sandbox and agent | 0 | No standalone mapping; see scenario matrix |
+| `test_complete_refuses_unavailable_local_sandbox_before_mutation` (function) | 249 | test complete refuses unavailable local sandbox before mutation | 0 | No standalone mapping; see scenario matrix |
+| `test_complete_refuses_persisted_provider_before_mutation` (function) | 266 | test complete refuses persisted provider before mutation | 0 | No standalone mapping; see scenario matrix |
+| `test_complete_refuses_unscoped_code_mode_bridge_before_mutation` (function) | 282 | test complete refuses unscoped code mode bridge before mutation | 0 | No standalone mapping; see scenario matrix |
+| `test_complete_saves_exact_agent_only_with_guarded_local_runtime` (function) | 301 | test complete saves exact agent only with guarded local runtime | 0 | No standalone mapping; see scenario matrix |
+| `test_transport_ignores_proxy_environment` (function) | 334 | test transport ignores proxy environment | 0 | No standalone mapping; see scenario matrix |
+| `test_transport_refuses_redirect_without_forwarding_secret` (function) | 351 | test transport refuses redirect without forwarding secret | 0 | No standalone mapping; see scenario matrix |
+| `test_agent_template_has_exact_gates_and_valid_installed_agent_spec` (function) | 371 | test agent template has exact gates and valid installed agent spec | 0 | No standalone mapping; see scenario matrix |
 
 ## tests/trueforge/test_connected_runtime_boundaries.py
 
@@ -1407,6 +1650,21 @@ test assertion. 5015 bytes; PYTHON_AST_PARSED. SHA-256: `ebd0e286f115f2c16ed5107
 | `test_probe_does_not_execute_without_explicit_flag` (function) | 37 | test probe does not execute without explicit flag | 0 | No standalone mapping; see scenario matrix |
 | `test_probe_accepts_only_the_explicit_authorized_non_sol_alias` (function) | 67 | test probe accepts only the explicit authorized non sol alias | 0 | No standalone mapping; see scenario matrix |
 | `test_probe_omits_reasoning_for_none_and_preserves_high` (function) | 138 | test probe omits reasoning for none and preserves high | 0 | No standalone mapping; see scenario matrix |
+
+## tests/trueforge/test_local_sandbox_patch.py
+
+test assertion. 10948 bytes; PYTHON_AST_PARSED. SHA-256: `66845c83a8b5417e0f7e6771369afa31076d54fbbfcdeec6f4d5ab0c2d93443c`.
+
+| Symbol | Line | Purpose | Unit/cloud calls at older commit | Review test references |
+|---|---:|---|---:|---|
+| `_sha256` (function) | 13 | sha256 | 0 | No standalone mapping; see scenario matrix |
+| `_fixture` (function) | 17 | fixture | 0 | No standalone mapping; see scenario matrix |
+| `_run` (function) | 30 | run | 0 | No standalone mapping; see scenario matrix |
+| `_js_function` (function) | 41 | js function | 0 | No standalone mapping; see scenario matrix |
+| `test_dry_run_checks_full_hashes_without_writing` (function) | 47 | test dry run checks full hashes without writing | 0 | No standalone mapping; see scenario matrix |
+| `test_apply_narrows_socket_read_and_requires_python_310` (function) | 61 | test apply narrows socket read and requires python 310 | 0 | No standalone mapping; see scenario matrix |
+| `test_refuses_any_unrecognized_vendor_bytes_without_partial_write` (function) | 104 | test refuses any unrecognized vendor bytes without partial write | 0 | No standalone mapping; see scenario matrix |
+| `test_actual_patched_policy_allows_only_current_canonical_socket` (function) | 118 | test actual patched policy allows only current canonical socket | 0 | No standalone mapping; see scenario matrix |
 
 ## tests/trueforge/test_mcp_interop.py
 
@@ -1499,6 +1757,46 @@ test assertion. 10108 bytes; PYTHON_AST_PARSED. SHA-256: `f2cfa82c554037f330f1be
 | `test_v21_offline_preserves_backend_and_calls_no_connected_client` (function) | 261 | test v21 offline preserves backend and calls no connected client | 0 | No standalone mapping; see scenario matrix |
 | `test_v21_offline_preserves_backend_and_calls_no_connected_client.forbidden` (function) | 262 | forbidden | 0 | No standalone mapping; see scenario matrix |
 | `test_v21_offline_preserves_backend_and_calls_no_connected_client.guarded_import` (function) | 270 | guarded import | 0 | No standalone mapping; see scenario matrix |
+
+## tests/unit/test_budget.py
+
+test assertion. 16431 bytes; PYTHON_AST_PARSED. SHA-256: `8e21ed5abc0a09941444a6df036ae0afacc83a6cfbff30def5bc52691e424c49`.
+
+| Symbol | Line | Purpose | Unit/cloud calls at older commit | Review test references |
+|---|---:|---|---:|---|
+| `known` (function) | 15 | known | 0 | No standalone mapping; see scenario matrix |
+| `decide` (function) | 29 | decide | 0 | No standalone mapping; see scenario matrix |
+| `test_exact_ceiling_includes_spent_unbilled_existing_reservations_and_safety_funds` (function) | 33 | test exact ceiling includes spent unbilled existing reservations and safety funds | 0 | No standalone mapping; see scenario matrix |
+| `test_subcent_costs_round_up_and_never_disappear_at_limit` (function) | 44 | test subcent costs round up and never disappear at limit | 0 | No standalone mapping; see scenario matrix |
+| `test_unknown_or_nondecimal_component_refuses_without_fabricating_totals` (function) | 64 | test unknown or nondecimal component refuses without fabricating totals | 0 | No standalone mapping; see scenario matrix |
+| `test_unknown_proposed_maximum_refuses` (function) | 71 | test unknown proposed maximum refuses | 0 | No standalone mapping; see scenario matrix |
+| `test_missing_ceiling_is_not_authorization` (function) | 76 | test missing ceiling is not authorization | 0 | No standalone mapping; see scenario matrix |
+| `test_configured_ceiling_cannot_expand_operator_authorization` (function) | 80 | test configured ceiling cannot expand operator authorization | 0 | No standalone mapping; see scenario matrix |
+| `test_invalid_operator_authorization_refused` (function) | 98 | test invalid operator authorization refused | 0 | No standalone mapping; see scenario matrix |
+| `test_incomplete_inventory_delayed_observation_or_unbounded_retention_refuses` (function) | 118 | test incomplete inventory delayed observation or unbounded retention refuses | 0 | No standalone mapping; see scenario matrix |
+| `test_zero_billing_figure_is_not_complete_current_spend_observation` (function) | 122 | test zero billing figure is not complete current spend observation | 0 | No standalone mapping; see scenario matrix |
+| `test_equal_offset_observations_and_freshness_boundary` (function) | 128 | test equal offset observations and freshness boundary | 0 | No standalone mapping; see scenario matrix |
+| `test_billing_minimum_and_upward_rounding_use_only_supplied_synthetic_rate` (function) | 136 | test billing minimum and upward rounding use only supplied synthetic rate | 0 | No standalone mapping; see scenario matrix |
+| `test_invalid_rate_or_duration_has_safe_failure` (function) | 160 | test invalid rate or duration has safe failure | 0 | No standalone mapping; see scenario matrix |
+| `test_callers_decimal_context_cannot_round_spending_down` (function) | 165 | test callers decimal context cannot round spending down | 0 | No standalone mapping; see scenario matrix |
+| `test_unknown_usage_is_not_replaced_with_credits_or_a_network_query` (function) | 174 | test unknown usage is not replaced with credits or a network query | 0 | No standalone mapping; see scenario matrix |
+| `test_unknown_usage_is_not_replaced_with_credits_or_a_network_query.<lambda@177:42>` (lambda) | 177 | Anonymous callback/expression; inspect its enclosing function and scenario tests. | 0 | No standalone mapping; see scenario matrix |
+| `funded_ledger` (function) | 182 | funded ledger | 0 | No standalone mapping; see scenario matrix |
+| `test_ledger_no_observation_or_missing_quote_never_reserves` (function) | 192 | test ledger no observation or missing quote never reserves | 0 | No standalone mapping; see scenario matrix |
+| `test_ledger_reserves_before_return_and_preserves_same_key_across_restart` (function) | 203 | test ledger reserves before return and preserves same key across restart | 0 | No standalone mapping; see scenario matrix |
+| `test_ledger_baseline_future_reserve_plus_ledger_sum_not_overwritten` (function) | 216 | test ledger baseline future reserve plus ledger sum not overwritten | 0 | No standalone mapping; see scenario matrix |
+| `test_ledger_even_existing_key_requires_current_complete_cost_facts` (function) | 240 | test ledger even existing key requires current complete cost facts | 0 | No standalone mapping; see scenario matrix |
+| `test_ledger_quote_changes_cannot_reuse_or_silently_expand_old_reservation` (function) | 251 | test ledger quote changes cannot reuse or silently expand old reservation | 0 | No standalone mapping; see scenario matrix |
+| `test_ledger_persisted_ceiling_cannot_be_changed_or_exceed_authorization` (function) | 272 | test ledger persisted ceiling cannot be changed or exceed authorization | 0 | No standalone mapping; see scenario matrix |
+| `test_ledger_live_handle_refuses_changed_persisted_ceiling` (function) | 289 | test ledger live handle refuses changed persisted ceiling | 0 | No standalone mapping; see scenario matrix |
+| `test_ledger_invalid_identity_cannot_reserve` (function) | 313 | test ledger invalid identity cannot reserve | 0 | No standalone mapping; see scenario matrix |
+| `test_ledger_storage_failure_never_echoes_private_path` (function) | 319 | test ledger storage failure never echoes private path | 0 | No standalone mapping; see scenario matrix |
+| `test_ledger_unknown_cost_observation_survives_restart` (function) | 327 | test ledger unknown cost observation survives restart | 0 | No standalone mapping; see scenario matrix |
+| `test_ledger_invalid_quote_publication_has_safe_failure` (function) | 339 | test ledger invalid quote publication has safe failure | 0 | No standalone mapping; see scenario matrix |
+| `test_two_ledger_instances_cannot_both_reserve_last_headroom` (function) | 346 | test two ledger instances cannot both reserve last headroom | 0 | No standalone mapping; see scenario matrix |
+| `test_two_ledger_instances_cannot_both_reserve_last_headroom.reserve` (function) | 354 | reserve | 0 | No standalone mapping; see scenario matrix |
+| `process_reserve_budget` (function) | 365 | process reserve budget | 0 | No standalone mapping; see scenario matrix |
+| `test_independent_processes_atomically_reserve_without_overspend_or_duplicate` (function) | 373 | test independent processes atomically reserve without overspend or duplicate | 0 | No standalone mapping; see scenario matrix |
 
 ## tests/unit/test_contracts.py
 
@@ -1622,7 +1920,7 @@ test assertion. 9426 bytes; PYTHON_AST_PARSED. SHA-256: `3b2c4912abcba4ceb28e4a9
 
 ## tests/unit/test_runtime.py
 
-test assertion. 1317 bytes; PYTHON_AST_PARSED. SHA-256: `cf6b96d9553ad389adbd0abe0a6925b0d6564889c55cb2f7026b0ab13182b34a`.
+test assertion. 1603 bytes; PYTHON_AST_PARSED. SHA-256: `fa4062b78e186a0c83e96d848c65cae9479cc833380dfaa88d9059c2d8241d72`.
 
 | Symbol | Line | Purpose | Unit/cloud calls at older commit | Review test references |
 |---|---:|---|---:|---|
@@ -1630,6 +1928,7 @@ test assertion. 1317 bytes; PYTHON_AST_PARSED. SHA-256: `cf6b96d9553ad389adbd0ab
 | `test_cloud_runtime_wires_tag_inventory_client.Session` (class) | 14 | Session | 0 | No standalone mapping; see scenario matrix |
 | `test_cloud_runtime_wires_tag_inventory_client.Session.__init__` (function) | 15 | init | 0 | No standalone mapping; see scenario matrix |
 | `test_cloud_runtime_wires_tag_inventory_client.Session.client` (function) | 18 | client | 0 | No standalone mapping; see scenario matrix |
+| `test_operator_budget_ceiling_above_100_refused` (function) | 41 | test operator budget ceiling above 100 refused | 0 | No standalone mapping; see scenario matrix |
 
 ## tests/unit/test_service_privacy.py
 
