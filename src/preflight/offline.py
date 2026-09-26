@@ -13,7 +13,7 @@ from pydantic import ValidationError
 
 from .artifacts import canonical_json, sha256, strict_json
 from .models import PreflightError, ReportPayload
-from .report import recompute_report_verdict
+from .report import _requirements_consistent, recompute_report_verdict
 
 _DIGEST = re.compile(r"^[0-9a-f]{64}$")
 _REASON_CODE = re.compile(r"^[A-Z][A-Z0-9_]{0,127}$")
@@ -44,14 +44,7 @@ def _schema_versions(payload: Any) -> None:
 
 
 def _validate_manifest(payload: ReportPayload) -> None:
-    requirement_ids = [requirement.id for requirement in payload.validation_requirements]
-    check_ids = [check.id for check in payload.checks]
-    if (
-        not requirement_ids
-        or len(requirement_ids) != len(set(requirement_ids))
-        or len(check_ids) != len(set(check_ids))
-        or set(requirement_ids) != set(check_ids)
-    ):
+    if not _requirements_consistent(payload):
         _fail("REPORT_REQUIREMENTS_INCONSISTENT", 4)
 
     for check in payload.checks:

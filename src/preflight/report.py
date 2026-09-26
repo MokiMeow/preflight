@@ -8,7 +8,7 @@ from urllib.parse import parse_qsl, urlsplit
 
 from .artifacts import canonical_json, sha256
 from .models import PreflightError, ReportPayload, SealedReport
-from .verdict import evaluate
+from .verdict import INVARIANTS, evaluate
 
 _URL = re.compile(r"\b(?:https?|postgres(?:ql)?|mysql)://[^\s<>\])]+", re.IGNORECASE)
 _SECRET_QUERY_KEYS = {"access_token", "api_key", "key", "password", "secret", "token"}
@@ -28,8 +28,53 @@ def _has_complete_evidence(payload: ReportPayload) -> bool:
     return len(set(before_names)) == len(before_names) and set(before_names) == set(after_names)
 
 
+def _has_observable_evidence_failure(payload: ReportPayload) -> bool:
+    """Detect contradictions that cannot coexist with unchanged keys/protected values."""
+    if payload.before is None or payload.after is None:
+        return False
+    before = {table.name: table for table in payload.before.tables}
+    after = {table.name: table for table in payload.after.tables}
+    if set(before) != set(after):
+        return True
+    return any(
+        before[name].row_count != after[name].row_count
+        or before[name].preserved_sha256 != after[name].preserved_sha256
+        for name in before
+    )
+
+
+def _requirements_consistent(payload: ReportPayload) -> bool:
+    requirements = payload.validation_requirements
+    checks = payload.checks
+    requirement_ids = [item.id for item in requirements]
+    check_ids = [item.id for item in checks]
+    if (
+        not requirement_ids
+        or len(requirement_ids) != len(set(requirement_ids))
+        or len(check_ids) != len(set(check_ids))
+        or set(requirement_ids) != set(check_ids)
+    ):
+        return False
+
+    by_id = {item.id: item for item in requirements}
+    for requirement in requirements:
+        if requirement.policy_role == "invariant":
+            if requirement.kind not in INVARIANTS:
+                return False
+            if requirement.id != f"invariant:{requirement.kind}":
+                return False
+        elif not (
+            requirement.id.startswith(f"{requirement.policy_role}:")
+            and requirement.id.endswith(f":{requirement.kind}")
+        ):
+            return False
+    return all(check.category == by_id[check.id].kind for check in checks)
+
+
 def recompute_report_verdict(payload: ReportPayload) -> str:
     """Apply the shared oracle plus report-only evidence completeness rules."""
+    if _has_observable_evidence_failure(payload):
+        return "BLOCK"
     verdict = evaluate(
         payload.checks,
         payload.validation_requirements,
@@ -43,14 +88,7 @@ def recompute_report_verdict(payload: ReportPayload) -> str:
 
 def seal_report(payload: ReportPayload) -> SealedReport:
     """Seal a validated payload; never bless a model-supplied verdict."""
-    requirement_ids = [item.id for item in payload.validation_requirements]
-    check_ids = [item.id for item in payload.checks]
-    if (
-        not requirement_ids
-        or len(requirement_ids) != len(set(requirement_ids))
-        or len(check_ids) != len(set(check_ids))
-        or set(requirement_ids) != set(check_ids)
-    ):
+    if not _requirements_consistent(payload):
         raise PreflightError("REPORT_REQUIREMENTS_INCONSISTENT")
     if recompute_report_verdict(payload) != payload.verdict:
         raise PreflightError("REPORT_VERDICT_MISMATCH")

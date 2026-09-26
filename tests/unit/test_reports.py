@@ -138,6 +138,23 @@ def test_seal_refuses_an_incomplete_requirement_manifest():
         )
 
 
+def test_seal_refuses_requirement_kind_category_or_role_id_mismatch():
+    payload = passing_payload()
+    mismatched = list(payload.checks)
+    mismatched[0] = mismatched[0].model_copy(update={"category": "wrong_kind"})
+    with pytest.raises(PreflightError, match="REPORT_REQUIREMENTS_INCONSISTENT"):
+        seal_report(payload.model_copy(update={"checks": mismatched}))
+
+    requirements = list(payload.validation_requirements)
+    requirements[0] = requirements[0].model_copy(update={"id": "invariant:not_the_kind"})
+    checks = list(payload.checks)
+    checks[0] = checks[0].model_copy(update={"id": "invariant:not_the_kind"})
+    with pytest.raises(PreflightError, match="REPORT_REQUIREMENTS_INCONSISTENT"):
+        seal_report(
+            payload.model_copy(update={"checks": checks, "validation_requirements": requirements})
+        )
+
+
 def test_verifier_detects_old_hash_and_rehashed_anchor_tampering():
     original = report_bytes(passing_payload())
     trusted = json.loads(original)["report_sha256"]
@@ -147,6 +164,23 @@ def test_verifier_detects_old_hash_and_rehashed_anchor_tampering():
 
     rehashed = mutate_and_rehash(original, lambda payload: payload.update(operator_id="changed"))
     assert_error(rehashed, "EXPECTED_DIGEST_MISMATCH", 3, trusted)
+
+
+def test_contradictory_aggregate_pass_is_block_and_rehash_cannot_retain_anchor():
+    original = report_bytes(passing_payload())
+    trusted = json.loads(original)["report_sha256"]
+
+    def contradict(payload):
+        payload["after"]["tables"][0]["row_count"] = 999
+        payload["after"]["tables"][0]["preserved_sha256"] = "f" * 64
+
+    forged = mutate_and_rehash(original, contradict)
+    assert_error(forged, "EXPECTED_DIGEST_MISMATCH", 3, trusted)
+    assert_error(forged, "REPORT_VERDICT_MISMATCH", 5)
+
+    contradictory = passing_payload(after=evidence(row_count=999))
+    with pytest.raises(PreflightError, match="REPORT_VERDICT_MISMATCH"):
+        seal_report(contradictory)
 
 
 def test_verifier_rejects_duplicate_keys_and_schema_failures():
