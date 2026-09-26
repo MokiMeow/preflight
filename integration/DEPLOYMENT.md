@@ -32,9 +32,8 @@ not connected cloud proof; preserve the doctor's `NOT_RUN` and `NOT_OBSERVED` fi
 - Node requirement: `>=22.14.0` (locally probed with Node `v24.11.1`).
 - Registry integrity: `sha512-yrCLD0QOKB/iHcHA6/WHVHEpVZfrSasYjIkZLZ4hiIbi4TXEZFFwVCueYVxzVWNq2OcusG4+BdjZg1mA/1I0iA==`.
 - CLI: `trueforge --port <n>`; the installed CLI has no host-address flag.
-- The observed standalone listener was loopback-only (`localhost`, IPv6 `::1` on the Windows
-  probe host). `127.0.0.1` did not reach that Windows listener. Use `localhost` for the UI tunnel
-  and verify the actual listener on the deployment host.
+- The default `HOST=localhost` probe bound IPv6 `::1` on Windows. The successful isolated native
+  connector proof explicitly set `HOST=127.0.0.1`; verify the actual listener on deployment.
 - Standalone mode uses SQLite, disables browser login, and is explicitly described by the package
   as local-only. It must remain behind an SSH tunnel; never publish its port.
 - The installed OpenAPI schema is at `/api/v1/openapi.json`; interactive docs are at
@@ -66,6 +65,7 @@ On the private host, with the repository checkout and runtime settings already p
 
 ```bash
 cd integration
+export HOST=127.0.0.1
 export OUTBOUND_URL_ALLOWED_HOSTS='["127.0.0.1"]'
 npx trueforge --port 8790
 ```
@@ -80,7 +80,7 @@ profile.
 Keep the process on the private host and access it through a tunnel:
 
 ```bash
-ssh -L 8790:localhost:8790 operator@PRIVATE_HOST
+ssh -L 8790:127.0.0.1:8790 operator@PRIVATE_HOST
 ```
 
 Open `http://localhost:8790` locally. Before relying on the tunnel, inspect the deployment host's
@@ -215,6 +215,9 @@ its own repository-root PowerShell; do not copy these variables into a profile:
 
 ```powershell
 # Shell 1: isolated, fail-closed Preflight service on port 18000.
+if (-not (Test-Path 'config/ui-probe.local.json')) {
+  Copy-Item 'config/ui-probe.example.json' 'config/ui-probe.local.json'
+}
 $env:PREFLIGHT_SETTINGS = (Resolve-Path 'config/ui-probe.local.json').Path
 uv run --locked preflight doctor --json
 uv run --locked preflight serve

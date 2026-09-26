@@ -1,0 +1,93 @@
+{
+  "schema_version": "1",
+  "recorded_at_utc": "2026-09-26T06:43:58.398452+00:00",
+  "implementation_commit": "0d1a461a5e84f525c897f525d7bf4505adcd7bee",
+  "backend": "local_postgres_test; cloud tests use injected boto Stubber",
+  "command": "uv run --locked preflight verify local",
+  "result": {
+    "passed": 217,
+    "failed": 0,
+    "skipped": 0,
+    "duration_seconds": 179.06,
+    "exit_code": 0
+  },
+  "environment": "fresh .venv-clean created by uv sync --locked --python 3.12; existing pinned npm installation",
+  "report_generation_command": "python -m pytest tests/postgres/test_service.py::test_real_http_mcp_bad_revision_good_report --basetemp var/local-report-proof -q",
+  "reports": [
+    {
+      "path": "evidence/local/pass-mcp-report.json",
+      "verdict": "PASS",
+      "report_sha256": "710e9f667906b85bf953b2656f88cd61ab639f77423036e391b2f464f805d376",
+      "run_id": "9d9888e8-c244-4755-abf5-34b75609e41a",
+      "candidate_id": "965c7736-7f3f-49cb-a699-5d62a98205b9",
+      "offline_verification": {
+        "report_sha256": "710e9f667906b85bf953b2656f88cd61ab639f77423036e391b2f464f805d376",
+        "integrity": "VALID",
+        "anchor_status": "UNANCHORED",
+        "verification_status": "SELF_CONSISTENT_UNANCHORED",
+        "requirements_consistent": true,
+        "declared_verdict": "PASS",
+        "recomputed_verdict": "PASS",
+        "evidence_backend": "local_postgres_test",
+        "historical_only": true,
+        "current_apply_eligibility": "NOT_EVALUATED"
+      }
+    },
+    {
+      "path": "evidence/local/block-mcp-report.json",
+      "verdict": "BLOCK",
+      "report_sha256": "687a8eabe84ff2b5c74d8a8e2bb131c055c715feaa3f1572fc1a948ea753d2f4",
+      "run_id": "9d9888e8-c244-4755-abf5-34b75609e41a",
+      "candidate_id": "bcf582dc-c2ff-4aca-9c91-7f3775debe7d",
+      "offline_verification": {
+        "report_sha256": "687a8eabe84ff2b5c74d8a8e2bb131c055c715feaa3f1572fc1a948ea753d2f4",
+        "integrity": "VALID",
+        "anchor_status": "UNANCHORED",
+        "verification_status": "SELF_CONSISTENT_UNANCHORED",
+        "requirements_consistent": true,
+        "declared_verdict": "BLOCK",
+        "recomputed_verdict": "BLOCK",
+        "evidence_backend": "local_postgres_test",
+        "historical_only": true,
+        "current_apply_eligibility": "NOT_EVALUATED"
+      }
+    }
+  ],
+  "limits": [
+    "No AWS calls or snapshot-restored RDS evidence",
+    "No paid OpenAI/Gateway/Daytona execution",
+    "No genuine human apply/cleanup decisions",
+    "Offline consistency is historical and unanchored; current source eligibility is not evaluated"
+  ],
+  "report_generation_commit": "dc9c3b7681b93be444e1cebaeeb1fdcad3696493",
+  "previous_gates": [
+    {
+      "commit": "dc9c3b7681b93be444e1cebaeeb1fdcad3696493",
+      "command": "uv run --locked preflight verify local",
+      "result": {
+        "passed": 195,
+        "failed": 0,
+        "skipped": 0,
+        "duration_seconds": 87.24,
+        "exit_code": 0
+      }
+    },
+    {
+      "commit": "c036a59f7b0d222e2fabb9ab96c0c93857f8395e",
+      "command": "uv run --locked preflight verify local",
+      "result": {
+        "passed": 216,
+        "failed": 0,
+        "skipped": 0,
+        "duration_seconds": 196.2,
+        "exit_code": 0
+      }
+    }
+  ],
+  "additional_checks": {
+    "ruff_check_dot": "PASSED",
+    "mypy_src_preflight": "17 source files passed",
+    "native_tools_digest_recheck": "af26b949290e5ba88ba43d7ee5dac792765cfee05b7c42e8af2218cc8ba648d9",
+    "original_prd_sha256": "5f607b53bd7c439c94e3f97d3826e24e441cb5d007863eca023313347533b6bf"
+  }
+}

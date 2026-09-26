@@ -1,0 +1,9 @@
+{
+  "state_dir": "var/ui-probe-service",
+  "evidence_backend": "aws_rds",
+  "service_port": 18000,
+  "source_instance_id": null,
+  "source_allowlist": [],
+  "creation_authorized": false,
+  "enable_demo_source_apply": false
+}
