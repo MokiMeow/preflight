@@ -1,6 +1,6 @@
 # First-party file and function inventory
 
-Snapshot: `e693c53e6b647a46bd16ef78f5a0723b90f8a080`. 152 files; 869 declared symbols.
+Snapshot: `ac9f5ea770534ecf4f7b7639e6fbd76904e0e16d`. 152 files; 869 declared symbols.
 
 Every file below was read as UTF-8 and hashed. JSON and Python were parsed. This inventory is static accounting, not a claim that every branch/function was executed. Private ignored configuration and vendor/runtime directories are excluded. Audit outputs do not hash themselves.
 
@@ -172,7 +172,7 @@ configuration or documented contract. 25654 bytes; TEXT_INVENTORIED. SHA-256: `d
 
 ## docs/09_BUILD_STATUS.md
 
-configuration or documented contract. 25271 bytes; TEXT_INVENTORIED. SHA-256: `f1581c2b292f55f923b0562d193bc660be402a2a6e9d65ee450872c029f38780`.
+configuration or documented contract. 25274 bytes; TEXT_INVENTORIED. SHA-256: `f34434f91264eab7ecb555aa3992375d5e445a13d23747a63d4ce7707b6f2666`.
 
 ## docs/10_CODEX_OPERATING_SYSTEM.md
 

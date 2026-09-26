@@ -1,0 +1,48 @@
+{
+  "kind": "POST_BUILD_RECEIPT_NOT_EMBEDDED_IN_ITS_RECORDED_ARCHIVE",
+  "observed_at": "2026-09-26T09:45:15.207525+00:00",
+  "source_snapshot": "ac9f5ea",
+  "application_test_and_deployment_commit": "9f75cc1",
+  "commands": [
+    {
+      "command": "uv build --no-sources",
+      "exit_code": 0
+    },
+    {
+      "command": "uv run --locked python scripts/verify_distribution.py",
+      "exit_code": 0,
+      "result": {
+        "source_archive_members": 164,
+        "private_path_artifacts": 0,
+        "original_prd_hash_match": true,
+        "wheel_python_modules": 17
+      }
+    },
+    {
+      "command": "python var/continuation-archive-content-scan.py",
+      "exit_code": 0,
+      "result": {
+        "inspected_files": 185,
+        "credential_or_private_endpoint_pattern_findings": 0,
+        "limit": "Limited patterns; not general privacy certification"
+      }
+    },
+    {
+      "command": "uv pip install --python var/wheel-smoke/Scripts/python.exe --offline --no-deps --reinstall <wheel>; installed python -I imports; doctor; historical report verify with trusted digest",
+      "exit_code": 0,
+      "result": "Installed site-packages import observed, NOT_CONFIGURED/cloud_absence false/source_apply false, EXPECTED_DIGEST_MATCH historical only/current eligibility NOT_EVALUATED"
+    }
+  ],
+  "artifacts": [
+    {
+      "path": "dist/preflight_rehearsal-0.1.0-py3-none-any.whl",
+      "bytes": 57201,
+      "sha256": "1ddc5f48e6c5e4624d929636b8257c3dc32f88ea0d00c2712ac839a04288580b"
+    },
+    {
+      "path": "dist/preflight_rehearsal-0.1.0.tar.gz",
+      "bytes": 655840,
+      "sha256": "94a0b1d4039c4d8a0aa0175eb6e9e39c9fc7d37ceb7827e657d9d14594c40290"
+    }
+  ]
+}
