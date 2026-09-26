@@ -606,7 +606,7 @@
     },
     {
       "id": "M06",
-      "scenario": "Generated Daytona Python chains actual Preflight MCP tools",
+      "scenario": "Generated TrueForge local sandbox Python chains actual Preflight MCP tools",
       "required_assertion": "Real sandbox execution and useful orchestration, no credentials",
       "task": null,
       "status": "NOT_RUN"
@@ -754,7 +754,7 @@
     {
       "id": "N15",
       "scenario": "Provider log and export privacy",
-      "required_assertion": "Gateway/OpenAI/Daytona settings and evidence expose no key, connection string or unintended row value.",
+      "required_assertion": "Gateway/OpenAI/TrueForge local sandbox settings and evidence expose no key, connection string or unintended row value.",
       "task": "T27",
       "status": "NOT_RUN"
     },

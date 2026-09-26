@@ -115,7 +115,7 @@ A judge asking for a fresh source apply after the main one has already completed
 | “Can it retry after a crash?” | It can reconcile infrastructure. A source commit with unknown outcome is never automatically replayed. Show durable intent/recovery tests. |
 | “Is approval enterprise-secure?” | It is a real private TrueForge UI gate plus service checks. Production needs authenticated, server-verifiable, single-use authorization; this demo does not claim that. |
 | “Can you undo the successful migration instantly?” | No. Failed supported transactions roll back; successful data changes may need restore and traffic cutover. Recovery snapshots are retained. |
-| “Why RDS and Daytona both?” | RDS holds the database clone; Daytona runs generated agent code. They are separate boundaries and secrets never go to Daytona. |
+| “Why RDS and TrueForge local sandbox both?” | RDS holds the database clone; TrueForge local sandbox runs generated agent code. They are separate boundaries and secrets never go to TrueForge local sandbox. |
 | “What is production-ready today?” | The evidence shown is the owned synthetic controlled demo. Customer-data use needs additional authorization, identity, concurrency, drift, recovery and security work. |
 
 Do not invent a competitor benchmark or market percentage in answers. Make any future enterprise feature clearly future, not a checkbox the hackathon already delivered.
@@ -151,7 +151,7 @@ The indexed official organizer page publishes the weights below; final instructi
 
 | Published dimension | Weight | What our demonstration must let judges inspect |
 |---|---:|---|
-| Harness doing real work | 30 | TrueForge session, meaningful generated Daytona program, real MCP calls and pending approval. |
+| Harness doing real work | 30 | TrueForge session, meaningful generated TrueForge local sandbox program, real MCP calls and pending approval. |
 | Actually runs | 25 | Actual source/snapshot/private clone IDs; bad/good reports; approved source result and reproducible repository. |
 | Knows where to stop | 20 | Deny means no write; missing evidence cannot pass; drift/unknown outcomes halt mutation; cleanup is separately controlled. |
 | Worthwhile job | 15 | A populated database migration whose SQL can fail—or succeed while corrupting protected values—and the engineer's decision before source apply. |
@@ -161,7 +161,7 @@ The indexed official organizer page publishes the weights below; final instructi
 
 **0:00–0:35:** State the problem: “A migration can execute and still damage the data you intended to preserve. Preflight rehearses it and shows evidence before an engineer allows the source write.” Show the team-owned source and exact candidate hash.
 
-**0:35–1:15:** Show the genuine snapshot/clone provenance and the TrueForge/Daytona/MCP trace. A restore may have completed earlier; say so rather than implying a full RDS restore fits inside the pitch.
+**0:35–1:15:** Show the genuine snapshot/clone provenance and the TrueForge/TrueForge local sandbox/MCP trace. A restore may have completed earlier; say so rather than implying a full RDS restore fits inside the pitch.
 
 **1:15–2:10:** Show the bad candidate's actual failure/BLOCK and unchanged source. Introduce the corrected candidate hash. Explain why a changed candidate is a new artifact, not an invisible model rewrite.
 
@@ -175,7 +175,7 @@ Prepare a separate clean owned synthetic source/run for an authorized live demon
 
 ## 11. Explainability and submission completeness
 
-Every team member should be able to explain: why a clone is separate from Daytona; what evidence actually determines PASS; why source drift is rechecked inside locks; what an immutable report hash covers; why lost commit acknowledgement cannot be retried; and where the human gate ends and the service guard begins. The Gateway/API protocol choice should also be explainable without exposing configuration secrets.
+Every team member should be able to explain: why a clone is separate from TrueForge local sandbox; what evidence actually determines PASS; why source drift is rechecked inside locks; what an immutable report hash covers; why lost commit acknowledgement cannot be retried; and where the human gate ends and the service guard begins. The Gateway/API protocol choice should also be explainable without exposing configuration secrets.
 
 The README identifies the actual tested coding assistants/models and runtime provider/model/API route separately. Include setup, architecture, local tests, connected tests, reproduction evidence, limitations, dependency notices, private deployment instructions and deliberate retention/cleanup state. Public repository visibility must be explicitly authorized. A draft community post may link the final public repository after approval; do not auto-post, inflate usage statistics or state that judges endorsed the product.
 
@@ -207,6 +207,8 @@ For the offline-verification beat, retain the original report digest separately 
 
 ### Rehearsal preparation that does not falsify execution
 
-Before the stage: verify the exact integrated commit, source state, retained backup, clone identity, provider/Daytona access, runtime model and the prepared session. T27 must have preceded the first live source apply. Keep a genuinely recorded fallback of the same integration, with time/backend labels. Do not claim a recorded restore happened live. Keep a non-mutating read-only readiness command and the standalone report verifier ready for questions.
+Before the stage: verify the exact integrated commit, source state, retained backup, clone identity, provider/TrueForge local sandbox access, runtime model and the prepared session. T27 must have preceded the first live source apply. Keep a genuinely recorded fallback of the same integration, with time/backend labels. Do not claim a recorded restore happened live. Keep a non-mutating read-only readiness command and the standalone report verifier ready for questions.
 
 The engineer should be able to explain four distinctions without reading a model transcript: clone execution versus source execution; coverage versus correctness; artifact consistency versus trusted provenance; and confirmed rollback versus unknown commit. These are the substantive engineering decisions the demo is meant to make visible.
+
+Operator amendment D26 replaces the original Daytona runtime with the installed native local Linux sandbox; historical upstream research and the immutable PRD retain their original scope. D27 authorizes a USD100 continuation ceiling, not a fabricated instantaneous provider spending stop.

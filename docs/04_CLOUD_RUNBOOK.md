@@ -40,7 +40,7 @@ Record selected class/storage/region, observed current pricing source or estimat
 
 ## 3. Network layout
 
-A straightforward controlled-demo setup is an EC2 host in a subnet with outbound HTTPS and a restricted SSH entry point, with RDS source and clone in private DB subnets in the same VPC. A DB subnet group must satisfy the actual RDS availability-zone requirements. Do not put the RDS endpoint on the public internet to accommodate Daytona; Daytona calls through the harness, not through database networking.
+A straightforward controlled-demo setup is an EC2 host in a subnet with outbound HTTPS and a restricted SSH entry point, with RDS source and clone in private DB subnets in the same VPC. A DB subnet group must satisfy the actual RDS availability-zone requirements. Do not put the RDS endpoint on the public internet to accommodate TrueForge local sandbox; TrueForge local sandbox calls through the harness, not through database networking.
 
 | Security group | Inbound | Outbound / notes |
 |---|---|---|
@@ -98,7 +98,7 @@ Creating service-linked roles or attaching IAM policies is bootstrap work, not a
 
 Bootstrap owns the synthetic setup. Create a non-superuser migration role that owns only the demo tables and can perform the permitted ALTER/UPDATE operations. Create a separate source-read login with schema USAGE and SELECT only on the declared fixture tables. Provision these logins and their real named secrets during host/source bootstrap so connection-only deployment checks can run before table seeding. Grant table-specific privileges when the fixture tables are later created; do not require a missing fixture table for a connection-only readiness probe. The migration role and data are included in the snapshot, so the writer can operate on the clone without receiving a broader master credential.
 
-Store read and migration credentials in separate named Secrets Manager entries. The Preflight process can retrieve the writer for clone work, but a source-writer connection factory is reachable only through the gated apply use case. The model, Daytona, report renderer and read-only source tool never receive these secrets. Remove bootstrap/master credentials from runtime environment and working directories once setup is complete.
+Store read and migration credentials in separate named Secrets Manager entries. The Preflight process can retrieve the writer for clone work, but a source-writer connection factory is reachable only through the gated apply use case. The model, TrueForge local sandbox, report renderer and read-only source tool never receive these secrets. Remove bootstrap/master credentials from runtime environment and working directories once setup is complete.
 
 Seed exactly 1,000 reproducible synthetic customers, with a fixed random seed where randomness is used. Use a fixed UTC timestamp range, predictable integer IDs and unmistakably synthetic email addresses under an example domain. Do not generate real names/addresses or ingest customer dumps. Setup/reset must be explicit, logged and separated from runtime rehearsal; a hidden reset would invalidate a “source unchanged” demonstration.
 
@@ -137,8 +137,8 @@ Set graceful shutdown, bounded job polling, process lock and persistent volume m
 | Symptom | Inspect first | Never do |
 |---|---|---|
 | TrueForge does not list tools | SDK/protocol initialization, actual connector URL/transport, ten schemas, loopback route | Substitute hand-built JSON as a successful MCP call |
-| Daytona cannot call MCP | Harness bridge configuration and real tool output schema | Expose RDS/MCP publicly or give sandbox DB passwords |
-| Sandbox provisioning fails | Daytona permissions, quota, snapshot setup, actual error | Claim local Python ran in Daytona |
+| TrueForge local sandbox cannot call MCP | Harness bridge configuration and real tool output schema | Expose RDS/MCP publicly or give sandbox DB passwords |
+| Sandbox provisioning fails | TrueForge local sandbox permissions, quota, snapshot setup, actual error | Claim local Python ran in TrueForge local sandbox |
 | RDS restore fails | Source snapshot status, compatible engine/class, subnet/KMS/role constraints | Repeatedly create new unrelated resources or grant admin |
 | DB connect fails | SG reference, route, endpoint, role and CA/hostname | Disable TLS or make DB public |
 | Preserved data/source drift | Correct baseline, exact candidate, full source fingerprints | Rebaseline a mutated clone or force PASS |
@@ -166,17 +166,17 @@ TLS negative tests must cover wrong CA and wrong hostname, not only `sslmode=dis
 
 ## 12. Provider access, secrets and resource economics
 
-The build uses the operator's coding subscription; the running product uses a separate Gateway/OpenAI route; AWS and Daytona have their own account permissions/limits. Do not treat generous Codex usage as unlimited API/cloud spend. Discover the authorized account and inspect quotas before creating resources; obtain a bounded resource/budget decision once rather than asking on every permitted poll.
+The build uses the operator's coding subscription; the running product uses a separate Gateway/OpenAI route; AWS and TrueForge local sandbox have their own account permissions/limits. Do not treat generous Codex usage as unlimited API/cloud spend. Discover the authorized account and inspect quotas before creating resources; obtain a bounded resource/budget decision once rather than asking on every permitted poll.
 
 Use a team/application-scoped Gateway credential where supported, copied into the approved provider settings, and confirm the model is enabled for that credential. Copy the exact base URL and model identifier from the actual Playground example. Never put a guessed provider prefix or secret in the model instruction. Do not change organization-wide access policies to work around a denied request.
 
-Log/account dashboards may contain prompt text. Review Gateway, OpenAI, Daytona and SDK telemetry settings and retained payloads; keep only the synthetic SQL/check metadata needed, no rows or credentials. Prefix caching may be used; semantic cached action responses must not replace fresh stateful decisions. Record observed usage if accessible, not invented cost estimates.
+Log/account dashboards may contain prompt text. Review Gateway, OpenAI, TrueForge local sandbox and SDK telemetry settings and retained payloads; keep only the synthetic SQL/check metadata needed, no rows or credentials. Prefix caching may be used; semantic cached action responses must not replace fresh stateful decisions. Record observed usage if accessible, not invented cost estimates.
 
 Restore costs can continue after the UI is closed. The retained-resource handoff includes snapshots as well as instances, region, owner and next authorized action. Expiry tags flag review; they are not automatic permission to delete a recovery backup or a resource with unknown transaction outcome.
 
 ## 13. Dependency and release hygiene
 
-At T01 retrieve actual package metadata and record the selected stable version; at T30 freeze integrity/locks only after compatibility tests. Do not update TrueForge's internal Daytona/AI SDK dependencies independently because another SDK has a newer release. Do not use a development documentation version as a stable package pin.
+At T01 retrieve actual package metadata and record the selected stable version; at T30 freeze integrity/locks only after compatibility tests. Do not update TrueForge's internal TrueForge local sandbox/AI SDK dependencies independently because another SDK has a newer release. Do not use a development documentation version as a stable package pin.
 
 Create a small dependency/license inventory in the implemented repository. The pglast package metadata identifies GPL-3.0-or-later; do not label all bundled dependencies MIT or remove notices. Decide the project's distribution/license with the operator and preserve required attribution. This is an inventory/control requirement, not a claim that a particular distribution has been legally cleared.
 
@@ -186,3 +186,5 @@ Create a small dependency/license inventory in the implemented repository. The p
 A short **agent Code Mode polling-batch deadline** returns the existing job as still pending; it is not the service's longer persisted **cloud job deadline**. The service may mark its job ERROR after its configured whole-job deadline while retaining exact resource IDs for inspection. Neither deadline authorizes an extra snapshot/restore, SQL replay or cleanup. Keep these deadlines and states distinct in code, configuration, tests and presentation.
 
 Coding-model admission is governed by `config/model-policy.json`: Sol High for ordinary cloud work, no Astra escalation for a normal pending restore or known IAM/quota error. Provider usage and AWS resource costs are separate observations. Apply the same private network, TLS, identity, lifecycle and recovery requirements regardless of which Sol model wrote a module.
+
+Operator amendment D26 replaces the original Daytona runtime with the installed native local Linux sandbox; historical upstream research and the immutable PRD retain their original scope. D27 authorizes a USD100 continuation ceiling, not a fabricated instantaneous provider spending stop.

@@ -45,8 +45,18 @@ def cloud(tmp_path):
     rs.activate()
     ss.activate()
     ts.activate()
+    # AWS request-shape tests inject a zero-effect admission stub. Dedicated
+    # budget tests exercise unknown-cost refusal and durable reservations.
     value = Harness(
-        policy, intent, store, RdsAdapter(rds, sts, policy, store, tagging=tagging), rs, ss, ts
+        policy,
+        intent,
+        store,
+        RdsAdapter(
+            rds, sts, policy, store, tagging=tagging, budget_guard=lambda intent, kind: None
+        ),
+        rs,
+        ss,
+        ts,
     )
     yield value
     rs.assert_no_pending_responses()

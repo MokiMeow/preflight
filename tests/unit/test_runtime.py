@@ -36,3 +36,12 @@ def test_cloud_runtime_wires_tag_inventory_client(monkeypatch, tmp_path):
     )
     assert runtime.adapter.tagging is clients["resourcegroupstaggingapi"]
     assert set(clients) == {"rds", "sts", "resourcegroupstaggingapi", "secretsmanager"}
+
+
+def test_operator_budget_ceiling_above_100_refused():
+    import pytest
+    from pydantic import ValidationError
+
+    with pytest.raises(ValidationError):
+        Settings(approved_budget_ceiling=100.01)
+    assert Settings(approved_budget_ceiling=100).approved_budget_ceiling == 100

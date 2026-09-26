@@ -102,7 +102,7 @@
         "Create pyproject, uv environment, package entry point, strict settings and pytest markers. Add doctor with local/cloud/apply readiness separated and source apply disabled by default.",
         "Implement safe nonsecret configuration loading, OS/process ownership and a responsive transport entry point. Use typed not-ready responses until each use case is implemented, never fake successful business results.",
         "Create candidate-intake CLI to read bytes and generate exact base64/hash tool input without a source connection.",
-        "Doctor distinguishes local, AWS, Gateway/API, Daytona and approval readiness; secret presence checks reveal no values. Do not count a text-only model reply as tool compatibility."
+        "Doctor distinguishes local, AWS, Gateway/API, TrueForge local sandbox and approval readiness; secret presence checks reveal no values. Do not count a text-only model reply as tool compatibility."
       ],
       "acceptance": "Doctor never writes or exposes secrets, missing required values fail clearly, malformed input fails closed, and intake hashes agree with an independent SHA-256 command.",
       "evidence": "evidence/setup/doctor-local.json + intake-test.txt",
@@ -335,7 +335,7 @@
         "Implement canonical report payload/envelope, payload-only digest and deterministic Markdown. Keep post-apply/cleanup receipts separate.",
         "Render source/snapshot/clone provenance, exact hashes, before/after schema, every mandatory check, duration, backup status and untested risks.",
         "Test hash recomputation, immutable history, old-candidate retrieval and displayed status that cannot be changed by a model explanation.",
-        "Add a redacted evidence-chain panel and copyable hashes to the native report. Missing Gateway/Daytona/request IDs remain absent or NOT_OBSERVED, never invented.",
+        "Add a redacted evidence-chain panel and copyable hashes to the native report. Missing Gateway/TrueForge local sandbox/request IDs remain absent or NOT_OBSERVED, never invented.",
         "Implement preflight evidence verify <report.json> [--expected-report-sha256 <trusted-hash>]. Parse bounded JSON strictly, reject duplicate keys, validate the version, payload digest, mandatory evidence and deterministic verdict. It must need no network, DB or model. Without a separately recorded expected hash label self-consistency UNANCHORED, not authenticity.",
         "Add an impact/coverage section and an explicit historical-evidence label to the native report. Reuse the existing canonicalization and pure verdict code; include a read-only verification result and trust-anchor status without changing the sealed report."
       ],
@@ -593,7 +593,7 @@
     },
     {
       "id": "T20",
-      "title": "Prove TrueForge, OpenAI and Daytona compatibility early",
+      "title": "Prove TrueForge, OpenAI and TrueForge local sandbox compatibility early",
       "owner": "integration",
       "depends_on": [
         "T03"
@@ -603,8 +603,8 @@
         "08"
       ],
       "subtasks": [
-        "Launch the verified TrueForge version on a private endpoint. Configure an actually available OpenAI model and the Daytona provider outside Git.",
-        "Run a bounded generated-code probe in Daytona and a real MCP handshake through the harness. Inspect actual tool result shape rather than assuming direct-client output shape.",
+        "Launch the verified TrueForge version on a private endpoint. Configure an actually available OpenAI model and the TrueForge local sandbox provider outside Git.",
+        "Run a bounded generated-code probe in TrueForge local sandbox and a real MCP handshake through the harness. Inspect actual tool result shape rather than assuming direct-client output shape.",
         "Confirm literal approval selectors and Code Mode behavior in the installed version. Keep this compatibility probe separate from final business evidence.",
         "Configure a team-scoped TrueFoundry AI Gateway route from its actual Playground snippet. Verify TrueForge provider adapter, upstream endpoint family, exact Gateway model ID, permitted reasoning/sampling options, tool-call IDs and a streamed tool-result roundtrip.",
         "Try the OpenAI Responses adapter with the Gateway base URL for GPT-6 Sol/high (tested GPT-5.6 Sol/high fallback; no runtime Astra) when the actual route is supported. The custom/truefoundry compatible adapter is a different path; for Sol Chat Completions tool calls explicitly use none, never send Astra tools there. Record and regression-test any approved fallback.",
@@ -702,8 +702,8 @@
         "Run the supplied bad migration through generated Code Mode calls; retrieve its BLOCK report and demonstrate source schema unchanged.",
         "Attach the accepted good candidate only after rollback/baseline proof, then execute and validate it. Preserve both immutable report versions.",
         "Show 1,000 rows preserved, identical protected hashes, zero account_tier nulls, correct values, actual NOT NULL schema and measured runtime.",
-        "Correlate real TrueForge, Daytona, Gateway/OpenAI, MCP and AWS trace identifiers with the candidate and sealed report. Label an already completed restore honestly.",
-        "Link the same run/candidate/snapshot/report identities through observed TrueForge, Daytona and provider traces. Show readable expected-versus-observed coverage; missing identifiers remain NOT_OBSERVED, not guessed."
+        "Correlate real TrueForge, TrueForge local sandbox, Gateway/OpenAI, MCP and AWS trace identifiers with the candidate and sealed report. Label an already completed restore honestly.",
+        "Link the same run/candidate/snapshot/report identities through observed TrueForge, TrueForge local sandbox and provider traces. Show readable expected-versus-observed coverage; missing identifiers remain NOT_OBSERVED, not guessed."
       ],
       "acceptance": "The real AWS-backed sequence produces BLOCK then PASS with distinct SQL hashes and an AWAITING_APPROVAL phase; no source apply has occurred.",
       "evidence": "evidence/aws-run/bad-and-good-reports/ + session-trace",

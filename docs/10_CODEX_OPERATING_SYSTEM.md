@@ -11,7 +11,7 @@ The user's explicit priority is to use **GPT-6 Sol and GPT-5.6 Sol at High**, no
 | Lead, shared interfaces, architecture, core use cases, integration decisions | GPT-6 Sol / high | Own the project continuously; do not hand the lead to Astra. |
 | SQL policy, database transactions, row/schema evidence | GPT-6 Sol / high | Same detailed contracts, tests and independent checks as before. |
 | Cloud lifecycle, IAM, networking, deployment | GPT-6 Sol / high | Single authorized mutation owner; no parallel source/reset actions. |
-| TrueForge/Daytona integration, report verifier, native report presentation, submission | GPT-5.6 Sol / high | Narrow owned lane; use a tested GPT-6 Sol/high fallback if necessary. |
+| TrueForge/TrueForge local sandbox integration, report verifier, native report presentation, submission | GPT-5.6 Sol / high | Narrow owned lane; use a tested GPT-6 Sol/high fallback if necessary. |
 | Routine independent review and regression | GPT-6 Sol / high, read-only context | Different context from the implementer, exact commit and concrete reproductions. |
 | Exceptional safety audit or qualifying critical blocker | GPT-6 Astra / high, read-only | Only through a recorded unused A1/A2 ticket; return findings and close. |
 | Deployed TrueForge runtime | GPT-6 Sol / high, tested Responses route | Tested GPT-5.6 Sol/high alternative; no runtime Astra and no silent per-turn switching. |
@@ -72,7 +72,7 @@ Where supported, establish a thread Goal with the kickoff objective:
 
 ```text
 Complete Preflight's T00–T35 build and evidence plan for the permitted event:
-real TrueForge/OpenAI/Daytona/MCP/RDS rehearsal, deterministic reports, actual
+real TrueForge/OpenAI/TrueForge local sandbox/MCP/RDS rehearsal, deterministic reports, actual
 human-controlled source apply, failure/recovery/cleanup controls, and a runnable
 honest submission. Stop only at observed acceptance or named external blockers;
 continue all independent authorized implementation work.
@@ -86,7 +86,7 @@ Read the ledger and Git state. Select ready tasks whose prerequisites actually p
 
 Do not ask a second model to re-ideate the product or generate another 30-file plan. Clarify only true external blockers that cannot be discovered through authorized reads. For ordinary implementation decisions, choose the smallest design consistent with the specification, record any material deviation and continue.
 
-**Early risk ordering:** T00 rules/provenance → T01 toolchain alongside T04 read-only AWS discovery → T02 interfaces → T03 runnable shell → T20 real provider/Daytona compatibility spike while database/cloud work proceeds. T20 is not delayed until the database engine is finished. No live source apply is part of that harmless probe.
+**Early risk ordering:** T00 rules/provenance → T01 toolchain alongside T04 read-only AWS discovery → T02 interfaces → T03 runnable shell → T20 real provider/TrueForge local sandbox compatibility spike while database/cloud work proceeds. T20 is not delayed until the database engine is finished. No live source apply is part of that harmless probe.
 
 ## 5. Parallel work with actual isolation
 
@@ -188,4 +188,6 @@ A1 at T27 and conditional A2 at T34 are separate bounded read-only reviews, **no
 
 The actual final acceptance packet, not token count or number of agents, controls completion. All live evidence is labeled with its backend/commit. The engineering team must understand the source-approval path, report hash, source/clone distinction and unknown-outcome policy well enough to explain them without reading a model transcript.
 
-If external access is missing, finish all independent code, tests, documentation and read-only checks; mark the connected gates BLOCKED_EXTERNAL/NOT_RUN and provide the precise next authorized action. Do not silently substitute local PostgreSQL for RDS or a local process for Daytona. No workflow or model assignment guarantees a hackathon result, but nothing in this plan permits dropping the defining product behavior merely because it is difficult.
+If external access is missing, finish all independent code, tests, documentation and read-only checks; mark the connected gates BLOCKED_EXTERNAL/NOT_RUN and provide the precise next authorized action. Do not silently substitute local PostgreSQL for RDS or a local process for TrueForge local sandbox. No workflow or model assignment guarantees a hackathon result, but nothing in this plan permits dropping the defining product behavior merely because it is difficult.
+
+Operator amendment D26 replaces the original Daytona runtime with the installed native local Linux sandbox; historical upstream research and the immutable PRD retain their original scope. D27 authorizes a USD100 continuation ceiling, not a fabricated instantaneous provider spending stop.

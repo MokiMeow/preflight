@@ -8,7 +8,7 @@ Read `docs/09_BUILD_STATUS.md` when resuming. The lead uses `docs/10_CODEX_OPERA
 
 ## Product invariants
 - One allowlisted, owned synthetic RDS source; a separate private snapshot-restored clone. No fake RDS evidence or third-party production access.
-- TrueForge bundled UI/agent, OpenAI model, Daytona Code Mode and Python MCP. Prefer the documented AI Gateway path after a real endpoint/tool probe; do not replace the required runtime with Codex, another framework or a second dashboard.
+- TrueForge bundled UI/agent, OpenAI model, native local Linux sandbox Code Mode and Python MCP (operator amendment D26 supersedes Daytona). Prefer the documented AI Gateway path after a real endpoint/tool probe; do not replace the required runtime with Codex, another framework or a second dashboard.
 - Exact SQL bytes/hashes. Deterministic complete checks decide PASS/WARN/BLOCK. The model explains; it cannot redefine expectations or confer approval.
 - Source apply only through the literally approved tool and fresh server guards; cleanup has its own human gate. The coding agent must not click either gate for the operator.
 - No raw rows, AWS/DB credentials or connector secrets in prompts, sandbox output, logs, reports or Git. Private service endpoints only.

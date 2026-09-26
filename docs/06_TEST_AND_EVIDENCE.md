@@ -145,7 +145,7 @@ C01–C10/C13/C14 need unit/service tests and actual identity/network observatio
 | M03 | Invalid/unknown/oversize tool input | Typed error, no hidden effect |
 | M04 | Real local end-to-end via MCP | Full bad/revision/good/report flow, not direct Python-only calls |
 | M05 | TrueForge saved agent uses actual OpenAI provider | Successful real provider/tool trace |
-| M06 | Generated Daytona Python chains actual Preflight MCP tools | Real sandbox execution and useful orchestration, no credentials |
+| M06 | Generated TrueForge local sandbox Python chains actual Preflight MCP tools | Real sandbox execution and useful orchestration, no credentials |
 | M07 | Code Mode calls gated source apply | Same actual human pause as direct call |
 | M08 | Literal gate configuration survives agent save/reload | Both source apply and cleanup visibly gated |
 | M09 | Annotation missing/wrong in a controlled negative test | Literal names still govern the selected tools |
@@ -175,7 +175,7 @@ These are specified scenarios to implement/observe, **not executed tests**. Some
 | N12 | Streamed tool-call roundtrip | Complete JSON arguments, stable call ID, one harmless execution and linked result produce a continued response. | T20 |
 | N13 | Provider auth/quota/timeout failure | Errors are visible and bounded; the stored run/SQL candidate are not recreated or replayed. | T20 |
 | N14 | Semantic response cache versus prefix cache | No cached action response crosses run/candidate/state; harmless prompt-prefix caching is not misclassified. | T20 |
-| N15 | Provider log and export privacy | Gateway/OpenAI/Daytona settings and evidence expose no key, connection string or unintended row value. | T27 |
+| N15 | Provider log and export privacy | Gateway/OpenAI/TrueForge local sandbox settings and evidence expose no key, connection string or unintended row value. | T27 |
 | N16 | SDK OpenTelemetry leakage sentinel | Automatic spans/log exporters do not transmit secret-bearing inputs/outputs; disabled/default behavior actually checked. | T18 |
 | N17 | MCP v2 and Code Mode result shapes | Official client structured_content and harness bridge wrappers decoded according to their own actual schemas. | T18 |
 | N18 | Wire protocol interoperability | Actual TrueForge JS client and Python service negotiate successfully despite different package majors. | T20 |
@@ -237,7 +237,7 @@ The separate [agent evaluation plan](../config/agent-evaluation-plan.json) group
 
 | Gate | Evidence needed | What is insufficient |
 |---|---|---|
-| G1 — Real agent execution | TrueForge + actual OpenAI adapter/API route + Daytona trace and bridged MCP requests; Gateway evidence when used, disclosed authorized fallback otherwise | Local Python script named “sandbox” |
+| G1 — Real agent execution | TrueForge + actual OpenAI adapter/API route + TrueForge local sandbox trace and bridged MCP requests; Gateway evidence when used, disclosed authorized fallback otherwise | Local Python script named “sandbox” |
 | G2 — Real AWS copy | Source/snapshot/new private clone IDs, tags, actual describes and TLS baseline | Screenshot of a manually copied local database |
 | G3 — Real migration evidence | Bad BLOCK and good PASS reports from actual RDS clone with 1,000 rows and schema/hash checks | Successful SQL exit code or model-written verdict |
 | G4 — Human control | Deny/no source change; later Allow/exact source write; immutable receipt | `approved:true` test flag or fake UI button |
@@ -249,7 +249,7 @@ G5 includes real local database adversarial cases; each must label its backend h
 
 ## Secret/raw-data scan checklist
 
-Scan staged Git diffs, history newly created for the event, code/config files, tool JSON, report JSON/Markdown, service logs, screenshots, video frames, copied terminal commands, provider configuration exports and Daytona output. Use seeded sentinel strings in tests for DB password, fake AWS-key-like text and synthetic row values. Check outputs, not just logger calls.
+Scan staged Git diffs, history newly created for the event, code/config files, tool JSON, report JSON/Markdown, service logs, screenshots, video frames, copied terminal commands, provider configuration exports and TrueForge local sandbox output. Use seeded sentinel strings in tests for DB password, fake AWS-key-like text and synthetic row values. Check outputs, not just logger calls.
 
 Allow legitimate synthetic input SQL literals and declared expected values; disallow unintended returned row values. A scan must distinguish a declared `standard` contract constant from actual database content dumped by an error. Do not commit real credentials to test a scanner. Inspect the human recording too; regex cannot prove that a UI recording is safe.
 
@@ -270,3 +270,5 @@ The accepted provider/model pair gets a compact representative evaluation: bad m
 Before the first real source mutation, require accepted T27 independent review. At final readiness, check the exact reviewed commit/delta, column-level coverage tests, offline verifier and trust-anchor labeling, model/effort observations, expert-ticket usage and representative runtime trace cases. Never rerun a committed source migration merely to refresh the evidence. New live runs require an authorized reset/new synthetic source and new rehearsal.
 
 An offline report digest verifies historical bytes and declared evidence consistency; it does not replace fresh source drift/backup checks or demonstrate genuine human identity. Missing account/network access means connected gates are NOT_RUN/BLOCKED_EXTERNAL, not “verified by offline proof.”
+
+Operator amendment D26 replaces the original Daytona runtime with the installed native local Linux sandbox; historical upstream research and the immutable PRD retain their original scope. D27 authorizes a USD100 continuation ceiling, not a fabricated instantaneous provider spending stop.

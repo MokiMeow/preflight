@@ -109,10 +109,12 @@ class RdsAdapter:
         *,
         recovery_attestation: Callable[[str, str, datetime], bool] | None = None,
         tagging: Any | None = None,
+        budget_guard: Callable[[ResourceIntent, str], None] | None = None,
     ):
         self.rds, self.sts, self.policy, self.store = rds, sts, policy, store
         self.recovery_attestation = recovery_attestation
         self.tagging = tagging
+        self.budget_guard = budget_guard
         if rds.meta.region_name != policy.region or sts.meta.region_name != policy.region:
             raise PreflightError("AWS_REGION_MISMATCH")
         if tagging is not None and tagging.meta.region_name != policy.region:
@@ -564,6 +566,11 @@ class RdsAdapter:
         if not self.store.get(intent.run_id)[kind + "_reserved"]:
             raise PreflightError("RESOURCE_NOT_RESERVED")
 
+    def _reserve_budget(self, intent: ResourceIntent, kind: str) -> None:
+        if self.budget_guard is None:
+            raise PreflightError("BUDGET_ADMISSION_REQUIRED")
+        self.budget_guard(intent, kind)
+
     def ensure_snapshot(self, intent: ResourceIntent) -> ResourceObservation:
         self._creation(intent, "snapshot")
         with self.store.mutation_lease(intent.run_id):
@@ -575,6 +582,7 @@ class RdsAdapter:
                     raise
                 self._enforce_live_inventory(intent, "snapshot")
                 self._identity()
+                self._reserve_budget(intent, "snapshot")
                 self._call(
                     self.rds,
                     "create_db_snapshot",
@@ -613,6 +621,7 @@ class RdsAdapter:
             self._enforce_live_inventory(intent, "clone")
             self._identity()
             tags = intent.tags() | {"SnapshotId": intent.snapshot_id}
+            self._reserve_budget(intent, "clone")
             self._call(
                 self.rds,
                 "restore_db_instance_from_db_snapshot",

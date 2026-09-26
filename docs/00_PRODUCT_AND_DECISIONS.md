@@ -112,3 +112,11 @@ The extra committed-but-wrong-data test, stale-source test and replay rejection 
 Preflight reduces uncertainty for the specific rehearsed SQL/data snapshot by making evidence inspectable. It does not prove how a later production workload behaves. Live lock contention, application compatibility, traffic, replication, long-running production transactions, external side effects and later data drift remain unproven. No percentages of risk reduction or performance improvement are promised.
 
 The “win” argument is the observed causal proof and disciplined human control, not the number of frameworks, agent personas or slides. Present the project as a strong working controlled demo with clearly stated production-hardening boundaries.
+
+## D26 — Operator-authorized local Code Mode runtime (26 September 2026)
+
+The operator replaces the paid Daytona requirement with TrueForge 0.2.1's native local Linux sandbox on the existing private EC2 host. This explicitly supersedes Daytona-specific runtime acceptance in the implementation kit; the original PRD remains byte-for-byte preserved as historical provenance. Acceptance now requires actual local Code Mode/Python MCP traces, isolated session files, credential and metadata/network denial, bounded execution and unchanged literal source-apply/cleanup approvals. Unsupported isolation must fail closed; unsandboxed execution is not an acceptable fallback. No Daytona credential, account or service call is required for this approved runtime.
+
+## D27 — Operator-authorized AWS continuation ceiling (26 September 2026)
+
+The operator authorizes at most USD100 for AWS continuation, with no account-plan upgrade and no extra source/reset. Record the fixed ceiling and retain singleton clone/snapshot caps. Cost admission requires current, complete observations and conservative accrued/reserved cost bounds; unknown or stale spending facts refuse new billable creation. A budget alert or positive configuration number is not an instantaneous AWS hard cap. Existing resource retention remains chargeable and is reported; no automatic source deletion or approval bypass is authorized by this ceiling.

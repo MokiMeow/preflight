@@ -10,7 +10,7 @@ flowchart LR
     Engineer[Engineer via private tunnel] --> TF[TrueForge UI and harness]
     TF -->|verified Responses route preferred| GW[TrueFoundry AI Gateway]
     GW --> OA[Available OpenAI model]
-    TF --> DS[Daytona generated Python]
+    TF --> DS[TrueForge local sandbox generated Python]
     DS -->|harness-mediated tool calls| TF
     TF -->|private Streamable HTTP| MCP[Preflight Python service]
     MCP --> AWS[RDS snapshot and new private clone]
@@ -21,7 +21,7 @@ Gateway is for model traffic; it is **not** a reason to publish the private Pref
 
 Record three distinct model identifiers: the ordinary coding model (`gpt-6-sol`/`gpt-5.6-sol`; exceptional Astra reviews are logged separately), the Gateway's upstream model ID from its Playground, and the saved TrueForge model resource name. They are not interchangeable strings. The actual API family, adapter, resolved model and permitted reasoning options are saved in the compatibility record.
 
-A sanitized trace record links `run_id`, `candidate_id`, immutable report digest, TrueForge session/turn, Daytona execution, MCP request/attempt and observed AWS/model request IDs. Fields absent from the real provider are null/NOT_OBSERVED. Store supplemental traces separately from sealed reports when obtained later. Correlation is not cryptographic proof of human approval; the original controlled-demo limitation remains.
+A sanitized trace record links `run_id`, `candidate_id`, immutable report digest, TrueForge session/turn, TrueForge local sandbox execution, MCP request/attempt and observed AWS/model request IDs. Fields absent from the real provider are null/NOT_OBSERVED. Store supplemental traces separately from sealed reports when obtained later. Correlation is not cryptographic proof of human approval; the original controlled-demo limitation remains.
 
 ## Deployment shape
 
@@ -30,7 +30,7 @@ Engineer browser
   -> SSH forwarded localhost:8790
      -> TrueForge UI + agent loop + human approvals [EC2]
         -> OpenAI HTTPS [migration + redacted evidence only]
-        -> Daytona [generated Python; no AWS/DB credential]
+        -> TrueForge local sandbox [generated Python; no AWS/DB credential]
            -> TrueForge Code Mode MCP bridge
               -> http://127.0.0.1:8000/mcp [same EC2 host]
                  -> Preflight Python service
@@ -43,7 +43,7 @@ Source RDS instance -> RDS snapshot -> separate clone instance
 Source migration write -> only approved apply_to_demo_source + current guards
 ```
 
-The source and clone are in the team's AWS VPC. The service host may have a controlled SSH entry point and outbound HTTPS, but **8790 and 8000 are never public**. Only its security group can reach the database groups on 5432. Daytona does not connect to RDS. Both RDS instances are private. TrueForge and Preflight use different SQLite databases and separate state directories.
+The source and clone are in the team's AWS VPC. The service host may have a controlled SSH entry point and outbound HTTPS, but **8790 and 8000 are never public**. Only its security group can reach the database groups on 5432. TrueForge local sandbox does not connect to RDS. Both RDS instances are private. TrueForge and Preflight use different SQLite databases and separate state directories.
 
 The MCP endpoint uses Streamable HTTP, not a hand-built REST substitute. The MCP process is the trusted boundary for credentials, table access, SQL policy, verdicts and writes. Tool inputs contain IDs, not user-supplied hosts, DSNs or arbitrary URLs. Source/clone endpoints are resolved and verified through the allowlisted AWS resources.
 
@@ -219,3 +219,5 @@ Keep the same deployment and ten tool names. `sql_policy.py` exposes a typed acc
 A local `preflight evidence verify` command reuses the report parser/canonicalization/verdict functions. Its call graph must not instantiate AWS, database connections, MCP clients, provider clients, or background workers. It reads a bounded file and optional trusted digest, and emits an inspection result separate from the immutable report. Tests prove no network or credentials are needed. The impact table is a section of the existing report, not a dashboard. Full specification: docs 02 sections 11–12.
 
 Builder review evidence is stored under `evidence/review/`, not inside a runtime approval token. A1/A2 are build-workflow tickets, not product states or new server privileges. The deployed agent never routes itself to Astra. Code Mode wait batches are bounded observations over the existing persisted AWS job, not another task queue or external scheduler.
+
+Operator amendment D26 replaces the original Daytona runtime with the installed native local Linux sandbox; historical upstream research and the immutable PRD retain their original scope. D27 authorizes a USD100 continuation ceiling, not a fabricated instantaneous provider spending stop.

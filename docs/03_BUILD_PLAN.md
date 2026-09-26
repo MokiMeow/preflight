@@ -76,7 +76,7 @@ No fixed “seven-hour MVP” cutoff is built into this plan. Start slow externa
 
 Every card below includes its requested coding model, reasoning effort and on-demand skill. These are our task assignments; actual availability is probed at T01. Role-file overrides take precedence, so merely writing a different model into a spawn prompt is not sufficient. See [10](10_CODEX_OPERATING_SYSTEM.md) for the executable workflow, fallback and task-routing table. The JSON index is the machine-readable counterpart of these cards.
 
-Start T04's read-only cloud discovery alongside T01 after T00. Start the integration compatibility spike T20 as soon as T03 is ready; do not postpone Gateway/Responses/Daytona risk until the whole backend is written. No cloud mutation begins before its independent authorization gate.
+Start T04's read-only cloud discovery alongside T01 after T00. Start the integration compatibility spike T20 as soon as T03 is ready; do not postpone Gateway/Responses/TrueForge local sandbox risk until the whole backend is written. No cloud mutation begins before its independent authorization gate.
 
 All primary tasks use Sol High. Routine independent review uses a separate Sol High context; only admitted A1/A2 packets use Astra High. [Model admission policy](../config/model-policy.json) and [operating system](10_CODEX_OPERATING_SYSTEM.md) control exceptions. T24 now depends on accepted T27 review; implementation readiness alone cannot authorize a live source demonstration.
 
@@ -137,7 +137,7 @@ All primary tasks use Sol High. Routine independent review uses a separate Sol H
 1. Create pyproject, uv environment, package entry point, strict settings and pytest markers. Add doctor with local/cloud/apply readiness separated and source apply disabled by default.
 2. Implement safe nonsecret configuration loading, OS/process ownership and a responsive transport entry point. Use typed not-ready responses until each use case is implemented, never fake successful business results.
 3. Create candidate-intake CLI to read bytes and generate exact base64/hash tool input without a source connection.
-4. Doctor distinguishes local, AWS, Gateway/API, Daytona and approval readiness; secret presence checks reveal no values. Do not count a text-only model reply as tool compatibility.
+4. Doctor distinguishes local, AWS, Gateway/API, TrueForge local sandbox and approval readiness; secret presence checks reveal no values. Do not count a text-only model reply as tool compatibility.
 
 **Acceptance:** Doctor never writes or exposes secrets, missing required values fail clearly, malformed input fails closed, and intake hashes agree with an independent SHA-256 command.
 
@@ -255,7 +255,7 @@ All primary tasks use Sol High. Routine independent review uses a separate Sol H
 1. Implement canonical report payload/envelope, payload-only digest and deterministic Markdown. Keep post-apply/cleanup receipts separate.
 2. Render source/snapshot/clone provenance, exact hashes, before/after schema, every mandatory check, duration, backup status and untested risks.
 3. Test hash recomputation, immutable history, old-candidate retrieval and displayed status that cannot be changed by a model explanation.
-4. Add a redacted evidence-chain panel and copyable hashes to the native report. Missing Gateway/Daytona/request IDs remain absent or NOT_OBSERVED, never invented.
+4. Add a redacted evidence-chain panel and copyable hashes to the native report. Missing Gateway/TrueForge local sandbox/request IDs remain absent or NOT_OBSERVED, never invented.
 5. Implement preflight evidence verify <report.json> [--expected-report-sha256 <trusted-hash>]. Parse bounded JSON strictly, reject duplicate keys, validate the version, payload digest, mandatory evidence and deterministic verdict. It must need no network, DB or model. Without a separately recorded expected hash label self-consistency UNANCHORED, not authenticity.
 6. Add an impact/coverage section and an explicit historical-evidence label to the native report. Reuse the existing canonicalization and pure verdict code; include a read-only verification result and trust-anchor status without changing the sealed report.
 
@@ -378,14 +378,14 @@ All primary tasks use Sol High. Routine independent review uses a separate Sol H
 
 **Evidence:** `evidence/local-gate/manifest.json + test-results.txt`
 
-## T20 — Prove TrueForge, OpenAI and Daytona compatibility early
+## T20 — Prove TrueForge, OpenAI and TrueForge local sandbox compatibility early
 
 **Owner:** integration · **Depends on:** T03
 
 **Coding model:** `gpt-5.6-sol` · **Effort:** `high` · **Skill:** `preflight-integration` · **Independent review:** required, independent Sol High
 
-1. Launch the verified TrueForge version on a private endpoint. Configure an actually available OpenAI model and the Daytona provider outside Git.
-2. Run a bounded generated-code probe in Daytona and a real MCP handshake through the harness. Inspect actual tool result shape rather than assuming direct-client output shape.
+1. Launch the verified TrueForge version on a private endpoint. Configure an actually available OpenAI model and the TrueForge local sandbox provider outside Git.
+2. Run a bounded generated-code probe in TrueForge local sandbox and a real MCP handshake through the harness. Inspect actual tool result shape rather than assuming direct-client output shape.
 3. Confirm literal approval selectors and Code Mode behavior in the installed version. Keep this compatibility probe separate from final business evidence.
 4. Configure a team-scoped TrueFoundry AI Gateway route from its actual Playground snippet. Verify TrueForge provider adapter, upstream endpoint family, exact Gateway model ID, permitted reasoning/sampling options, tool-call IDs and a streamed tool-result roundtrip.
 5. Try the OpenAI Responses adapter with the Gateway base URL for GPT-6 Sol/high (tested GPT-5.6 Sol/high fallback; no runtime Astra) when the actual route is supported. The custom/truefoundry compatible adapter is a different path; for Sol Chat Completions tool calls explicitly use none, never send Astra tools there. Record and regression-test any approved fallback.
@@ -435,8 +435,8 @@ All primary tasks use Sol High. Routine independent review uses a separate Sol H
 1. Run the supplied bad migration through generated Code Mode calls; retrieve its BLOCK report and demonstrate source schema unchanged.
 2. Attach the accepted good candidate only after rollback/baseline proof, then execute and validate it. Preserve both immutable report versions.
 3. Show 1,000 rows preserved, identical protected hashes, zero account_tier nulls, correct values, actual NOT NULL schema and measured runtime.
-4. Correlate real TrueForge, Daytona, Gateway/OpenAI, MCP and AWS trace identifiers with the candidate and sealed report. Label an already completed restore honestly.
-5. Link the same run/candidate/snapshot/report identities through observed TrueForge, Daytona and provider traces. Show readable expected-versus-observed coverage; missing identifiers remain NOT_OBSERVED, not guessed.
+4. Correlate real TrueForge, TrueForge local sandbox, Gateway/OpenAI, MCP and AWS trace identifiers with the candidate and sealed report. Label an already completed restore honestly.
+5. Link the same run/candidate/snapshot/report identities through observed TrueForge, TrueForge local sandbox and provider traces. Show readable expected-versus-observed coverage; missing identifiers remain NOT_OBSERVED, not guessed.
 
 **Acceptance:** The real AWS-backed sequence produces BLOCK then PASS with distinct SQL hashes and an AWAITING_APPROVAL phase; no source apply has occurred.
 
@@ -631,3 +631,5 @@ All primary tasks use Sol High. Routine independent review uses a separate Sol H
 ## Final autonomous completion response
 
 Report the actual final commit, tested versions, runnable setup, passed/failed/not-run gates, model/endpoint used, demo sequence and resource-retention owner. Give exact blockers rather than a fresh plan. An external blocker is not a passed gate; the lead still finishes all independent authorized work and leaves a concise resume packet. No application, cloud or user approval result is supplied by this kit.
+
+Operator amendment D26 replaces the original Daytona runtime with the installed native local Linux sandbox; historical upstream research and the immutable PRD retain their original scope. D27 authorizes a USD100 continuation ceiling, not a fabricated instantaneous provider spending stop.

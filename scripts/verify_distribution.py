@@ -84,7 +84,7 @@ def main():
         metadata_root = "-".join(wheels[0].name.split("-")[:2]) + ".dist-info"
         inspect_wheel_members(wheel, metadata_root)
         modules = [n for n in wheel.namelist() if n.startswith("preflight/") and n.endswith(".py")]
-        if len(modules) != 17:
+        if len(modules) != 18:
             raise SystemExit("WHEEL_MODULES_INCOMPLETE")
     print(
         json.dumps(

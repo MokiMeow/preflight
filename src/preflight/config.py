@@ -21,7 +21,7 @@ class Settings(StrictModel):
     source_allowlist: list[ResourceId] = Field(default_factory=list)
     table_allowlist: list[TableName] = Field(default_factory=lambda: ["public.customers"])
     creation_authorized: bool = False
-    approved_budget_ceiling: float | None = Field(default=None, gt=0)
+    approved_budget_ceiling: float | None = Field(default=None, gt=0, le=100)
     enable_demo_source_apply: bool = False
     max_active_runs: Literal[1] = 1
     max_run_owned_clones: Literal[1] = 1
@@ -75,7 +75,7 @@ def readiness(settings: Settings) -> dict:
         "source_apply_enabled": settings.enable_demo_source_apply,
         "source_apply_ready": False,
         "gateway_configured": bool(os.environ.get("PREFLIGHT_GATEWAY_CONFIGURED")),
-        "daytona_configured": bool(os.environ.get("PREFLIGHT_DAYTONA_CONFIGURED")),
+        "local_sandbox_configured": bool(os.environ.get("PREFLIGHT_LOCAL_SANDBOX_CONFIGURED")),
         "provider_roundtrip_verified": False,
         "human_approval_verified": False,
     }

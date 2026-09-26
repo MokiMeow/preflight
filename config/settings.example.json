@@ -7,9 +7,11 @@
   "region": null,
   "owner": "team-operator",
   "source_allowlist": [],
-  "table_allowlist": ["public.customers"],
+  "table_allowlist": [
+    "public.customers"
+  ],
   "creation_authorized": false,
-  "approved_budget_ceiling": null,
+  "approved_budget_ceiling": 100,
   "enable_demo_source_apply": false,
   "max_active_runs": 1,
   "max_run_owned_clones": 1,
