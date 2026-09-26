@@ -365,6 +365,7 @@ class BootstrapDriver:
             or source.get("DBName") != d["database_name"]
             or source.get("PubliclyAccessible") is not False
             or source.get("StorageEncrypted") is not True
+            or source.get("StorageType") != "gp3"
             or source.get("DBSubnetGroup", {}).get("DBSubnetGroupName") != i["subnet_group"]
             or {g.get("VpcSecurityGroupId") for g in source.get("VpcSecurityGroups", [])}
             != set(i["security_group_ids"])

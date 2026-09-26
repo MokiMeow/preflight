@@ -7,6 +7,7 @@ Upstream exception messages are never returned or logged.
 
 from __future__ import annotations
 
+import json
 import re
 from collections.abc import Callable
 from dataclasses import dataclass
@@ -34,6 +35,7 @@ class CloudPolicy:
     max_snapshots: int = 3
     creation_authorized: bool = False
     kms_key_id: str | None = None
+    storage_type: str = "gp3"
 
     def __post_init__(self) -> None:
         if (
@@ -49,6 +51,7 @@ class CloudPolicy:
             or self.engine_major != 18
             or self.max_clones != 1
             or not 1 <= self.max_snapshots <= 3
+            or self.storage_type not in {"gp2", "gp3"}
         ):
             raise PreflightError("CLOUD_POLICY_INVALID")
 
@@ -70,6 +73,7 @@ class ResourceObservation:
     endpoint: str | None = None
     created_at: datetime | None = None
     kms_key_id: str | None = None
+    storage_type: str | None = None
 
 
 @dataclass(frozen=True)
@@ -104,11 +108,169 @@ class RdsAdapter:
         store: JobStore,
         *,
         recovery_attestation: Callable[[str, str, datetime], bool] | None = None,
+        tagging: Any | None = None,
     ):
         self.rds, self.sts, self.policy, self.store = rds, sts, policy, store
         self.recovery_attestation = recovery_attestation
+        self.tagging = tagging
         if rds.meta.region_name != policy.region or sts.meta.region_name != policy.region:
             raise PreflightError("AWS_REGION_MISMATCH")
+        if tagging is not None and tagging.meta.region_name != policy.region:
+            raise PreflightError("AWS_REGION_MISMATCH")
+
+    def _resource_registry(self) -> dict[str, tuple[ResourceIntent, str, bool]]:
+        registry = {}
+        for row in self.store.resource_registry():
+            try:
+                intent = ResourceIntent(**json.loads(row["intent"]))
+                self._intent(intent)
+            except (TypeError, ValueError):
+                raise PreflightError("CLOUD_REGISTRY_INVALID") from None
+            for kind, identifier in (
+                ("clone", intent.clone_instance_id),
+                ("snapshot", intent.snapshot_id),
+            ):
+                if identifier in registry:
+                    raise PreflightError("CLOUD_REGISTRY_INVALID")
+                registry[identifier] = (intent, kind, bool(row[kind + "_reserved"]))
+        return registry
+
+    def owned_resource_inventory(self) -> dict:
+        """Doctor metadata only: paginated owned tags plus fresh exact-resource reads.
+
+        No account-wide RDS discovery. Tag-index visibility is eventually consistent;
+        durable reservations and the shared persisted lease remain primary guards.
+        Unknown owned resources are reported but never adopted or deleted.
+        """
+        if self.tagging is None:
+            raise PreflightError("AWS_INVENTORY_CLIENT_REQUIRED")
+        self._identity()
+        registry = self._resource_registry()
+        mappings = []
+        seen_arns: set[str] = set()
+        seen_tokens: set[str] = set()
+        token = None
+        for _ in range(10):
+            args: dict[str, Any] = {
+                "TagFilters": [
+                    {"Key": "Project", "Values": ["Preflight"]},
+                    {"Key": "Owner", "Values": [self.policy.owner]},
+                ],
+                "ResourceTypeFilters": ["rds:db", "rds:snapshot"],
+                "ResourcesPerPage": 100,
+            }
+            if token:
+                args["PaginationToken"] = token
+            page = self._call(self.tagging, "get_resources", **args)
+            items = page.get("ResourceTagMappingList")
+            if not isinstance(items, list):
+                raise PreflightError("AWS_INVENTORY_INCOMPLETE")
+            for mapping in items:
+                arn = mapping.get("ResourceARN")
+                if not isinstance(arn, str) or arn in seen_arns:
+                    raise PreflightError("AWS_INVENTORY_INCOMPLETE")
+                seen_arns.add(arn)
+                pairs = mapping.get("Tags", [])
+                tags = {t.get("Key"): t.get("Value") for t in pairs}
+                if (
+                    len(tags) != len(pairs)
+                    or tags.get("Project") != "Preflight"
+                    or tags.get("Owner") != self.policy.owner
+                ):
+                    raise PreflightError("AWS_INVENTORY_TAG_MISMATCH")
+                mappings.append((arn, tags))
+            token = page.get("PaginationToken")
+            if not token:
+                break
+            if not isinstance(token, str) or token in seen_tokens:
+                raise PreflightError("AWS_INVENTORY_INCOMPLETE")
+            seen_tokens.add(token)
+        else:
+            raise PreflightError("AWS_INVENTORY_INCOMPLETE")
+        resources = []
+        for arn, _ in mappings:
+            parts = arn.split(":")
+            if len(parts) != 7 or parts[5] not in {"db", "snapshot"} or not valid_id(parts[6]):
+                raise PreflightError("AWS_INVENTORY_RESOURCE_INVALID")
+            resource_type, identifier = parts[5], parts[6]
+            self._arn(arn, resource_type, identifier)
+            if resource_type == "db" and identifier == self.policy.source_instance_id:
+                # Never counted as a disposable clone.
+                continue
+            kind = "clone" if resource_type == "db" else "snapshot"
+            try:
+                value = (
+                    self._instance(identifier) if kind == "clone" else self._snapshot(identifier)
+                )
+            except PreflightError as exc:
+                if exc.code == "AWS_RESOURCE_ABSENT":
+                    # The tag index can retain deleted resources. Fresh exact read wins.
+                    continue
+                raise
+            tags = self._tags(arn)
+            if tags.get("Project") != "Preflight" or tags.get("Owner") != self.policy.owner:
+                raise PreflightError("AWS_INVENTORY_TAG_MISMATCH")
+            tracked = identifier in registry
+            reserved = False
+            if tracked:
+                intent, expected_kind, reserved = registry[identifier]
+                if (
+                    expected_kind != kind
+                    or any(tags.get(k) != v for k, v in intent.tags().items())
+                    or kind == "clone"
+                    and tags.get("SnapshotId") != intent.snapshot_id
+                ):
+                    raise PreflightError("AWS_INVENTORY_PROVENANCE_MISMATCH")
+            status = value.get("DBInstanceStatus" if kind == "clone" else "Status")
+            if not isinstance(status, str) or not re.fullmatch(r"[a-z][a-z-]{0,63}", status):
+                raise PreflightError("AWS_INVENTORY_RESOURCE_INVALID")
+            resources.append(
+                {
+                    "resource_id": identifier,
+                    "kind": kind,
+                    "status": status,
+                    "tracked": tracked,
+                    "reserved": reserved,
+                    "storage_type": value["StorageType"],
+                }
+            )
+        resources.sort(key=lambda item: (item["kind"], item["resource_id"]))
+        counts = {kind: sum(r["kind"] == kind for r in resources) for kind in ("clone", "snapshot")}
+        return {
+            "resources": resources,
+            "counts": counts,
+            "complete": True,
+            "visibility": "eventually_consistent_tag_index",
+            "unknown_owned_ids": [r["resource_id"] for r in resources if not r["tracked"]],
+            "released_present_ids": [
+                r["resource_id"] for r in resources if r["tracked"] and not r["reserved"]
+            ],
+        }
+
+    def _enforce_live_inventory(self, intent: ResourceIntent, kind: str) -> None:
+        inventory = self.owned_resource_inventory()
+        if inventory["unknown_owned_ids"]:
+            raise PreflightError("AWS_OWNED_RESOURCES_UNTRACKED")
+        if inventory["released_present_ids"]:
+            raise PreflightError("AWS_RESOURCE_RESERVATION_LOST")
+        registry = self._resource_registry()
+        for resource_kind, cap in (
+            ("clone", self.policy.max_clones),
+            ("snapshot", self.policy.max_snapshots),
+        ):
+            live = {r["resource_id"] for r in inventory["resources"] if r["kind"] == resource_kind}
+            reserved = {
+                identifier
+                for identifier, (_, k, active) in registry.items()
+                if k == resource_kind and active
+            }
+            if len(live | reserved) > cap:
+                raise PreflightError("RESOURCE_CAP_REACHED")
+        intended_id = intent.clone_instance_id if kind == "clone" else intent.snapshot_id
+        if any(r["resource_id"] == intended_id for r in inventory["resources"]):
+            # An exact read returned absent but the fresh tag inventory found it:
+            # reconcile again rather than submit another create request.
+            raise PreflightError("AWS_RETRYABLE")
 
     def _call(self, client: Any, method: str, **kwargs: Any) -> dict:
         try:
@@ -197,6 +359,10 @@ class RdsAdapter:
             raise PreflightError("AWS_ENCRYPTION_REQUIRED")
         if self.policy.kms_key_id and resource.get("KmsKeyId") != self.policy.kms_key_id:
             raise PreflightError("AWS_KMS_MISMATCH")
+        if resource.get("StorageType") not in {"gp2", "gp3"}:
+            raise PreflightError("AWS_STORAGE_TYPE_UNSUPPORTED")
+        if resource["StorageType"] != self.policy.storage_type:
+            raise PreflightError("AWS_STORAGE_POLICY_MISMATCH")
 
     def _instance(self, identifier: str) -> dict:
         response = self._call(self.rds, "describe_db_instances", DBInstanceIdentifier=identifier)
@@ -251,6 +417,7 @@ class RdsAdapter:
             endpoint,
             resource.get("SnapshotCreateTime"),
             resource.get("KmsKeyId"),
+            resource["StorageType"],
         )
 
     def inspect_source(self) -> ResourceObservation:
@@ -315,6 +482,7 @@ class RdsAdapter:
         if (
             observation.engine_version != source.engine_version
             or observation.kms_key_id != source.kms_key_id
+            or observation.storage_type != source.storage_type
         ):
             raise PreflightError("AWS_SOURCE_CLONE_CONFIGURATION_MISMATCH")
         return observation
@@ -335,6 +503,7 @@ class RdsAdapter:
             except PreflightError as exc:
                 if exc.code != "AWS_RESOURCE_ABSENT":
                     raise
+                self._enforce_live_inventory(intent, "snapshot")
                 self._identity()
                 self._call(
                     self.rds,
@@ -348,6 +517,7 @@ class RdsAdapter:
             if (
                 observation.engine_version != source.engine_version
                 or observation.kms_key_id != source.kms_key_id
+                or observation.storage_type != source.storage_type
             ):
                 raise PreflightError("AWS_SNAPSHOT_CONFIGURATION_MISMATCH")
             return observation
@@ -362,6 +532,7 @@ class RdsAdapter:
             if (
                 snapshot.engine_version != source.engine_version
                 or snapshot.kms_key_id != source.kms_key_id
+                or snapshot.storage_type != source.storage_type
             ):
                 raise PreflightError("AWS_SNAPSHOT_CONFIGURATION_MISMATCH")
             try:
@@ -369,6 +540,7 @@ class RdsAdapter:
             except PreflightError as exc:
                 if exc.code != "AWS_RESOURCE_ABSENT":
                     raise
+            self._enforce_live_inventory(intent, "clone")
             self._identity()
             tags = intent.tags() | {"SnapshotId": intent.snapshot_id}
             self._call(
@@ -384,6 +556,7 @@ class RdsAdapter:
                 MultiAZ=False,
                 AutoMinorVersionUpgrade=False,
                 CopyTagsToSnapshot=True,
+                StorageType=self.policy.storage_type,
                 Tags=[{"Key": k, "Value": v} for k, v in tags.items()],
             )
             observation = self.inspect_clone(intent)

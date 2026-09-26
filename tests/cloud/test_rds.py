@@ -36,22 +36,51 @@ def cloud(tmp_path):
     session = boto3.Session(
         aws_access_key_id="unit-fixture", aws_secret_access_key="unit-fixture", region_name=REGION
     )
-    rds, sts = session.client("rds"), session.client("sts")
-    rs, ss = Stubber(rds), Stubber(sts)
+    rds, sts, tagging = (
+        session.client("rds"),
+        session.client("sts"),
+        session.client("resourcegroupstaggingapi"),
+    )
+    rs, ss, ts = Stubber(rds), Stubber(sts), Stubber(tagging)
     rs.activate()
     ss.activate()
-    value = Harness(policy, intent, store, RdsAdapter(rds, sts, policy, store), rs, ss)
+    ts.activate()
+    value = Harness(
+        policy, intent, store, RdsAdapter(rds, sts, policy, store, tagging=tagging), rs, ss, ts
+    )
     yield value
     rs.assert_no_pending_responses()
     ss.assert_no_pending_responses()
+    ts.assert_no_pending_responses()
     rs.deactivate()
     ss.deactivate()
+    ts.deactivate()
 
 
 class Harness:
-    def __init__(self, policy, intent, store, adapter, rds, sts):
+    def __init__(self, policy, intent, store, adapter, rds, sts, tagging):
         self.policy, self.intent, self.store = policy, intent, store
         self.adapter, self.rds, self.sts = adapter, rds, sts
+        self.tagging = tagging
+
+    def inventory(self, mappings=None, token=None, next_token=""):
+        if token is None:
+            self.identity()
+        params = {
+            "TagFilters": [
+                {"Key": "Project", "Values": ["Preflight"]},
+                {"Key": "Owner", "Values": [self.policy.owner]},
+            ],
+            "ResourceTypeFilters": ["rds:db", "rds:snapshot"],
+            "ResourcesPerPage": 100,
+        }
+        if token:
+            params["PaginationToken"] = token
+        self.tagging.add_response(
+            "get_resources",
+            {"ResourceTagMappingList": mappings or [], "PaginationToken": next_token},
+            params,
+        )
 
     def identity(self, count=1, account=ACCOUNT):
         for _ in range(count):
@@ -70,6 +99,7 @@ class Harness:
             "Engine": "postgres",
             "EngineVersion": "18.1",
             "StorageEncrypted": True,
+            "StorageType": "gp3",
             "PubliclyAccessible": False,
             "DBSubnetGroup": {"DBSubnetGroupName": self.policy.subnet_group},
             "VpcSecurityGroups": [
@@ -95,6 +125,7 @@ class Harness:
             "Engine": "postgres",
             "EngineVersion": "18.1",
             "Encrypted": True,
+            "StorageType": "gp3",
             "KmsKeyId": f"arn:aws:kms:{REGION}:{ACCOUNT}:key/unit",
             "Status": "available",
             "SnapshotType": "manual",
@@ -220,6 +251,7 @@ def test_creation_not_authorized_no_calls(cloud):
 def test_snapshot_create_exact_reconciled_once(cloud):
     cloud.source()
     cloud.absent_snapshot()
+    cloud.inventory()
     cloud.identity()
     cloud.rds.add_response(
         "create_db_snapshot",
@@ -241,6 +273,7 @@ def test_restore_private_exact_args_then_restart_reconciles(cloud):
     cloud.snap_read()
     cloud.source()
     cloud.absent_clone()
+    cloud.inventory()
     cloud.identity()
     tags = cloud.intent.tags() | {"SnapshotId": cloud.intent.snapshot_id}
     expected = {
@@ -254,6 +287,7 @@ def test_restore_private_exact_args_then_restart_reconciles(cloud):
         "MultiAZ": False,
         "AutoMinorVersionUpgrade": False,
         "CopyTagsToSnapshot": True,
+        "StorageType": "gp3",
         "Tags": [{"Key": k, "Value": v} for k, v in tags.items()],
     }
     cloud.rds.add_response(

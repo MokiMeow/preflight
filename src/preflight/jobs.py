@@ -142,6 +142,16 @@ class JobStore:
                 raise PreflightError("JOB_NOT_FOUND")
             return dict(row)
 
+    def resource_registry(self) -> list[dict]:
+        """All exact persisted intent IDs, including retained and released resources."""
+        with self._db() as db:
+            return [
+                dict(row)
+                for row in db.execute(
+                    "SELECT intent, clone_reserved, snapshot_reserved FROM jobs ORDER BY run_id"
+                )
+            ]
+
     def require_reservation(
         self, intent: ResourceIntent, *, max_clones: int, max_snapshots: int
     ) -> None:

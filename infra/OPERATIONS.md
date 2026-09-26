@@ -1,5 +1,36 @@
 # Cloud lane operational handoff
 
+Runtime construction must inject a region-bound `resourcegroupstaggingapi`
+client as `RdsAdapter(..., tagging=client)`. Before any new snapshot/clone request,
+the adapter queries `GetResources` with both exact Project and Owner tag filters,
+RDS instance/snapshot type filters, and complete bounded pagination. It then makes
+fresh exact-ID RDS reads for owned resources only. A present owned ID absent from
+the durable registry, or present after its reservation was released, blocks all
+creation and requires operator reconciliation. Doctor's
+`owned_resource_inventory()` exposes safe IDs, status, observed storage mode and
+counts only. It never adopts or deletes discovered resources.
+
+The tagging index is eventually consistent and may list previously tagged/deleted
+resources. Fresh exact RDS absence discards a stale index entry; conflicting reads
+of the intended ID cause reconciliation, never an additional create request.
+Completed pagination is not proof of immediate global inventory visibility.
+Durable reservations, one shared persistent lease, one service owner and the
+intended state directory remain mandatory. Refuse startup against an unexpected
+state directory and retain original state across deployment/restarts.
+
+The read-only `tag:GetResources` permission requires `Resource: "*"`; unlike
+mutation permissions this API has no resource-level IAM scope. The service applies
+exact ownership filters and ARN validation. This is an explicitly documented
+read-only prerequisite, never automatic permission broadening. AWS API semantics:
+[GetResources](https://docs.aws.amazon.com/resourcegroupstagging/latest/APIReference/API_GetResources.html)
+and [Tagging API authorization](https://docs.aws.amazon.com/service-authorization/latest/reference/list_resourcegroupstaggingapi.html).
+
+Storage mode defaults to reviewed `gp3`; an existing supported `gp2` source needs
+an explicit matching policy. The adapter never converts source storage. Source,
+snapshot and clone must match that mode and every restore passes it explicitly.
+Magnetic `standard` is refused under the current
+[AWS restore/storage rule](https://docs.aws.amazon.com/AmazonRDS/latest/UserGuide/CHAP_Storage.html).
+
 This checkout has performed no AWS calls or cloud mutations. The adapter uses real
 Boto3 clients only when injected with approved policy; unit Stubber results are
 LOCAL_VERIFIED, never connected RDS evidence.

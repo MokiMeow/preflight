@@ -27,6 +27,7 @@ def test_lost_snapshot_response_reconciles_no_duplicate(cloud, monkeypatch):
 
     cloud.source()
     cloud.absent_snapshot()
+    cloud.inventory()
     cloud.identity()
     calls = []
 

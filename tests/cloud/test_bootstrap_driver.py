@@ -151,6 +151,7 @@ def test_source_create_explicit_encrypted_private_managed_master_no_reset(driver
         "DBInstanceClass": "db.t4g.micro",
         "PubliclyAccessible": False,
         "StorageEncrypted": True,
+        "StorageType": "gp3",
         "DBInstanceStatus": "creating",
         "DBSubnetGroup": {"DBSubnetGroupName": "private-subnets"},
         "VpcSecurityGroups": [{"VpcSecurityGroupId": "sg-0123456789abcdef0"}],

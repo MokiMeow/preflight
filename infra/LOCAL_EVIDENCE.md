@@ -29,7 +29,8 @@ source/unknown-outcome/report-retention refusal, independent recovery attestatio
 exact deletion and absence observation. Bootstrap source/host request shapes use
 Stubber; admin runtime policy, absent scopes and mismatched plan digests refuse.
 
-Observed final cloud run: `47 passed in 6.42s`. Ruff check passed. Mypy
+Observed first cloud run: `47 passed in 6.42s`. Inventory/storage hardening run:
+`64 passed in 31.55s`. Ruff check passed. Mypy
 `--follow-imports=silent --ignore-missing-imports` passed for both cloud source
 modules. `git diff --check` passed. These are local results, not live proof.
 
@@ -40,3 +41,10 @@ availability to READY only after TLS/role/object checks, and expose only real
 production clients under approved CloudPolicy. Both runtime and bootstrap share
 the same durable `cloud.sqlite` and mutation lease. Never free reservations just
 because a job expired or a deletion request returned.
+
+Hardening adds paginated ownership-filtered Tagging API inventory, exact fresh
+resource reads, empty/wrong-state refusal for untracked owned resources, stale
+tag-index handling, released-but-present refusal, no-create reconciliation after
+inconsistent provider reads, and retained snapshot accounting across a new run.
+Storage source/clone/snapshot checks reject `standard` and unapproved modes;
+restores explicitly pass the policy mode and safe observations record it.
