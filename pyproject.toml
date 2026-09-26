@@ -21,7 +21,12 @@ packages = ["src/preflight"]
 [tool.pytest.ini_options]
 testpaths = ["tests"]
 addopts = "--import-mode=importlib"
-markers = ["postgres: disposable real PostgreSQL", "live: requires authorized connected providers"]
+pythonpath = ["."]
+markers = ["unit: local pure checks", "postgres: disposable real PostgreSQL", "mcp: local official MCP transport", "cloud: local injected AWS client checks", "trueforge: pinned local integration checks", "live: requires authorized connected providers"]
+
+[[tool.mypy.overrides]]
+module = ["boto3", "botocore.*"]
+ignore_missing_imports = true
 
 [tool.ruff]
 line-length = 100
