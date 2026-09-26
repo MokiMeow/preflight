@@ -1,0 +1,36 @@
+{
+  "state": "CONNECTED_VERIFIED",
+  "scope": "TrueForge inline compatibility session through configured Gateway Responses and private MCP; not saved product agent or Daytona",
+  "implementation_commit": "46a9eac836231cd28b493d37a1a1b44e075524e7",
+  "session_id": "01m3efv6dzvyrea93crd7vaspn",
+  "turn_id": "01m3efv6e9p7wkp784vtheyprd",
+  "model_resource": "openai/gpt-model",
+  "reasoning_parameter": "omitted",
+  "gateway_probe_resolved_model": "gpt-4o-mini-2024-07-18",
+  "event_types": [
+    "turn.created",
+    "mcp.initialize",
+    "model.message",
+    "tool.response",
+    "model.message",
+    "turn.done"
+  ],
+  "tool_call_id": "call_lqzhX1vC1XCx9jV1gofHQRYo",
+  "tool": "get_run",
+  "tool_response_linked": true,
+  "tool_error_code": "RUN_NOT_FOUND",
+  "turn_status": "done",
+  "final_text_sha256": "ce45e49b213bbfa83ea792b53961890b0cb1b663b85a04da156f9980d8c0eccf",
+  "approval_calls": 0,
+  "sandbox_enabled": false,
+  "daytona_verified": false,
+  "source_sql_executed": false,
+  "usage": {
+    "total_input_tokens": 1508,
+    "total_output_tokens": 67,
+    "total_tokens": 1575,
+    "total_cache_read_tokens": 0,
+    "total_cache_write_tokens": 0,
+    "total_reasoning_tokens": 0
+  }
+}

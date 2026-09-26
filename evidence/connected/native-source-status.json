@@ -1,0 +1,53 @@
+{
+  "state": "CONNECTED_VERIFIED",
+  "scope": "Native TrueForge/Gateway/MCP read-only AWS RDS source status; no clone/Daytona/product approval proof",
+  "implementation_commit": "46a9eac836231cd28b493d37a1a1b44e075524e7",
+  "session_id": "01m3efzrw1hk50fy8np241krvh",
+  "turn_id": "01m3efzrw66f2edyb0zhdcp3nb",
+  "tool_call_id": "call_rQBLlDPaA5mNipas3BiUE1wy",
+  "tool_response_linked": true,
+  "tool": "get_source_status",
+  "data": {
+    "evidence": {
+      "algorithm_version": "preflight-evidence-1",
+      "tables": [
+        {
+          "name": "public.customers",
+          "row_count": 1000,
+          "schema_sha256": "115c481c32ee7b021e9898e6012e0341e4926c5267b5f473d0a9a0fca1686384",
+          "preserved_sha256": "adb3ddb070ec6968e1ec28143a38f50875bf39d965095af070e0653e83df6c17",
+          "full_sha256": "dc1744787b061fc7a96efdcc3b3b9e0dc4b2899a8d09c18bf962e4666a2bd9aa",
+          "schema_summary": [
+            {
+              "name": "id",
+              "type": "integer",
+              "nullable": false,
+              "position": 1,
+              "default": false
+            },
+            {
+              "name": "email",
+              "type": "text",
+              "nullable": false,
+              "position": 2,
+              "default": false
+            },
+            {
+              "name": "created_at",
+              "type": "timestamp with time zone",
+              "nullable": false,
+              "position": 3,
+              "default": false
+            }
+          ]
+        }
+      ]
+    },
+    "comparison_status": "NOT_REQUESTED"
+  },
+  "turn_status": "done",
+  "approval_calls": 0,
+  "source_sql_mutations": 0,
+  "sandbox_enabled": false,
+  "final_text_sha256": "34e2e46de529a7365fc0c7e2335aec7f75218ce570f3f216e14694c2dd6864cd"
+}

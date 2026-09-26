@@ -1,15 +1,18 @@
 # 09 — Live build status and resume ledger (V3)
 
-**Current state:** implemented Python service, deterministic evidence, guarded AWS adapters and pinned native TrueForge integration. Local verification passed; connected deployment and human demonstrations await operator access. The archive began as specifications only.
+**Current state:** private AWS host/source are running; supplied Gateway Responses and native TrueForge/MCP read-only model sessions are connected and verified. Implementation/review and remaining scenario repairs continue. Full RDS clone rehearsal, Daytona Code Mode, product-agent evaluations and real human demonstrations are not complete. Source apply remains disabled.
 
-**Comprehensive audit checkpoint:** local implementation repairs are integrated at `221a79a`.
-The final integrated audit gate passed **314 tests, zero failures/errors/skips, 182.74s**.
-The earlier statement that independent work was exhausted was too broad: this audit found
-and repaired DB, MCP contract and bootstrap gaps. [The audit report](11_PROJECT_AUDIT.md)
-and its complete task/scenario/file appendices now own the detailed readiness assessment.
-Connected deployment, real RDS/runtime evidence, genuine human gates and submission remain
-`BLOCKED_EXTERNAL`. Remaining assertion coverage gaps are named in the audit; test counts
-are not a claim that every specified scenario passed. Source apply remains disabled.
+**Current continuation:** [Detailed implementation and pending-work report](audit/CONTINUATION_REPORT.md). Frozen revision `46a9eac` passed **423 tests, zero failures/errors/skips, 185.89s**. Later bootstrap transport repair `e200a8a` passed six affected tests and independent ten-test review. New work requires its own integration gate; these counts do not assert every scenario or connected product acceptance.
+
+- Actual Gateway alias `vm-polaris/openai` resolves to `gpt-4o-mini-2024-07-18`; explicit operator override D25. Runtime Responses reasoning parameter omitted; coding/review models remain assigned Sol/high.
+- Native compatibility session and actual read-only AWS source status have linked model/tool/result traces in `evidence/connected/`; source table count 1,000 and intended new column absent. These inline compatibility sessions did not use Daytona or the saved product agent.
+- Exact failed cloud run `e1047953-f206-4e0a-9574-0dac3956a30b` remains ERROR (`AWS_INVENTORY_RESOURCE_INVALID`). Fresh exact-ID AWS checks observed both intended resources ABSENT and reconciled reservations to zero. Human cleanup remains NOT_REQUESTED; its real gate is required before another run.
+- Reviewed automatic-backup inventory repair is deployed and verified against real AWS. The source-managed automated backup is separate from disposable run resources. No clone/snapshot was created or deleted during this continuation.
+- Private service state retained. Host root-volume DeleteOnTermination corrected to false and read back. MCP/TrueForge remain loopback-only through SSH; no public service ingress added.
+- TrueForge process allows the single loopback hostname `127.0.0.1` with network policy enabled; pinned guard is hostname-only, not a port/path rule. Stored MCP connector is exactly port8000 `/mcp`, ten tools. Bootstrap transport proxies/redirects are refused after independent privacy review.
+- External inputs pending: numeric AWS spending ceiling (creation remains false/budget unset); protected Daytona credentials/configuration. Preserve genuine source-apply and cleanup operator gates. No subscription authentication used.
+
+**Historical comprehensive audit:** `221a79a` passed 314 tests, zero failures/errors/skips, 182.74s. [Original whole-project audit](11_PROJECT_AUDIT.md) and file/task/scenario appendices retain that historical scope; continuation receipts and rechecks supersede stale missing-provider/AWS statements. PRD bytes remain unchanged.
 
 ## Historical pre-audit checkpoint
 
@@ -38,8 +41,8 @@ Use status `NOT_STARTED`, `IN_PROGRESS`, `BLOCKED_EXTERNAL`, `FAILED`, `LOCAL_VE
 | T01 — Resolve and record one compatible toolchain | lead | LOCAL_VERIFIED | uv.lock installed; Python MCP2.2 HTTP and pinned TrueForge JS MCP roundtrip passed; paid model route pending |
 | T02 — Freeze shared domain models and service interfaces | lead | LOCAL_VERIFIED | 5790a6a frozen types; strict schemas and integrated safety tests |
 | T03 — Implement configuration, doctor and runnable service shell | lead | LOCAL_VERIFIED | b068fc5, settings/doctor/CLI/loopback official MCP runnable; defaults disabled |
-| T04 — Authorize and plan the bounded AWS footprint | cloud | BLOCKED_EXTERNAL | Bounded bootstrap plan/approval implementation; missing approved account/region/budget/scope |
-| T05 — Provision or validate private host, source and runtime identity | cloud | BLOCKED_EXTERNAL | Private host/source/IAM bootstrap code and Stubber checks; cloud inputs missing |
+| T04 — Authorize and plan the bounded AWS footprint | cloud | BLOCKED_EXTERNAL | Owned account/region/host/source observed; numeric continuation spending ceiling still pending; creation disabled |
+| T05 — Provision or validate private host, source and runtime identity | cloud | BLOCKED_EXTERNAL | Private host/source/instance profile/TLS source read observed; host volume retention repaired; restore/creation IAM effectiveness remains unproved |
 | T06 — Build immutable candidates, durable state and idempotency | lead | LOCAL_VERIFIED | 12cfc72, immutable artifacts/CAS/idempotency and atomic report publication 9bb5841 |
 | T07 — Implement recursive PostgreSQL AST and object policy | database | LOCAL_VERIFIED | 19cb6ad/e5d7368, recursive PG18 AST confinement; real metadata refusal tests |
 | T08 — Build real DB sessions, fixtures and transactional runner | database | LOCAL_VERIFIED | e5d7368/77113a0, real PG18 TLS/role/transaction/timeout/outcome tests |

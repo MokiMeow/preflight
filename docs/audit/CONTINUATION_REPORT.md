@@ -1,0 +1,54 @@
+# Continuation report — actual implementation and remaining work
+
+This continuation has a working private AWS host/source, the supplied Gateway model, and real native TrueForge/MCP read-only tool traces. The complete product is **not yet end-to-end accepted**: Daytona, a restored RDS clone, the saved product-agent evaluations and genuine operator approvals remain outstanding. No source migration or resource deletion was performed in this continuation.
+
+## Verified results
+
+| Component | Actual evidence | Limit |
+|---|---|---|
+| Local application gate | Frozen `46a9eac`: `uv run --locked preflight verify local`, **423 passed, zero failures/errors/skips, 185.89s** | Disposable PG18 and local cloud test doubles; not RDS clone proof |
+| Source and AWS inventory | Real EC2 instance-profile source ownership/private/encryption checks and fresh inventory succeeded after repair | No manual snapshot/restore submitted |
+| Gateway API | Actual Responses streamed function call, exact linked tool result and completed continuation; alias resolves to `gpt-4o-mini-2024-07-18` | Operator-authorized non-reasoning runtime override; coding models remain Sol/high |
+| Native TrueForge model/MCP | Persisted OpenAI Responses provider, loopback connector, exact ten tools; UI shows connected `gpt-model` | Complete saved product agent awaits Daytona |
+| Native read-only compatibility | One observed `get_run` call returned `RUN_NOT_FOUND`, followed by final model response; exact call/result linked in events | Inline probe has sandbox disabled; does not prove Code Mode or product approval |
+| Native real source inspection | One observed `get_source_status` through Gateway/TrueForge/MCP read the private RDS source: 1,000 rows, only the three original columns, aggregate hashes | No SQL mutation; no clone baseline or PASS report |
+| Failed-run reconciliation | Intended clone and snapshot freshly observed ABSENT; reservations now zero; original ERROR retained | Human cleanup remains NOT_REQUESTED; do not bypass active-run guard |
+| Host persistence | Encrypted gp3 root volume retention changed to `DeleteOnTermination=false` and read back | No termination or teardown performed |
+| Independent review | Sol/high reviewed automatic inventory, cleanup, capture deadline, paused read runtime and bootstrap privacy; high proxy/redirect finding repaired and rechecked | Connected T27 gate still required before T24 |
+
+Connected receipts: [native compatibility](../../evidence/connected/native-compatibility.json), [real source status](../../evidence/connected/native-source-status.json). These are sanitized aggregates and IDs, not provider exports, credentials or raw rows.
+
+## Implemented repairs
+
+| Files/responsibility | Problem fixed | Verification |
+|---|---|---|
+| `aws_rds.py` | Colon-containing AWS automatic backup identifiers previously stopped inventory before create. Verify exact account/region/source/type/ownership using fresh Describe metadata; keep managed source backups outside disposable capacity. Manual resources and unknown-owned refusals remain enforced. | Real inventory succeeds; new automatic/unknown-clone/manual-capacity and existing RDS tests pass |
+| `aws_rds.py::cleanup` | Already-absent selected resources left reservations held indefinitely. Release only after fresh exact-ID absence under the existing literal-gated cleanup lease. | ERROR history, DELETING and unselected retention assertions pass; independent review clear |
+| `evidence.py` | Per-query timeouts did not bound Python/catalog/row-processing capture work. Whole monotonic deadline with safe SQL cancellation and timer shutdown now refuses incomplete evidence. | 143 affected DB/evidence tests; explicit delayed row/catalog cases and private exception suppression |
+| `runtime.py::build_runtime` | Creation pause also disabled legitimately approved source reads. Compose only fully scoped private/read runtime while preserving creation false, budget and source-write flags. | 16 local tests and independent review; actual native RDS source read succeeds |
+| Gateway probe/stream decoder | Non-reasoning alias rejected; unsupported reasoning parameter sent; omitted optional stream name incorrectly refused. Exact authorized alias exception, omitted reasoning member and strict linked streaming handling added. | Actual streamed roundtrip; malformed/contradictory identity regressions remain strict |
+| Native bootstrap/config validation | Added protected configuration stages using actual API schema, exact route paths and sufficiently bounded ten-tool responses. Corrected proxy/redirect privacy exposure. | Bootstrap transport regressions; independent original proxy repro now zero forwarded requests, all tested redirects refused |
+| Local source/transaction/verdict boundary tests | Earlier task/scenario matrix had narrower assertions than the full contract. Added explicit SQL/catalog/deadline/NULL tests; additional explicit transaction, source-guard, shared-state and retention assertions are integrated. | Recheck packets below distinguish actual tests from still-pending clauses |
+
+Additional repairs are implemented and independently reviewed: get_run returns a consistent persisted status while SQL holds the mutation lock; cleanup observation refreshes and writes under a nonblocking lock so an older selection cannot overwrite a newer one. Doctor reads static SQLite state without creating WAL/SHM files, refuses counts when pending WAL exists, and classifies missing, unreadable or empty state without claiming cloud absence. New tests cover actual MCP ping/status responsiveness, stale cleanup observation, restore acknowledgement loss, cleanup ownership refusal, distinct-process durable job reopening, concurrent starts/reservations/revision CAS, and anchored report retention after actual disposable local database deletion. Normal process reopening is not a forced-crash or real AWS recovery test. The new frozen integration gate is recorded below when complete.
+
+The native package's private-network exception supports a hostname only. TrueForge's process permits only `127.0.0.1` with network policy enabled; the saved MCP endpoint is exactly `http://127.0.0.1:8000/mcp`. Do not describe this as port/path-level allowlisting. Services remain loopback-bound through a verified SSH tunnel; no public8000/8790 ingress was added.
+
+## What remains to finish
+
+1. **AWS continuation spending ceiling.** Account/region/source/host are identified, but the operator's numeric maximum is unanswered. Live settings intentionally remain `creation_authorized=false`, budget unset. Existing credits are not a spending authorization. Once supplied, retain a bounded receipt for at most one20GiB clone andthree run snapshots, with no paid-plan upgrade.
+2. **Daytona credentials/target.** The Gateway key is not a Daytona key. Configure the protected Daytona secret and target, then probe actual sandbox Python/Code Mode/MCP bridge, result shapes, telemetry and time limits. Complete native bootstrap alone saves the sandbox-enabled product agent.
+3. **Genuine cleanup of the failed intent.** Existing failed run is `e1047953-f206-4e0a-9574-0dac3956a30b`; intended IDs are `preflight-e1047953f2064e0a95740dac3956a30b-clone` and `preflight-e1047953f2064e0a95740dac3956a30b-snap`. Both were observed absent. The operator must perform the literal cleanup decision; the coding agent cannot close this gate or rewrite ERROR to start another run.
+4. **Actual clone rehearsal.** Start one durable intent after the prerequisites; verify snapshot provenance, restored private clone, IAM effectiveness, hostname-validating TLS, source/clone baseline equality and supported object policy. Observe bounded polling/restart behavior. Availability does not prove warmed storage.
+5. **Actual bad/good migration and reports.** Execute exact bad candidate on clone, confirm rollback/BLOCK, accepted same-contract correction, good commit/PASS, complete written-column/schema/value requirements and sealed report identity. Test drift, replay and tamper refusal on the owned resources without resetting the source or retrying unknown SQL outcomes.
+6. **Saved-agent evaluation and human gates.** Run E01–E10 and the outstanding connected N cases with traces. Accepted independent T27 must precede T24. The operator must demonstrate denial and explicit allowance of source apply; a chat statement or model decision cannot replace the literal gate. Source apply remains disabled until concrete authorized demonstration scope is ready.
+7. **Retention and deliberate cleanup.** Observe apply receipt/source verification and unknown-outcome rules, preserve appropriate recovery backup and reports, then use the separate operator cleanup decision. No source deletion or automatic reverse migration.
+8. **Final evidence/distribution/submission.** Rebuild and inspect the final package, installed-wheel/offline verifier and all final logs/reports/recording for privacy. Preserve unchanged PRD. Publishing and organizer submission fields need their actual authorization/details; no submission is claimed.
+
+## Audit scope and history
+
+The original [whole-project report](../11_PROJECT_AUDIT.md), [file/function inventory](FILE_FUNCTION_INVENTORY.md), [all task cards](TASK_MATRIX.md) and [all153 scenario assertions](SCENARIO_MATRIX.md) describe their exact historical snapshot. Subsequent recheck packets and refreshed inventory must be consulted before treating old missing-access or assertion labels as current. Test counts are not function/branch coverage or a declaration that every scenario is accepted. Vendor source and ignored private configuration are not exported as first-party audit artifacts.
+
+Observed failed attempts are retained: initial automatic inventory rejection; initial Gateway Python-client403; first streamed probe optional-name rejection; native bootstrap404/400 route/network failures; one local full-suite test-count mismatch caused by changing the JS test set during the run. Each was investigated and its successful successor recorded separately. No failure is relabeled as a successful cloud mutation.
+
+The PRD SHA-256 remains `5f607b53bd7c439c94e3f97d3826e24e441cb5d007863eca023313347533b6bf`. A1/A2 Astra sessions used:0. Root owns integration and final acceptance; worker green alone is not the final result.

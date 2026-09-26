@@ -1,5 +1,8 @@
 # Preflight V3 implementation audit — 26 September 2026
 
+**Historical audit snapshot:** this report records the 314-test audit. Read [the current continuation report](audit/CONTINUATION_REPORT.md) for the supplied AWS/Gateway setup, subsequent repairs, connected read-only traces and remaining work. Historical missing-access statements below are not the current deployment state.
+
+
 Preflight's local implementation works and the integrated audit gate passed **314 tests, with zero failures, errors or skips**. The complete connected product is **not finished**: real RDS rehearsal, a funded OpenAI route, Daytona execution, private-host deployment, genuine human Deny/Allow and final submission/closeout remain unverified.
 
 The earlier statement that independent work was exhausted was too broad. This audit found substantive DB, MCP and bootstrap gaps, repaired them, added regression assertions and corrected the task ledger. A passing test count does not mean every specified scenario or every function branch has been verified.
