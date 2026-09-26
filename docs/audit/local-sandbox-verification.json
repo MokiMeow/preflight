@@ -1,13 +1,13 @@
 {
   "schema_version": "1.0",
   "full_gate": {
-    "revision": "db34940",
+    "revision": "5c2a56d",
     "command": "UV_PROJECT_ENVIRONMENT=.venv-clean PREFLIGHT_TEST_PG_PORT=55438 PREFLIGHT_TEST_PG_CA=<retained-local-CA> py -3.12 -m uv run --locked preflight verify local",
-    "passed": 648,
+    "passed": 668,
     "failed": 0,
     "errors": 0,
     "skipped": 0,
-    "elapsed_seconds": 265.83,
+    "elapsed_seconds": 248.38,
     "exit_code": 0,
     "backend": "Actual disposable PostgreSQL18.6/TLS and local official MCP; cloud cases use boto Stubber. Pinned native JS and configuration checks are local."
   },
@@ -32,9 +32,9 @@
     "private_state_preserved": true,
     "service_active": true,
     "trueforge_active": true,
-    "creation_authorized": false,
-    "source_apply_enabled": false,
-    "operational_guidance_delta": "878d64a",
+    "creation_authorized": true,
+    "source_apply_enabled": true,
+    "operational_guidance_delta": "0e39cf7",
     "publisher_delta": "79050b4"
   },
   "budget": {
@@ -60,18 +60,18 @@
   "prd_sha256": "5f607b53bd7c439c94e3f97d3826e24e441cb5d007863eca023313347533b6bf",
   "expert_sessions_used": 0,
   "distribution": {
-    "source_archive_members": 181,
+    "source_archive_members": 183,
     "private_artifacts": 0,
     "wheel_python_modules": 18,
     "original_prd_hash_match": true,
     "installed_wheel_module_matches": 18,
-    "wheel_sha256": "19885c64b95ff04be24a588816d43cac0e7667215f80df0a54c98e69040af859",
+    "wheel_sha256": "2bbfecf4e1964e4b999ee88e9cebf81c98a708c1b49653a1e4a253ad76643f5c",
     "isolated_imports": "PASSED",
     "offline_report_anchor": "EXPECTED_DIGEST_MATCH",
     "historical_only": true,
     "current_apply_eligibility": "NOT_EVALUATED",
-    "revision": "70e761b",
-    "installed_wheel_scope": "Prior installed-wheel gate at22d883f; current rebuilt source/wheel distribution verified, current installed-wheel refresh pending."
+    "revision": "4398397",
+    "installed_wheel_scope": "Current runtime wheel byte-matched all18 modules; isolated imports and anchored historical report verification passed."
   },
   "manifest_envelope_delta": {
     "revision": "878d64a",
@@ -114,5 +114,17 @@
       "scope": "Selected unit/cloud tests only, not branch coverage/all-function execution",
       "command": ".venv-clean/Scripts/python.exe var/profile_current_unit_cloud.py"
     }
+  },
+  "restore_scope_delta": {
+    "revision": "9d141cb",
+    "passed": 72,
+    "elapsed_seconds": 14.99,
+    "exit_code": 0
+  },
+  "manifest_lifecycle_delta": {
+    "revision": "0e39cf7",
+    "passed": 13,
+    "elapsed_seconds": 5.44,
+    "exit_code": 0
   }
 }

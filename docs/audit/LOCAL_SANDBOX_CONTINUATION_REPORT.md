@@ -1,6 +1,6 @@
 # Local sandbox continuation report
 
-**Latest state:** D28 is implemented and deployed at `d3715ca`: the operator-authorized unlimited mode removes financial admission without fabricated billing data. Creation is enabled; source apply remains disabled. The actual encrypted AWS snapshot for run `fef79c61-dcea-42c3-a760-c2f9c4235abc` reached AVAILABLE/100. Restore then failed because the runtime role lacked the exact subnet-group restore permission; the required narrowly scoped grants are now attached/readback. The run retains ERROR, its clone is absent, and its real snapshot awaits the cleanup decision. A successful clone, migration result and source approval remain pending. New affected tests: 172 passed in 6.60s; independent review: 111 passed in 3.14s, no blocking finding. The new full gate passed 648 tests, zero failures/errors/skips, 265.83s, at `db34940`. [Actual run receipt](../../evidence/connected/unlimited-rehearsal.json) and [three-minute walkthrough](THREE_MINUTE_WALKTHROUGH.md).
+**Latest state:** D28 is implemented and deployed at `d3715ca`: the operator-authorized unlimited mode removes financial admission without fabricated billing data. Creation is enabled; source-apply capability is enabled before baseline capture, while actual source SQL remains NOT_RUN. The actual encrypted AWS snapshot for run `fef79c61-dcea-42c3-a760-c2f9c4235abc` reached AVAILABLE/100. Restore then failed because the runtime role lacked the exact subnet-group restore permission; the required narrowly scoped grants are now attached/readback. The run retains ERROR, its clone is absent, and its actual corrected human Allow produced cleanup COMPLETE, verified by AWS absence and official MCP get_run. Replacement run `7f1a627e-a6d0-4c9f-a5ce-58984b38d41e` is RESTORING; AWS confirms its private encrypted PG18.6 clone is CREATING and snapshot AVAILABLE100. A successful clone, migration result and source approval remain pending. New affected tests: 172 passed in 6.60s; independent review: 111 passed in 3.14s, no blocking finding. The new full gate passed 668 tests, zero failures/errors/skips, 248.38s, at `5c2a56d`. [Actual run receipt](../../evidence/connected/unlimited-rehearsal.json) and [three-minute walkthrough](THREE_MINUTE_WALKTHROUGH.md).
 
 ## Scope and provenance
 
@@ -20,7 +20,7 @@ Status words have their strict meanings:
 
 | Area | Result | Scope and limit |
 |---|---|---|
-| Frozen full suite | **LOCAL_VERIFIED** | Commit `db34940`: `648 passed`, zero failures, errors, or skips, in `265.83s`; exit 0. Actual local PostgreSQL18.6/TLS; cloud cases are Stubber tests. |
+| Frozen full suite | **LOCAL_VERIFIED** | Commit `5c2a56d`: `668 passed`, zero failures, errors, or skips, in `248.38s`; exit 0. Actual local PostgreSQL18.6/TLS; cloud cases are Stubber tests. |
 | Manifest-affected check | **LOCAL_VERIFIED** | At `8048e79`: nine affected tests passed in `5.46s`. |
 | Static quality | **LOCAL_VERIFIED** | Ruff passed for the repository; mypy passed all 18 source modules. |
 | Native sandbox boundary canary | **CONNECTED_VERIFIED component** | The reviewed TrueForge patch ran on the actual Linux host. The controlled host-owned `0600` canary supported the intended positive write/restore check while independent host bytes and metadata remained unchanged. Private/sibling reads and writes, process/environment access, direct private/IMDS access, and proxy-mediated access were denied; the proxy path returned 403. The session's own bridge socket was allowed and a foreign socket was denied. `BASH_ENV` was refused before launch. A timeout returned the explicit timeout result after 1,077 ms and the delayed child marker remained absent. The canary result was accepted as true. This proves the tested boundaries only; it is not a general Linux containment proof. |
@@ -146,10 +146,10 @@ The successful native turn is not a substitute for the specified E01–E10 case 
 
 ## Current handoff state
 
-- Source apply: **false**.
+- Source-apply capability: **true** before baseline capture; actual source SQL **NOT_RUN** and literal approval required.
 - Literal source-apply approval: **not requested/not clicked in this continuation**.
 - Cleanup: **COMPLETE**, following genuine operator Allow; failed-run clone and snapshot were ABSENT.
-- New run-owned RDS clone: **ABSENT**; encrypted manual snapshot: **AVAILABLE**, awaiting genuine cleanup decision for the failed run.
+- New run-owned RDS clone: **ABSENT**; encrypted manual snapshot: **ABSENT** after genuine corrected Allow and cleanup COMPLETE; replacement snapshot AVAILABLE and private clone CREATING.
 - Billable creation: **enabled under D28 explicit unlimited mode**; failed-run cleanup must be resolved before a replacement run.
 - Numeric USD ceiling: **revoked by D28**; reported billing remains unknown and no cost facts are fabricated.
 - Saved-agent native Code Mode: **one corrected successful sandbox execution**, preceded by one exit-2 bare-Python shell mistake; business run remained `ERROR`.
@@ -165,3 +165,7 @@ The operator has explicitly removed the USD100 ceiling. The explicit unlimited-b
 ## Actual restore failure and repair
 
 The real encrypted snapshot reached AVAILABLE/100. The restore failed with AWS_REQUEST_DENIED; actual CloudTrail reported AccessDenied because the runtime role lacked restore authorization for the exact `preflight-db-subnets` subnet group. The root attached and read back restore-only grants for that exact subnet group and PostgreSQL18 default option/parameter groups. No admin or source-delete permission was added. The failed run retains ERROR, clone ABSENT, snapshot AVAILABLE; native cleanup is pending before a new run. The corrected diagnostic (main guard and fast event filter) passed 455 unit/cloud tests in 38.70s and recorded calls to 225 symbols; it is not whole-function or branch coverage. The original interrupted diagnostic is retained as a failed diagnostic, not hidden.
+
+## Current replacement run
+
+Actual receipt `evidence/connected/replacement-rehearsal.json` records the new snapshot AVAILABLE100 and private encrypted PG18.6 clone CREATING at 11:18:36 UTC. The source remains1000rows/3columns. The old failed run has cleanup COMPLETE and its history retained. Full regression668 passed/248.38s; restore prerequisites72 passed/14.99s; lifecycle manifest13 passed/5.44s. A1 read-only review is admitted/running. Migration BLOCK/PASS, source Allow/Deny/apply and actual video recording remain pending, not simulated into success.

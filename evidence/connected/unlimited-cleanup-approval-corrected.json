@@ -1,5 +1,5 @@
 {
-  "state": "ALLOWED_CLEANUP_IN_PROGRESS",
+  "state": "ALLOWED_CLEANUP_COMPLETE",
   "scope": "Corrected native cleanup_run request: human Allow observed, tool returned ok=true with clone absent and snapshot deleting; cleanup completion is not claimed",
   "implementation_commit": "d3715ca",
   "pre_request_state": {
@@ -71,5 +71,14 @@
     "tool.response",
     "model.message",
     "turn.done"
-  ]
+  ],
+  "reconciliation": {
+    "backend": "actual private official MCP get_run plus AWS DescribeDBSnapshots",
+    "run_id": "fef79c61-dcea-42c3-a760-c2f9c4235abc",
+    "phase": "ERROR",
+    "cleanup_state": "COMPLETE",
+    "clone_status": "ABSENT",
+    "snapshot_status": "ABSENT"
+  },
+  "cleanup_complete_observed": true
 }
