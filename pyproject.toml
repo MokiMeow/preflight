@@ -28,6 +28,9 @@ exclude = ["/.worktrees", "/.venv", "/.venv-clean", "/var", "/dist", "**/node_mo
 "evidence/local/pass-mcp-report.md" = "evidence/local/pass-mcp-report.md"
 "evidence/local/block-mcp-report.json" = "evidence/local/block-mcp-report.json"
 "evidence/local/block-mcp-report.md" = "evidence/local/block-mcp-report.md"
+"evidence/connected/local-sandbox-canaries.json" = "evidence/connected/local-sandbox-canaries.json"
+"evidence/connected/saved-agent-code-mode.json" = "evidence/connected/saved-agent-code-mode.json"
+"evidence/connected/cleanup-approval-request.json" = "evidence/connected/cleanup-approval-request.json"
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]
