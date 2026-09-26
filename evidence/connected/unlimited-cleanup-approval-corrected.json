@@ -1,6 +1,6 @@
 {
   "state": "ALLOWED_CLEANUP_COMPLETE",
-  "scope": "Corrected native cleanup_run request: human Allow observed, tool returned ok=true with clone absent and snapshot deleting; cleanup completion is not claimed",
+  "scope": "Corrected native cleanup request: actual human Allow led to initial DELETING_SNAPSHOT; subsequent official MCP and AWS absence reconciled cleanup COMPLETE. Initial response and final reconciliation are separately retained.",
   "implementation_commit": "d3715ca",
   "pre_request_state": {
     "run_phase": "ERROR",

@@ -1,0 +1,124 @@
+{
+  "observed_at": "2026-09-26T11:31:40.270168+00:00",
+  "reviewed_revision": "3dea928",
+  "module_count": 18,
+  "all_module_bytes_match": true,
+  "module_matches": {
+    "src/preflight/__init__.py": true,
+    "src/preflight/artifacts.py": true,
+    "src/preflight/aws_rds.py": true,
+    "src/preflight/budget.py": true,
+    "src/preflight/cli.py": true,
+    "src/preflight/config.py": true,
+    "src/preflight/db.py": true,
+    "src/preflight/evidence.py": true,
+    "src/preflight/jobs.py": true,
+    "src/preflight/models.py": true,
+    "src/preflight/offline.py": true,
+    "src/preflight/report.py": true,
+    "src/preflight/runtime.py": true,
+    "src/preflight/server.py": true,
+    "src/preflight/service.py": true,
+    "src/preflight/sql_policy.py": true,
+    "src/preflight/storage.py": true,
+    "src/preflight/verdict.py": true
+  },
+  "services_active": {
+    "preflight": true,
+    "preflight-trueforge": true
+  },
+  "private_tls_clone": {
+    "verified": true,
+    "server_version_num": "180006"
+  },
+  "resource": {
+    "run_id": "7f1a627e-a6d0-4c9f-a5ce-58984b38d41e",
+    "phase": "READY",
+    "clone_id": "preflight-7f1a627ea6d04c9fa5ce58984b38d41e-clone",
+    "snapshot_id": "preflight-7f1a627ea6d04c9fa5ce58984b38d41e-snap",
+    "clone_status": "available",
+    "publicly_accessible": false,
+    "encrypted": true,
+    "snapshot_status": "available",
+    "snapshot_source_matches": true,
+    "approved_subnet_group_matches": true,
+    "approved_security_groups_match": true,
+    "clone_tags": {
+      "Project": "Preflight",
+      "SnapshotId": "preflight-7f1a627ea6d04c9fa5ce58984b38d41e-snap",
+      "Owner": "truforge",
+      "ExpiresAt": "2026-09-26T19:14:19.105200Z",
+      "RunId": "7f1a627e-a6d0-4c9f-a5ce-58984b38d41e"
+    },
+    "snapshot_tags": {
+      "Project": "Preflight",
+      "Owner": "truforge",
+      "ExpiresAt": "2026-09-26T19:14:19.105200Z",
+      "RunId": "7f1a627e-a6d0-4c9f-a5ce-58984b38d41e"
+    },
+    "region_matches": true,
+    "account_matches": true
+  },
+  "saved_agent": {
+    "id": "01m3em9y0t7jqx20txq6s7pj39",
+    "model": {
+      "name": "openai/gpt-model"
+    },
+    "mcp_servers": [
+      {
+        "name": "preflight",
+        "enable_tools": [
+          "register_candidate",
+          "start_rehearsal",
+          "get_run",
+          "get_source_status",
+          "capture_baseline",
+          "apply_to_clone",
+          "validate_rehearsal",
+          "get_report",
+          "apply_to_demo_source",
+          "cleanup_run"
+        ],
+        "disable_tools": [],
+        "preload_tools": [],
+        "require_approval_for_tools": [
+          "apply_to_demo_source",
+          "cleanup_run"
+        ],
+        "preload": false
+      }
+    ],
+    "sandbox": {
+      "enabled": true,
+      "file_downloads": false
+    },
+    "guidance_sha256": "4bd569827c7eaa8d4937b9c5907c93e5b293411d5198476148c344763f7a81ed",
+    "guidance_matches_reviewed_manifest": true
+  },
+  "financial_mode": {
+    "unlimited_budget_authorized": true,
+    "creation_authorized": true,
+    "source_apply_capability": true
+  },
+  "schema_version": "1.0",
+  "expected_module_sha256": {
+    "src/preflight/__init__.py": "deea004a81e0596d5bac41eefd5fd246217c6914d3054e17227b7b11bd12389a",
+    "src/preflight/artifacts.py": "672980417b293f7d160e95d7e05088eb3a4ba2273f848afaa364ab2e518828cc",
+    "src/preflight/aws_rds.py": "f5ad04e5215319690f1d0fa4c2a81338c2b9162f7f5d31c0c2767ca367f24b7b",
+    "src/preflight/budget.py": "e95c8f4c624a4e3f462c7e04b26e8fcd6ed81c916384d289ab0afad2f67b4418",
+    "src/preflight/cli.py": "0acdafc5a527b2fa8b90faf79a3340f86f494a8972a9cdc0083bbde076e31d1c",
+    "src/preflight/config.py": "e1948968cd5c2cc9002b0331acc6f11d36133aeef9ae31e46578a04bd87d2cf4",
+    "src/preflight/db.py": "70b63e5a6d7c814aa16a03b3d0869ca558031052aa419d4dd46ec31d3714d9c2",
+    "src/preflight/evidence.py": "ba40728e644defebc68851b9f8663ddffa9d74fe75f4332390f72f68b2d61ce0",
+    "src/preflight/jobs.py": "41f8673db1b292c58924943d6d7b08b00e5e83238607257f05690f71004f6cca",
+    "src/preflight/models.py": "d0a28de534d6ce16e86ad0d0d8d57519ce36f7763a4e05e13d2e7d1b3b45ea9d",
+    "src/preflight/offline.py": "11d2629fe6015028114c2e6b71becebc204d41b1759b3685abc6d2f59231b3f5",
+    "src/preflight/report.py": "9fb3860af1b2a09d3a762dd752608f280b8eb301b2af952e4a82e801a1eb85af",
+    "src/preflight/runtime.py": "36dc235842dbc28b26d65825358658074fa1dee9b13c5d283b539a1c6fb65cc9",
+    "src/preflight/server.py": "501bcc8491913c104fad941777b55aeecfe2148a22bb422bb0a8e6974f0b3d44",
+    "src/preflight/service.py": "69666885949f27fdeb6903df956a99d0aee0ef0d784ef2b1aaf7d868fb2bb05c",
+    "src/preflight/sql_policy.py": "21196783e745733073c5d906a74578bd327431346dcefdd5d6685adc76dc7135",
+    "src/preflight/storage.py": "be19f2e783c83d9f9d31c46658c3b40eed5089dd64a871e0e91b79bf863b955f",
+    "src/preflight/verdict.py": "6f1fb78e1d6fcf4b1c7a5698c0f66f614a5cb0f96c2c8ba1a4e05ea2c85926a4"
+  }
+}
