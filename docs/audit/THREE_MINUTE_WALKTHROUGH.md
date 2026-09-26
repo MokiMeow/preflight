@@ -11,9 +11,9 @@ Current proof that may be stated now:
 - The native saved agent and approved Gateway route are real.
 - A model-generated Python/MCP step ran inside the patched TrueForge local Linux sandbox after correcting an initial bare-Python shell mistake. The later corrected post-deploy call `call_cP0dXmj55AAFu40YuqzVek4Z` observed 1,000 rows and three columns through the actual nested envelope, but the referenced business run was `ERROR`; this is not a successful rehearsal. Its current `cleanup_state` is `COMPLETE`.
 - The connected sandbox canary verified the bounded filesystem, process/environment, network, per-session socket, launcher-environment and timeout checks recorded in the sanitized receipt.
-- The current local suite at revision `878d64a` passed 641 tests with zero failures, errors or skips in 263.60 seconds; local tests are not RDS execution evidence.
+- The current local suite at revision `5c2a56d` passed 668 tests with zero failures, errors or skips in 248.38 seconds; local tests are not RDS execution evidence.
 - At 10:42:10 UTC the human operator selected **Allow** for the separate cleanup gate. Cleanup completed with receipt `da3e1dc4-60df-4fa4-b8f3-7d14d806f58d`; the run-owned clone and snapshot are both absent. The coding agent did not click the gate.
-- The new authorized live run is `fef79c61-dcea-42c3-a760-c2f9c4235abc`. At 11:01:38 UTC, saved-agent session `01m3enza6j26kqqw6xheb3q696`, turn `01m3enznyrfk8zjbd2tppmvvrh`, generated one bounded read-only Code Mode Python program. System `exec` call `call_k0Pj6hTVOLj8QeYtX9wIo4tz` exited 0 after calling only `get_run`; it observed `SNAPSHOTTING`, `cleanup_state=NOT_REQUESTED`, and no error code. No approval or mutation tool was called.
+- The historical first uncapped live run was `fef79c61-dcea-42c3-a760-c2f9c4235abc`. At 11:01:38 UTC, saved-agent session `01m3enza6j26kqqw6xheb3q696`, turn `01m3enznyrfk8zjbd2tppmvvrh`, generated one bounded read-only Code Mode Python program. System `exec` call `call_k0Pj6hTVOLj8QeYtX9wIo4tz` exited 0 after calling only `get_run`; it observed `SNAPSHOTTING`, `cleanup_state=NOT_REQUESTED`, and no error code. No approval or mutation tool was called.
 - The run records snapshot identifier `preflight-fef79c61dcea42c3a760c2f9c4235abc-snap` and clone identifier `preflight-fef79c61dcea42c3a760c2f9c4235abc-clone`. `SNAPSHOTTING` does not prove that the clone exists or is database-ready.
 - At the time this script was updated, no successful live bad-to-good RDS result, source SQL apply or source-apply denial/allowance was available for the recording.
 
@@ -41,7 +41,7 @@ Point to the canary summary: own-session socket allowed, foreign socket denied, 
 
 **Say:** “The model explains the result, but deterministic service checks decide it. Exact SQL bytes, the contract, baseline, primary keys, protected values, schema and coverage must all agree. Missing fields are a schema mismatch, never an excuse to print N/A or infer success.”
 
-For the current trace, show `evidence/connected/unlimited-code-mode-progress.json` and say: “The durable run is SNAPSHOTTING. The agent made at most four read-only observations under a 45-second monotonic deadline, saw no phase change and stopped. The snapshot and clone identifiers are recorded, but clone readiness and migration outcomes are not available, so I am not showing a PASS.” Then show only the current persisted state and move to the limitation beat below.
+For the historical progress trace, show `evidence/connected/unlimited-code-mode-progress.json` and say: “The durable run is SNAPSHOTTING. The agent made at most four read-only observations under a 45-second monotonic deadline, saw no phase change and stopped. The snapshot and clone identifiers are recorded, but clone readiness and migration outcomes are not available, so I am not showing a PASS.” Then show only the current persisted state and move to the limitation beat below.
 
 ### 1:25–2:05 — Live RDS result, only if observed
 
@@ -80,3 +80,7 @@ Close with the exact current state: run phase, source applied true/false, cleanu
 - No credentials, raw rows, private connection strings, hidden error details or unreviewed provider logs are visible.
 - Any unavailable snapshot, clone, RDS outcome, apply receipt, replay refusal or cleanup receipt is labeled `NOT_RUN`, `PENDING` or `UNAVAILABLE`.
 - The final sentence states the actual source-apply and cleanup state.
+
+## Latest recording checkpoint
+
+The fef79c61 snapshot reached AVAILABLE but restore failed for the missing exact subnet-group IAM scope. The scoped repair is attached/readback; genuine corrected human Allow deleted that snapshot, and official MCP/AWS observations confirmed cleanup COMPLETE. Current replacement run7f1a627e-a6d0-4c9f-a5ce-58984b38d41e has a real AVAILABLE100 snapshot and CREATING private/encrypted PG18.6 clone. Source remains1000rows/3columns; source-apply capability true, SQL NOT_RUN. A1 bounded read-only code review accepted without critical/high findings. Full cloud BLOCK/PASS, source Deny/Allow/apply and recording are still pending; do not narrate them as done. Replace pending beats only after actual sealed evidence and operator events exist.

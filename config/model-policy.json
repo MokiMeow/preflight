@@ -49,10 +49,14 @@
         "id": "A1",
         "task": "T27",
         "trigger": "Focused audit of implemented SQL/validation, report, source-apply and cleanup boundaries before T24.",
-        "status": "ADMITTED",
+        "status": "CONSUMED",
         "reviewed_commit": "0e39cf7",
         "ticket": "T27-A1-20260926",
-        "scope": "Read-only residual review after independent Sol: SQL/written-column coverage, sealed report trust, exact source apply and cleanup/unknown-outcome boundaries. No implementation, cloud action or approval."
+        "scope": "Read-only residual review after independent Sol: SQL/written-column coverage, sealed report trust, exact source apply and cleanup/unknown-outcome boundaries. No implementation, cloud action or approval.",
+        "result": "BOUNDED_CODE_REVIEW_ACCEPTED_NO_CRITICAL_HIGH",
+        "effective_model": "gpt-6-astra",
+        "effective_reasoning_effort": "high",
+        "connected_acceptance": false
       },
       {
         "id": "A2",
