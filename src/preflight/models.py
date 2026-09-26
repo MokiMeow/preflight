@@ -1,4 +1,5 @@
 """Frozen public contracts. Private evidence must use separate nonserializable types."""
+
 from enum import StrEnum
 from typing import Annotated, Any, Literal
 from uuid import UUID
@@ -48,9 +49,15 @@ TRANSITIONS: dict[Phase, frozenset[Phase]] = {
     Phase.PASS: frozenset({Phase.AWAITING_APPROVAL}),
     Phase.BLOCKED: frozenset({Phase.BASELINED}),
     Phase.AWAITING_APPROVAL: frozenset({Phase.APPLYING, Phase.STALE, Phase.ERROR}),
-    Phase.APPLYING: frozenset({Phase.APPLIED, Phase.APPLY_FAILED,
-                             Phase.APPLIED_NEEDS_ATTENTION, Phase.APPLY_OUTCOME_UNKNOWN,
-                             Phase.STALE}),
+    Phase.APPLYING: frozenset(
+        {
+            Phase.APPLIED,
+            Phase.APPLY_FAILED,
+            Phase.APPLIED_NEEDS_ATTENTION,
+            Phase.APPLY_OUTCOME_UNKNOWN,
+            Phase.STALE,
+        }
+    ),
 }
 
 
@@ -87,8 +94,9 @@ class TypeCheck(StrictModel):
     value: Literal["text", "integer", "bigint", "smallint", "timestamp with time zone"]
 
 
-DeclaredCheck = Annotated[RowCountCheck | ColumnCheck | EqualCheck | TypeCheck,
-                          Field(discriminator="type")]
+DeclaredCheck = Annotated[
+    RowCountCheck | ColumnCheck | EqualCheck | TypeCheck, Field(discriminator="type")
+]
 
 
 class TableContract(StrictModel):
@@ -102,9 +110,11 @@ class TableContract(StrictModel):
     def valid_keys(self):
         if not set(self.primary_key) <= set(self.preserve_columns):
             raise ValueError("primary key must be preserved")
-        for names in [self.primary_key, self.preserve_columns,
-                      [c.name for c in self.expected_schema.added_columns]
-                      if self.expected_schema else []]:
+        for names in [
+            self.primary_key,
+            self.preserve_columns,
+            [c.name for c in self.expected_schema.added_columns] if self.expected_schema else [],
+        ]:
             if len(names) != len(set(names)):
                 raise ValueError("duplicate column declaration")
         return self
@@ -193,11 +203,16 @@ class CleanupRun(RunRequest):
 
 
 TOOL_INPUTS: dict[str, type[Request]] = {
-    "register_candidate": RegisterCandidate, "start_rehearsal": StartRehearsal,
-    "get_run": RunRequest, "get_source_status": GetSourceStatus,
-    "capture_baseline": RunRequest, "apply_to_clone": ApplyClone,
-    "validate_rehearsal": RunRequest, "get_report": GetReport,
-    "apply_to_demo_source": ApplySource, "cleanup_run": CleanupRun,
+    "register_candidate": RegisterCandidate,
+    "start_rehearsal": StartRehearsal,
+    "get_run": RunRequest,
+    "get_source_status": GetSourceStatus,
+    "capture_baseline": RunRequest,
+    "apply_to_clone": ApplyClone,
+    "validate_rehearsal": RunRequest,
+    "get_report": GetReport,
+    "apply_to_demo_source": ApplySource,
+    "cleanup_run": CleanupRun,
 }
 
 
@@ -329,6 +344,7 @@ class SealedReport(StrictModel):
 
 class PreflightError(Exception):
     """Safe fixed code, never an upstream exception string."""
+
     def __init__(self, code: str):
         super().__init__(code)
         self.code = code

@@ -1,4 +1,5 @@
 """Nonsecret policy settings; cloud and source writes are disabled by default."""
+
 import os
 from pathlib import Path
 from typing import Literal
@@ -39,8 +40,12 @@ class Settings(StrictModel):
     def authorization_dependencies(self):
         if self.evidence_backend != "aws_rds" and self.enable_demo_source_apply:
             raise ValueError("deployed source apply requires aws_rds")
-        if self.creation_authorized and not (self.approved_budget_ceiling and self.account_id
-                                             and self.region and self.source_instance_id):
+        if self.creation_authorized and not (
+            self.approved_budget_ceiling
+            and self.account_id
+            and self.region
+            and self.source_instance_id
+        ):
             raise ValueError("creation authorization requires bounded account scope")
         if self.source_instance_id and self.source_instance_id not in self.source_allowlist:
             raise ValueError("configured source must be allowlisted")
@@ -55,14 +60,22 @@ def load_settings(path: Path | None = None) -> Settings:
 
 
 def readiness(settings: Settings) -> dict:
-    cloud = bool(settings.creation_authorized and settings.account_id and settings.region
-                 and settings.source_instance_id and settings.db_subnet_group_name
-                 and settings.clone_security_group_ids)
-    return {"local_ready": True, "cloud_config_ready": cloud,
-            "cloud_connected_verified": False,
-            "source_apply_enabled": settings.enable_demo_source_apply,
-            "source_apply_ready": False,
-            "gateway_configured": bool(os.environ.get("PREFLIGHT_GATEWAY_CONFIGURED")),
-            "daytona_configured": bool(os.environ.get("PREFLIGHT_DAYTONA_CONFIGURED")),
-            "provider_roundtrip_verified": False,
-            "human_approval_verified": False}
+    cloud = bool(
+        settings.creation_authorized
+        and settings.account_id
+        and settings.region
+        and settings.source_instance_id
+        and settings.db_subnet_group_name
+        and settings.clone_security_group_ids
+    )
+    return {
+        "local_ready": True,
+        "cloud_config_ready": cloud,
+        "cloud_connected_verified": False,
+        "source_apply_enabled": settings.enable_demo_source_apply,
+        "source_apply_ready": False,
+        "gateway_configured": bool(os.environ.get("PREFLIGHT_GATEWAY_CONFIGURED")),
+        "daytona_configured": bool(os.environ.get("PREFLIGHT_DAYTONA_CONFIGURED")),
+        "provider_roundtrip_verified": False,
+        "human_approval_verified": False,
+    }

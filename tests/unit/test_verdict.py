@@ -9,8 +9,16 @@ def test_missing_is_warn_failed_is_block_only_complete_pass():
     assert evaluate(checks[:-1], reqs, "committed", []) == "WARN"
     assert evaluate(checks, reqs, "unknown", []) == "WARN"
     assert evaluate(checks, reqs, "rolled_back", []) == "BLOCK"
-    coverage = [CoverageEntry(table="public.customers", column="email", operation="update",
-                              rule="missing", complete=False, reason_code="COVERAGE_INCOMPLETE")]
+    coverage = [
+        CoverageEntry(
+            table="public.customers",
+            column="email",
+            operation="update",
+            rule="missing",
+            complete=False,
+            reason_code="COVERAGE_INCOMPLETE",
+        )
+    ]
     assert evaluate(checks, reqs, "committed", coverage) == "WARN"
     checks[0] = checks[0].model_copy(update={"status": "fail"})
     assert evaluate(checks, reqs, "committed", coverage) == "BLOCK"

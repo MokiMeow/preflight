@@ -1,4 +1,5 @@
 """Thin official MCP v2 server; tool schemas come from the frozen input records."""
+
 import inspect
 from typing import Any
 
@@ -15,6 +16,7 @@ READ_ONLY = {"get_run", "get_source_status", "get_report"}
 
 class SafeTool(Tool):
     """Validate inside the service so SDK error formatting cannot echo input values."""
+
     async def run(self, arguments, context, convert_result=False):
         result = await self.fn(**arguments)
         return self.fn_metadata.convert_result(result) if convert_result else result
@@ -23,29 +25,43 @@ class SafeTool(Tool):
 def make_server(service: RehearsalService) -> MCPServer:
     tools: list[Tool] = []
     for name, model in TOOL_INPUTS.items():
+
         def build_handler(tool_name, input_model):
             async def handler(**kwargs) -> dict[str, Any]:
                 return await anyio.to_thread.run_sync(lambda: service.call(tool_name, kwargs))
+
             handler.__name__ = tool_name
             annotations = {}
             params = []
             for field_name, field in input_model.model_fields.items():
                 annotation = field.rebuild_annotation()
                 annotations[field_name] = annotation
-                params.append(inspect.Parameter(field_name, inspect.Parameter.KEYWORD_ONLY,
-                                               annotation=annotation,
-                                               default=inspect.Parameter.empty if field.is_required()
-                                               else field.default))
+                params.append(
+                    inspect.Parameter(
+                        field_name,
+                        inspect.Parameter.KEYWORD_ONLY,
+                        annotation=annotation,
+                        default=inspect.Parameter.empty if field.is_required() else field.default,
+                    )
+                )
             annotations["return"] = dict[str, Any]
             handler.__annotations__ = annotations
             handler.__signature__ = inspect.Signature(params, return_annotation=dict[str, Any])
             return handler
+
         handler = build_handler(name, model)
-        tool = Tool.from_function(handler, name=name, structured_output=True,
-                                  description=f"Preflight {name}; server policy and state guards apply.",
-                                  annotations=ToolAnnotations(read_only_hint=name in READ_ONLY,
-                                      destructive_hint=name in {"apply_to_clone", "apply_to_demo_source", "cleanup_run"},
-                                      idempotent_hint=name in READ_ONLY, open_world_hint=False))
+        tool = Tool.from_function(
+            handler,
+            name=name,
+            structured_output=True,
+            description=f"Preflight {name}; server policy and state guards apply.",
+            annotations=ToolAnnotations(
+                read_only_hint=name in READ_ONLY,
+                destructive_hint=name in {"apply_to_clone", "apply_to_demo_source", "cleanup_run"},
+                idempotent_hint=name in READ_ONLY,
+                open_world_hint=False,
+            ),
+        )
         # Use strict frozen schema and validation, including unknown field rejection.
         tool.parameters = model.model_json_schema()
         tools.append(SafeTool(**tool.__dict__))

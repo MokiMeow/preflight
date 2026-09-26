@@ -1,4 +1,5 @@
 """Bounded strict JSON and immutable exact-byte artifact storage."""
+
 import hashlib
 import json
 import os
@@ -13,8 +14,9 @@ def sha256(data: bytes) -> str:
 
 
 def canonical_json(value: Any) -> bytes:
-    return json.dumps(value, sort_keys=True, separators=(",", ":"), ensure_ascii=False,
-                      allow_nan=False).encode("utf-8")
+    return json.dumps(
+        value, sort_keys=True, separators=(",", ":"), ensure_ascii=False, allow_nan=False
+    ).encode("utf-8")
 
 
 def strict_json(data: bytes, ceiling: int = 2097152) -> Any:
@@ -33,8 +35,10 @@ def strict_json(data: bytes, ceiling: int = 2097152) -> Any:
         raise PreflightError("INVALID_JSON_NUMBER")
 
     try:
-        value = json.loads(data.decode("utf-8"), object_pairs_hook=pairs,
-                           parse_constant=invalid_constant)
+        value = json.loads(
+            data.decode("utf-8"), object_pairs_hook=pairs, parse_constant=invalid_constant
+        )
+
         def depth(obj, level=0):
             if level > 32:
                 raise PreflightError("JSON_TOO_DEEP")
@@ -44,6 +48,7 @@ def strict_json(data: bytes, ceiling: int = 2097152) -> Any:
             elif isinstance(obj, list):
                 for item in obj:
                     depth(item, level + 1)
+
         depth(value)
         return value
     except (ValueError, UnicodeError, RecursionError):
@@ -74,8 +79,9 @@ class ArtifactStore:
                 raise PreflightError("ARTIFACT_IMMUTABLE") from None
         return sha256(data)
 
-    def read(self, relative: str, expected_digest: str | None = None,
-             ceiling: int = 2097152) -> bytes:
+    def read(
+        self, relative: str, expected_digest: str | None = None, ceiling: int = 2097152
+    ) -> bytes:
         with self.path(relative).open("rb") as handle:
             data = handle.read(ceiling + 1)
         if len(data) > ceiling:

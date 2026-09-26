@@ -17,12 +17,14 @@ def make_run(store):
 def test_cas_and_illegal_transition(tmp_path):
     store = StateStore(tmp_path / "state.db")
     run_id = make_run(store)
+
     def advance():
         try:
             store.transition(run_id, "REGISTERED", "SNAPSHOTTING")
             return True
         except PreflightError:
             return False
+
     with ThreadPoolExecutor(max_workers=2) as pool:
         assert sum(pool.map(lambda _: advance(), range(2))) == 1
     with pytest.raises(PreflightError):
@@ -47,10 +49,16 @@ def test_single_active_and_idempotency(tmp_path):
 def test_restart_unknown_and_never_replay(tmp_path):
     store = StateStore(tmp_path / "state.db")
     run_id = make_run(store)
-    for old, new in [("REGISTERED", "SNAPSHOTTING"), ("SNAPSHOTTING", "RESTORING"),
-                     ("RESTORING", "READY"), ("READY", "BASELINED"),
-                     ("BASELINED", "MIGRATING"), ("MIGRATING", "VALIDATING"),
-                     ("VALIDATING", "PASS"), ("PASS", "AWAITING_APPROVAL")]:
+    for old, new in [
+        ("REGISTERED", "SNAPSHOTTING"),
+        ("SNAPSHOTTING", "RESTORING"),
+        ("RESTORING", "READY"),
+        ("READY", "BASELINED"),
+        ("BASELINED", "MIGRATING"),
+        ("MIGRATING", "VALIDATING"),
+        ("VALIDATING", "PASS"),
+        ("PASS", "AWAITING_APPROVAL"),
+    ]:
         store.transition(run_id, old, new)
     store.begin_apply(run_id, {"hash": sha256(b"sql")})
     store.reconcile_restart()
