@@ -4,7 +4,7 @@ import hashlib
 import json
 import tarfile
 import zipfile
-from pathlib import Path
+from pathlib import Path, PurePosixPath
 
 ROOT = Path(__file__).resolve().parents[1]
 PRD_SHA256 = "5f607b53bd7c439c94e3f97d3826e24e441cb5d007863eca023313347533b6bf"
@@ -19,12 +19,15 @@ def main():
         members = archive.getmembers()
         names = [m.name for m in members]
         for member in members:
-            relative = Path(*Path(member.name).parts[1:])
+            original = PurePosixPath(member.name)
+            relative = PurePosixPath(*original.parts[1:])
             parts = relative.parts
             if (
                 member.issym()
                 or member.islnk()
-                or relative.is_absolute()
+                or original.is_absolute()
+                or "\\" in member.name
+                or ":" in member.name
                 or ".." in parts
                 or any(
                     p in {".worktrees", "var", "node_modules", ".venv", ".venv-clean"}
