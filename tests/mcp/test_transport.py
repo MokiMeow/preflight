@@ -41,6 +41,37 @@ def test_ten_flat_strict_schemas_structured_error_and_no_source_write(tmp_path):
                 tools = await client.list_tools()
                 assert len(tools.tools) == 10
                 by_name = {t.name: t for t in tools.tools}
+                output_contracts = {
+                    "register_candidate": ("RegistrationResult", "coverage_warnings"),
+                    "start_rehearsal": ("StartResult", "resource_expires_at"),
+                    "get_run": ("RunStatus", "eligibility_reason"),
+                    "get_source_status": ("SourceStatusResult", "comparison_status"),
+                    "capture_baseline": ("BaselineResult", "baseline_id"),
+                    "apply_to_clone": ("CloneResult", "next_permitted_operation"),
+                    "validate_rehearsal": ("ValidationResult", "report_reference"),
+                    "get_report": ("ReportResult", "current_state"),
+                    "apply_to_demo_source": ("ApplyReceipt", "precheck_status"),
+                    "cleanup_run": ("CleanupReceipt", "actions"),
+                }
+                for name, (definition, required_field) in output_contracts.items():
+                    schema = by_name[name].output_schema
+                    assert schema["additionalProperties"] is False
+                    assert definition in schema["$defs"]
+                    assert schema["$defs"][definition]["additionalProperties"] is False
+                    assert required_field in schema["$defs"][definition]["properties"]
+                    assert schema["properties"]["data"]["anyOf"] == [
+                        {"$ref": f"#/$defs/{definition}"},
+                        {"$ref": "#/$defs/ToolErrorData"},
+                    ]
+                assert set(by_name["get_run"].output_schema["$defs"]["RunStatus"]["properties"]) >= {
+                    "migration_sha256",
+                    "contract_sha256",
+                    "progress_label",
+                    "elapsed_seconds",
+                    "last_observed_at",
+                    "apply_eligible_now",
+                    "eligibility_reason",
+                }
                 assert "request_id" in by_name["get_run"].input_schema["properties"]
                 assert by_name["get_run"].input_schema["additionalProperties"] is False
                 result = await client.call_tool(

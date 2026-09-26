@@ -4,6 +4,7 @@ import base64
 import binascii
 import threading
 from concurrent.futures import ThreadPoolExecutor
+from datetime import datetime, timezone
 from importlib.metadata import version
 from typing import Any
 from uuid import UUID, uuid4
@@ -14,8 +15,10 @@ from .artifacts import ArtifactStore, canonical_json, sha256, strict_json
 from .config import Settings
 from .models import (
     TOOL_INPUTS,
+    TOOL_OUTPUTS,
     Candidate,
     CheckResult,
+    Contract,
     PreflightError,
     ReportPayload,
     Requirement,
@@ -66,8 +69,12 @@ class RehearsalService:
 
     def call(self, tool: str, arguments: dict) -> dict:
         request_id = arguments.get("request_id")
+        output_model = TOOL_OUTPUTS.get(tool)
+        envelope_model: Any = ToolEnvelope[output_model] if output_model else ToolEnvelope  # type: ignore[valid-type]
         try:
             model = TOOL_INPUTS[tool].model_validate(arguments)
+            if output_model is None:
+                raise KeyError(tool)
         except (ValidationError, KeyError):
             # Neither exception text nor the invalid input is returned/logged.
             try:
@@ -102,17 +109,18 @@ class RehearsalService:
                 claimed = True
             with self.lock(run_id or tool):
                 data = getattr(self, tool)(model)
+            validated_data = output_model.model_validate(data)
             result_id = run_id or data.get("run_id")
             state = self.store.get_run(result_id)["phase"] if result_id else None
-            result = ToolEnvelope(
+            result = envelope_model(
                 ok=True,
                 request_id=model.request_id,
                 run_id=UUID(result_id) if result_id else None,
                 state=state,
-                data=data,
+                data=validated_data,
             )
         except PreflightError as exc:
-            result = ToolEnvelope(
+            result = envelope_model(
                 ok=False,
                 request_id=model.request_id,
                 run_id=UUID(run_id) if run_id else None,
@@ -120,7 +128,7 @@ class RehearsalService:
                 error_code=exc.code,
             )
         except Exception:
-            result = ToolEnvelope(
+            result = envelope_model(
                 ok=False,
                 request_id=model.request_id,
                 run_id=UUID(run_id) if run_id else None,
@@ -201,6 +209,40 @@ class RehearsalService:
             f"artifacts/{candidate_id}/contract.canonical.json", contract_bytes
         )
         self.store.publish_candidate(record.model_dump(mode="json"), run)
+        tables = {table.name: table for table in request.contract.tables}
+        coverage_warnings = []
+        for write in plan.writes:
+            table = tables[write.table]
+            checks = {
+                (check.type, getattr(check, "column", None)) for check in table.checks
+            }
+            expected = {
+                column.name: column
+                for column in (
+                    table.expected_schema.added_columns if table.expected_schema else []
+                )
+            }
+            complete = False
+            if write.operation == "update":
+                complete = (
+                    write.column in table.preserve_columns
+                    or ("all_equal", write.column) in checks
+                )
+            elif write.operation == "add_column":
+                complete = (
+                    write.column in expected and ("all_equal", write.column) in checks
+                )
+            elif write.operation == "set_not_null":
+                complete = (
+                    write.column in expected
+                    and not expected[write.column].nullable
+                    and ("column_not_null", write.column) in checks
+                    and ("no_nulls", write.column) in checks
+                )
+            if not complete:
+                coverage_warnings.append(
+                    f"COVERAGE_INCOMPLETE:{write.table}:{write.column}:{write.operation}"
+                )
         return {
             "candidate_id": candidate_id,
             "parent_candidate_id": str(request.parent_candidate_id)
@@ -211,6 +253,7 @@ class RehearsalService:
             "byte_size": len(raw),
             "policy_version": plan.policy_version,
             "declared_tables": plan.tables,
+            "coverage_warnings": sorted(set(coverage_warnings)),
             "attached": bool(run),
         }
 
@@ -279,19 +322,56 @@ class RehearsalService:
                 "last_resource_status",
             }
         }
-        result["apply_eligible_now"] = (
+        candidate, _ = self.candidate(run["candidate_id"])
+        result["migration_sha256"] = candidate.migration_sha256
+        result["contract_sha256"] = candidate.contract_sha256
+        result["progress_label"] = run["phase"]
+        start = datetime.fromisoformat(run["created_at"].replace("Z", "+00:00"))
+        terminal = {
+            "APPLIED",
+            "APPLY_FAILED",
+            "APPLIED_NEEDS_ATTENTION",
+            "APPLY_OUTCOME_UNKNOWN",
+            "STALE",
+            "ERROR",
+            "BLOCKED",
+            "WARN",
+        }
+        end_value = run.get("updated_at") if run["phase"] in terminal else None
+        end = (
+            datetime.fromisoformat(end_value.replace("Z", "+00:00"))
+            if end_value
+            else datetime.now(timezone.utc)
+        )
+        result["elapsed_seconds"] = max(0, int((end - start).total_seconds()))
+        result["last_observed_at"] = run.get("last_observed_at")
+        eligible = (
             run["phase"] == "AWAITING_APPROVAL"
             and run["cleanup_state"] == "NOT_REQUESTED"
             and str(request.run_id) in self.baselines
             and self.settings.enable_demo_source_apply
             and not self.store.has_apply(str(request.run_id))
         )
+        result["apply_eligible_now"] = eligible
         result["eligibility_is_preliminary"] = True
+        if eligible:
+            reason = "PRELIMINARY_ELIGIBLE"
+        elif run["phase"] != "AWAITING_APPROVAL":
+            reason = "PHASE_NOT_AWAITING_APPROVAL"
+        elif run["cleanup_state"] != "NOT_REQUESTED":
+            reason = "CLEANUP_ACTIVE"
+        elif str(request.run_id) not in self.baselines:
+            reason = "BASELINE_UNAVAILABLE"
+        elif not self.settings.enable_demo_source_apply:
+            reason = "SOURCE_APPLY_DISABLED"
+        else:
+            reason = "SOURCE_APPLY_ALREADY_ATTEMPTED"
+        result["eligibility_reason"] = reason
         return result
 
     def get_source_status(self, request):
         from .evidence import capture_evidence
-        from .models import Contract, RowCountCheck, TableContract
+        from .models import RowCountCheck, TableContract
 
         self._source_guard(request.source_instance_id, request.database_name)
         if not set(request.table_names) <= set(self.settings.table_allowlist):
@@ -301,7 +381,17 @@ class RehearsalService:
             if run["source_instance_id"] != request.source_instance_id:
                 raise PreflightError("SOURCE_NOT_ALLOWLISTED")
             candidate, _ = self.candidate(run["candidate_id"])
-            contract = candidate.contract
+            requested = set(request.table_names)
+            contract = Contract.model_validate(
+                {
+                    **candidate.contract.model_dump(mode="json"),
+                    "tables": [
+                        table.model_dump(mode="json")
+                        for table in candidate.contract.tables
+                        if table.name in requested
+                    ],
+                }
+            )
             if not set(request.table_names) <= {t.name for t in contract.tables}:
                 raise PreflightError("TABLE_NOT_DECLARED")
         else:
@@ -328,7 +418,27 @@ class RehearsalService:
             }
         with self.runtime.connection(run, "source_read") as con:
             evidence = capture_evidence(con, contract)
-        return {"evidence": evidence.public.model_dump(mode="json")}
+        comparison_status = "NOT_REQUESTED"
+        if request.run_id:
+            baseline = self.baselines.get(str(request.run_id))
+            if baseline is None:
+                comparison_status = "BASELINE_UNAVAILABLE"
+            else:
+                baseline_tables = {
+                    table.name: table.model_dump(mode="json")
+                    for table in baseline.public.tables
+                    if table.name in set(request.table_names)
+                }
+                observed_tables = {
+                    table.name: table.model_dump(mode="json") for table in evidence.public.tables
+                }
+                comparison_status = (
+                    "MATCH" if baseline_tables == observed_tables else "DIFFERENT"
+                )
+        return {
+            "evidence": evidence.public.model_dump(mode="json"),
+            "comparison_status": comparison_status,
+        }
 
     def capture_baseline(self, request):
         from .evidence import baseline_matches, capture_evidence, resolve_coverage
@@ -337,7 +447,18 @@ class RehearsalService:
         run_id = str(request.run_id)
         run = self.store.get_run(run_id)
         if run["phase"] == "BASELINED" and run_id in self.baselines:
-            return {"baseline": self.baselines[run_id].public.model_dump(mode="json")}
+            baseline = self.baselines[run_id]
+            candidate, raw = self.candidate(run["candidate_id"])
+            coverage = resolve_coverage(
+                inspect_sql(raw, candidate.contract),
+                candidate.contract,
+                baseline.existing_columns,
+            )
+            return {
+                "baseline_id": sha256(canonical_json(baseline.public.model_dump(mode="json"))),
+                "baseline": baseline.public.model_dump(mode="json"),
+                "coverage": [item.model_dump(mode="json") for item in coverage],
+            }
         if run["phase"] != "READY":
             raise PreflightError("RUN_NOT_READY")
         self.runtime.verify_resources(run, require_backup=True)
@@ -365,6 +486,7 @@ class RehearsalService:
             },
         )
         return {
+            "baseline_id": sha256(canonical_json(baseline.public.model_dump(mode="json"))),
             "baseline": baseline.public.model_dump(mode="json"),
             "coverage": [item.model_dump(mode="json") for item in coverage],
         }
@@ -412,7 +534,13 @@ class RehearsalService:
                 "rollback_baseline_unchanged": unchanged,
             },
         )
-        return {"transaction": outcome.model_dump(mode="json"), "baseline_unchanged": unchanged}
+        return {
+            "transaction": outcome.model_dump(mode="json"),
+            "baseline_unchanged": unchanged,
+            "next_permitted_operation": (
+                "manual_resolution" if outcome.outcome == "unknown" else "validate_rehearsal"
+            ),
+        }
 
     def _complete_checks(self, checkset, outcome):
         requirements = list(checkset.requirements)
@@ -558,6 +686,8 @@ class RehearsalService:
         return {
             "verdict": payload.verdict,
             "report_sha256": report.report_sha256,
+            "report_reference": relative + ".json",
+            "apply_eligible_at_report_time": payload.apply_eligible_at_report_time,
             "checks": [check.model_dump(mode="json") for check in payload.checks],
         }
 
@@ -626,8 +756,10 @@ class RehearsalService:
         plan = inspect_sql(raw, candidate.contract)
         baseline = self.baselines[run_id]
         columns = baseline.existing_columns
+        precheck_status = "NOT_RUN"
 
         def precheck(con):
+            nonlocal precheck_status
             for table in sorted(t.name for t in candidate.contract.tables):
                 schema, name = table.split(".")
                 con.execute(
@@ -639,7 +771,9 @@ class RehearsalService:
                 con, candidate.contract, existing_columns=columns, in_transaction=True
             )
             if not baseline_matches(baseline, fresh):
+                precheck_status = "DRIFT"
                 raise PreflightError("SOURCE_DRIFT")
+            precheck_status = "MATCH"
 
         def postcheck(con):
             after = capture_evidence(
@@ -649,6 +783,7 @@ class RehearsalService:
             checks, requirements = self._complete_checks(checkset, "committed")
             if evaluate(checks, requirements, "committed", checkset.coverage) != "PASS":
                 raise PreflightError("SOURCE_POSTCONDITION_FAILED")
+            return True
 
         self.store.begin_apply(run_id, request.model_dump(mode="json"))
         try:
@@ -692,6 +827,7 @@ class RehearsalService:
             "confirmation": confirmation,
             "state": state,
             "created_at": utc_now(),
+            "precheck_status": precheck_status,
         }
         self.store.put_once("receipt", receipt["receipt_id"], receipt)
         self.artifacts.write_once(

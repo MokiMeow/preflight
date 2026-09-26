@@ -1,14 +1,13 @@
 """Thin official MCP v2 server; tool schemas come from the frozen input records."""
 
 import inspect
-from typing import Any
 
 import anyio
 from mcp.server import MCPServer
 from mcp.server.mcpserver.tools.base import Tool
 from mcp.types import ToolAnnotations
 
-from .models import TOOL_INPUTS
+from .models import TOOL_INPUTS, TOOL_OUTPUTS, ToolEnvelope
 from .service import RehearsalService
 
 READ_ONLY = {"get_run", "get_source_status", "get_report"}
@@ -26,8 +25,10 @@ def make_server(service: RehearsalService) -> MCPServer:
     tools: list[Tool] = []
     for name, model in TOOL_INPUTS.items():
 
-        def build_handler(tool_name, input_model):
-            async def handler(**kwargs) -> dict[str, Any]:
+        def build_handler(tool_name, input_model, output_model):
+            envelope_model = ToolEnvelope[output_model]  # type: ignore[valid-type]
+
+            async def handler(**kwargs):
                 return await anyio.to_thread.run_sync(lambda: service.call(tool_name, kwargs))
 
             handler.__name__ = tool_name
@@ -44,12 +45,12 @@ def make_server(service: RehearsalService) -> MCPServer:
                         default=inspect.Parameter.empty if field.is_required() else field.default,
                     )
                 )
-            annotations["return"] = dict[str, Any]
+            annotations["return"] = envelope_model
             handler.__annotations__ = annotations
-            handler.__signature__ = inspect.Signature(params, return_annotation=dict[str, Any])
+            handler.__signature__ = inspect.Signature(params, return_annotation=envelope_model)
             return handler
 
-        handler = build_handler(name, model)
+        handler = build_handler(name, model, TOOL_OUTPUTS[name])
         tool = Tool.from_function(
             handler,
             name=name,
