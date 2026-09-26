@@ -143,7 +143,7 @@ Specified subtasks:
 
 Acceptance: All policy negative cases in test group P fail for the right code, quoted semicolons are parsed correctly, and both intended migrations plus the deliberate preserved-data mutation parse as specified. Column write-set extraction is deterministic and incomplete acceptance coverage is identified.
 
-Implemented/observed: Recursive pglast PG18 SQL grammar, table/column confinement and catalog capability rejection.
+Implemented/observed: Recursive pglast PG18 grammar now has exact negative coverage for all catalogued forbidden statement/expression/target branches; unsupported object capabilities are refused on disposable PostgreSQL.
 
 Primary paths: `src/preflight/db.py`, `src/preflight/evidence.py`, `src/preflight/sql_policy.py`, `tests/postgres/test_database.py`
 
@@ -162,7 +162,7 @@ Specified subtasks:
 
 Acceptance: Bad SQL rolls back with unchanged data/schema; good SQL commits; no SQL DETAIL or credentials leak; multi-statement failure and whole-script deadline cases pass against real PostgreSQL.
 
-Implemented/observed: Verified TLS/runtime privilege checks, fresh explicit transactions, statement/whole-operation deadlines, rollback/unknown outcome semantics; real PG regressions.
+Implemented/observed: Verified TLS/runtime privilege checks, fresh explicit transactions, row/byte/catalog/whole-capture deadlines, rollback and unknown-outcome semantics; exact disposable PostgreSQL regressions.
 
 Primary paths: `src/preflight/db.py`, `src/preflight/evidence.py`, `src/preflight/sql_policy.py`, `tests/postgres/test_database.py`
 
@@ -180,7 +180,7 @@ Specified subtasks:
 
 Acceptance: Identical logical data hashes identically despite row ordering; genuine differences change evidence; no unsupported or partial dataset can pass; reports expose aggregates only.
 
-Implemented/observed: Controlled repeatable-read capture, type-tagged hashes, schema/index semantics, private key maps, safe missing/extra/changed counts, mandatory typed checks and written-column coverage.
+Implemented/observed: Controlled repeatable-read capture, canonical order-insensitive hashes, normalized schema/OID semantics, specific missing/inaccessible metadata failures, private key maps and complete typed coverage.
 
 Primary paths: `src/preflight/db.py`, `src/preflight/evidence.py`, `src/preflight/sql_policy.py`, `tests/postgres/test_database.py`
 
@@ -199,7 +199,7 @@ Specified subtasks:
 
 Acceptance: Every verdict test passes and every mandatory missing/failed condition disables apply. Historical PASS does not override STALE or cleanup/unknown states. No undeclared or weakly asserted value mutation can receive PASS.
 
-Implemented/observed: Pure complete-manifest PASS/WARN/BLOCK oracle; missing coverage never PASS.
+Implemented/observed: Pure complete-manifest PASS/WARN/BLOCK oracle; row-count/no-null/uniqueness weak checks cannot certify unprotected value intent or acquire a source writer.
 
 Primary paths: `src/preflight/models.py`, `src/preflight/service.py`, `src/preflight/storage.py`, `tests/unit`, `tests/postgres/test_service.py`
 
@@ -257,7 +257,7 @@ Specified subtasks:
 
 Acceptance: start_rehearsal returns promptly; a restarted worker does not multiply snapshots/clones; unknown resources are not adopted; failures keep visible cleanup IDs.
 
-Implemented/observed: Durable asynchronous intent, deterministic names, leases, bounded polling and uncertain-provider reconciliation.
+Implemented/observed: Durable asynchronous intent, deterministic names, leases, bounded polling and reconciliation; real shared-SQLite races prove transactional active-run and retained resource caps.
 
 Primary paths: `src/preflight/aws_rds.py`, `src/preflight/jobs.py`, `infra`, `tests/cloud`
 
@@ -294,7 +294,7 @@ Specified subtasks:
 
 Acceptance: Bad-to-good can reuse only a demonstrably unchanged clone; every candidate keeps its own hash/report; attempts to reuse a dirty clone require a new rehearsal.
 
-Implemented/observed: Parent/current candidate guards, rollback/baseline-only same-clone revision, durable immutable report history.
+Implemented/observed: Parent/current candidate guards, rollback/baseline-only revision and immutable history; a forced same-parent publication CAS race attaches exactly one child.
 
 Primary paths: `src/preflight/models.py`, `src/preflight/service.py`, `src/preflight/storage.py`, `tests/unit`, `tests/postgres/test_service.py`
 
@@ -312,7 +312,7 @@ Specified subtasks:
 
 Acceptance: Wrong hash/source, drift, replay or unavailable backup causes no migration write. Lost acknowledgement never causes an automatic second apply; post-commit failure is not called rollback.
 
-Implemented/observed: Source gate-side feature/target/hash/report/backup guards, sorted exclusive locks, fresh comparison, precommit checks, durable attempt/receipt and no replay. Five real local source-race/outcome tests added.
+Implemented/observed: Source gate-side target/hash/report/backup/drift guards, sorted exclusive locks, fresh comparison, precommit checks, durable receipt and no replay, with exact local PostgreSQL refusal/restart proofs.
 
 Primary paths: `src/preflight/models.py`, `src/preflight/service.py`, `src/preflight/storage.py`, `tests/unit`, `tests/postgres/test_service.py`
 
@@ -349,7 +349,7 @@ Specified subtasks:
 
 Acceptance: Official client receives the documented schemas/results; extra fields and unsafe requests fail; no source SQL/credential/general query tool is exposed.
 
-Implemented/observed: Ten strict flat MCP inputs and tool-specific outputs, privacy-preserving typed failures; official HTTP and native JS interoperability.
+Implemented/observed: Ten strict flat MCP inputs and tool-specific outputs; actual loopback HTTP MCP/JS SDK ping plus typed get_run remain responsive and phase-consistent during one held mutator.
 
 Primary paths: `src/preflight/models.py`, `src/preflight/service.py`, `src/preflight/storage.py`, `tests/unit`, `tests/postgres/test_service.py`
 
@@ -386,11 +386,11 @@ Specified subtasks:
 
 Acceptance: A real model response, real sandbox execution and real MCP call are visible. Missing provider access is a precise external blocker, not a mocked success.
 
-Implemented/observed: Pinned native TrueForge package/config/MCP probes and Responses probe implementation. Funded model/Daytona execution unobserved.
+Implemented/observed: Pinned TrueForge and Responses probes plus sanitized connected native TrueForge/Gateway/private-MCP read-only get_run and get_source_status receipts. The observed Gateway alias resolved to gpt-4o-mini-2024-07-18, not Sol; saved product agent and Daytona execution remain unobserved.
 
 Primary paths: `src/preflight/report.py`, `src/preflight/offline.py`, `integration`, `scripts`, `tests/trueforge`
 
-Pending: Run actual dependency-ordered connected acceptance with approved scope and operator inputs; see report ordered actions. No cloud spend, publication, source write or cleanup permission inferred.
+Pending: Daytona credentials/runtime and the saved product agent remain unobserved, so full T20 stays BLOCKED_EXTERNAL. The native Gateway/private-MCP receipts prove only the linked read-only compatibility component; they do not authorize source apply or either human gate.
 
 Specified subtasks:
 
@@ -485,7 +485,7 @@ Specified subtasks:
 
 Acceptance: Committed SQL is not treated as proof of correctness; old PASS does not authorize a drifted source. The wrong-data clone cannot be reused as if it rolled back. The unasserted-value mutation receives WARN, not PASS, while actual protected-value failure remains BLOCK.
 
-Implemented/observed: Committed protected wrong-data BLOCK, unasserted mutation WARN and source-data drift refusal proven on disposable PG.
+Implemented/observed: Committed protected wrong-data BLOCK, all weak-check coverage combinations WARN, schema/full-data drift STALE and zero-writer refusal proven on disposable PostgreSQL.
 
 Primary paths: `src/preflight/db.py`, `src/preflight/evidence.py`, `src/preflight/sql_policy.py`, `tests/postgres/test_database.py`
 
@@ -504,7 +504,7 @@ Specified subtasks:
 
 Acceptance: Infrastructure resumes safely, mutation uncertainty fails closed, APPLY_FAILED means confirmed rollback, and every uncertain/committed source retry is refused.
 
-Implemented/observed: Actual local rollback/deadline/commit-ack loss, durable source UNKNOWN, confirmation attention, restart/publication tests. Complete fault permutations are narrower than the catalog.
+Implemented/observed: Local rollback/deadline/commit-ack loss, durable APPLYING restart, no-replay/manual-unknown outcomes, concurrent publication and phase-consistent status tests are observed; complete provider fault permutations remain narrower.
 
 Primary paths: `src/preflight/models.py`, `src/preflight/service.py`, `src/preflight/storage.py`, `tests/unit`, `tests/postgres/test_service.py`
 
@@ -560,7 +560,7 @@ Specified subtasks:
 
 Acceptance: The actual cleanup/retention state and backup guard are observed. Unit deletion-policy tests are green; any unperformed live deletion is transparently marked NOT_RUN, not hidden.
 
-Implemented/observed: Cleanup/retention guards locally implemented/tested; actual operator resource retention or deletion choice unobserved.
+Implemented/observed: Cleanup guards plus actual disposable local clone deletion retain an independently anchored sealed report and separate cleanup receipt. Real RDS cleanup and human retention/deletion choice remain unobserved.
 
 Primary paths: `src/preflight/aws_rds.py`, `src/preflight/jobs.py`, `infra`, `tests/cloud`
 
@@ -598,7 +598,7 @@ Specified subtasks:
 
 Acceptance: Final local gate is green; required real integration evidence exists; incomplete external actions are explicit. Test evidence references the actual final implementation commit.
 
-Implemented/observed: Final integrated local314-test regression passed; bounded independent review closed findings. Full acceptance waits connected gates and behavior evaluations.
+Implemented/observed: Frozen application commit 9f75cc1 passed the complete 485-test gate with zero errors/failures/skips in 236.95s; Ruff and mypy also passed. Connected gates and behavior evaluations remain incomplete.
 
 Primary paths: `src/preflight/models.py`, `src/preflight/service.py`, `src/preflight/storage.py`, `tests/unit`, `tests/postgres/test_service.py`
 

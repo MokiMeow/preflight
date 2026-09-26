@@ -1,11 +1,11 @@
 {
   "kind": "WHOLE_ASSERTION_AUDIT_NOT_A_TEST_COUNT",
-  "implementation_commit": "221a79a",
-  "full_gate": "314passed zeroerrors/failures/skips182.74s",
+  "implementation_commit": "9f75cc1",
+  "full_gate": "485 passed, zero errors/failures/skips in 236.95s at frozen application commit 9f75cc1; exit 0",
   "classification": "LOCAL_VERIFIED means mapped complete localassertion; PARTIAL means executed narrowerassertions; BLOCKED_EXTERNAL means actualprovider/human proofmissing; NOT_RUN means no qualifyingcomplete observation. Local status nevermeans realRDS/demoacceptance.",
   "counts": {
-    "LOCAL_VERIFIED": 58,
-    "PARTIAL": 65,
+    "LOCAL_VERIFIED": 89,
+    "PARTIAL": 34,
     "BLOCKED_EXTERNAL": 22,
     "NOT_RUN": 8
   },
@@ -96,16 +96,16 @@
       "scenario": "Two concurrent start calls",
       "required_assertion": "Single active run; resource caps held transactionally",
       "task": null,
-      "status": "PARTIAL",
+      "status": "LOCAL_VERIFIED",
       "catalog_initial_status": "NOT_RUN",
       "tests": [
-        "tests/cloud/test_jobs.py::test_single_mutation_lease",
-        "tests/unit/test_storage.py::test_single_active_and_idempotency"
+        "tests/postgres/test_remaining_state_races.py::test_u06_simultaneous_service_starts_share_active_run_and_job_caps",
+        "tests/postgres/test_remaining_state_races.py::test_u06_simultaneous_job_reservations_enforce_retained_clone_cap"
       ],
-      "observed_scope": "The listed local assertions passed; the missing clause prevents full credit.",
-      "pending_assertion": "Single-active refusal is asserted sequentially; concurrent start and transactional cloud resource-cap reservation are not.",
-      "implementation_commit": "221a79a",
-      "backend": "local only; see exact test path; no real RDS/model/Daytona/human proof"
+      "observed_scope": "Two independent services race actual shared-SQLite run publication and two JobStore handles race BEGIN IMMEDIATE reservations; one run/intent wins and retained caps reject further work.",
+      "pending_assertion": null,
+      "implementation_commit": "9f75cc1",
+      "backend": "shared SQLite and disposable PostgreSQL 18 as named; no AWS/provider/model/human-gate proof"
     },
     {
       "id": "U07",
@@ -131,15 +131,15 @@
       "scenario": "Two workers race phase transition or candidate parent change",
       "required_assertion": "Only correct CAS wins; no stale attachment",
       "task": null,
-      "status": "PARTIAL",
+      "status": "LOCAL_VERIFIED",
       "catalog_initial_status": "NOT_RUN",
       "tests": [
-        "tests/unit/test_storage.py::test_cas_and_illegal_transition"
+        "tests/postgres/test_remaining_state_races.py::test_u08_same_parent_race_publishes_one_revision_with_unchanged_full_baseline"
       ],
-      "observed_scope": "The listed local assertions passed; the missing clause prevents full credit.",
-      "pending_assertion": "Two-thread phase CAS is asserted; concurrent candidate-parent attachment is not.",
-      "implementation_commit": "221a79a",
-      "backend": "local only; see exact test path; no real RDS/model/Daytona/human proof"
+      "observed_scope": "Two services validate the same full baseline and parent before a forced publication CAS race; one child attaches, one receives STATE_CONFLICT, and no stale child is published.",
+      "pending_assertion": null,
+      "implementation_commit": "9f75cc1",
+      "backend": "shared SQLite and disposable PostgreSQL 18 as named; no AWS/provider/model/human-gate proof"
     },
     {
       "id": "U09",
@@ -258,112 +258,115 @@
       "scenario": "Explicit BEGIN/COMMIT/ROLLBACK, psql backslash command",
       "required_assertion": "Reject",
       "task": null,
-      "status": "PARTIAL",
+      "status": "LOCAL_VERIFIED",
       "catalog_initial_status": "NOT_RUN",
       "tests": [
         "tests/unit/test_sql_policy.py::test_recursive_rejection",
-        "tests/unit/test_sql_policy.py::test_unknown_metadata_column"
+        "tests/unit/test_remaining_sql_boundaries.py::test_p03_through_p08_unsupported_candidate_is_rejected"
       ],
-      "observed_scope": "Audited database/policy assertions; final integrated gate supersedes failed worker fixture gate.",
-      "pending_assertion": "Selected parametrized negative syntax cases; psql/CALL/INSERT/TRUNCATE/GRANT/DROP/generated/identity/custom-type branches not individually asserted here. Unit SQL inspected, not reexecuted in audit. Tests now executed in final314 gate; listed proof remains narrower than complete scenario.",
-      "implementation_commit": "221a79a",
-      "backend": "local only; see exact test path; no real RDS/model/Daytona/human proof"
+      "observed_scope": "BEGIN/COMMIT/ROLLBACK, psql backslash commands, SAVEPOINT and SET TRANSACTION are all rejected by the recursive parser tests; no executable plan is returned.",
+      "pending_assertion": null,
+      "implementation_commit": "639a15f",
+      "backend": "local parser/unit, disposable PostgreSQL 18, or inert botocore Stubber as named; no real RDS/model/Daytona/human proof"
     },
     {
       "id": "P04",
       "scenario": "DO/CALL/COPY/SELECT/DELETE/INSERT/TRUNCATE/GRANT/CREATE/DROP",
       "required_assertion": "Reject",
       "task": null,
-      "status": "PARTIAL",
+      "status": "LOCAL_VERIFIED",
       "catalog_initial_status": "NOT_RUN",
       "tests": [
         "tests/unit/test_sql_policy.py::test_recursive_rejection",
-        "tests/unit/test_sql_policy.py::test_unknown_metadata_column"
+        "tests/unit/test_remaining_sql_boundaries.py::test_p03_through_p08_unsupported_candidate_is_rejected",
+        "tests/unit/test_remaining_verdict_boundaries.py::test_p04_create_table_statement_is_rejected_without_a_plan"
       ],
-      "observed_scope": "Audited database/policy assertions; final integrated gate supersedes failed worker fixture gate.",
-      "pending_assertion": "Selected parametrized negative syntax cases; psql/CALL/INSERT/TRUNCATE/GRANT/DROP/generated/identity/custom-type branches not individually asserted here. Unit SQL inspected, not reexecuted in audit. Tests now executed in final314 gate; listed proof remains narrower than complete scenario.",
-      "implementation_commit": "221a79a",
-      "backend": "local only; see exact test path; no real RDS/model/Daytona/human proof"
+      "observed_scope": "The recursive and remaining-boundary cases cover every named forbidden statement, including the separate ordinary CREATE TABLE AST variant, without returning a plan.",
+      "pending_assertion": null,
+      "implementation_commit": "639a15f",
+      "backend": "local parser/unit, disposable PostgreSQL 18, or inert botocore Stubber as named; no real RDS/model/Daytona/human proof"
     },
     {
       "id": "P05",
       "scenario": "CREATE INDEX CONCURRENTLY or unsupported ALTER subcommand",
       "required_assertion": "Reject",
       "task": null,
-      "status": "PARTIAL",
+      "status": "LOCAL_VERIFIED",
       "catalog_initial_status": "NOT_RUN",
       "tests": [
         "tests/unit/test_sql_policy.py::test_recursive_rejection",
-        "tests/unit/test_sql_policy.py::test_unknown_metadata_column"
+        "tests/unit/test_remaining_sql_boundaries.py::test_p03_through_p08_unsupported_candidate_is_rejected"
       ],
-      "observed_scope": "Audited database/policy assertions; final integrated gate supersedes failed worker fixture gate.",
-      "pending_assertion": "Selected parametrized negative syntax cases; psql/CALL/INSERT/TRUNCATE/GRANT/DROP/generated/identity/custom-type branches not individually asserted here. Unit SQL inspected, not reexecuted in audit. Tests now executed in final314 gate; listed proof remains narrower than complete scenario.",
-      "implementation_commit": "221a79a",
-      "backend": "local only; see exact test path; no real RDS/model/Daytona/human proof"
+      "observed_scope": "Concurrent index creation plus unsupported index/drop/default/conditional-add/trigger/rename ALTER surfaces are rejected.",
+      "pending_assertion": null,
+      "implementation_commit": "639a15f",
+      "backend": "local parser/unit, disposable PostgreSQL 18, or inert botocore Stubber as named; no real RDS/model/Daytona/human proof"
     },
     {
       "id": "P06",
       "scenario": "UPDATE with CTE, FROM, RETURNING, nested query or function call",
       "required_assertion": "Reject recursively",
       "task": null,
-      "status": "PARTIAL",
+      "status": "LOCAL_VERIFIED",
       "catalog_initial_status": "NOT_RUN",
       "tests": [
         "tests/unit/test_sql_policy.py::test_recursive_rejection",
-        "tests/unit/test_sql_policy.py::test_unknown_metadata_column"
+        "tests/unit/test_remaining_sql_boundaries.py::test_p03_through_p08_unsupported_candidate_is_rejected"
       ],
-      "observed_scope": "Audited database/policy assertions; final integrated gate supersedes failed worker fixture gate.",
-      "pending_assertion": "Selected parametrized negative syntax cases; psql/CALL/INSERT/TRUNCATE/GRANT/DROP/generated/identity/custom-type branches not individually asserted here. Unit SQL inspected, not reexecuted in audit. Tests now executed in final314 gate; listed proof remains narrower than complete scenario.",
-      "implementation_commit": "221a79a",
-      "backend": "local only; see exact test path; no real RDS/model/Daytona/human proof"
+      "observed_scope": "Recursive negatives cover CTE, FROM, RETURNING, subquery, function, CASE, EXISTS, IN, LIKE, array and collation branches.",
+      "pending_assertion": null,
+      "implementation_commit": "639a15f",
+      "backend": "local parser/unit, disposable PostgreSQL 18, or inert botocore Stubber as named; no real RDS/model/Daytona/human proof"
     },
     {
       "id": "P07",
       "scenario": "Default/generated/identity expression or user-defined cast/operator/type",
       "required_assertion": "Reject",
       "task": null,
-      "status": "PARTIAL",
+      "status": "LOCAL_VERIFIED",
       "catalog_initial_status": "NOT_RUN",
       "tests": [
         "tests/unit/test_sql_policy.py::test_recursive_rejection",
-        "tests/unit/test_sql_policy.py::test_unknown_metadata_column"
+        "tests/unit/test_remaining_sql_boundaries.py::test_p03_through_p08_unsupported_candidate_is_rejected",
+        "tests/unit/test_remaining_sql_boundaries.py::test_p07_custom_builtin_lookalike_does_not_expand_grammar"
       ],
-      "observed_scope": "Audited database/policy assertions; final integrated gate supersedes failed worker fixture gate.",
-      "pending_assertion": "Selected parametrized negative syntax cases; psql/CALL/INSERT/TRUNCATE/GRANT/DROP/generated/identity/custom-type branches not individually asserted here. Unit SQL inspected, not reexecuted in audit. Tests now executed in final314 gate; listed proof remains narrower than complete scenario.",
-      "implementation_commit": "221a79a",
-      "backend": "local only; see exact test path; no real RDS/model/Daytona/human proof"
+      "observed_scope": "Default/generated/identity, custom casts/operators, array types and qualified builtin-lookalike surfaces are rejected.",
+      "pending_assertion": null,
+      "implementation_commit": "639a15f",
+      "backend": "local parser/unit, disposable PostgreSQL 18, or inert botocore Stubber as named; no real RDS/model/Daytona/human proof"
     },
     {
       "id": "P08",
       "scenario": "Wrong schema/table, unqualified target, unknown column, PK mutation",
       "required_assertion": "Reject",
       "task": null,
-      "status": "PARTIAL",
+      "status": "LOCAL_VERIFIED",
       "catalog_initial_status": "NOT_RUN",
       "tests": [
         "tests/unit/test_sql_policy.py::test_recursive_rejection",
-        "tests/unit/test_sql_policy.py::test_unknown_metadata_column"
+        "tests/unit/test_sql_policy.py::test_unknown_metadata_column",
+        "tests/unit/test_remaining_sql_boundaries.py::test_p08_unknown_target_read_or_predicate_column_refused_at_metadata"
       ],
-      "observed_scope": "Audited database/policy assertions; final integrated gate supersedes failed worker fixture gate.",
-      "pending_assertion": "Selected parametrized negative syntax cases; psql/CALL/INSERT/TRUNCATE/GRANT/DROP/generated/identity/custom-type branches not individually asserted here. Unit SQL inspected, not reexecuted in audit. Tests now executed in final314 gate; listed proof remains narrower than complete scenario.",
-      "implementation_commit": "221a79a",
-      "backend": "local only; see exact test path; no real RDS/model/Daytona/human proof"
+      "observed_scope": "Wrong or unqualified targets, PK mutation, and unknown write/read/predicate columns all fail closed.",
+      "pending_assertion": null,
+      "implementation_commit": "639a15f",
+      "backend": "local parser/unit, disposable PostgreSQL 18, or inert botocore Stubber as named; no real RDS/model/Daytona/human proof"
     },
     {
       "id": "P09",
       "scenario": "Multiple statements where later statement is forbidden",
       "required_assertion": "Entire candidate rejected before execution",
       "task": null,
-      "status": "PARTIAL",
+      "status": "LOCAL_VERIFIED",
       "catalog_initial_status": "NOT_RUN",
       "tests": [
         "tests/unit/test_sql_policy.py::test_recursive_rejection",
-        "tests/unit/test_sql_policy.py::test_unknown_metadata_column"
+        "tests/unit/test_remaining_sql_boundaries.py::test_p09_forbidden_later_statement_rejects_entire_candidate"
       ],
-      "observed_scope": "Audited database/policy assertions; final integrated gate supersedes failed worker fixture gate.",
-      "pending_assertion": "Selected parametrized negative syntax cases; psql/CALL/INSERT/TRUNCATE/GRANT/DROP/generated/identity/custom-type branches not individually asserted here. Unit SQL inspected, not reexecuted in audit. Tests now executed in final314 gate; listed proof remains narrower than complete scenario.",
-      "implementation_commit": "221a79a",
-      "backend": "local only; see exact test path; no real RDS/model/Daytona/human proof"
+      "observed_scope": "A later COMMIT, CALL, TRUNCATE or DROP rejects the whole candidate before registration or execution and returns no plan.",
+      "pending_assertion": null,
+      "implementation_commit": "639a15f",
+      "backend": "local parser/unit, disposable PostgreSQL 18, or inert botocore Stubber as named; no real RDS/model/Daytona/human proof"
     },
     {
       "id": "P10",
@@ -385,34 +388,35 @@
       "scenario": "Unreviewed triggers/rules/event triggers, RLS, foreign-key/cascade graph, partitions/inheritance",
       "required_assertion": "Object policy refuses support, never disables the feature",
       "task": null,
-      "status": "PARTIAL",
+      "status": "LOCAL_VERIFIED",
       "catalog_initial_status": "NOT_RUN",
       "tests": [
-        "tests/postgres/test_database.py::test_no_inherit_notnull_constraint_rejected",
+        "tests/postgres/test_database.py::test_trigger_and_inheritance_rejected",
         "tests/postgres/test_database.py::test_semantic_unsafe_objects",
-        "tests/postgres/test_database.py::test_trigger_and_inheritance_rejected"
+        "tests/postgres/test_remaining_catalog_boundaries.py::test_p11_p12_unsupported_catalog_capability_never_returns_evidence",
+        "tests/postgres/test_remaining_catalog_boundaries.py::test_p11_enabled_event_trigger_rejected_without_firing_it"
       ],
-      "observed_scope": "Audited database/policy assertions; final integrated gate supersedes failed worker fixture gate.",
-      "pending_assertion": "Selected capabilities; event trigger/partition/exclusion direct variants missing in assigned tests. Latest integrated gate failed affected service case (missing ready_run created_at), or one transient PG connect timeout; previous bounded proof separately recorded.",
-      "implementation_commit": "221a79a",
-      "backend": "local only; see exact test path; no real RDS/model/Daytona/human proof"
+      "observed_scope": "Disposable PostgreSQL catalog checks cover trigger, rule, event-trigger, RLS, FK/cascade, partition and inheritance families; policy refuses rather than disables them.",
+      "pending_assertion": null,
+      "implementation_commit": "639a15f",
+      "backend": "local parser/unit, disposable PostgreSQL 18, or inert botocore Stubber as named; no real RDS/model/Daytona/human proof"
     },
     {
       "id": "P12",
       "scenario": "Unsafe CHECK/exclusion constraint or expression/partial index, user-defined collation",
       "required_assertion": "Reject unsupported execution surface",
       "task": null,
-      "status": "PARTIAL",
+      "status": "LOCAL_VERIFIED",
       "catalog_initial_status": "NOT_RUN",
       "tests": [
-        "tests/postgres/test_database.py::test_no_inherit_notnull_constraint_rejected",
         "tests/postgres/test_database.py::test_semantic_unsafe_objects",
-        "tests/postgres/test_database.py::test_trigger_and_inheritance_rejected"
+        "tests/postgres/test_remaining_catalog_boundaries.py::test_p11_p12_unsupported_catalog_capability_never_returns_evidence",
+        "tests/postgres/test_remaining_catalog_boundaries.py::test_p12_user_defined_operator_class_rejected"
       ],
-      "observed_scope": "Audited database/policy assertions; final integrated gate supersedes failed worker fixture gate.",
-      "pending_assertion": "Selected capabilities; event trigger/partition/exclusion direct variants missing in assigned tests. Latest integrated gate failed affected service case (missing ready_run created_at), or one transient PG connect timeout; previous bounded proof separately recorded.",
-      "implementation_commit": "221a79a",
-      "backend": "local only; see exact test path; no real RDS/model/Daytona/human proof"
+      "observed_scope": "Disposable PostgreSQL catalog checks reject CHECK/exclusion/expression/partial-index/custom-collation and custom-opclass surfaces without returning evidence.",
+      "pending_assertion": null,
+      "implementation_commit": "639a15f",
+      "backend": "local parser/unit, disposable PostgreSQL 18, or inert botocore Stubber as named; no real RDS/model/Daytona/human proof"
     },
     {
       "id": "P13",
@@ -434,15 +438,16 @@
       "scenario": "Parser/database major mismatch",
       "required_assertion": "Readiness fails before migration",
       "task": null,
-      "status": "PARTIAL",
+      "status": "LOCAL_VERIFIED",
       "catalog_initial_status": "NOT_RUN",
       "tests": [
+        "tests/unit/test_remaining_verdict_boundaries.py::test_p14_parser_mismatch_refused_before_parse_or_execution",
         "tests/postgres/test_database.py::test_tls_hostname_ca_major_and_role"
       ],
-      "observed_scope": "Audited database/policy assertions; final integrated gate supersedes failed worker fixture gate.",
-      "pending_assertion": "Server-major/TLS mismatch observed; parser-version monkeypatch readiness case not separately covered.",
-      "implementation_commit": "221a79a",
-      "backend": "local only; see exact test path; no real RDS/model/Daytona/human proof"
+      "observed_scope": "Wrong pglast/parser major is refused before parsing or execution; actual disposable PostgreSQL separately proves server-major readiness refusal.",
+      "pending_assertion": null,
+      "implementation_commit": "639a15f",
+      "backend": "local parser/unit, disposable PostgreSQL 18, or inert botocore Stubber as named; no real RDS/model/Daytona/human proof"
     },
     {
       "id": "D01",
@@ -516,16 +521,16 @@
       "scenario": "Same rows inserted/retrieved in different order",
       "required_assertion": "Canonical aggregate roots match",
       "task": null,
-      "status": "PARTIAL",
+      "status": "LOCAL_VERIFIED",
       "catalog_initial_status": "NOT_RUN",
       "tests": [
-        "tests/postgres/test_database.py::test_changed_keys_and_order_and_full_drift",
+        "tests/postgres/test_remaining_transaction_boundaries.py::test_d05_real_physical_row_order_changes_without_changing_roots",
         "tests/unit/test_evidence.py::test_domain_length_and_order"
       ],
-      "observed_scope": "Audited database/policy assertions; final integrated gate supersedes failed worker fixture gate.",
-      "pending_assertion": "CLUSTER on initially ordered data may not reorder physical rows; pure root test reverses maps, no new unit reexecution.",
-      "implementation_commit": "221a79a",
-      "backend": "local only; see exact test path; no real RDS/model/Daytona/human proof"
+      "observed_scope": "A descending-index CLUSTER demonstrably changes the first physical row while canonical full evidence remains identical; reversed map insertion order also preserves roots.",
+      "pending_assertion": null,
+      "implementation_commit": "639a15f",
+      "backend": "local parser/unit, disposable PostgreSQL 18, or inert botocore Stubber as named; no real RDS/model/Daytona/human proof"
     },
     {
       "id": "D06",
@@ -583,31 +588,37 @@
       "scenario": "Missing PK/table/column or inaccessible metadata",
       "required_assertion": "Specific failure/not_run, no fabricated zero count",
       "task": null,
-      "status": "PARTIAL",
+      "status": "LOCAL_VERIFIED",
       "catalog_initial_status": "NOT_RUN",
       "tests": [
-        "tests/unit/test_sql_policy.py::test_unknown_metadata_column"
+        "tests/postgres/test_remaining_catalog_boundaries.py::test_d09_missing_table_primary_key_or_preserved_column_is_specific",
+        "tests/postgres/test_remaining_catalog_boundaries.py::test_d09_inaccessible_catalog_does_not_fabricate_metadata",
+        "tests/postgres/test_remaining_catalog_boundaries.py::test_d09_inaccessible_rows_do_not_become_zero_count",
+        "tests/postgres/test_remaining_catalog_boundaries.py::test_d09_missing_full_baseline_column_is_not_silently_omitted"
       ],
-      "observed_scope": "Audited database/policy assertions; final integrated gate supersedes failed worker fixture gate.",
-      "pending_assertion": "Missing table/PK/inaccessible metadata need additional explicit negative proof.",
-      "implementation_commit": "221a79a",
-      "backend": "local only; see exact test path; no real RDS/model/Daytona/human proof"
+      "observed_scope": "Missing table/PK/columns and inaccessible catalog/rows produce specific failures; none fabricates zero evidence or returns an EvidenceBundle.",
+      "pending_assertion": null,
+      "implementation_commit": "639a15f",
+      "backend": "local parser/unit, disposable PostgreSQL 18, or inert botocore Stubber as named; no real RDS/model/Daytona/human proof"
     },
     {
       "id": "D10",
       "scenario": "Scan exceeds rows, bytes or deadline",
       "required_assertion": "Stops within budget and cannot PASS",
       "task": null,
-      "status": "PARTIAL",
+      "status": "LOCAL_VERIFIED",
       "catalog_initial_status": "NOT_RUN",
       "tests": [
         "tests/postgres/test_database.py::test_scan_budget_and_huge_cell",
-        "tests/postgres/test_database.py::test_whole_deadline_precommit"
+        "tests/postgres/test_remaining_catalog_boundaries.py::test_d10_serialized_budget_excludes_escape_expansion_overrun",
+        "tests/postgres/test_remaining_catalog_boundaries.py::test_d10_whole_capture_deadline_includes_row_processing",
+        "tests/postgres/test_remaining_catalog_boundaries.py::test_d10_whole_capture_deadline_includes_catalog_processing",
+        "tests/postgres/test_remaining_catalog_boundaries.py::test_d10_baseline_query_timeout_cannot_return_partial_evidence"
       ],
-      "observed_scope": "Audited database/policy assertions; final integrated gate supersedes failed worker fixture gate.",
-      "pending_assertion": "Rows/bytes and migration/callback deadline; independent long baseline scan total deadline not separately asserted.",
-      "implementation_commit": "221a79a",
-      "backend": "local only; see exact test path; no real RDS/model/Daytona/human proof"
+      "observed_scope": "Row, serialized-byte, catalog, fetch/CPU and whole-capture deadline overruns stop without partial evidence or PASS; fresh captures roll back.",
+      "pending_assertion": null,
+      "implementation_commit": "639a15f",
+      "backend": "local parser/unit, disposable PostgreSQL 18, or inert botocore Stubber as named; no real RDS/model/Daytona/human proof"
     },
     {
       "id": "D11",
@@ -681,17 +692,15 @@
       "scenario": "DB error that embeds a row value/password-like sentinel",
       "required_assertion": "Tool/log/report output contains only safe classification",
       "task": null,
-      "status": "PARTIAL",
+      "status": "LOCAL_VERIFIED",
       "catalog_initial_status": "NOT_RUN",
       "tests": [
-        "tests/postgres/test_database.py::test_lock_timeout_and_no_leak",
-        "tests/postgres/test_database.py::test_multiple_statement_failure_rolls_back_first",
-        "tests/postgres/test_database.py::test_whole_script_deadline_across_quick_updates"
+        "tests/postgres/test_remaining_transaction_boundaries.py::test_d15_private_database_error_value_absent_from_tool_logs_and_reports"
       ],
-      "observed_scope": "Audited database/policy assertions; final integrated gate supersedes failed worker fixture gate.",
-      "pending_assertion": "",
-      "implementation_commit": "221a79a",
-      "backend": "local only; see exact test path; no real RDS/model/Daytona/human proof"
+      "observed_scope": "An actual PostgreSQL NotNullViolation contains the private sentinel internally, while tool, baseline, report JSON/Markdown and captured logs retain only safe SQLSTATE classification.",
+      "pending_assertion": null,
+      "implementation_commit": "639a15f",
+      "backend": "local parser/unit, disposable PostgreSQL 18, or inert botocore Stubber as named; no real RDS/model/Daytona/human proof"
     },
     {
       "id": "D16",
@@ -730,49 +739,47 @@
       "scenario": "Consistent source/clone state but different irrelevant OIDs",
       "required_assertion": "Normalized schema fingerprints match",
       "task": null,
-      "status": "PARTIAL",
+      "status": "LOCAL_VERIFIED",
       "catalog_initial_status": "NOT_RUN",
       "tests": [
-        "tests/postgres/test_seed_demo.py::test_fresh_fixture_roles_and_runtime_evidence"
+        "tests/postgres/test_remaining_transaction_boundaries.py::test_d18_independent_table_and_index_oids_do_not_change_normalized_roots"
       ],
-      "observed_scope": "Audited database/policy assertions; final integrated gate supersedes failed worker fixture gate.",
-      "pending_assertion": "Local independent objects useful; actual snapshot-restored RDS normalization not observed. Tests now executed in final314 gate; listed proof remains narrower than complete scenario.",
-      "implementation_commit": "221a79a",
-      "backend": "local only; see exact test path; no real RDS/model/Daytona/human proof"
+      "observed_scope": "Independent databases have different table and primary-index OIDs but identical normalized full baselines. Real snapshot-restored RDS normalization remains separate connected evidence.",
+      "pending_assertion": null,
+      "implementation_commit": "639a15f",
+      "backend": "local parser/unit, disposable PostgreSQL 18, or inert botocore Stubber as named; no real RDS/model/Daytona/human proof"
     },
     {
       "id": "D19",
       "scenario": "A failed candidate followed by an accepted same-contract revision",
       "required_assertion": "Full unchanged baseline checked before clone reuse",
       "task": null,
-      "status": "PARTIAL",
+      "status": "LOCAL_VERIFIED",
       "catalog_initial_status": "NOT_RUN",
       "tests": [
         "tests/postgres/test_service.py::test_bad_rollback_revision_good_pass_exact_report_and_disabled_source",
-        "tests/postgres/test_service.py::test_committed_wrong_data_blocks_and_revision_refused",
-        "tests/postgres/test_service.py::test_report_restart_publication_retains_history_without_reenabling_source"
+        "tests/postgres/test_remaining_transaction_boundaries.py::test_d19_d20_revision_requires_private_maps_and_full_unchanged_baseline"
       ],
-      "observed_scope": "Audited database/policy assertions; final integrated gate supersedes failed worker fixture gate.",
-      "pending_assertion": "Report restart proves no reenabling source; direct RAM-map-loss baseline case not separately asserted in DB lane. Latest integrated gate failed affected service case (missing ready_run created_at), or one transient PG connect timeout; previous bounded proof separately recorded.",
-      "implementation_commit": "221a79a",
-      "backend": "local only; see exact test path; no real RDS/model/Daytona/human proof"
+      "observed_scope": "Accepted same-contract reuse requires the unchanged full baseline; unpreserved drift changes the full root and refuses attachment without changing the current candidate.",
+      "pending_assertion": null,
+      "implementation_commit": "639a15f",
+      "backend": "local parser/unit, disposable PostgreSQL 18, or inert botocore Stubber as named; no real RDS/model/Daytona/human proof"
     },
     {
       "id": "D20",
       "scenario": "Committed-but-invalid clone or lost baseline maps",
       "required_assertion": "Same-clone revision refused; fresh rehearsal required",
       "task": null,
-      "status": "PARTIAL",
+      "status": "LOCAL_VERIFIED",
       "catalog_initial_status": "NOT_RUN",
       "tests": [
-        "tests/postgres/test_service.py::test_bad_rollback_revision_good_pass_exact_report_and_disabled_source",
         "tests/postgres/test_service.py::test_committed_wrong_data_blocks_and_revision_refused",
-        "tests/postgres/test_service.py::test_report_restart_publication_retains_history_without_reenabling_source"
+        "tests/postgres/test_remaining_transaction_boundaries.py::test_d19_d20_revision_requires_private_maps_and_full_unchanged_baseline"
       ],
-      "observed_scope": "Audited database/policy assertions; final integrated gate supersedes failed worker fixture gate.",
-      "pending_assertion": "Report restart proves no reenabling source; direct RAM-map-loss baseline case not separately asserted in DB lane. Latest integrated gate failed affected service case (missing ready_run created_at), or one transient PG connect timeout; previous bounded proof separately recorded.",
-      "implementation_commit": "221a79a",
-      "backend": "local only; see exact test path; no real RDS/model/Daytona/human proof"
+      "observed_scope": "Committed-invalid clone reuse and direct private-map loss are both refused without changing the current attachment; a fresh rehearsal is required.",
+      "pending_assertion": null,
+      "implementation_commit": "639a15f",
+      "backend": "local parser/unit, disposable PostgreSQL 18, or inert botocore Stubber as named; no real RDS/model/Daytona/human proof"
     },
     {
       "id": "A01",
@@ -795,63 +802,63 @@
       "scenario": "Wrong source/account/database or source equal to clone",
       "required_assertion": "Refuse",
       "task": null,
-      "status": "PARTIAL",
+      "status": "LOCAL_VERIFIED",
       "catalog_initial_status": "NOT_RUN",
       "tests": [
-        "lead-owned service/security tests",
-        "tests/cloud/test_rds.py::test_cleanup_static_refusals_no_aws",
-        "tests/cloud/test_rds.py::test_source_negative_before_tags",
+        "tests/postgres/test_remaining_transaction_boundaries.py::test_a02_source_scope_refusal_precedes_writer",
         "tests/cloud/test_rds.py::test_wrong_account_before_resource_call"
       ],
-      "observed_scope": "Audited database/policy assertions; final integrated gate supersedes failed worker fixture gate.",
-      "pending_assertion": "Must link independent lead evidence; DB lane does not claim these complete. Tests now executed in final314 gate; listed proof remains narrower than complete scenario.",
-      "implementation_commit": "221a79a",
-      "backend": "local only; see exact test path; no real RDS/model/Daytona/human proof"
+      "observed_scope": "Wrong source/database/source-equals-clone scopes fail before writer acquisition or durable intent; inert botocore Stubber proves wrong-account adapter refusal without an AWS call.",
+      "pending_assertion": null,
+      "implementation_commit": "639a15f",
+      "backend": "local parser/unit, disposable PostgreSQL 18, or inert botocore Stubber as named; no real RDS/model/Daytona/human proof"
     },
     {
       "id": "A03",
       "scenario": "Wrong migration/report hash, altered stored contract or report",
       "required_assertion": "Refuse, no write",
       "task": null,
-      "status": "PARTIAL",
+      "status": "LOCAL_VERIFIED",
       "catalog_initial_status": "NOT_RUN",
       "tests": [
-        "lead-owned service/security tests"
+        "tests/postgres/test_remaining_transaction_boundaries.py::test_a03_approved_artifact_changes_refused_without_writer"
       ],
-      "observed_scope": "Audited database/policy assertions; final integrated gate supersedes failed worker fixture gate.",
-      "pending_assertion": "Must link independent lead evidence; DB lane does not claim these complete. Tests now executed in final314 gate; listed proof remains narrower than complete scenario.",
-      "implementation_commit": "221a79a",
-      "backend": "local only; see exact test path; no real RDS/model/Daytona/human proof"
+      "observed_scope": "Both supplied digests plus canonical contract file, stored contract record and report file are independently tampered; every variant refuses with zero source writer and no apply intent.",
+      "pending_assertion": null,
+      "implementation_commit": "639a15f",
+      "backend": "local parser/unit, disposable PostgreSQL 18, or inert botocore Stubber as named; no real RDS/model/Daytona/human proof"
     },
     {
       "id": "A04",
       "scenario": "Non-current candidate or WARN/BLOCK/incomplete run",
       "required_assertion": "Refuse",
       "task": null,
-      "status": "PARTIAL",
+      "status": "LOCAL_VERIFIED",
       "catalog_initial_status": "NOT_RUN",
       "tests": [
-        "lead-owned service/security tests"
+        "tests/postgres/test_remaining_transaction_boundaries.py::test_a04_ineligible_run_refused_without_writer",
+        "tests/postgres/test_remaining_transaction_boundaries.py::test_a04_warn_with_passing_weak_checks_refuses_source_writer"
       ],
-      "observed_scope": "Audited database/policy assertions; final integrated gate supersedes failed worker fixture gate.",
-      "pending_assertion": "Must link independent lead evidence; DB lane does not claim these complete. Tests now executed in final314 gate; listed proof remains narrower than complete scenario.",
-      "implementation_commit": "221a79a",
-      "backend": "local only; see exact test path; no real RDS/model/Daytona/human proof"
+      "observed_scope": "Noncurrent, incomplete, BLOCK and actual committed WARN runs all refuse with zero source writers and no apply intent, even when all declared weak checks pass.",
+      "pending_assertion": null,
+      "implementation_commit": "639a15f",
+      "backend": "local parser/unit, disposable PostgreSQL 18, or inert botocore Stubber as named; no real RDS/model/Daytona/human proof"
     },
     {
       "id": "A05",
       "scenario": "Source schema drift",
       "required_assertion": "STALE; no migration applied",
       "task": null,
-      "status": "PARTIAL",
+      "status": "LOCAL_VERIFIED",
       "catalog_initial_status": "NOT_RUN",
       "tests": [
+        "tests/postgres/test_remaining_transaction_boundaries.py::test_a05_a07_source_drift_stales_before_migration",
         "tests/postgres/test_database.py::test_index_semantic_drift_changes_schema_root"
       ],
-      "observed_scope": "Audited database/policy assertions; final integrated gate supersedes failed worker fixture gate.",
-      "pending_assertion": "Real fingerprint regression proves sort/null ordering/opclass/distinctness changes differ; service STALE handling covered by drift test for data, index-service end-to-end not separately run.",
-      "implementation_commit": "221a79a",
-      "backend": "local only; see exact test path; no real RDS/model/Daytona/human proof"
+      "observed_scope": "Supported source index drift after PASS yields STALE, confirmed rollback and no intended column; independent tests cover index semantic drift variants.",
+      "pending_assertion": null,
+      "implementation_commit": "639a15f",
+      "backend": "local parser/unit, disposable PostgreSQL 18, or inert botocore Stubber as named; no real RDS/model/Daytona/human proof"
     },
     {
       "id": "A06",
@@ -873,32 +880,31 @@
       "scenario": "Pre-existing nonpreserved column drift",
       "required_assertion": "Full-data guard catches it even though preservation subset matches",
       "task": null,
-      "status": "PARTIAL",
+      "status": "LOCAL_VERIFIED",
       "catalog_initial_status": "NOT_RUN",
       "tests": [
-        "tests/postgres/test_database.py::test_unasserted_existing_column_and_explicit_control"
+        "tests/postgres/test_remaining_transaction_boundaries.py::test_a05_a07_source_drift_stales_before_migration"
       ],
-      "observed_scope": "Audited database/policy assertions; final integrated gate supersedes failed worker fixture gate.",
-      "pending_assertion": "Full-root nonpreserved drift proven at adapter comparison; local source service nonpreserved drift case missing here.",
-      "implementation_commit": "221a79a",
-      "backend": "local only; see exact test path; no real RDS/model/Daytona/human proof"
+      "observed_scope": "The locked source recheck observes equal preserved root but changed full root, returns STALE, rolls back and leaves the intended column absent.",
+      "pending_assertion": null,
+      "implementation_commit": "639a15f",
+      "backend": "local parser/unit, disposable PostgreSQL 18, or inert botocore Stubber as named; no real RDS/model/Daytona/human proof"
     },
     {
       "id": "A08",
       "scenario": "Missing/failed/wrong-source recovery snapshot",
       "required_assertion": "Refuse",
       "task": null,
-      "status": "PARTIAL",
+      "status": "LOCAL_VERIFIED",
       "catalog_initial_status": "NOT_RUN",
       "tests": [
-        "lead-owned service/security tests",
-        "tests/cloud/test_rds.py::test_source_apply_attempt_retains_backup_without_independent_attestation",
+        "tests/unit/test_remaining_verdict_boundaries.py::test_a08_recovery_snapshot_refusal_uses_actual_adapter_without_network",
         "tests/postgres/test_service.py::test_source_locked_drift_refused_and_backup_before_writer"
       ],
-      "observed_scope": "Audited database/policy assertions; final integrated gate supersedes failed worker fixture gate.",
-      "pending_assertion": "Must link independent lead evidence; DB lane does not claim these complete. Tests now executed in final314 gate; listed proof remains narrower than complete scenario.",
-      "implementation_commit": "221a79a",
-      "backend": "local only; see exact test path; no real RDS/model/Daytona/human proof"
+      "observed_scope": "The real RdsAdapter with inert Stubber rejects missing, failed and wrong-source recovery snapshots; service refusal occurs before source writer acquisition.",
+      "pending_assertion": null,
+      "implementation_commit": "639a15f",
+      "backend": "local parser/unit, disposable PostgreSQL 18, or inert botocore Stubber as named; no real RDS/model/Daytona/human proof"
     },
     {
       "id": "A09",
@@ -940,16 +946,15 @@
       "scenario": "Same/new request ID after committed source apply",
       "required_assertion": "Refuse replay regardless of request ID",
       "task": null,
-      "status": "PARTIAL",
+      "status": "LOCAL_VERIFIED",
       "catalog_initial_status": "NOT_RUN",
       "tests": [
-        "tests/postgres/test_service.py::test_bad_rollback_revision_good_pass_exact_report_and_disabled_source",
-        "tests/postgres/test_service.py::test_source_service_guarded_apply_and_replay_receipt_local_only"
+        "tests/postgres/test_remaining_transaction_boundaries.py::test_a11_same_and_new_request_ids_cannot_reexecute_committed_source"
       ],
-      "observed_scope": "Audited database/policy assertions; final integrated gate supersedes failed worker fixture gate.",
-      "pending_assertion": "Service calls are local test injections, not human approval evidence. Latest integrated gate failed affected service case (missing ready_run created_at), or one transient PG connect timeout; previous bounded proof separately recorded.",
-      "implementation_commit": "221a79a",
-      "backend": "local only; see exact test path; no real RDS/model/Daytona/human proof"
+      "observed_scope": "After a local APPLIED outcome, both same and new request IDs are refused and exactly one writer acquisition remains. This is not a human UI-gate demonstration.",
+      "pending_assertion": null,
+      "implementation_commit": "639a15f",
+      "backend": "local parser/unit, disposable PostgreSQL 18, or inert botocore Stubber as named; no real RDS/model/Daytona/human proof"
     },
     {
       "id": "A12",
@@ -1007,34 +1012,31 @@
       "scenario": "Process restarts from durable APPLYING",
       "required_assertion": "Unknown until manual resolution; execution count not incremented",
       "task": null,
-      "status": "PARTIAL",
+      "status": "LOCAL_VERIFIED",
       "catalog_initial_status": "NOT_RUN",
       "tests": [
-        "tests/postgres/test_database.py::test_commit_response_loss_is_unknown_not_rollback",
-        "tests/postgres/test_seed_demo.py::test_commit_response_loss_is_honest_unknown",
-        "tests/unit/test_storage.py::test_restart_unknown_and_never_replay"
+        "tests/postgres/test_remaining_transaction_boundaries.py::test_a15_a16_restart_after_durable_intent_without_sql_never_replays",
+        "tests/postgres/test_source_concurrency.py::test_source_lost_commit_acknowledgement_remains_unknown"
       ],
-      "observed_scope": "Audited database/policy assertions; final integrated gate supersedes failed worker fixture gate.",
-      "pending_assertion": "Real clone/initializer lost acknowledgement observed; durable source attempt restart/no replay and independent postcommit source-read failure require lead tests.",
-      "implementation_commit": "221a79a",
-      "backend": "local only; see exact test path; no real RDS/model/Daytona/human proof"
+      "observed_scope": "A fresh service reconstructed from durable APPLYING reports APPLY_OUTCOME_UNKNOWN and refuses same/new IDs; actual committed-but-unknown source behavior is independently exercised.",
+      "pending_assertion": null,
+      "implementation_commit": "639a15f",
+      "backend": "local parser/unit, disposable PostgreSQL 18, or inert botocore Stubber as named; no real RDS/model/Daytona/human proof"
     },
     {
       "id": "A16",
       "scenario": "Crash before SQL after intent persisted",
       "required_assertion": "Conservative unknown/manual resolution is allowed; never guess safe retry",
       "task": null,
-      "status": "PARTIAL",
+      "status": "LOCAL_VERIFIED",
       "catalog_initial_status": "NOT_RUN",
       "tests": [
-        "tests/postgres/test_database.py::test_commit_response_loss_is_unknown_not_rollback",
-        "tests/postgres/test_seed_demo.py::test_commit_response_loss_is_honest_unknown",
-        "tests/unit/test_storage.py::test_restart_unknown_and_never_replay"
+        "tests/postgres/test_remaining_transaction_boundaries.py::test_a15_a16_restart_after_durable_intent_without_sql_never_replays"
       ],
-      "observed_scope": "Audited database/policy assertions; final integrated gate supersedes failed worker fixture gate.",
-      "pending_assertion": "Real clone/initializer lost acknowledgement observed; durable source attempt restart/no replay and independent postcommit source-read failure require lead tests.",
-      "implementation_commit": "221a79a",
-      "backend": "local only; see exact test path; no real RDS/model/Daytona/human proof"
+      "observed_scope": "A persisted intent before any writer exists remains conservatively unknown after restart; same/new IDs never replay and the source column stays absent.",
+      "pending_assertion": null,
+      "implementation_commit": "639a15f",
+      "backend": "local parser/unit, disposable PostgreSQL 18, or inert botocore Stubber as named; no real RDS/model/Daytona/human proof"
     },
     {
       "id": "A17",
@@ -1294,17 +1296,15 @@
       "scenario": "Cleanup after sealed report",
       "required_assertion": "Report and separate receipts still verify",
       "task": null,
-      "status": "PARTIAL",
+      "status": "LOCAL_VERIFIED",
       "catalog_initial_status": "NOT_RUN",
       "tests": [
-        "tests/cloud/test_rds.py::test_cleanup_static_refusals_no_aws",
-        "tests/postgres/test_service.py::test_report_restart_publication_retains_history_without_reenabling_source",
-        "tests/postgres/test_service.py::test_source_service_guarded_apply_and_replay_receipt_local_only"
+        "tests/postgres/test_remaining_state_races.py::test_c13_actual_local_clone_deletion_retains_anchored_report_and_receipt"
       ],
-      "observed_scope": "Cloud reports_retained false rejects; service tests preserve historical report through apply/restart.",
-      "pending_assertion": "No existing test completes cleanup then verifies both sealed report and cleanup receipt; referenced PG tests not rerun here.",
-      "implementation_commit": "221a79a",
-      "backend": "local only; see exact test path; no real RDS/model/Daytona/human proof"
+      "observed_scope": "Actual disposable clone deletion retains byte-identical sealed report and a separate canonical cleanup receipt; both verify against independently retained digests, without claiming RDS deletion or live eligibility.",
+      "pending_assertion": null,
+      "implementation_commit": "9f75cc1",
+      "backend": "shared SQLite and disposable PostgreSQL 18 as named; no AWS/provider/model/human-gate proof"
     },
     {
       "id": "C14",
@@ -1650,12 +1650,14 @@
       "tests": [
         "tests/trueforge/test_gateway_probe.py::test_responses_stream_state_machine",
         "tests/trueforge/test_responses_stream.mjs::decodes one linked streamed status tool call",
-        "tests/trueforge/test_responses_stream.mjs::requires a completed continued final text response"
+        "tests/trueforge/test_responses_stream.mjs::requires a completed continued final text response",
+        "evidence/connected/native-compatibility.json (lead-held sanitized receipt)",
+        "evidence/connected/native-source-status.json (lead-held sanitized receipt)"
       ],
-      "observed_scope": "The listed local assertions passed; the missing clause prevents full credit.",
-      "pending_assertion": "Fixture decoding proves complete JSON, stable ID, and continued final text; no provider request or harmless real tool execution occurred.",
-      "implementation_commit": "221a79a",
-      "backend": "local only; see exact test path; no real RDS/model/Daytona/human proof"
+      "observed_scope": "Component CONNECTED_VERIFIED: lead-held sanitized receipts show native TrueForge through configured Gateway Responses invoking strict read-only get_run and get_source_status, linking tool-call IDs to responses and continuing to turn.done/final text. Local stream-state tests cover complete JSON and stable-ID decoding.",
+      "pending_assertion": "The sanitized connected receipts do not retain streamed argument fragments for an independent end-to-end recheck of every assembly clause. The inline compatibility sessions are not the saved Daytona-backed product agent, so this scenario remains PARTIAL and T20 remains BLOCKED_EXTERNAL.",
+      "implementation_commit": "46a9eac",
+      "backend": "local stream fixtures plus lead-held sanitized CONNECTED_VERIFIED Gateway/TrueForge/private-MCP component receipts; no Daytona or saved-agent proof"
     },
     {
       "id": "N13",
@@ -1779,16 +1781,17 @@
       "scenario": "Long SQL/cloud work versus transport health",
       "required_assertion": "Health/status stay responsive with bounded jobs; cancellation does not falsely claim rollback.",
       "task": "T18",
-      "status": "PARTIAL",
+      "status": "LOCAL_VERIFIED",
       "catalog_initial_status": "NOT_RUN",
       "tests": [
-        "tests/cloud/test_jobs.py::test_ambiguous_or_throttled_keep_same_intent",
-        "tests/cloud/test_jobs.py::test_tick_available_is_not_database_ready_and_poll_is_read_only"
+        "tests/unit/test_remaining_verdict_boundaries.py::test_n21_run_status_remains_responsive_during_long_mutation",
+        "tests/unit/test_remaining_verdict_boundaries.py::test_n21_run_status_envelope_uses_same_phase_snapshot",
+        "tests/trueforge/test_status_transport_responsiveness.py::test_n21_http_status_remains_typed_and_responsive_while_mutation_lock_is_held"
       ],
-      "observed_scope": "Bounded tick/backoff/deadline scheduling tested.",
-      "pending_assertion": "No concurrent long-operation health/status responsiveness test or actual transport cancellation outcome.",
-      "implementation_commit": "221a79a",
-      "backend": "local only; see exact test path; no real RDS/model/Daytona/human proof"
+      "observed_scope": "Held apply-to-clone/source handlers prove typed phase-consistent get_run meets a one-second deadline without retry. The real loopback HTTP MCP/JS SDK ping and get_run remain responsive while the mutation lock is held; terminating client delivery leaves durable MIGRATING rather than falsely claiming rollback.",
+      "pending_assertion": null,
+      "implementation_commit": "135123b",
+      "backend": "local SQLite fault simulation + actual loopback HTTP MCP and installed JS SDK; no PostgreSQL/AWS/provider/human-gate claim"
     },
     {
       "id": "N22",
@@ -2063,17 +2066,16 @@
       "scenario": "Weak checks do not cover value intent",
       "required_assertion": "Row count, no_nulls and uniqueness without supported intended-value coverage yield COVERAGE_INCOMPLETE/WARN for unprotected value updates.",
       "task": "T10",
-      "status": "PARTIAL",
+      "status": "LOCAL_VERIFIED",
       "catalog_initial_status": "NOT_RUN",
       "tests": [
-        "tests/postgres/test_database.py::test_precommit_typed_manifest_fail_closed",
-        "tests/unit/test_sql_policy.py::test_missing_value_assertion",
-        "tests/unit/test_verdict.py::test_missing_is_warn_failed_is_block_only_complete_pass"
+        "tests/unit/test_remaining_verdict_boundaries.py::test_v08_weak_checks_cannot_certify_unprotected_value_intent",
+        "tests/postgres/test_remaining_transaction_boundaries.py::test_a04_warn_with_passing_weak_checks_refuses_source_writer"
       ],
-      "observed_scope": "The listed local assertions passed; the missing clause prevents full credit.",
-      "pending_assertion": "Row-count-only missing intended-value coverage yields incomplete/WARN; no_nulls and uniqueness weak-check combinations are not separately asserted.",
-      "implementation_commit": "221a79a",
-      "backend": "local only; see exact test path; no real RDS/model/Daytona/human proof"
+      "observed_scope": "Row-count, no-null, uniqueness and combined weak checks cannot cover unprotected value intent; actual committed SQL remains WARN and cannot acquire the source writer.",
+      "pending_assertion": null,
+      "implementation_commit": "639a15f",
+      "backend": "local parser/unit, disposable PostgreSQL 18, or inert botocore Stubber as named; no real RDS/model/Daytona/human proof"
     },
     {
       "id": "V09",

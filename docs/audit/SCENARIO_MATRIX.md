@@ -1,8 +1,8 @@
 # All 153 specified scenarios and 10 agent evaluations
 
-Implementation: `221a79a`; final integrated gate: 314 passed. Scenario judgments require each complete assertion; test count is not scenario count.
+Implementation: `9f75cc1`; frozen integrated gate: 485 passed, zero errors/failures/skips in 236.95s. Scenario judgments require each complete assertion; test count is not scenario count.
 
-Counts: LOCAL_VERIFIED: 58, PARTIAL: 65, BLOCKED_EXTERNAL: 22, NOT_RUN: 8.
+Counts: LOCAL_VERIFIED: 89, PARTIAL: 34, BLOCKED_EXTERNAL: 22, NOT_RUN: 8.
 
 ## U01 — Text/base64 intake with trailing newline, CRLF, Unicode comments
 
@@ -62,14 +62,14 @@ Pending: None for the mapped local assertion; connected acceptance remains separ
 
 ## U06 — Two concurrent start calls
 
-**PARTIAL**. Required: Single active run; resource caps held transactionally
+**LOCAL_VERIFIED**. Required: Single active run; resource caps held transactionally
 
-Observed scope: The listed local assertions passed; the missing clause prevents full credit.
+Observed scope: Two independent services race actual shared-SQLite run publication and two JobStore handles race BEGIN IMMEDIATE reservations; one run/intent wins and retained caps reject further work.
 
-Pending: Single-active refusal is asserted sequentially; concurrent start and transactional cloud resource-cap reservation are not.
+Pending: None for the mapped local assertion; connected acceptance remains separate.
 
-- `tests/cloud/test_jobs.py::test_single_mutation_lease`
-- `tests/unit/test_storage.py::test_single_active_and_idempotency`
+- `tests/postgres/test_remaining_state_races.py::test_u06_simultaneous_service_starts_share_active_run_and_job_caps`
+- `tests/postgres/test_remaining_state_races.py::test_u06_simultaneous_job_reservations_enforce_retained_clone_cap`
 
 ## U07 — Invalid run/candidate/source ID or path traversal
 
@@ -87,13 +87,13 @@ Pending: Traversal, missing run, invalid input, and unowned source refusals are 
 
 ## U08 — Two workers race phase transition or candidate parent change
 
-**PARTIAL**. Required: Only correct CAS wins; no stale attachment
+**LOCAL_VERIFIED**. Required: Only correct CAS wins; no stale attachment
 
-Observed scope: The listed local assertions passed; the missing clause prevents full credit.
+Observed scope: Two services validate the same full baseline and parent before a forced publication CAS race; one child attaches, one receives STATE_CONFLICT, and no stale child is published.
 
-Pending: Two-thread phase CAS is asserted; concurrent candidate-parent attachment is not.
+Pending: None for the mapped local assertion; connected acceptance remains separate.
 
-- `tests/unit/test_storage.py::test_cas_and_illegal_transition`
+- `tests/postgres/test_remaining_state_races.py::test_u08_same_parent_race_publishes_one_revision_with_unchanged_full_baseline`
 
 ## U09 — Report envelope digest verification
 
@@ -174,80 +174,83 @@ Pending: Requires actual TrueForge/model/Daytona/human trace or outage/denial be
 
 ## P03 — Explicit BEGIN/COMMIT/ROLLBACK, psql backslash command
 
-**PARTIAL**. Required: Reject
+**LOCAL_VERIFIED**. Required: Reject
 
-Observed scope: Audited database/policy assertions; final integrated gate supersedes failed worker fixture gate.
+Observed scope: BEGIN/COMMIT/ROLLBACK, psql backslash commands, SAVEPOINT and SET TRANSACTION are all rejected by the recursive parser tests; no executable plan is returned.
 
-Pending: Selected parametrized negative syntax cases; psql/CALL/INSERT/TRUNCATE/GRANT/DROP/generated/identity/custom-type branches not individually asserted here. Unit SQL inspected, not reexecuted in audit. Tests now executed in final314 gate; listed proof remains narrower than complete scenario.
+Pending: None for the mapped local assertion; connected acceptance remains separate.
 
 - `tests/unit/test_sql_policy.py::test_recursive_rejection`
-- `tests/unit/test_sql_policy.py::test_unknown_metadata_column`
+- `tests/unit/test_remaining_sql_boundaries.py::test_p03_through_p08_unsupported_candidate_is_rejected`
 
 ## P04 — DO/CALL/COPY/SELECT/DELETE/INSERT/TRUNCATE/GRANT/CREATE/DROP
 
-**PARTIAL**. Required: Reject
+**LOCAL_VERIFIED**. Required: Reject
 
-Observed scope: Audited database/policy assertions; final integrated gate supersedes failed worker fixture gate.
+Observed scope: The recursive and remaining-boundary cases cover every named forbidden statement, including the separate ordinary CREATE TABLE AST variant, without returning a plan.
 
-Pending: Selected parametrized negative syntax cases; psql/CALL/INSERT/TRUNCATE/GRANT/DROP/generated/identity/custom-type branches not individually asserted here. Unit SQL inspected, not reexecuted in audit. Tests now executed in final314 gate; listed proof remains narrower than complete scenario.
+Pending: None for the mapped local assertion; connected acceptance remains separate.
 
 - `tests/unit/test_sql_policy.py::test_recursive_rejection`
-- `tests/unit/test_sql_policy.py::test_unknown_metadata_column`
+- `tests/unit/test_remaining_sql_boundaries.py::test_p03_through_p08_unsupported_candidate_is_rejected`
+- `tests/unit/test_remaining_verdict_boundaries.py::test_p04_create_table_statement_is_rejected_without_a_plan`
 
 ## P05 — CREATE INDEX CONCURRENTLY or unsupported ALTER subcommand
 
-**PARTIAL**. Required: Reject
+**LOCAL_VERIFIED**. Required: Reject
 
-Observed scope: Audited database/policy assertions; final integrated gate supersedes failed worker fixture gate.
+Observed scope: Concurrent index creation plus unsupported index/drop/default/conditional-add/trigger/rename ALTER surfaces are rejected.
 
-Pending: Selected parametrized negative syntax cases; psql/CALL/INSERT/TRUNCATE/GRANT/DROP/generated/identity/custom-type branches not individually asserted here. Unit SQL inspected, not reexecuted in audit. Tests now executed in final314 gate; listed proof remains narrower than complete scenario.
+Pending: None for the mapped local assertion; connected acceptance remains separate.
 
 - `tests/unit/test_sql_policy.py::test_recursive_rejection`
-- `tests/unit/test_sql_policy.py::test_unknown_metadata_column`
+- `tests/unit/test_remaining_sql_boundaries.py::test_p03_through_p08_unsupported_candidate_is_rejected`
 
 ## P06 — UPDATE with CTE, FROM, RETURNING, nested query or function call
 
-**PARTIAL**. Required: Reject recursively
+**LOCAL_VERIFIED**. Required: Reject recursively
 
-Observed scope: Audited database/policy assertions; final integrated gate supersedes failed worker fixture gate.
+Observed scope: Recursive negatives cover CTE, FROM, RETURNING, subquery, function, CASE, EXISTS, IN, LIKE, array and collation branches.
 
-Pending: Selected parametrized negative syntax cases; psql/CALL/INSERT/TRUNCATE/GRANT/DROP/generated/identity/custom-type branches not individually asserted here. Unit SQL inspected, not reexecuted in audit. Tests now executed in final314 gate; listed proof remains narrower than complete scenario.
+Pending: None for the mapped local assertion; connected acceptance remains separate.
 
 - `tests/unit/test_sql_policy.py::test_recursive_rejection`
-- `tests/unit/test_sql_policy.py::test_unknown_metadata_column`
+- `tests/unit/test_remaining_sql_boundaries.py::test_p03_through_p08_unsupported_candidate_is_rejected`
 
 ## P07 — Default/generated/identity expression or user-defined cast/operator/type
 
-**PARTIAL**. Required: Reject
+**LOCAL_VERIFIED**. Required: Reject
 
-Observed scope: Audited database/policy assertions; final integrated gate supersedes failed worker fixture gate.
+Observed scope: Default/generated/identity, custom casts/operators, array types and qualified builtin-lookalike surfaces are rejected.
 
-Pending: Selected parametrized negative syntax cases; psql/CALL/INSERT/TRUNCATE/GRANT/DROP/generated/identity/custom-type branches not individually asserted here. Unit SQL inspected, not reexecuted in audit. Tests now executed in final314 gate; listed proof remains narrower than complete scenario.
+Pending: None for the mapped local assertion; connected acceptance remains separate.
 
 - `tests/unit/test_sql_policy.py::test_recursive_rejection`
-- `tests/unit/test_sql_policy.py::test_unknown_metadata_column`
+- `tests/unit/test_remaining_sql_boundaries.py::test_p03_through_p08_unsupported_candidate_is_rejected`
+- `tests/unit/test_remaining_sql_boundaries.py::test_p07_custom_builtin_lookalike_does_not_expand_grammar`
 
 ## P08 — Wrong schema/table, unqualified target, unknown column, PK mutation
 
-**PARTIAL**. Required: Reject
+**LOCAL_VERIFIED**. Required: Reject
 
-Observed scope: Audited database/policy assertions; final integrated gate supersedes failed worker fixture gate.
+Observed scope: Wrong or unqualified targets, PK mutation, and unknown write/read/predicate columns all fail closed.
 
-Pending: Selected parametrized negative syntax cases; psql/CALL/INSERT/TRUNCATE/GRANT/DROP/generated/identity/custom-type branches not individually asserted here. Unit SQL inspected, not reexecuted in audit. Tests now executed in final314 gate; listed proof remains narrower than complete scenario.
+Pending: None for the mapped local assertion; connected acceptance remains separate.
 
 - `tests/unit/test_sql_policy.py::test_recursive_rejection`
 - `tests/unit/test_sql_policy.py::test_unknown_metadata_column`
+- `tests/unit/test_remaining_sql_boundaries.py::test_p08_unknown_target_read_or_predicate_column_refused_at_metadata`
 
 ## P09 — Multiple statements where later statement is forbidden
 
-**PARTIAL**. Required: Entire candidate rejected before execution
+**LOCAL_VERIFIED**. Required: Entire candidate rejected before execution
 
-Observed scope: Audited database/policy assertions; final integrated gate supersedes failed worker fixture gate.
+Observed scope: A later COMMIT, CALL, TRUNCATE or DROP rejects the whole candidate before registration or execution and returns no plan.
 
-Pending: Selected parametrized negative syntax cases; psql/CALL/INSERT/TRUNCATE/GRANT/DROP/generated/identity/custom-type branches not individually asserted here. Unit SQL inspected, not reexecuted in audit. Tests now executed in final314 gate; listed proof remains narrower than complete scenario.
+Pending: None for the mapped local assertion; connected acceptance remains separate.
 
 - `tests/unit/test_sql_policy.py::test_recursive_rejection`
-- `tests/unit/test_sql_policy.py::test_unknown_metadata_column`
+- `tests/unit/test_remaining_sql_boundaries.py::test_p09_forbidden_later_statement_rejects_entire_candidate`
 
 ## P10 — Supported statement plus malicious SQL-comment instructions
 
@@ -261,27 +264,28 @@ Pending: Requires actual TrueForge/model/Daytona/human trace or outage/denial be
 
 ## P11 — Unreviewed triggers/rules/event triggers, RLS, foreign-key/cascade graph, partitions/inheritance
 
-**PARTIAL**. Required: Object policy refuses support, never disables the feature
+**LOCAL_VERIFIED**. Required: Object policy refuses support, never disables the feature
 
-Observed scope: Audited database/policy assertions; final integrated gate supersedes failed worker fixture gate.
+Observed scope: Disposable PostgreSQL catalog checks cover trigger, rule, event-trigger, RLS, FK/cascade, partition and inheritance families; policy refuses rather than disables them.
 
-Pending: Selected capabilities; event trigger/partition/exclusion direct variants missing in assigned tests. Latest integrated gate failed affected service case (missing ready_run created_at), or one transient PG connect timeout; previous bounded proof separately recorded.
+Pending: None for the mapped local assertion; connected acceptance remains separate.
 
-- `tests/postgres/test_database.py::test_no_inherit_notnull_constraint_rejected`
-- `tests/postgres/test_database.py::test_semantic_unsafe_objects`
 - `tests/postgres/test_database.py::test_trigger_and_inheritance_rejected`
+- `tests/postgres/test_database.py::test_semantic_unsafe_objects`
+- `tests/postgres/test_remaining_catalog_boundaries.py::test_p11_p12_unsupported_catalog_capability_never_returns_evidence`
+- `tests/postgres/test_remaining_catalog_boundaries.py::test_p11_enabled_event_trigger_rejected_without_firing_it`
 
 ## P12 — Unsafe CHECK/exclusion constraint or expression/partial index, user-defined collation
 
-**PARTIAL**. Required: Reject unsupported execution surface
+**LOCAL_VERIFIED**. Required: Reject unsupported execution surface
 
-Observed scope: Audited database/policy assertions; final integrated gate supersedes failed worker fixture gate.
+Observed scope: Disposable PostgreSQL catalog checks reject CHECK/exclusion/expression/partial-index/custom-collation and custom-opclass surfaces without returning evidence.
 
-Pending: Selected capabilities; event trigger/partition/exclusion direct variants missing in assigned tests. Latest integrated gate failed affected service case (missing ready_run created_at), or one transient PG connect timeout; previous bounded proof separately recorded.
+Pending: None for the mapped local assertion; connected acceptance remains separate.
 
-- `tests/postgres/test_database.py::test_no_inherit_notnull_constraint_rejected`
 - `tests/postgres/test_database.py::test_semantic_unsafe_objects`
-- `tests/postgres/test_database.py::test_trigger_and_inheritance_rejected`
+- `tests/postgres/test_remaining_catalog_boundaries.py::test_p11_p12_unsupported_catalog_capability_never_returns_evidence`
+- `tests/postgres/test_remaining_catalog_boundaries.py::test_p12_user_defined_operator_class_rejected`
 
 ## P13 — Supported UPDATE of a protected non-PK value
 
@@ -295,12 +299,13 @@ Pending: None for the mapped local assertion; connected acceptance remains separ
 
 ## P14 — Parser/database major mismatch
 
-**PARTIAL**. Required: Readiness fails before migration
+**LOCAL_VERIFIED**. Required: Readiness fails before migration
 
-Observed scope: Audited database/policy assertions; final integrated gate supersedes failed worker fixture gate.
+Observed scope: Wrong pglast/parser major is refused before parsing or execution; actual disposable PostgreSQL separately proves server-major readiness refusal.
 
-Pending: Server-major/TLS mismatch observed; parser-version monkeypatch readiness case not separately covered.
+Pending: None for the mapped local assertion; connected acceptance remains separate.
 
+- `tests/unit/test_remaining_verdict_boundaries.py::test_p14_parser_mismatch_refused_before_parse_or_execution`
 - `tests/postgres/test_database.py::test_tls_hostname_ca_major_and_role`
 
 ## D01 — Add a NOT NULL text column to populated table without backfill
@@ -352,13 +357,13 @@ Pending: Safe missing/extra/changed counts now asserted exactly.
 
 ## D05 — Same rows inserted/retrieved in different order
 
-**PARTIAL**. Required: Canonical aggregate roots match
+**LOCAL_VERIFIED**. Required: Canonical aggregate roots match
 
-Observed scope: Audited database/policy assertions; final integrated gate supersedes failed worker fixture gate.
+Observed scope: A descending-index CLUSTER demonstrably changes the first physical row while canonical full evidence remains identical; reversed map insertion order also preserves roots.
 
-Pending: CLUSTER on initially ordered data may not reorder physical rows; pure root test reverses maps, no new unit reexecution.
+Pending: None for the mapped local assertion; connected acceptance remains separate.
 
-- `tests/postgres/test_database.py::test_changed_keys_and_order_and_full_drift`
+- `tests/postgres/test_remaining_transaction_boundaries.py::test_d05_real_physical_row_order_changes_without_changing_roots`
 - `tests/unit/test_evidence.py::test_domain_length_and_order`
 
 ## D06 — Integer 1 vs text "1", NULL vs empty text vs text "null"
@@ -399,24 +404,30 @@ Pending: Equivalent timestamp/null/type encodings; BC/infinity values unsupporte
 
 ## D09 — Missing PK/table/column or inaccessible metadata
 
-**PARTIAL**. Required: Specific failure/not_run, no fabricated zero count
+**LOCAL_VERIFIED**. Required: Specific failure/not_run, no fabricated zero count
 
-Observed scope: Audited database/policy assertions; final integrated gate supersedes failed worker fixture gate.
+Observed scope: Missing table/PK/columns and inaccessible catalog/rows produce specific failures; none fabricates zero evidence or returns an EvidenceBundle.
 
-Pending: Missing table/PK/inaccessible metadata need additional explicit negative proof.
+Pending: None for the mapped local assertion; connected acceptance remains separate.
 
-- `tests/unit/test_sql_policy.py::test_unknown_metadata_column`
+- `tests/postgres/test_remaining_catalog_boundaries.py::test_d09_missing_table_primary_key_or_preserved_column_is_specific`
+- `tests/postgres/test_remaining_catalog_boundaries.py::test_d09_inaccessible_catalog_does_not_fabricate_metadata`
+- `tests/postgres/test_remaining_catalog_boundaries.py::test_d09_inaccessible_rows_do_not_become_zero_count`
+- `tests/postgres/test_remaining_catalog_boundaries.py::test_d09_missing_full_baseline_column_is_not_silently_omitted`
 
 ## D10 — Scan exceeds rows, bytes or deadline
 
-**PARTIAL**. Required: Stops within budget and cannot PASS
+**LOCAL_VERIFIED**. Required: Stops within budget and cannot PASS
 
-Observed scope: Audited database/policy assertions; final integrated gate supersedes failed worker fixture gate.
+Observed scope: Row, serialized-byte, catalog, fetch/CPU and whole-capture deadline overruns stop without partial evidence or PASS; fresh captures roll back.
 
-Pending: Rows/bytes and migration/callback deadline; independent long baseline scan total deadline not separately asserted.
+Pending: None for the mapped local assertion; connected acceptance remains separate.
 
 - `tests/postgres/test_database.py::test_scan_budget_and_huge_cell`
-- `tests/postgres/test_database.py::test_whole_deadline_precommit`
+- `tests/postgres/test_remaining_catalog_boundaries.py::test_d10_serialized_budget_excludes_escape_expansion_overrun`
+- `tests/postgres/test_remaining_catalog_boundaries.py::test_d10_whole_capture_deadline_includes_row_processing`
+- `tests/postgres/test_remaining_catalog_boundaries.py::test_d10_whole_capture_deadline_includes_catalog_processing`
+- `tests/postgres/test_remaining_catalog_boundaries.py::test_d10_baseline_query_timeout_cannot_return_partial_evidence`
 
 ## D11 — All required checks absent/not_run
 
@@ -467,15 +478,13 @@ Pending: None for the mapped local assertion; connected acceptance remains separ
 
 ## D15 — DB error that embeds a row value/password-like sentinel
 
-**PARTIAL**. Required: Tool/log/report output contains only safe classification
+**LOCAL_VERIFIED**. Required: Tool/log/report output contains only safe classification
 
-Observed scope: Audited database/policy assertions; final integrated gate supersedes failed worker fixture gate.
+Observed scope: An actual PostgreSQL NotNullViolation contains the private sentinel internally, while tool, baseline, report JSON/Markdown and captured logs retain only safe SQLSTATE classification.
 
 Pending: None for the mapped local assertion; connected acceptance remains separate.
 
-- `tests/postgres/test_database.py::test_lock_timeout_and_no_leak`
-- `tests/postgres/test_database.py::test_multiple_statement_failure_rolls_back_first`
-- `tests/postgres/test_database.py::test_whole_script_deadline_across_quick_updates`
+- `tests/postgres/test_remaining_transaction_boundaries.py::test_d15_private_database_error_value_absent_from_tool_logs_and_reports`
 
 ## D16 — Legacy contract missing explicit schema expectations
 
@@ -501,37 +510,35 @@ Pending: None for the mapped local assertion; connected acceptance remains separ
 
 ## D18 — Consistent source/clone state but different irrelevant OIDs
 
-**PARTIAL**. Required: Normalized schema fingerprints match
+**LOCAL_VERIFIED**. Required: Normalized schema fingerprints match
 
-Observed scope: Audited database/policy assertions; final integrated gate supersedes failed worker fixture gate.
+Observed scope: Independent databases have different table and primary-index OIDs but identical normalized full baselines. Real snapshot-restored RDS normalization remains separate connected evidence.
 
-Pending: Local independent objects useful; actual snapshot-restored RDS normalization not observed. Tests now executed in final314 gate; listed proof remains narrower than complete scenario.
+Pending: None for the mapped local assertion; connected acceptance remains separate.
 
-- `tests/postgres/test_seed_demo.py::test_fresh_fixture_roles_and_runtime_evidence`
+- `tests/postgres/test_remaining_transaction_boundaries.py::test_d18_independent_table_and_index_oids_do_not_change_normalized_roots`
 
 ## D19 — A failed candidate followed by an accepted same-contract revision
 
-**PARTIAL**. Required: Full unchanged baseline checked before clone reuse
+**LOCAL_VERIFIED**. Required: Full unchanged baseline checked before clone reuse
 
-Observed scope: Audited database/policy assertions; final integrated gate supersedes failed worker fixture gate.
+Observed scope: Accepted same-contract reuse requires the unchanged full baseline; unpreserved drift changes the full root and refuses attachment without changing the current candidate.
 
-Pending: Report restart proves no reenabling source; direct RAM-map-loss baseline case not separately asserted in DB lane. Latest integrated gate failed affected service case (missing ready_run created_at), or one transient PG connect timeout; previous bounded proof separately recorded.
+Pending: None for the mapped local assertion; connected acceptance remains separate.
 
 - `tests/postgres/test_service.py::test_bad_rollback_revision_good_pass_exact_report_and_disabled_source`
-- `tests/postgres/test_service.py::test_committed_wrong_data_blocks_and_revision_refused`
-- `tests/postgres/test_service.py::test_report_restart_publication_retains_history_without_reenabling_source`
+- `tests/postgres/test_remaining_transaction_boundaries.py::test_d19_d20_revision_requires_private_maps_and_full_unchanged_baseline`
 
 ## D20 — Committed-but-invalid clone or lost baseline maps
 
-**PARTIAL**. Required: Same-clone revision refused; fresh rehearsal required
+**LOCAL_VERIFIED**. Required: Same-clone revision refused; fresh rehearsal required
 
-Observed scope: Audited database/policy assertions; final integrated gate supersedes failed worker fixture gate.
+Observed scope: Committed-invalid clone reuse and direct private-map loss are both refused without changing the current attachment; a fresh rehearsal is required.
 
-Pending: Report restart proves no reenabling source; direct RAM-map-loss baseline case not separately asserted in DB lane. Latest integrated gate failed affected service case (missing ready_run created_at), or one transient PG connect timeout; previous bounded proof separately recorded.
+Pending: None for the mapped local assertion; connected acceptance remains separate.
 
-- `tests/postgres/test_service.py::test_bad_rollback_revision_good_pass_exact_report_and_disabled_source`
 - `tests/postgres/test_service.py::test_committed_wrong_data_blocks_and_revision_refused`
-- `tests/postgres/test_service.py::test_report_restart_publication_retains_history_without_reenabling_source`
+- `tests/postgres/test_remaining_transaction_boundaries.py::test_d19_d20_revision_requires_private_maps_and_full_unchanged_baseline`
 
 ## A01 — Source apply feature disabled
 
@@ -546,45 +553,45 @@ Pending: None for the mapped local assertion; connected acceptance remains separ
 
 ## A02 — Wrong source/account/database or source equal to clone
 
-**PARTIAL**. Required: Refuse
+**LOCAL_VERIFIED**. Required: Refuse
 
-Observed scope: Audited database/policy assertions; final integrated gate supersedes failed worker fixture gate.
+Observed scope: Wrong source/database/source-equals-clone scopes fail before writer acquisition or durable intent; inert botocore Stubber proves wrong-account adapter refusal without an AWS call.
 
-Pending: Must link independent lead evidence; DB lane does not claim these complete. Tests now executed in final314 gate; listed proof remains narrower than complete scenario.
+Pending: None for the mapped local assertion; connected acceptance remains separate.
 
-- `lead-owned service/security tests`
-- `tests/cloud/test_rds.py::test_cleanup_static_refusals_no_aws`
-- `tests/cloud/test_rds.py::test_source_negative_before_tags`
+- `tests/postgres/test_remaining_transaction_boundaries.py::test_a02_source_scope_refusal_precedes_writer`
 - `tests/cloud/test_rds.py::test_wrong_account_before_resource_call`
 
 ## A03 — Wrong migration/report hash, altered stored contract or report
 
-**PARTIAL**. Required: Refuse, no write
+**LOCAL_VERIFIED**. Required: Refuse, no write
 
-Observed scope: Audited database/policy assertions; final integrated gate supersedes failed worker fixture gate.
+Observed scope: Both supplied digests plus canonical contract file, stored contract record and report file are independently tampered; every variant refuses with zero source writer and no apply intent.
 
-Pending: Must link independent lead evidence; DB lane does not claim these complete. Tests now executed in final314 gate; listed proof remains narrower than complete scenario.
+Pending: None for the mapped local assertion; connected acceptance remains separate.
 
-- `lead-owned service/security tests`
+- `tests/postgres/test_remaining_transaction_boundaries.py::test_a03_approved_artifact_changes_refused_without_writer`
 
 ## A04 — Non-current candidate or WARN/BLOCK/incomplete run
 
-**PARTIAL**. Required: Refuse
+**LOCAL_VERIFIED**. Required: Refuse
 
-Observed scope: Audited database/policy assertions; final integrated gate supersedes failed worker fixture gate.
+Observed scope: Noncurrent, incomplete, BLOCK and actual committed WARN runs all refuse with zero source writers and no apply intent, even when all declared weak checks pass.
 
-Pending: Must link independent lead evidence; DB lane does not claim these complete. Tests now executed in final314 gate; listed proof remains narrower than complete scenario.
+Pending: None for the mapped local assertion; connected acceptance remains separate.
 
-- `lead-owned service/security tests`
+- `tests/postgres/test_remaining_transaction_boundaries.py::test_a04_ineligible_run_refused_without_writer`
+- `tests/postgres/test_remaining_transaction_boundaries.py::test_a04_warn_with_passing_weak_checks_refuses_source_writer`
 
 ## A05 — Source schema drift
 
-**PARTIAL**. Required: STALE; no migration applied
+**LOCAL_VERIFIED**. Required: STALE; no migration applied
 
-Observed scope: Audited database/policy assertions; final integrated gate supersedes failed worker fixture gate.
+Observed scope: Supported source index drift after PASS yields STALE, confirmed rollback and no intended column; independent tests cover index semantic drift variants.
 
-Pending: Real fingerprint regression proves sort/null ordering/opclass/distinctness changes differ; service STALE handling covered by drift test for data, index-service end-to-end not separately run.
+Pending: None for the mapped local assertion; connected acceptance remains separate.
 
+- `tests/postgres/test_remaining_transaction_boundaries.py::test_a05_a07_source_drift_stales_before_migration`
 - `tests/postgres/test_database.py::test_index_semantic_drift_changes_schema_root`
 
 ## A06 — Source preserved-data drift
@@ -599,24 +606,23 @@ Pending: None for the mapped local assertion; connected acceptance remains separ
 
 ## A07 — Pre-existing nonpreserved column drift
 
-**PARTIAL**. Required: Full-data guard catches it even though preservation subset matches
+**LOCAL_VERIFIED**. Required: Full-data guard catches it even though preservation subset matches
 
-Observed scope: Audited database/policy assertions; final integrated gate supersedes failed worker fixture gate.
+Observed scope: The locked source recheck observes equal preserved root but changed full root, returns STALE, rolls back and leaves the intended column absent.
 
-Pending: Full-root nonpreserved drift proven at adapter comparison; local source service nonpreserved drift case missing here.
+Pending: None for the mapped local assertion; connected acceptance remains separate.
 
-- `tests/postgres/test_database.py::test_unasserted_existing_column_and_explicit_control`
+- `tests/postgres/test_remaining_transaction_boundaries.py::test_a05_a07_source_drift_stales_before_migration`
 
 ## A08 — Missing/failed/wrong-source recovery snapshot
 
-**PARTIAL**. Required: Refuse
+**LOCAL_VERIFIED**. Required: Refuse
 
-Observed scope: Audited database/policy assertions; final integrated gate supersedes failed worker fixture gate.
+Observed scope: The real RdsAdapter with inert Stubber rejects missing, failed and wrong-source recovery snapshots; service refusal occurs before source writer acquisition.
 
-Pending: Must link independent lead evidence; DB lane does not claim these complete. Tests now executed in final314 gate; listed proof remains narrower than complete scenario.
+Pending: None for the mapped local assertion; connected acceptance remains separate.
 
-- `lead-owned service/security tests`
-- `tests/cloud/test_rds.py::test_source_apply_attempt_retains_backup_without_independent_attestation`
+- `tests/unit/test_remaining_verdict_boundaries.py::test_a08_recovery_snapshot_refusal_uses_actual_adapter_without_network`
 - `tests/postgres/test_service.py::test_source_locked_drift_refused_and_backup_before_writer`
 
 ## A09 — Competing source writer before versus after table locks
@@ -646,14 +652,13 @@ Pending: None for the mapped local assertion; connected acceptance remains separ
 
 ## A11 — Same/new request ID after committed source apply
 
-**PARTIAL**. Required: Refuse replay regardless of request ID
+**LOCAL_VERIFIED**. Required: Refuse replay regardless of request ID
 
-Observed scope: Audited database/policy assertions; final integrated gate supersedes failed worker fixture gate.
+Observed scope: After a local APPLIED outcome, both same and new request IDs are refused and exactly one writer acquisition remains. This is not a human UI-gate demonstration.
 
-Pending: Service calls are local test injections, not human approval evidence. Latest integrated gate failed affected service case (missing ready_run created_at), or one transient PG connect timeout; previous bounded proof separately recorded.
+Pending: None for the mapped local assertion; connected acceptance remains separate.
 
-- `tests/postgres/test_service.py::test_bad_rollback_revision_good_pass_exact_report_and_disabled_source`
-- `tests/postgres/test_service.py::test_source_service_guarded_apply_and_replay_receipt_local_only`
+- `tests/postgres/test_remaining_transaction_boundaries.py::test_a11_same_and_new_request_ids_cannot_reexecute_committed_source`
 
 ## A12 — Source mandatory check fails before commit
 
@@ -693,27 +698,24 @@ Pending: None for the mapped local assertion; connected acceptance remains separ
 
 ## A15 — Process restarts from durable APPLYING
 
-**PARTIAL**. Required: Unknown until manual resolution; execution count not incremented
+**LOCAL_VERIFIED**. Required: Unknown until manual resolution; execution count not incremented
 
-Observed scope: Audited database/policy assertions; final integrated gate supersedes failed worker fixture gate.
+Observed scope: A fresh service reconstructed from durable APPLYING reports APPLY_OUTCOME_UNKNOWN and refuses same/new IDs; actual committed-but-unknown source behavior is independently exercised.
 
-Pending: Real clone/initializer lost acknowledgement observed; durable source attempt restart/no replay and independent postcommit source-read failure require lead tests.
+Pending: None for the mapped local assertion; connected acceptance remains separate.
 
-- `tests/postgres/test_database.py::test_commit_response_loss_is_unknown_not_rollback`
-- `tests/postgres/test_seed_demo.py::test_commit_response_loss_is_honest_unknown`
-- `tests/unit/test_storage.py::test_restart_unknown_and_never_replay`
+- `tests/postgres/test_remaining_transaction_boundaries.py::test_a15_a16_restart_after_durable_intent_without_sql_never_replays`
+- `tests/postgres/test_source_concurrency.py::test_source_lost_commit_acknowledgement_remains_unknown`
 
 ## A16 — Crash before SQL after intent persisted
 
-**PARTIAL**. Required: Conservative unknown/manual resolution is allowed; never guess safe retry
+**LOCAL_VERIFIED**. Required: Conservative unknown/manual resolution is allowed; never guess safe retry
 
-Observed scope: Audited database/policy assertions; final integrated gate supersedes failed worker fixture gate.
+Observed scope: A persisted intent before any writer exists remains conservatively unknown after restart; same/new IDs never replay and the source column stays absent.
 
-Pending: Real clone/initializer lost acknowledgement observed; durable source attempt restart/no replay and independent postcommit source-read failure require lead tests.
+Pending: None for the mapped local assertion; connected acceptance remains separate.
 
-- `tests/postgres/test_database.py::test_commit_response_loss_is_unknown_not_rollback`
-- `tests/postgres/test_seed_demo.py::test_commit_response_loss_is_honest_unknown`
-- `tests/unit/test_storage.py::test_restart_unknown_and_never_replay`
+- `tests/postgres/test_remaining_transaction_boundaries.py::test_a15_a16_restart_after_durable_intent_without_sql_never_replays`
 
 ## A17 — Clone migration interrupted
 
@@ -888,18 +890,15 @@ Observed scope: No actual owned judging clone exists in audited evidence.
 
 Pending: Actual retained ID/owner/reason/status/operator decision missing; fixture tags are not retention decision.
 
-
 ## C13 — Cleanup after sealed report
 
-**PARTIAL**. Required: Report and separate receipts still verify
+**LOCAL_VERIFIED**. Required: Report and separate receipts still verify
 
-Observed scope: Cloud reports_retained false rejects; service tests preserve historical report through apply/restart.
+Observed scope: Actual disposable clone deletion retains byte-identical sealed report and a separate canonical cleanup receipt; both verify against independently retained digests, without claiming RDS deletion or live eligibility.
 
-Pending: No existing test completes cleanup then verifies both sealed report and cleanup receipt; referenced PG tests not rerun here.
+Pending: None for the mapped local assertion; connected acceptance remains separate.
 
-- `tests/cloud/test_rds.py::test_cleanup_static_refusals_no_aws`
-- `tests/postgres/test_service.py::test_report_restart_publication_retains_history_without_reenabling_source`
-- `tests/postgres/test_service.py::test_source_service_guarded_apply_and_replay_receipt_local_only`
+- `tests/postgres/test_remaining_state_races.py::test_c13_actual_local_clone_deletion_retains_anchored_report_and_receipt`
 
 ## C14 — Resource cap reached
 
@@ -964,7 +963,6 @@ Observed scope: Local components may be covered, but connected acceptance was no
 
 Pending: Requires actual TrueForge/model/Daytona/human trace or outage/denial behavior; local parsing/guards do not satisfy this runtime assertion.
 
-
 ## M06 — Generated Daytona Python chains actual Preflight MCP tools
 
 **BLOCKED_EXTERNAL**. Required: Real sandbox execution and useful orchestration, no credentials
@@ -973,7 +971,6 @@ Observed scope: Local components may be covered, but connected acceptance was no
 
 Pending: Requires actual TrueForge/model/Daytona/human trace or outage/denial behavior; local parsing/guards do not satisfy this runtime assertion.
 
-
 ## M07 — Code Mode calls gated source apply
 
 **BLOCKED_EXTERNAL**. Required: Same actual human pause as direct call
@@ -981,7 +978,6 @@ Pending: Requires actual TrueForge/model/Daytona/human trace or outage/denial be
 Observed scope: Local components may be covered, but connected acceptance was not run.
 
 Pending: Requires actual TrueForge/model/Daytona/human trace or outage/denial behavior; local parsing/guards do not satisfy this runtime assertion.
-
 
 ## M08 — Literal gate configuration survives agent save/reload
 
@@ -1002,7 +998,6 @@ Observed scope: No qualifying executed assertion mapped.
 
 Pending: Requires actual TrueForge/model/Daytona/human trace or outage/denial behavior; local parsing/guards do not satisfy this runtime assertion.
 
-
 ## M10 — Engineer denies then later explicitly allows
 
 **BLOCKED_EXTERNAL**. Required: Real denied/no-write and allowed/exact-write observations
@@ -1010,7 +1005,6 @@ Pending: Requires actual TrueForge/model/Daytona/human trace or outage/denial be
 Observed scope: Local components may be covered, but connected acceptance was not run.
 
 Pending: Requires actual TrueForge/model/Daytona/human trace or outage/denial behavior; local parsing/guards do not satisfy this runtime assertion.
-
 
 ## M11 — Streaming/progress output
 
@@ -1020,7 +1014,6 @@ Observed scope: Local components may be covered, but connected acceptance was no
 
 Pending: Requires a real provider, sandbox, cloud, private deployment, recording, or genuine human-gate observation unavailable to this local gate.
 
-
 ## M12 — Source-read tool used after Allow
 
 **BLOCKED_EXTERNAL**. Required: Correct new schema/aggregates and matching execution receipt
@@ -1028,7 +1021,6 @@ Pending: Requires a real provider, sandbox, cloud, private deployment, recording
 Observed scope: Local components may be covered, but connected acceptance was not run.
 
 Pending: Requires actual TrueForge/model/Daytona/human trace or outage/denial behavior; local parsing/guards do not satisfy this runtime assertion.
-
 
 ## N01 — Installed Codex and effective configuration
 
@@ -1038,7 +1030,6 @@ Observed scope: Own turn_context gpt-6-sol/high and actual checkout/permissions 
 
 Pending: Actual installed Codex version and unsupported config field failure not tested here.
 
-
 ## N02 — Role model and effort precedence
 
 **PARTIAL**. Required: A task-specific setting is actually effective; a conflicting role file cannot silently override the intended route.
@@ -1046,7 +1037,6 @@ Pending: Actual installed Codex version and unsupported config field failure not
 Observed scope: Own effective model/effort matches role policy.
 
 Pending: No intentionally conflicting role/task override observation; other roles actual traces not independently inspected.
-
 
 ## N03 — Independent worker checkouts
 
@@ -1056,7 +1046,6 @@ Observed scope: Own isolated checkout branch/base/HEAD and no product ownership 
 
 Pending: All writers isolation evidence is not established by this one reviewer checkout.
 
-
 ## N04 — Child admission and thread retirement
 
 **PARTIAL**. Required: At most three concurrent child threads; completed threads close; no grandchildren by workflow.
@@ -1064,7 +1053,6 @@ Pending: All writers isolation evidence is not established by this one reviewer 
 Observed scope: No descendants/delegation in this reviewer; workflow policy limits three child threads.
 
 Pending: No automated admission/retirement test and no complete root thread lifecycle audit here.
-
 
 ## N05 — Goal pause/resume and fresh-session recovery
 
@@ -1074,7 +1062,6 @@ Observed scope: No qualifying executed assertion mapped.
 
 Pending: No assertion in the executed unit/MCP/TrueForge gate covers the full required behavior.
 
-
 ## N06 — Skill discovery and narrow loading
 
 **PARTIAL**. Required: Four valid frontmatter skills route to existing task docs without loading every specification.
@@ -1083,7 +1070,6 @@ Observed scope: Two narrow skills actually loaded and router paths exist; four e
 
 Pending: No automated full four-skill frontmatter/task-routing discovery exercise.
 
-
 ## N07 — Inherited connector permissions
 
 **PARTIAL**. Required: Read-only reviewer/DB worker cannot use unrelated privileged MCP tools through inherited access.
@@ -1091,7 +1077,6 @@ Pending: No automated full four-skill frontmatter/task-routing discovery exercis
 Observed scope: Role/skills forbid inherited unrelated connectors; reviewer used none.
 
 Pending: Filesystem read-only is not tool capability isolation; no actual per-connector denial capability demonstrated.
-
 
 ## N08 — Gateway route and model identity
 
@@ -1111,7 +1096,6 @@ Observed scope: No qualifying executed assertion mapped.
 
 Pending: No assertion in the executed unit/MCP/TrueForge gate covers the full required behavior.
 
-
 ## N10 — Sol compatible-route reasoning mismatch
 
 **BLOCKED_EXTERNAL**. Required: Sol Chat Completions tools require explicit none; high is not silently sent or represented as working.
@@ -1119,7 +1103,6 @@ Pending: No assertion in the executed unit/MCP/TrueForge gate covers the full re
 Observed scope: Local components may be covered, but connected acceptance was not run.
 
 Pending: Requires a real provider, sandbox, cloud, private deployment, recording, or genuine human-gate observation unavailable to this local gate.
-
 
 ## N11 — Unsupported model parameters
 
@@ -1135,13 +1118,15 @@ Pending: A valid exact Sol/high route is parsed without execution; an actual out
 
 **PARTIAL**. Required: Complete JSON arguments, stable call ID, one harmless execution and linked result produce a continued response.
 
-Observed scope: The listed local assertions passed; the missing clause prevents full credit.
+Observed scope: Component CONNECTED_VERIFIED: lead-held sanitized receipts show native TrueForge through configured Gateway Responses invoking strict read-only get_run and get_source_status, linking tool-call IDs to responses and continuing to turn.done/final text. Local stream-state tests cover complete JSON and stable-ID decoding.
 
-Pending: Fixture decoding proves complete JSON, stable ID, and continued final text; no provider request or harmless real tool execution occurred.
+Pending: The sanitized connected receipts do not retain streamed argument fragments for an independent end-to-end recheck of every assembly clause. The inline compatibility sessions are not the saved Daytona-backed product agent, so this scenario remains PARTIAL and T20 remains BLOCKED_EXTERNAL.
 
 - `tests/trueforge/test_gateway_probe.py::test_responses_stream_state_machine`
 - `tests/trueforge/test_responses_stream.mjs::decodes one linked streamed status tool call`
 - `tests/trueforge/test_responses_stream.mjs::requires a completed continued final text response`
+- `evidence/connected/native-compatibility.json (lead-held sanitized receipt)`
+- `evidence/connected/native-source-status.json (lead-held sanitized receipt)`
 
 ## N13 — Provider auth/quota/timeout failure
 
@@ -1162,7 +1147,6 @@ Observed scope: No qualifying executed assertion mapped.
 
 Pending: No assertion in the executed unit/MCP/TrueForge gate covers the full required behavior.
 
-
 ## N15 — Provider log and export privacy
 
 **BLOCKED_EXTERNAL**. Required: Gateway/OpenAI/Daytona settings and evidence expose no key, connection string or unintended row value.
@@ -1180,7 +1164,6 @@ Pending: Probe output omits the configured endpoint; actual Gateway/OpenAI/Dayto
 Observed scope: No qualifying executed assertion mapped.
 
 Pending: No assertion in the executed unit/MCP/TrueForge gate covers the full required behavior.
-
 
 ## N17 — MCP v2 and Code Mode result shapes
 
@@ -1212,7 +1195,6 @@ Observed scope: No qualifying executed assertion mapped.
 
 Pending: No assertion in the executed unit/MCP/TrueForge gate covers the full required behavior.
 
-
 ## N20 — Private transport host/origin policy
 
 **PARTIAL**. Required: Selected SDK deployment rejects disallowed host/origin exposure and remains loopback/private; negative test recorded.
@@ -1225,14 +1207,15 @@ Pending: Server is reached on loopback; disallowed Host/Origin negative behavior
 
 ## N21 — Long SQL/cloud work versus transport health
 
-**PARTIAL**. Required: Health/status stay responsive with bounded jobs; cancellation does not falsely claim rollback.
+**LOCAL_VERIFIED**. Required: Health/status stay responsive with bounded jobs; cancellation does not falsely claim rollback.
 
-Observed scope: Bounded tick/backoff/deadline scheduling tested.
+Observed scope: Held apply-to-clone/source handlers prove typed phase-consistent get_run meets a one-second deadline without retry. The real loopback HTTP MCP/JS SDK ping and get_run remain responsive while the mutation lock is held; terminating client delivery leaves durable MIGRATING rather than falsely claiming rollback.
 
-Pending: No concurrent long-operation health/status responsiveness test or actual transport cancellation outcome.
+Pending: None for the mapped local assertion; connected acceptance remains separate.
 
-- `tests/cloud/test_jobs.py::test_ambiguous_or_throttled_keep_same_intent`
-- `tests/cloud/test_jobs.py::test_tick_available_is_not_database_ready_and_poll_is_read_only`
+- `tests/unit/test_remaining_verdict_boundaries.py::test_n21_run_status_remains_responsive_during_long_mutation`
+- `tests/unit/test_remaining_verdict_boundaries.py::test_n21_run_status_envelope_uses_same_phase_snapshot`
+- `tests/trueforge/test_status_transport_responsiveness.py::test_n21_http_status_remains_typed_and_responsive_while_mutation_lock_is_held`
 
 ## N22 — Partial/invalid streamed arguments
 
@@ -1287,7 +1270,6 @@ Observed scope: No qualifying executed assertion mapped.
 
 Pending: No assertion in the executed unit/MCP/TrueForge gate covers the full required behavior.
 
-
 ## N27 — Prompt injection in SQL/comments/tool output
 
 **PARTIAL**. Required: Instruction-like data cannot change checks, model permissions, targets or approval requirements.
@@ -1330,7 +1312,6 @@ Observed scope: Local components may be covered, but connected acceptance was no
 
 Pending: Requires a real provider, sandbox, cloud, private deployment, recording, or genuine human-gate observation unavailable to this local gate.
 
-
 ## N31 — Recording and public repository privacy
 
 **PARTIAL**. Required: Actual final artifacts reviewed for secrets/row values; publication performed only after authorization.
@@ -1351,7 +1332,6 @@ Observed scope: Lead owns repairs; exact old commit and uncommitted root hashes 
 
 Pending: Affected integrated cloud106 and unit37 independently pass at exact221a79a; no full integrated suite rerun by reviewer and no connected demonstration.
 
-
 ## V01 — Sol-only primary model policy
 
 **PARTIAL**. Required: All 36 primary assignments and normal role defaults use 6 Sol or 5.6 Sol with High; actual runtime role observations agree.
@@ -1359,7 +1339,6 @@ Pending: Affected integrated cloud106 and unit37 independently pass at exact221a
 Observed scope: Model-policy/task-index routes and ownSol/high trace agree.
 
 Pending: All36 actual task/model-runtime traces not independently audited in this cloud lane.
-
 
 ## V02 — Automatic Astra or premium promotion
 
@@ -1369,7 +1348,6 @@ Observed scope: No Astra/Fast/Pro/Ultra/xhigh/max promoted in this review; polic
 
 Pending: No unavailability/failure promotion regression exists or was induced.
 
-
 ## V03 — Expert slot admission and exhaustion
 
 **NOT_RUN**. Required: Only unused A1/A2 tickets admit one focused Astra session; a critical investigation consumes a slot; a third requires explicit user extension.
@@ -1377,7 +1355,6 @@ Pending: No unavailability/failure promotion regression exists or was induced.
 Observed scope: No qualifying executed assertion mapped.
 
 Pending: No assertion in the executed unit/MCP/TrueForge gate covers the full required behavior.
-
 
 ## V04 — Expert review scope and handoff
 
@@ -1387,7 +1364,6 @@ Observed scope: No qualifying executed assertion mapped.
 
 Pending: No assertion in the executed unit/MCP/TrueForge gate covers the full required behavior.
 
-
 ## V05 — No-change final safety review
 
 **PARTIAL**. Required: Unchanged safety boundary skips another Astra rescan; a material diff is reviewed using an available slot and exact commit.
@@ -1396,7 +1372,6 @@ Observed scope: Bounded independent Sol delta reviews and no Astra rescans used.
 
 Pending: No prior A1/final unchanged-safety decision observation in this lane.
 
-
 ## V06 — Unknown usage or substituted review
 
 **PARTIAL**. Required: No fabricated allowance numbers, savings percentages, Astra identity or performed review; independent Sol substitution is explicit.
@@ -1404,7 +1379,6 @@ Pending: No prior A1/final unchanged-safety decision observation in this lane.
 Observed scope: Actual model/effort/commands/probes disclosed and connected absence preserved.
 
 Pending: All-project usage/substitution claims and account telemetry not inspected.
-
 
 ## V07 — Unasserted existing value mutation
 
@@ -1423,15 +1397,14 @@ Pending: None for the mapped local assertion; connected acceptance remains separ
 
 ## V08 — Weak checks do not cover value intent
 
-**PARTIAL**. Required: Row count, no_nulls and uniqueness without supported intended-value coverage yield COVERAGE_INCOMPLETE/WARN for unprotected value updates.
+**LOCAL_VERIFIED**. Required: Row count, no_nulls and uniqueness without supported intended-value coverage yield COVERAGE_INCOMPLETE/WARN for unprotected value updates.
 
-Observed scope: The listed local assertions passed; the missing clause prevents full credit.
+Observed scope: Row-count, no-null, uniqueness and combined weak checks cannot cover unprotected value intent; actual committed SQL remains WARN and cannot acquire the source writer.
 
-Pending: Row-count-only missing intended-value coverage yields incomplete/WARN; no_nulls and uniqueness weak-check combinations are not separately asserted.
+Pending: None for the mapped local assertion; connected acceptance remains separate.
 
-- `tests/postgres/test_database.py::test_precommit_typed_manifest_fail_closed`
-- `tests/unit/test_sql_policy.py::test_missing_value_assertion`
-- `tests/unit/test_verdict.py::test_missing_is_warn_failed_is_block_only_complete_pass`
+- `tests/unit/test_remaining_verdict_boundaries.py::test_v08_weak_checks_cannot_certify_unprotected_value_intent`
+- `tests/postgres/test_remaining_transaction_boundaries.py::test_a04_warn_with_passing_weak_checks_refuses_source_writer`
 
 ## V09 — Preserved wrong-data failure remains BLOCK
 
@@ -1601,7 +1574,6 @@ Observed scope: Local components may be covered, but connected acceptance was no
 
 Pending: Requires a real provider, sandbox, cloud, private deployment, recording, or genuine human-gate observation unavailable to this local gate.
 
-
 ## V23 — Bounded Code Mode cloud observation
 
 **PARTIAL**. Required: Batch limits/backoff/deadline bound polls; pending expiry preserves run and emits a checkpoint, not a new clone or replay.
@@ -1642,7 +1614,6 @@ Observed scope: Representative agent-evaluation plan remains a specification.
 
 Pending: Requires actual TrueForge/model/Daytona/human trace or outage/denial behavior; local parsing/guards do not satisfy this runtime assertion.
 
-
 ## V27 — Material fixes invalidate stale review assurance
 
 **PARTIAL**. Required: Safety-changing fixes after A1 receive targeted independent Sol recheck before any further live apply; A2 is conditional and does not waive findings.
@@ -1650,7 +1621,6 @@ Pending: Requires actual TrueForge/model/Daytona/human trace or outage/denial be
 Observed scope: All cloud findings A01-A07 closed by exact negative repros/tests at221a79a, including mixed conditional grant; material source interface/check/lock changes independently read. NoAstra consumed.
 
 Pending: Local boundary recheck is not accepted connectedT27/human approval. Actual provider/cloud/source apply demonstration remains externally blocked.
-
 
 ## V28 — Nullable intended value semantics
 

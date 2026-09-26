@@ -1,6 +1,6 @@
 {
   "kind": "TASK_ACCEPTANCE_AUDIT",
-  "implementation_commit": "221a79a",
+  "implementation_commit": "9f75cc1",
   "counts": {
     "LOCAL_VERIFIED": 21,
     "BLOCKED_EXTERNAL": 15
@@ -226,7 +226,7 @@
         "Implement metadata policy checks for ordinary tables, built-in types, primary keys and unsupported triggers/RLS/rules/partitions/foreign-key graphs.",
         "Extract the declared written columns and relevant reads from accepted ASTs; combine with catalog metadata without LLM inference. Unsupported grammar remains rejected. Return coverage gaps separately from SQL-policy errors; missing coverage cannot become PASS."
       ],
-      "implemented": "Recursive pglast PG18 SQL grammar, table/column confinement and catalog capability rejection.",
+      "implemented": "Recursive pglast PG18 grammar now has exact negative coverage for all catalogued forbidden statement/expression/target branches; unsupported object capabilities are refused on disposable PostgreSQL.",
       "primary_paths": [
         "src/preflight/db.py",
         "src/preflight/evidence.py",
@@ -254,7 +254,7 @@
         "Create separate read-only and table-owner migration roles. Implement endpoint/TLS checks, exact-script execution, result-set draining, lock/statement/whole-script deadlines and sanitized errors.",
         "Exercise confirmed rollback, successful clone commit and pre-commit validation callback behavior for source mode; use only disposable databases at this stage."
       ],
-      "implemented": "Verified TLS/runtime privilege checks, fresh explicit transactions, statement/whole-operation deadlines, rollback/unknown outcome semantics; real PG regressions.",
+      "implemented": "Verified TLS/runtime privilege checks, fresh explicit transactions, row/byte/catalog/whole-capture deadlines, rollback and unknown-outcome semantics; exact disposable PostgreSQL regressions.",
       "primary_paths": [
         "src/preflight/db.py",
         "src/preflight/evidence.py",
@@ -282,7 +282,7 @@
         "Test timestamp zones, null-versus-text, Unicode/CRLF, changed keys, unsupported types, incomplete scans and lost in-memory evidence.",
         "Evaluate whole-column intended-value assertions and preserved-column equality separately. No-null/count/unique checks alone cannot certify an intentional value change. Capture each source/clone baseline under one consistent read-only snapshot per database, not separately committed count/hash reads."
       ],
-      "implemented": "Controlled repeatable-read capture, type-tagged hashes, schema/index semantics, private key maps, safe missing/extra/changed counts, mandatory typed checks and written-column coverage.",
+      "implemented": "Controlled repeatable-read capture, canonical order-insensitive hashes, normalized schema/OID semantics, specific missing/inaccessible metadata failures, private key maps and complete typed coverage.",
       "primary_paths": [
         "src/preflight/db.py",
         "src/preflight/evidence.py",
@@ -311,7 +311,7 @@
         "Create exhaustive table-driven cases, including empty check list, not_run, SQL failure, committed-but-wrong values and a valid complete fixture.",
         "Make COVERAGE_INCOMPLETE a WARN reason when no required failure already forces BLOCK. Carry coverage entries into sealed payloads and require complete supported column coverage for report-time eligibility."
       ],
-      "implemented": "Pure complete-manifest PASS/WARN/BLOCK oracle; missing coverage never PASS.",
+      "implemented": "Pure complete-manifest PASS/WARN/BLOCK oracle; row-count/no-null/uniqueness weak checks cannot certify unprotected value intent or acquire a source writer.",
       "primary_paths": [
         "src/preflight/models.py",
         "src/preflight/service.py",
@@ -400,7 +400,7 @@
         "Restart at each infrastructure phase in tests; reconcile exact IDs and reject collisions or unowned resources. Never put migration replay in the job worker.",
         "Track restore availability separately from SQL readiness/storage initialization. Label clone timing and any cold-read warm-up; never infer production duration or fake storage progress."
       ],
-      "implemented": "Durable asynchronous intent, deterministic names, leases, bounded polling and uncertain-provider reconciliation.",
+      "implemented": "Durable asynchronous intent, deterministic names, leases, bounded polling and reconciliation; real shared-SQLite races prove transactional active-run and retained resource caps.",
       "primary_paths": [
         "src/preflight/aws_rds.py",
         "src/preflight/jobs.py",
@@ -461,7 +461,7 @@
         "Invalidate old eligibility without deleting old reports. Refuse same-clone reuse after a successful-but-invalid mutation or an unknown outcome.",
         "Test stale parent, changed contract/hash, lost private maps, altered preserved/nonpreserved values and replayed requests."
       ],
-      "implemented": "Parent/current candidate guards, rollback/baseline-only same-clone revision, durable immutable report history.",
+      "implemented": "Parent/current candidate guards, rollback/baseline-only revision and immutable history; a forced same-parent publication CAS race attaches exactly one child.",
       "primary_paths": [
         "src/preflight/models.py",
         "src/preflight/service.py",
@@ -491,7 +491,7 @@
         "Persist apply intent; acquire source table locks; recheck full existing data/schema after locking; run exact SQL plus mandatory checks in one transaction.",
         "Implement confirmed rollback/commit/post-commit failure/unknown outcomes and replay refusal. Use disposable local source databases for exhaustive transaction/concurrency tests."
       ],
-      "implemented": "Source gate-side feature/target/hash/report/backup guards, sorted exclusive locks, fresh comparison, precommit checks, durable attempt/receipt and no replay. Five real local source-race/outcome tests added.",
+      "implemented": "Source gate-side target/hash/report/backup/drift guards, sorted exclusive locks, fresh comparison, precommit checks, durable receipt and no replay, with exact local PostgreSQL refusal/restart proofs.",
       "primary_paths": [
         "src/preflight/models.py",
         "src/preflight/service.py",
@@ -553,7 +553,7 @@
         "Ensure transport deadlines do not translate into unsafe mutation retries; add middleware/auth/loopback checks appropriate to the controlled deployment.",
         "Test MCP v2 structured_content, lifecycle, reconnection, request bounds, responsive async transport and privacy of default telemetry. Use documented origin/host protections for the selected transport."
       ],
-      "implemented": "Ten strict flat MCP inputs and tool-specific outputs, privacy-preserving typed failures; official HTTP and native JS interoperability.",
+      "implemented": "Ten strict flat MCP inputs and tool-specific outputs; actual loopback HTTP MCP/JS SDK ping plus typed get_run remain responsive and phase-consistent during one held mutator.",
       "primary_paths": [
         "src/preflight/models.py",
         "src/preflight/service.py",
@@ -615,7 +615,7 @@
         "Keep runtime GPT-6 Sol/high on the verified Responses path or explicitly tested GPT-5.6 Sol/high fallback. Do not put Astra in the runtime. A Chat Completions none fallback is a separate explicit operator choice, never mislabeled High.",
         "Implement bounded read-only Code Mode polling with a deadline, backoff and compact state-change summaries. Polling expiry returns pending; it never repeats a migration, creates another clone or crosses the human gate."
       ],
-      "implemented": "Pinned native TrueForge package/config/MCP probes and Responses probe implementation. Funded model/Daytona execution unobserved.",
+      "implemented": "Pinned TrueForge and Responses probes plus sanitized connected native TrueForge/Gateway/private-MCP read-only get_run and get_source_status receipts. The observed Gateway alias resolved to gpt-4o-mini-2024-07-18, not Sol; saved product agent and Daytona execution remain unobserved.",
       "primary_paths": [
         "src/preflight/report.py",
         "src/preflight/offline.py",
@@ -623,7 +623,7 @@
         "scripts",
         "tests/trueforge"
       ],
-      "pending": "Run actual dependency-ordered connected acceptance with approved scope and operator inputs; see report ordered actions. No cloud spend, publication, source write or cleanup permission inferred.",
+      "pending": "Daytona credentials/runtime and the saved product agent remain unobserved, so full T20 stays BLOCKED_EXTERNAL. The native Gateway/private-MCP receipts prove only the linked read-only compatibility component; they do not authorize source apply or either human gate.",
       "final_local_gate": "docs/audit/verification.json",
       "full_connected_acceptance": "NOT_VERIFIED"
     },
@@ -767,7 +767,7 @@
         "Test a competing writer and schema drift under the locked source recheck. Optional AWS repetitions require a separate explicitly authorized fixture/run and honest backend labels.",
         "Add a second existing mutable column omitted from preserve_columns and all intended-value checks; an otherwise runnable update must be COVERAGE_INCOMPLETE/WARN, not PASS. Add a control using a supported all_equal expectation; demonstrate a SQL-committed-but-wrong-data BLOCK independently."
       ],
-      "implemented": "Committed protected wrong-data BLOCK, unasserted mutation WARN and source-data drift refusal proven on disposable PG.",
+      "implemented": "Committed protected wrong-data BLOCK, all weak-check coverage combinations WARN, schema/full-data drift STALE and zero-writer refusal proven on disposable PostgreSQL.",
       "primary_paths": [
         "src/preflight/db.py",
         "src/preflight/evidence.py",
@@ -794,7 +794,7 @@
         "Use real local PostgreSQL plus fault injection for lost acknowledgement and post-commit verification failure. Assert the source execution counter never increases on restart/retry.",
         "Check resource reconciliation does not duplicate AWS IDs and lost RAM evidence cannot produce a sealed PASS."
       ],
-      "implemented": "Actual local rollback/deadline/commit-ack loss, durable source UNKNOWN, confirmation attention, restart/publication tests. Complete fault permutations are narrower than the catalog.",
+      "implemented": "Local rollback/deadline/commit-ack loss, durable APPLYING restart, no-replay/manual-unknown outcomes, concurrent publication and phase-consistent status tests are observed; complete provider fault permutations remain narrower.",
       "primary_paths": [
         "src/preflight/models.py",
         "src/preflight/service.py",
@@ -880,7 +880,7 @@
         "With the engineer, choose retain-for-judging or approved deletion of a no-longer-needed run-owned clone. Do not destroy the staged demo merely to mark a task green.",
         "When deletion is explicitly approved, observe it complete and export the receipt; otherwise record the exact retained resource, owner, reason and next human decision. Never claim deletion was tested when it was only retained."
       ],
-      "implemented": "Cleanup/retention guards locally implemented/tested; actual operator resource retention or deletion choice unobserved.",
+      "implemented": "Cleanup guards plus actual disposable local clone deletion retain an independently anchored sealed report and separate cleanup receipt. Real RDS cleanup and human retention/deletion choice remain unobserved.",
       "primary_paths": [
         "src/preflight/aws_rds.py",
         "src/preflight/jobs.py",
@@ -944,7 +944,7 @@
         "Rescan final diffs for credentials, disabled tests, mock backends, unreviewed package upgrades and unauthorized architecture changes.",
         "Run the V3 regression scenarios and config/agent-evaluation-plan.json cases on the frozen implementation with the actual runtime Sol route. Grade state/tool/receipt evidence, not model-written success claims; retain NOT_RUN for missing live checks."
       ],
-      "implemented": "Final integrated local314-test regression passed; bounded independent review closed findings. Full acceptance waits connected gates and behavior evaluations.",
+      "implemented": "Frozen application commit 9f75cc1 passed the complete 485-test gate with zero errors/failures/skips in 236.95s; Ruff and mypy also passed. Connected gates and behavior evaluations remain incomplete.",
       "primary_paths": [
         "src/preflight/models.py",
         "src/preflight/service.py",
