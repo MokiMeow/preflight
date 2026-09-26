@@ -4,7 +4,7 @@ Preflight rehearses an exact, narrowly supported PostgreSQL migration on a separ
 RDS clone, verifies deterministic schema and protected-data evidence, and pauses for an engineer
 before the same bytes can touch the allowlisted synthetic demo source.
 
-This repository is an implementation in progress. The preserved source brief is
+The preserved source brief is
 `reference/Preflight-PRD.md`; numbered research-backed amendments are in
 `docs/00_PRODUCT_AND_DECISIONS.md`. The actual event URL and final submission fields have not been
 provided, so this README does not invent them.
@@ -47,8 +47,7 @@ safety.
 
 ## Tested versions and local results
 
-The integration lane was locally verified on commit ancestry beginning at
-`5790a6a4f2cbeb2ef86c6918b08abdcae8568240` with:
+The implementation has been locally verified with:
 
 - Python `3.12.10`, MCP `2.2.0`;
 - Node `v24.11.1`, npm `11.6.2`;
@@ -57,7 +56,9 @@ The integration lane was locally verified on commit ancestry beginning at
   loopback Streamable HTTP with structured content;
 - installed TrueForge OpenAPI fields for saved agents, model parameters, MCP selectors, sandbox,
   and dynamic-subagent settings;
-- report/offline/config/package/MCP interoperability tests (`14 passed` in the scoped run).
+- deterministic report/offline verification, strict MCP schemas, storage/restart behavior, SQL
+  policy, and actual disposable PostgreSQL tests;
+- installed TrueForge configuration/package probes and cross-language MCP interoperability tests.
 
 The package, schema, and local MCP results are `LOCAL_VERIFIED`. Gateway/OpenAI Responses,
 TrueForge model streaming, Daytona execution, private deployment, real Preflight connector traces,
@@ -67,14 +68,13 @@ simulated or claimed.
 
 ## Local development
 
-Create a Python 3.12 environment and install the project:
+Install the exact Python environment from `uv.lock`:
 
 ```bash
-python -m venv .venv
-.venv/Scripts/python -m pip install -e .
+uv sync --locked
 ```
 
-On Linux/macOS, use `.venv/bin/python`. Install the exact integration package separately:
+Install the exact integration package separately without lifecycle scripts:
 
 ```bash
 cd integration
@@ -82,34 +82,78 @@ npm ci --ignore-scripts --no-audit --no-fund
 cd ..
 ```
 
-Run the independent checks:
+Create the ignored runtime settings file. The example is nonsecret and fail-closed; copying it does
+not authorize cloud resources or source apply:
+
+```powershell
+Copy-Item config/settings.example.json config/settings.local.json
+uv run preflight doctor --json
+```
+
+Fill `settings.local.json` only from the authorized operator/cloud handoff. It is ignored by Git.
+Keep actual database/AWS credentials in the named Secrets Manager entries, not this file. The doctor
+reports configuration and presence of references; it does not claim connected AWS, TLS, Gateway,
+Daytona, or approval proof.
+
+Prepare exact candidate bytes locally:
+
+```powershell
+New-Item -ItemType Directory -Force var | Out-Null
+uv run preflight candidate intake --sql fixtures/good.sql --contract config/contract.example.json --output var/good-candidate.json --operator-id team-operator
+```
+
+Start the loopback MCP service after the settings are reviewed:
 
 ```bash
-PYTHONPATH=src python -m pytest tests/unit/test_reports.py tests/trueforge -q
-python -m ruff check src/preflight/report.py src/preflight/offline.py \
-  scripts/probe_trueforge_config.py scripts/probe_trueforge_mcp_server.py \
-  tests/unit/test_reports.py tests/trueforge
+uv run preflight serve
+```
+
+Run local verification:
+
+```bash
+uv run pytest tests/unit tests/mcp tests/trueforge -q
+uv run ruff check src scripts tests
+uv run mypy src
 node scripts/probe_trueforge_package.mjs
-python scripts/probe_trueforge_config.py config/trueforge-agent.example.json --template
+uv run python scripts/probe_trueforge_config.py config/trueforge-agent.example.json --template
 ```
 
-The verifier module is directly runnable while the lead-owned top-level CLI wiring is integrated:
+Bootstrap the disposable PostgreSQL 18 TLS fixture with actual PostgreSQL binaries, then run the
+database suites. This creates a new loopback cluster only and refuses to replace an existing one:
 
-```bash
-PYTHONPATH=src python -m preflight.offline reports/RUN/CANDIDATE.json
-PYTHONPATH=src python -m preflight.offline reports/RUN/CANDIDATE.json \
-  --expected-report-sha256 DIGEST_FROM_AN_INDEPENDENT_TRACE
+```powershell
+uv run python fixtures/local_pg.py --bin C:/path/to/pgsql/bin --port 55438
+$env:PREFLIGHT_TEST_PG_PORT='55438'
+$env:PREFLIGHT_TEST_PG_CA=(Join-Path (Get-Location) 'var/local-postgres/data/server.crt')
+uv run preflight verify local
+uv run pytest tests/unit tests/postgres tests/mcp tests/trueforge -q
 ```
 
-Exit codes are 0 for an internally consistent historical artifact, 2 for invalid input, 3 for a
-digest/anchor mismatch, 4 for unsupported schema or inconsistent requirements/evidence, and 5 for a
-declared/recomputed verdict mismatch. Errors contain fixed safe codes.
+Stop it explicitly with
+`C:/path/to/pgsql/bin/pg_ctl -D var/local-postgres/data stop`. The fixture is
+`local_postgres_test`, never AWS evidence.
+
+Export, independently verify, and list recorded resources:
+
+```powershell
+uv run preflight evidence export RUN_UUID --output var/report.json
+uv run preflight evidence verify var/report.json
+uv run preflight evidence verify var/report.json --expected-report-sha256 DIGEST_FROM_AN_INDEPENDENT_TRACE
+uv run preflight resources list
+```
+
+The verifier exits 0 for an internally consistent historical artifact, 2 for invalid input, 3 for
+a digest/anchor mismatch, 4 for unsupported schema or inconsistent requirements/evidence, and 5 for
+a declared/recomputed verdict mismatch. Without the independent digest it reports
+`SELF_CONSISTENT_UNANCHORED`.
 
 ## Private runtime setup
 
 Follow [`integration/DEPLOYMENT.md`](integration/DEPLOYMENT.md). It records the observed TrueForge
 CLI/listener behavior, model/provider schema boundary, locked install, private SSH access, connector
 registration, config validation, local MCP probe, and exact connected evidence still required.
+Use [`integration/DEMO_RUNBOOK.md`](integration/DEMO_RUNBOOK.md) for the real bad/good rehearsal,
+literal denial and separate allow request, unknown-outcome recovery, cleanup, and final handoff.
 
 Do not commit configured agent exports containing credentials, local operator inputs, state databases,
 raw logs, screenshots of settings, private keys, or `.env` files. Do not push to a public remote until
@@ -132,10 +176,24 @@ the team explicitly authorizes repository visibility.
 9. Cleanup requires its own literal human gate and preserves required recovery backups plus all
    reports/receipts.
 
-The synthetic bad and corrected migration fixtures, connected AWS setup, full demonstration commands,
-actual evidence paths, team/contribution details, and retention decision must be added from observed
-lead/cloud/integration results. Missing connected inputs block those claims; they do not weaken any
-acceptance gate.
+Actual connected evidence paths, team/contribution details, organizer fields, video links, and the
+retention decision must be added from observed results. Missing connected inputs block those claims;
+they do not weaken any acceptance gate.
+
+## Dependency and license inventory
+
+[`integration/dependency-inventory.json`](integration/dependency-inventory.json) records the exact
+packages installed by the documented Windows `uv`/npm setup, raw declared license metadata, npm
+integrity values, and lockfile hashes. Regenerate and compare it with:
+
+```bash
+uv run python scripts/generate_dependency_inventory.py
+uv run python scripts/generate_dependency_inventory.py --check
+```
+
+See [`integration/THIRD_PARTY_NOTICES.md`](integration/THIRD_PARTY_NOTICES.md). In particular,
+`pglast 8.4` declares `GPL-3.0-or-later`. The Preflight project license is `UNDECIDED`; no repository
+license should be inferred from a dependency or added without the team's decision.
 
 ## Limitations
 

@@ -1,0 +1,9 @@
+{
+  "adapter": "openai",
+  "api_family": "responses",
+  "base_url": "REPLACE_FROM_AUTHORIZED_GATEWAY_PLAYGROUND",
+  "model": "REPLACE_WITH_AUTHORIZED_SOL_MODEL_ID",
+  "reasoning_effort": "high",
+  "api_key_env": "PREFLIGHT_GATEWAY_API_KEY",
+  "timeout_seconds": 30
+}

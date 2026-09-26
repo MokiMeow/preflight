@@ -4,6 +4,29 @@ These instructions describe the installed `@truefoundry/trueforge@0.2.1` package
 probed for this repository. They do not authorize cloud spend, source writes, cleanup, or either
 human approval decision.
 
+## Install and validate Preflight
+
+From the exact integrated commit:
+
+```bash
+uv sync --locked
+cd integration
+npm ci --ignore-scripts --no-audit --no-fund
+cd ..
+```
+
+Copy `config/settings.example.json` to the ignored `config/settings.local.json`. Populate only
+authorized nonsecret policy values and Secrets Manager ARN references. Keep source apply disabled
+until its demonstration is authorized, then run:
+
+```bash
+uv run preflight doctor --json
+uv run preflight serve
+```
+
+The service binds `127.0.0.1` on the configured port (default 8000). A successful process start is
+not connected cloud proof; preserve the doctor's `NOT_RUN` and `NOT_OBSERVED` fields.
+
 ## Verified package boundary
 
 - Node requirement: `>=22.14.0` (locally probed with Node `v24.11.1`).
@@ -72,6 +95,30 @@ No provider credential or funded route was available in the local probe. A regis
 catalog entry is not evidence of a working model response. Record the actual adapter, API family,
 resolved model, effort, tool-call ID, request ID when exposed, and the final tool-result roundtrip
 only after the authorized route succeeds.
+
+The standalone credential-safe probe uses an ignored route file and never prints the endpoint or
+credential. Copy `config/runtime-route.example.json` to `config/runtime-route.local.json`, replace
+the placeholders only with the authorized Gateway Playground base URL and exact Sol model ID, and
+leave effort at `high`. Put the key in the environment variable named by that local file.
+
+Validation alone makes no provider request and exits `NOT_RUN`:
+
+```bash
+node scripts/probe_gateway_responses.mjs
+```
+
+When provider credit/access is confirmed, explicitly authorize the harmless paid probe invocation:
+
+```bash
+node scripts/probe_gateway_responses.mjs --execute
+```
+
+It requires the model to stream one `status` function call, validates its complete JSON arguments and
+stable call ID, submits one fixed `function_call_output` linked by that ID, then requires a continued
+final response. Output contains IDs and a final-text digest, never prompts, provider bodies, headers,
+endpoint, key, or final model prose. HTTP/auth/rate/stream errors collapse to fixed safe codes. Do not
+use a Chat Completions `none` fallback unless the operator separately chooses and records that route;
+it is outside this Sol/high Responses probe.
 
 ## Configure Daytona
 
