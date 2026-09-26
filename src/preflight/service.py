@@ -70,9 +70,13 @@ class RehearsalService:
             model = TOOL_INPUTS[tool].model_validate(arguments)
         except (ValidationError, KeyError):
             # Neither exception text nor the invalid input is returned/logged.
+            try:
+                safe_request_id = str(UUID(request_id)) if isinstance(request_id, str) else None
+            except ValueError:
+                safe_request_id = None
             return {
                 "ok": False,
-                "request_id": request_id if isinstance(request_id, str) else None,
+                "request_id": safe_request_id,
                 "run_id": None,
                 "state": None,
                 "data": {"message": "INVALID_INPUT"},
