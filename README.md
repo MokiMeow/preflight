@@ -8,7 +8,7 @@ A migration can execute successfully and still change the wrong data. Preflight 
 
 [![Watch the Preflight demonstration](demo/poster.png)](demo/Preflight-Demo.mp4)
 
-**[Watch / download the demo](demo/Preflight-Demo.mp4)** — **2:58**, 1920×1080 MP4, captions, including 40 continuous seconds of actual TrueForge use. Source Deny/Allow and cleanup are shown as historical receipts; the migration was not reapplied for filming. [Video verification and SHA-256](docs/audit/video-verification.json).
+**[Watch / download the demo](demo/Preflight-Demo.mp4)** — **2:58**, 1920×1080 MP4, narrated with synchronized captions, including 40 continuous seconds of actual TrueForge use. Source Deny/Allow and cleanup are shown as historical receipts; the migration was not reapplied for filming. [Video verification and SHA-256](docs/audit/video-verification.json).
 
 ## What was demonstrated
 

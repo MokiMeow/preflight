@@ -4,7 +4,7 @@
   "height": 1080,
   "codec": "h264",
   "pixel_format": "yuv420p",
-  "captions": "burned-in ASS; no audio narration",
+  "captions": "58 burned-in speech-aligned cues",
   "native_trueforge_continuous_seconds": 40,
   "native_segment_output_seconds": [
     15,
@@ -12,7 +12,7 @@
   ],
   "live_capture_action": "read-only get_run through saved preflight agent",
   "historical_actions": "source Deny, source Allow, replay refusal and cleanup receipts; no gates clicked during recording",
-  "edits": "title/evidence cards, actual screen excerpts, labeled historical evidence, readability holds",
+  "edits": "Speech-aligned chapter timing/subtitles, stronger cards, native UI reframing, gentle motion/fades, chapter labels, progress line, normalized narration. No new source or cleanup actions.",
   "segments": [
     [
       "intro",
@@ -60,9 +60,49 @@
       15
     ]
   ],
-  "sha256": "8968dd856f2b8ec651727c277abf3eb23db283fe97108bc53aca966879f6b901",
-  "bytes": 3512073,
-  "full_decode_check": "PASSED: ffmpeg -v error -i Preflight-Hackathon-1080p.mp4 -f null -",
-  "visual_review": "Nine representative contact-sheet frames and a full-resolution native UI frame inspected; no credentials or raw database rows observed in selected footage",
-  "artifact_path": "demo/Preflight-Demo.mp4"
+  "sha256": "4390a2b01d007a01202c516fe56ea6f62d891a6738e5c66390be29a2e7218f4b",
+  "bytes": 12269597,
+  "full_decode_check": "PASSED: ffmpeg -v error -i Preflight-Final-Voiceover-1080p.mp4 -f null -",
+  "visual_review": "Nine final representative contact-sheet frames and a full-resolution native Deny receipt inspected; no credentials or raw database rows observed in selected footage",
+  "artifact_path": "demo/Preflight-Demo.mp4",
+  "audio": {
+    "codec": "aac",
+    "sample_rate_hz": 48000,
+    "channels": 2,
+    "duration_seconds": 178.0,
+    "narration": "Operator-supplied ElevenLabs voiceover, retimed by chapter with pitch preserved",
+    "source_duration_seconds": 151.484063
+  },
+  "frame_rate": "30/1",
+  "video_frame_count": 5340,
+  "source_chapter_boundaries_seconds": [
+    0,
+    12.72,
+    44.81,
+    72.04,
+    97.45,
+    118.65,
+    137.68,
+    151.484063
+  ],
+  "output_chapter_boundaries_seconds": [
+    0,
+    15,
+    55,
+    85,
+    115,
+    140,
+    163,
+    178
+  ],
+  "chapter_audio_atempo": [
+    0.8480000000000001,
+    0.8022500000000001,
+    0.9076666666666668,
+    0.8469999999999999,
+    0.8480000000000001,
+    0.8273913043478262,
+    0.9202708666666657
+  ],
+  "alignment_method": "Local CPU speech recognition with word timestamps; chapter retiming and speech-aligned subtitle cues, not sample-perfect phonetic alignment"
 }
