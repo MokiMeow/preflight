@@ -48,3 +48,11 @@ tag-index handling, released-but-present refusal, no-create reconciliation after
 inconsistent provider reads, and retained snapshot accounting across a new run.
 Storage source/clone/snapshot checks reject `standard` and unapproved modes;
 restores explicitly pass the policy mode and safe observations record it.
+
+Bootstrap prerequisite hardening run: `78 passed in 11.25s`. Owned-path Ruff check,
+format check, both-cloud-module Mypy and final `git diff --check` passed. A mixed
+line-ending formatting/diff issue was normalized before commit; no checks were
+disabled. Bootstrap tests now exercise actual Stubber metadata reads for a valid
+private network/runtime profile and public 8000/8790 rule refusal. Pure negative
+guards reject public DB routing, DB egress, unrelated SG/VPC, unrelated/source
+delete targets, broad Secrets Manager/KMS/IAM actions and external role trust.

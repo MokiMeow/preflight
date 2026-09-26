@@ -26,6 +26,19 @@ try:
 except ImportError:
     from infra.bootstrap import PlanError, verify_apply_scope
 
+try:
+    from prerequisites import (
+        validate_role_trust,
+        validate_runtime_documents,
+        validate_security_groups,
+    )
+except ImportError:
+    from infra.prerequisites import (
+        validate_role_trust,
+        validate_runtime_documents,
+        validate_security_groups,
+    )
+
 
 DEPLOYMENT_FIELDS = {
     "database_name",
@@ -108,6 +121,12 @@ class BootstrapDriver:
 
     def validate_prerequisites(self):
         d, i = self.deployment, self.inputs
+        if d["read_secret_arn"] == d["writer_secret_arn"]:
+            raise PlanError("BOOTSTRAP_SEPARATE_DATABASE_SECRETS_REQUIRED")
+        if d["kms_key_arn"] and not d["kms_key_arn"].startswith(
+            f"arn:aws:kms:{i['region']}:{i['account_id']}:key/"
+        ):
+            raise PlanError("BOOTSTRAP_KMS_KEY_SCOPE_INVALID")
         # Existing runtime role only; this driver cannot broaden/attach policies.
         profile = self.call(
             "iam", "get_instance_profile", InstanceProfileName=d["instance_profile_name"]
@@ -141,60 +160,13 @@ class BootstrapDriver:
                     "iam", "get_policy_version", PolicyArn=arn, VersionId=policy["DefaultVersionId"]
                 )["PolicyVersion"]["Document"]
             )
-        allowed_actions = {
-            "rds:DescribeDBInstances",
-            "rds:DescribeDBSnapshots",
-            "rds:CreateDBSnapshot",
-            "rds:RestoreDBInstanceFromDBSnapshot",
-            "rds:ListTagsForResource",
-            "rds:AddTagsToResource",
-            "rds:DeleteDBInstance",
-            "rds:DeleteDBSnapshot",
-            "secretsmanager:GetSecretValue",
-            "kms:Decrypt",
-            "kms:DescribeKey",
-            "kms:CreateGrant",
-            "kms:GenerateDataKey",
-            "sts:GetCallerIdentity",
-        }
-        documents = [json.loads(unquote(d)) if isinstance(d, str) else d for d in documents]
-        for document in documents:
-            if not isinstance(document, dict):
-                raise PlanError("BOOTSTRAP_RUNTIME_POLICY_INVALID")
-            statements = document.get("Statement", [])
-            if isinstance(statements, dict):
-                statements = [statements]
-            for statement in statements:
-                actions = statement.get("Action", [])
-                if isinstance(actions, str):
-                    actions = [actions]
-                if (
-                    statement.get("Effect") != "Allow"
-                    or "NotAction" in statement
-                    or "NotResource" in statement
-                    or not actions
-                    or any(a not in allowed_actions for a in actions)
-                ):
-                    raise PlanError("BOOTSTRAP_RUNTIME_POLICY_TOO_BROAD")
-                resources = statement.get("Resource", [])
-                if isinstance(resources, str):
-                    resources = [resources]
-                for action in actions:
-                    if action == "secretsmanager:GetSecretValue" and set(resources) - {
-                        d["read_secret_arn"],
-                        d["writer_secret_arn"],
-                    }:
-                        raise PlanError("BOOTSTRAP_RUNTIME_SECRET_POLICY_TOO_BROAD")
-                    if (
-                        action
-                        not in {
-                            "rds:DescribeDBInstances",
-                            "rds:DescribeDBSnapshots",
-                            "sts:GetCallerIdentity",
-                        }
-                        and "*" in resources
-                    ):
-                        raise PlanError("BOOTSTRAP_RUNTIME_POLICY_TOO_BROAD")
+        documents = [json.loads(unquote(doc)) if isinstance(doc, str) else doc for doc in documents]
+        validate_runtime_documents(documents, i, d)
+        documents.sort(key=lambda doc: json.dumps(doc, sort_keys=True, separators=(",", ":")))
+        role = profile["Roles"][0]
+        trust = role.get("AssumeRolePolicyDocument", {})
+        trust = json.loads(unquote(trust)) if isinstance(trust, str) else trust
+        validate_role_trust(trust, role.get("Arn"), i["account_id"])
         policy_digest = hashlib.sha256(
             json.dumps(documents, sort_keys=True, separators=(",", ":")).encode()
         ).hexdigest()
@@ -233,40 +205,7 @@ class BootstrapDriver:
         groups = self.call("ec2", "describe_security_groups", GroupIds=sg_ids).get(
             "SecurityGroups", []
         )
-        if {g.get("GroupId") for g in groups} != set(sg_ids) or any(
-            g.get("VpcId") != vpc for g in groups
-        ):
-            raise PlanError("BOOTSTRAP_SECURITY_GROUP_MISMATCH")
-        for group in groups:
-            is_db = group["GroupId"] in i["security_group_ids"]
-            if is_db and group.get("IpPermissionsEgress"):
-                raise PlanError("BOOTSTRAP_DB_EGRESS_FORBIDDEN")
-            for rule in group.get("IpPermissions", []):
-                if is_db:
-                    if (
-                        rule.get("IpProtocol") != "tcp"
-                        or rule.get("FromPort") != 5432
-                        or rule.get("ToPort") != 5432
-                        or rule.get("IpRanges")
-                        or rule.get("Ipv6Ranges")
-                        or rule.get("PrefixListIds")
-                        or not rule.get("UserIdGroupPairs")
-                        or any(
-                            p.get("GroupId") not in d["host_security_group_ids"]
-                            for p in rule.get("UserIdGroupPairs", [])
-                        )
-                    ):
-                        raise PlanError("BOOTSTRAP_PRIVATE_DB_RULE_REQUIRED")
-                elif (
-                    rule.get("IpProtocol") != "tcp"
-                    or rule.get("FromPort") != 22
-                    or rule.get("ToPort") != 22
-                    or rule.get("Ipv6Ranges")
-                    or rule.get("PrefixListIds")
-                    or rule.get("UserIdGroupPairs")
-                    or any(p.get("CidrIp") != i["ssh_cidr"] for p in rule.get("IpRanges", []))
-                ):
-                    raise PlanError("BOOTSTRAP_PRIVATE_HOST_RULE_REQUIRED")
+        validate_security_groups(groups, i, d, vpc)
         if self.inputs["host_mode"] == "create":
             image = self.call("ec2", "describe_images", ImageIds=[d["host_image_id"]]).get(
                 "Images", []

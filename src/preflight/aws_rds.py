@@ -163,7 +163,7 @@ class RdsAdapter:
                 args["PaginationToken"] = token
             page = self._call(self.tagging, "get_resources", **args)
             items = page.get("ResourceTagMappingList")
-            if not isinstance(items, list):
+            if not isinstance(items, list) or len(items) > 100:
                 raise PreflightError("AWS_INVENTORY_INCOMPLETE")
             for mapping in items:
                 arn = mapping.get("ResourceARN")

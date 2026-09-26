@@ -59,6 +59,29 @@ Project=Preflight, Owner=<approved owner>, Purpose=synthetic-source tags; a tag 
 an ownership guard, not proof of data contents. Database baseline/object checks
 must establish the synthetic fixture separately.
 
+Bootstrap prerequisite verification reads the exact existing instance profile,
+its role trust, all attached/inline policy documents, exact named secret metadata,
+DB subnet group, host subnet, exact SGs and (for creation) selected AMI. Runtime
+trust admits only the EC2 service principal in the approved account; administrator,
+IAM mutation/PassRole permissions, unrelated/cross-account mutation ARNs, broad
+secret access and unscoped KMS grants are refused. Policy documents are normalized
+and sorted before their independently reviewed digest is compared. Describe and
+ownership-filtered Tagging metadata permissions may require wildcard resources;
+write resources remain the exact source or predefined run ARN scope. Source
+deletion is also refused unconditionally by the service. This verifier attaches
+no policies and never treats a provider denial as permission to broaden them.
+
+Require two distinct named reader/writer secret ARNs and a same-account/region
+key ARN if a customer KMS key is selected. Reader/writer database role privileges
+still require the separate DB readiness probe. Require separate DB/host SGs in
+the approved VPC and at least one DB ingress rule consisting solely of TCP 5432
+from the approved host SG. DB outbound application routes are refused. Host
+ingress may contain only TCP 22 from the recorded narrow IPv4 operator origin
+(prefix /24 or narrower); rules for 8000/8790, public DB CIDRs and unrelated SGs
+are refused even beside restrictive rules. No network rule is changed to repair
+a failure. An IPv6 or SSM alternative requires an explicitly implemented,
+reviewed policy rather than an implicit bypass.
+
 JobStore uses a separate persistent SQLite database and file lock. Restrict its
 directory to the dedicated service OS user (0700 on Linux), database files to 0600,
 and use durable local storage. One owner and one mutation lease cover all run
