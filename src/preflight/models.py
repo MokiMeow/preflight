@@ -192,7 +192,7 @@ class CleanupRun(RunRequest):
         return self
 
 
-TOOL_INPUTS = {
+TOOL_INPUTS: dict[str, type[Request]] = {
     "register_candidate": RegisterCandidate, "start_rehearsal": StartRehearsal,
     "get_run": RunRequest, "get_source_status": GetSourceStatus,
     "capture_baseline": RunRequest, "apply_to_clone": ApplyClone,

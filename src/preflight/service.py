@@ -5,14 +5,21 @@ import threading
 from concurrent.futures import ThreadPoolExecutor
 from importlib.metadata import version
 from typing import Any
-from uuid import uuid4
+from uuid import UUID, uuid4
 
 from pydantic import ValidationError
 
 from .artifacts import ArtifactStore, canonical_json, sha256, strict_json
 from .config import Settings
-from .models import (Candidate, CheckResult, PreflightError, ReportPayload,
-                     TOOL_INPUTS, ToolEnvelope, TxOutcome)
+from .models import (
+    TOOL_INPUTS,
+    Candidate,
+    CheckResult,
+    PreflightError,
+    ReportPayload,
+    ToolEnvelope,
+    TxOutcome,
+)
 from .storage import StateStore, utc_now
 from .verdict import evaluate, invariant_requirements
 
@@ -24,7 +31,12 @@ class UnconfiguredRuntime:
 
 
 class RehearsalService:
-    def __init__(self, settings: Settings, runtime=None, *, restart: bool = True):
+    def __init__(self, settings: Settings, runtime=None, *, restart: bool = True,
+                 test_source_apply: bool = False):
+        if test_source_apply and (settings.evidence_backend != "local_postgres_test"
+                                  or runtime is None or not getattr(runtime, "local_test_only", False)):
+            raise PreflightError("TEST_SOURCE_ADAPTER_REFUSED")
+        self._test_source_apply = test_source_apply
         self.settings = settings
         self.runtime = runtime or UnconfiguredRuntime()
         self.store = StateStore(settings.state_dir / "preflight.sqlite3")
@@ -63,13 +75,14 @@ class RehearsalService:
             with self.lock(run_id or tool):
                 data = getattr(self, tool)(model)
             state = self.store.get_run(run_id)["phase"] if run_id else None
+            result_id = run_id or data.get("run_id")
             result = ToolEnvelope(ok=True, request_id=model.request_id,
-                                  run_id=run_id or data.get("run_id"), state=state, data=data)
+                                  run_id=UUID(result_id) if result_id else None, state=state, data=data)
         except PreflightError as exc:
-            result = ToolEnvelope(ok=False, request_id=model.request_id, run_id=run_id or None,
+            result = ToolEnvelope(ok=False, request_id=model.request_id, run_id=UUID(run_id) if run_id else None,
                                   data={"message": exc.code}, error_code=exc.code)
         except Exception:
-            result = ToolEnvelope(ok=False, request_id=model.request_id, run_id=run_id or None,
+            result = ToolEnvelope(ok=False, request_id=model.request_id, run_id=UUID(run_id) if run_id else None,
                                   data={"message": "INTERNAL_ERROR"}, error_code="INTERNAL_ERROR")
         encoded = result.model_dump(mode="json")
         if claimed:
@@ -126,10 +139,7 @@ class RehearsalService:
                            created_at=utc_now(), contract=request.contract)
         self.artifacts.write_once(f"artifacts/{candidate_id}/migration.sql", raw)
         self.artifacts.write_once(f"artifacts/{candidate_id}/contract.canonical.json", contract_bytes)
-        self.store.put_once("candidate", candidate_id, record.model_dump(mode="json"))
-        if run:
-            self.store.transition(str(request.run_id), "BLOCKED", "BASELINED",
-                                  {"candidate_id": candidate_id, "clone_outcome": None})
+        self.store.publish_candidate(record.model_dump(mode="json"), run)
         return {"candidate_id": candidate_id, "parent_candidate_id":
                 str(request.parent_candidate_id) if request.parent_candidate_id else None,
                 "migration_sha256": record.migration_sha256, "contract_sha256": record.contract_sha256,
@@ -211,8 +221,7 @@ class RehearsalService:
         if not baseline_matches(baseline, source):
             self.store.transition(run_id, "READY", "ERROR", code="SOURCE_BASELINE_MISMATCH")
             raise PreflightError("SOURCE_BASELINE_MISMATCH")
-        columns = {table.name: [column["name"] for column in table.schema_summary]
-                   for table in baseline.public.tables}
+        columns = baseline.existing_columns
         coverage = resolve_coverage(plan, candidate.contract, columns)
         self.baselines[run_id] = baseline
         self.store.transition(run_id, "READY", "BASELINED",
@@ -262,7 +271,9 @@ class RehearsalService:
         for req in invariant_requirements():
             if req.id not in existing:
                 requirements.append(req)
-                status = "pass" if outcome == "committed" else "not_run"
+                evidence_kinds = {"pk_set_unchanged", "preserved_values_unchanged", "schema_expected",
+                                  "coverage_complete", "within_budgets", "declared_checks_complete"}
+                status = "pass" if outcome == "committed" and req.kind not in evidence_kinds else "not_run"
                 checks.append(CheckResult(id=req.id, category="invariant", status=status,
                                            reason_code=None if status == "pass" else "MIGRATION_FAILED"))
         return checks, requirements
@@ -284,13 +295,13 @@ class RehearsalService:
                 raise
         if run["phase"] not in ("VALIDATING", "BLOCKED"):
             raise PreflightError("VALIDATION_NOT_READY")
+        self.runtime.verify_resources(run, require_backup=True)
         before = self.baselines.get(run_id)
         after = None
         if run["clone_outcome"] == "committed" and before is not None:
             with self.runtime.connection(run, "clone_read") as con:
                 after = capture_evidence(con, candidate.contract,
-                                         existing_columns={t.name: [c["name"] for c in t.schema_summary]
-                                                           for t in before.public.tables})
+                                         existing_columns=before.existing_columns)
             checkset = compare_evidence(before, after, candidate.contract, inspect_sql(raw, candidate.contract))
         else:
             checkset = CheckSet(checks=[], requirements=[])
@@ -349,18 +360,19 @@ class RehearsalService:
                 "current_state": self.get_run(request)}
 
     def apply_to_demo_source(self, request):
+        from psycopg import sql
+
         from .db import execute_migration
         from .evidence import baseline_matches, capture_evidence, compare_evidence
         from .models import GetReport
         from .sql_policy import inspect_sql
-        from psycopg import sql
         run_id = str(request.run_id)
         run = self.store.get_run(run_id)
         if self.store.has_apply(run_id):
             raise PreflightError("SOURCE_APPLY_REPLAY_REJECTED")
-        if not self.settings.enable_demo_source_apply:
+        if not (self.settings.enable_demo_source_apply or self._test_source_apply):
             raise PreflightError("SOURCE_APPLY_DISABLED")
-        if self.settings.evidence_backend != "aws_rds":
+        if self.settings.evidence_backend != "aws_rds" and not self._test_source_apply:
             raise PreflightError("TEST_BACKEND_SOURCE_APPLY_REFUSED")
         self._source_guard(request.source_instance_id, run["database_name"])
         if (run["phase"] != "AWAITING_APPROVAL" or run["cleanup_state"] != "NOT_REQUESTED"
@@ -376,7 +388,7 @@ class RehearsalService:
         self.runtime.verify_resources(run, require_backup=True)
         plan = inspect_sql(raw, candidate.contract)
         baseline = self.baselines[run_id]
-        columns = {t.name: [c["name"] for c in t.schema_summary] for t in baseline.public.tables}
+        columns = baseline.existing_columns
 
         def precheck(con):
             for table in sorted(plan.tables):

@@ -21,7 +21,7 @@ class SafeTool(Tool):
 
 
 def make_server(service: RehearsalService) -> MCPServer:
-    tools = []
+    tools: list[Tool] = []
     for name, model in TOOL_INPUTS.items():
         def build_handler(tool_name, input_model):
             async def handler(**kwargs) -> dict[str, Any]:
@@ -43,9 +43,9 @@ def make_server(service: RehearsalService) -> MCPServer:
         handler = build_handler(name, model)
         tool = Tool.from_function(handler, name=name, structured_output=True,
                                   description=f"Preflight {name}; server policy and state guards apply.",
-                                  annotations=ToolAnnotations(readOnlyHint=name in READ_ONLY,
-                                      destructiveHint=name in {"apply_to_clone", "apply_to_demo_source", "cleanup_run"},
-                                      idempotentHint=name in READ_ONLY, openWorldHint=False))
+                                  annotations=ToolAnnotations(read_only_hint=name in READ_ONLY,
+                                      destructive_hint=name in {"apply_to_clone", "apply_to_demo_source", "cleanup_run"},
+                                      idempotent_hint=name in READ_ONLY, open_world_hint=False))
         # Use strict frozen schema and validation, including unknown field rejection.
         tool.parameters = model.model_json_schema()
         tools.append(SafeTool(**tool.__dict__))
@@ -53,6 +53,4 @@ def make_server(service: RehearsalService) -> MCPServer:
 
 
 def serve(service: RehearsalService, port: int = 8000):
-    from filelock import FileLock
-    with FileLock(str(service.settings.state_dir / "process.lock"), timeout=0):
-        make_server(service).run(transport="streamable-http", host="127.0.0.1", port=port)
+    make_server(service).run(transport="streamable-http", host="127.0.0.1", port=port)

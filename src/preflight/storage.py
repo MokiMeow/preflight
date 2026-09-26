@@ -6,7 +6,7 @@ from pathlib import Path
 from typing import Any
 
 from .artifacts import canonical_json, strict_json
-from .models import Phase, PreflightError, TRANSITIONS
+from .models import TRANSITIONS, Phase, PreflightError
 
 
 def utc_now() -> str:
@@ -70,6 +70,25 @@ class StateStore:
         if not row:
             raise PreflightError("NOT_FOUND")
         return strict_json(bytes(row[0]))
+
+    def publish_candidate(self, candidate: dict, run: dict | None = None):
+        """Publish candidate and optional attachment in one SQLite transaction."""
+        with self.transaction() as con:
+            if run:
+                current = con.execute("SELECT * FROM runs WHERE id=?", (run["run_id"],)).fetchone()
+                if (not current or current["phase"] != "BLOCKED" or current["revision"] != run["revision"]
+                        or con.execute("SELECT 1 FROM apply_attempts WHERE run_id=?", (run["run_id"],)).fetchone()):
+                    raise PreflightError("STATE_CONFLICT")
+                value = strict_json(bytes(current["value"]))
+                if value["candidate_id"] != candidate["parent_candidate_id"]:
+                    raise PreflightError("STALE_CANDIDATE")
+                value.update(candidate_id=candidate["candidate_id"], clone_outcome=None, updated_at=utc_now())
+                con.execute("UPDATE runs SET phase='BASELINED',revision=revision+1,value=? WHERE id=?",
+                            (canonical_json(value), run["run_id"]))
+                con.execute("INSERT INTO events(run_id,timestamp,before_phase,after_phase,code) VALUES(?,?,?,?,?)",
+                            (run["run_id"], utc_now(), "BLOCKED", "BASELINED", "CANDIDATE_ATTACHED"))
+            con.execute("INSERT INTO records VALUES('candidate',?,?)",
+                        (candidate["candidate_id"], canonical_json(candidate)))
 
     def list_records(self, kind: str) -> list[dict]:
         with self.transaction() as con:

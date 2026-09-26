@@ -5,7 +5,7 @@ import pytest
 from pydantic import ValidationError
 
 from preflight.artifacts import canonical_json, strict_json
-from preflight.models import Contract, TOOL_INPUTS
+from preflight.models import TOOL_INPUTS, Contract
 
 
 def test_fixture_and_ten_schemas():

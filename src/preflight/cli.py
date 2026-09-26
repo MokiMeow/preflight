@@ -69,13 +69,18 @@ def intake(sql: Path = typer.Option(...), contract: Path = typer.Option(...),
 
 @app.command()
 def serve():
+    from filelock import FileLock
     from .runtime import build_runtime
     from .server import serve as run_server
     from .service import RehearsalService
     try:
         settings = load_settings()
-        service = RehearsalService(settings, build_runtime(settings))
-        run_server(service, settings.service_port)
+        settings.state_dir.mkdir(parents=True, exist_ok=True, mode=0o700)
+        with FileLock(str(settings.state_dir / "process.lock"), timeout=0):
+            service = RehearsalService(settings, build_runtime(settings))
+            if settings.creation_authorized:
+                service.executor.submit(service.runtime.advance_jobs, service.store)
+            run_server(service, settings.service_port)
     except Exception:
         typer.echo(json.dumps({"error_code": "SERVICE_START_FAILED"}))
         raise typer.Exit(2)
@@ -97,6 +102,7 @@ def verify_evidence(report: Path, expected_report_sha256: str | None = typer.Opt
 @evidence_app.command("export")
 def export_evidence(run_id: str, output: Path = typer.Option(...)):
     from uuid import UUID
+
     from .models import GetReport
     from .service import RehearsalService
     try:
