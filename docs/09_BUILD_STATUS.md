@@ -4,11 +4,11 @@
 
 ## Current checkpoint
 
-- Event start / organizer constraints: NOT_CONFIRMED_IN_THIS_KIT.
-- Implementation commit: NONE.
-- Selected toolchain lock: NOT_CREATED.
-- Active agent assignments/worktrees: NONE.
-- Next task: T00, then T01–T03; T04 can proceed with actual operator context.
+- Event start: operator confirmed organizer authorizes coding now on 2026-09-26, before first application edit. Final submission fields remain unconfirmed.
+- Implementation checkpoint: 5790a6a (typed interfaces); build ongoing.
+- Toolchain: uv.lock installed; Python 3.12.10 / MCP 2.2.0 / pglast 8.4 / PostgreSQL18 target.
+- Active isolated lanes: database preflight/db, cloud preflight/cloud, integration preflight/integration at 5790a6a; max three children, no grandchildren.
+- Next: T03/T06/T10 lead implementation; T07–09 DB; T04/T12–13/T17 cloud preparation; T11/T20 integration.
 - Latest passing gate: NONE.
 - Source apply enabled: false.
 - Actual run/candidate/resource IDs: NONE.
@@ -20,9 +20,9 @@ Use status `NOT_STARTED`, `IN_PROGRESS`, `BLOCKED_EXTERNAL`, `FAILED`, `LOCAL_VE
 
 | Task | Owner | Initial status | Evidence / commit / blocker |
 |---|---|---|---|
-| T00 — Establish event rules, clean workspace and build provenance | lead | NOT_STARTED | Not executed |
-| T01 — Resolve and record one compatible toolchain | lead | NOT_STARTED | Not executed |
-| T02 — Freeze shared domain models and service interfaces | lead | NOT_STARTED | Not executed |
+| T00 — Establish event rules, clean workspace and build provenance | lead | LOCAL_VERIFIED | evidence/setup/event-and-provenance.md; operator timing override; PRD original hash retained |
+| T01 — Resolve and record one compatible toolchain | lead | IN_PROGRESS | Python official MCP HTTP probe passed, lock installed; JS/runtime probe pending |
+| T02 — Freeze shared domain models and service interfaces | lead | IN_PROGRESS | 5790a6a; 3 typed contract tests passed; independent review pending |
 | T03 — Implement configuration, doctor and runnable service shell | lead | NOT_STARTED | Not executed |
 | T04 — Authorize and plan the bounded AWS footprint | cloud | NOT_STARTED | Not executed |
 | T05 — Provision or validate private host, source and runtime identity | cloud | NOT_STARTED | Not executed |
@@ -161,3 +161,4 @@ Write the ticket from docs 10 **before** spawning the exceptional reviewer. A sl
 | Pre-apply review order | NOT_RUN | Accepted T27 evidence precedes first T24 live write |
 | Agent behavior evaluations | NOT_RUN | Real trace/state results for config/agent-evaluation-plan.json |
 | Expert budget accounting | NOT_RUN | Admitted/used/skipped A1/A2 tickets, actual evidence, no fabricated savings |
+
