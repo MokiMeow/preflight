@@ -14,8 +14,8 @@ def test_responses_stream_state_machine():
         check=False,
     )
     assert result.returncode == 0, result.stderr or result.stdout
-    assert "tests 3" in result.stdout
-    assert "pass 3" in result.stdout
+    assert "tests 4" in result.stdout
+    assert "pass 4" in result.stdout
 
 
 def test_probe_blocks_without_ignored_route_config():

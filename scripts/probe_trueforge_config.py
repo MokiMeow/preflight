@@ -21,6 +21,7 @@ BUSINESS_TOOLS = [
 ]
 HUMAN_GATES = ["apply_to_demo_source", "cleanup_run"]
 MODEL_PLACEHOLDER = "REPLACE_WITH_VERIFIED_TRUEFORGE_MODEL_RESOURCE_NAME"
+AUTHORIZED_ALIAS_RESOURCE = "openai/gpt-model"
 
 
 class ConfigProbeError(Exception):
@@ -46,14 +47,16 @@ def validate_agent_config(value: object, *, template: bool) -> dict[str, object]
     model = manifest["model"]
     if not isinstance(model, dict):
         raise ConfigProbeError("MODEL_NOT_OBJECT")
-    _keys(model, {"name", "params"}, "MODEL")
+    if set(model) not in ({"name"}, {"name", "params"}):
+        raise ConfigProbeError("MODEL_FIELDS_INVALID")
     name = model["name"]
     if not isinstance(name, str) or not name:
         raise ConfigProbeError("MODEL_NAME_INVALID")
     if not template and name == MODEL_PLACEHOLDER:
         raise ConfigProbeError("MODEL_RESOURCE_NOT_CONFIGURED")
-    params = model["params"]
-    if params != {"reasoning_effort": "high"}:
+    params = model.get("params")
+    alias_without_reasoning = name == AUTHORIZED_ALIAS_RESOURCE and params in (None, {})
+    if not alias_without_reasoning and params != {"reasoning_effort": "high"}:
         raise ConfigProbeError("MODEL_PARAMS_INVALID")
 
     servers = manifest["mcp_servers"]

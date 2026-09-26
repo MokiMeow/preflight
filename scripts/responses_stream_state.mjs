@@ -58,7 +58,11 @@ export class ToolCallState {
       if (event.item_id !== this.itemId || typeof event.arguments !== "string") {
         throw new ProbeProtocolError("TOOL_ARGUMENT_DONE_UNLINKED");
       }
-      requireEqual(this.name, event.name, "TOOL_NAME_CHANGED");
+      // The Responses API permits this delta-completion event to omit name.
+      // When present it must still agree with the authoritative output item.
+      if (event.name !== undefined) {
+        requireEqual(this.name, event.name, "TOOL_NAME_CHANGED");
+      }
       if (this.arguments.length > 0 && this.arguments !== event.arguments) {
         throw new ProbeProtocolError("TOOL_ARGUMENTS_CHANGED");
       }

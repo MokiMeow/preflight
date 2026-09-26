@@ -275,14 +275,19 @@ def _save_agent(client: TrueForgeClient, payload: dict[str, Any]) -> tuple[str, 
     return action, saved_data["id"]
 
 
-def _plan(daytona_path: Path) -> dict[str, Any]:
+def _plan(daytona_path: Path, stage: str) -> dict[str, Any]:
     return {
         "ok": False,
         "state": "NOT_RUN",
         "error_code": "EXPLICIT_EXECUTE_REQUIRED",
         "credentials_read": False,
         "requests_sent": False,
-        "daytona_input": "present" if daytona_path.is_file() else "DAYTONA_CREDENTIAL_MISSING",
+        "stage": stage,
+        "daytona_input": (
+            "not_required_for_stage"
+            if stage == "provider-mcp"
+            else ("present" if daytona_path.is_file() else "DAYTONA_CREDENTIAL_MISSING")
+        ),
         "model_provider": "openai",
         "model_alias": GATEWAY_MODEL_ID,
         "model_resource": MODEL_FQN,
@@ -305,13 +310,18 @@ def execute(args: argparse.Namespace) -> dict[str, Any]:
     payload = _agent_payload(args.agent_template)
     # Read and validate every local input before the first HTTP mutation.
     gateway_key = _read_secret(args.gateway_secret, "GATEWAY_CREDENTIAL")
-    daytona_key = _read_secret(args.daytona_secret, "DAYTONA_CREDENTIAL")
+    daytona_key = (
+        _read_secret(args.daytona_secret, "DAYTONA_CREDENTIAL")
+        if args.stage == "complete"
+        else None
+    )
     client = TrueForgeClient(base_url, args.timeout_seconds)
     completed: list[str] = []
-    client.request(
-        "PUT", "/api/v1/settings/sandbox-providers/", body=_sandbox_body(daytona_key)
-    )
-    completed.append("daytona")
+    if daytona_key is not None:
+        client.request(
+            "PUT", "/api/v1/settings/sandbox-providers/", body=_sandbox_body(daytona_key)
+        )
+        completed.append("daytona")
     client.request("PUT", "/api/v1/settings/model-providers/", body=_provider_body(gateway_key))
     completed.append("model_provider")
     client.request("PUT", "/api/v1/settings/mcp-servers/", body=_mcp_body())
@@ -319,6 +329,21 @@ def execute(args: argparse.Namespace) -> dict[str, Any]:
     tools = client.request("GET", "/api/v1/mcp-servers/preflight/tools")
     _verify_tools(tools)
     completed.append("mcp_tool_schema")
+    if args.stage == "provider-mcp":
+        return {
+            "ok": True,
+            "state": "LOCAL_CONNECTORS_CONFIGURED",
+            "completed": completed,
+            "model_alias": GATEWAY_MODEL_ID,
+            "model_resource": MODEL_FQN,
+            "reasoning_parameter": "omitted",
+            "mcp_url": MCP_URL,
+            "sandbox": "NOT_RUN",
+            "agent": "NOT_RUN",
+            "approval_invocations": 0,
+            "model_turns": 0,
+            "next_step": "Provide protected Daytona credentials and run --stage complete.",
+        }
     agent_action, agent_id = _save_agent(client, payload)
     completed.append(f"agent_{agent_action}")
     return {
@@ -340,6 +365,7 @@ def execute(args: argparse.Namespace) -> dict[str, Any]:
 def parse_args(argv: list[str]) -> argparse.Namespace:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--execute", action="store_true")
+    parser.add_argument("--stage", choices=("complete", "provider-mcp"), default="complete")
     parser.add_argument("--trueforge-url", default=TRUEFORGE_DEFAULT)
     parser.add_argument(
         "--gateway-secret", type=Path, default=Path("/var/lib/preflight/gateway.secret.json")
@@ -360,7 +386,7 @@ def parse_args(argv: list[str]) -> argparse.Namespace:
 def main(argv: list[str] | None = None) -> int:
     try:
         args = parse_args(sys.argv[1:] if argv is None else argv)
-        result = execute(args) if args.execute else _plan(args.daytona_secret)
+        result = execute(args) if args.execute else _plan(args.daytona_secret, args.stage)
         print(json.dumps(result, separators=(",", ":")))
         return 0 if result.get("ok") else 4
     except BootstrapError as error:

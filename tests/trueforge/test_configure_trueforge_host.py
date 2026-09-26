@@ -119,6 +119,40 @@ def test_execute_requires_daytona_before_any_http_request(tmp_path, fake_truefor
     assert json.loads(capsys.readouterr().out)["error_code"] == "DAYTONA_CREDENTIAL_MISSING"
 
 
+def test_provider_mcp_stage_continues_without_daytona_and_stops_before_agent(
+    tmp_path, fake_trueforge, capsys
+):
+    module = _load_module()
+    base_url, requests = fake_trueforge
+    gateway = tmp_path / "gateway.json"
+    _secret(gateway, "gateway-test-secret")
+    code = module.main(
+        [
+            "--execute",
+            "--stage",
+            "provider-mcp",
+            "--trueforge-url",
+            base_url,
+            "--gateway-secret",
+            str(gateway),
+            "--daytona-secret",
+            str(tmp_path / "missing-daytona.json"),
+            "--agent-template",
+            str(ROOT / "config/trueforge-agent.example.json"),
+        ]
+    )
+    assert code == 0
+    output = json.loads(capsys.readouterr().out)
+    assert output["state"] == "LOCAL_CONNECTORS_CONFIGURED"
+    assert output["sandbox"] == "NOT_RUN"
+    assert output["agent"] == "NOT_RUN"
+    assert [item[:2] for item in requests] == [
+        ("PUT", "/api/v1/settings/model-providers/"),
+        ("PUT", "/api/v1/settings/mcp-servers/"),
+        ("GET", "/api/v1/mcp-servers/preflight/tools"),
+    ]
+
+
 def test_execute_sends_exact_safe_manifests_without_running_tools(
     tmp_path, fake_trueforge, capsys
 ):

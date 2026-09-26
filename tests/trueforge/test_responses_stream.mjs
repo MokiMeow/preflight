@@ -42,6 +42,28 @@ test("decodes one linked streamed status tool call", () => {
   });
 });
 
+test("accepts omitted done-event name but rejects a contradictory name", () => {
+  const withoutOptionalName = INITIAL_EVENTS.map((event) => ({ ...event }));
+  delete withoutOptionalName[4].name;
+  const accepted = new ToolCallState();
+  for (const event of withoutOptionalName) accepted.accept(event);
+  assert.equal(accepted.finish().name, "status");
+
+  const contradicted = new ToolCallState();
+  contradicted.accept(INITIAL_EVENTS[0]);
+  contradicted.accept(INITIAL_EVENTS[1]);
+  assert.throws(
+    () =>
+      contradicted.accept({
+        type: "response.function_call_arguments.done",
+        item_id: "item_status",
+        name: "other",
+        arguments: "{}",
+      }),
+    (error) => error instanceof ProbeProtocolError && error.code === "TOOL_NAME_CHANGED",
+  );
+});
+
 test("rejects changed call identity and malformed tool arguments", () => {
   const changed = new ToolCallState();
   changed.accept(INITIAL_EVENTS[0]);

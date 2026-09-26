@@ -46,3 +46,22 @@ def test_config_probe_rejects_removed_literal_gate(tmp_path):
     result = run_probe(path)
     assert result.returncode == 2
     assert json.loads(result.stdout)["error_code"] == "HUMAN_GATE_LIST_INVALID"
+
+
+def test_config_probe_accepts_only_exact_authorized_alias_without_reasoning(tmp_path):
+    template = json.loads(
+        (ROOT / "config/trueforge-agent.example.json").read_text(encoding="utf-8")
+    )
+    template["manifest"]["model"] = {"name": "openai/gpt-model"}
+    accepted = tmp_path / "accepted.json"
+    accepted.write_text(json.dumps(template), encoding="utf-8")
+    result = run_probe(accepted, template=False)
+    assert result.returncode == 0, result.stdout
+    assert json.loads(result.stdout)["status"] == "VALID_CONFIG"
+
+    template["manifest"]["model"] = {"name": "openai/other"}
+    rejected = tmp_path / "rejected.json"
+    rejected.write_text(json.dumps(template), encoding="utf-8")
+    result = run_probe(rejected, template=False)
+    assert result.returncode == 2
+    assert json.loads(result.stdout)["error_code"] == "MODEL_PARAMS_INVALID"
