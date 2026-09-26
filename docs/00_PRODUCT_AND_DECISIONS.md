@@ -33,7 +33,7 @@ T00 records the source of truth once. If the canonical page stays inaccessible, 
 | User experience and orchestration | TrueForge's bundled UI and saved `preflight` agent | Preserves event/platform fit; approval and tool trace are visible together |
 | Language/model | Verified OpenAI model; GPT-6 Sol/high via a working Responses route is the runtime starting choice | Coding-model assignments are separate; endpoint/tool compatibility must pass before choosing the runtime model |
 | Model access and visibility | Prefer TrueFoundry AI Gateway, using the actual team route and secret settings | Makes model routing/usage inspectable without exposing database or AWS secrets; direct OpenAI is only an explicit rules-compatible fallback |
-| Generated-code execution | Daytona via TrueForge Code Mode | Runs bounded agent-generated Python outside the DB service; secrets stay in the harness/service |
+| Generated-code execution | Native TrueForge local Linux sandbox Code Mode (D26) | Runs bounded agent-generated Python outside the DB service; secrets stay in the harness/service |
 | Application backend | One Python 3.12 MCP service, official Python MCP SDK | Small typed integration surface; direct control of deterministic validation |
 | AWS integration | Boto3; EC2 IAM role; Secrets Manager | Real RDS snapshot and restore, scoped credentials |
 | Database execution | Psycopg 3 over verified TLS | Exact supported SQL in explicit transactions |

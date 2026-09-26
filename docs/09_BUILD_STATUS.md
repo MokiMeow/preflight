@@ -2,7 +2,7 @@
 
 **Latest operator steering:** the USD100 ceiling is explicitly revoked; unlimited-budget mode is implemented, independently reviewed and deployed at `d3715ca`. Creation is enabled for the one scoped run; source-apply capability is now enabled before baseline capture; actual SQL still requires the human gate and fresh server guards. Human gates and resource scope remain enforced. Real RDS and video proof are not yet complete.
 
-**Current state:** operator D26 replaces Daytona with the native TrueForge local Linux sandbox; D27 sets a USD100 continuation ceiling. The reviewed native patch and new application are deployed on the existing private host. Source-apply capability is enabled; source SQL is NOT_RUN; D28 enables scoped creation without a numeric financial ceiling. Real RDS snapshot/clone rehearsal, bad/good migrations and operator Allow/Deny demonstrations remain incomplete; no result is inferred.
+**Current state:** operator D26 replaces Daytona with the native TrueForge local Linux sandbox; D28 supersedes the former D27 ceiling; no numeric financial maximum remains. The reviewed native patch and new application are deployed on the existing private host. Source-apply capability is enabled; source SQL is NOT_RUN; D28 enables scoped creation without a numeric financial ceiling. The real private snapshot-restored clone is READY with TLS verified. Native bad/good migrations and source Allow/Deny demonstrations remain pending; no verdict is inferred.
 
 **Current continuation:** [Full implementation and pending-work report](audit/LOCAL_SANDBOX_CONTINUATION_REPORT.md), [verification receipt](audit/local-sandbox-verification.json), [native isolation canaries](../evidence/connected/local-sandbox-canaries.json), [saved-agent generated Code Mode](../evidence/connected/saved-agent-code-mode.json).
 
@@ -164,7 +164,7 @@ interrupted attempt, and no source/cloud action occurred.
 A restarted coding session first reads this ledger, verifies Git and the referenced evidence, and resumes the next safe task. It never infers that a source operation failed merely because the previous chat or connection stopped.
 
 
-## V3 setup/compatibility ledger
+## Historical V3 setup/compatibility ledger
 
 - Archive: V3 specifications only; no product implementation, installed-provider probe or live cloud test has been performed by preparing this kit.
 - Coding CLI baseline: 0.157.0 source/docs; installed version 0.153.0, retained without replacing global binary.
@@ -197,12 +197,12 @@ Write the ticket from docs 10 **before** spawning the exceptional reviewer. A sl
 
 | Gate | Initial status | Required evidence |
 |---|---|---|
-| Sol role/effective-model agreement | LOCAL_VERIFIED | Actual lead/child session traces; Astra sessions 0 |
+| Sol role/effective-model agreement | LOCAL_VERIFIED | Actual lead/child session traces; bounded A1 Astra/high separately admitted and consumed |
 | Column-level coverage | LOCAL_VERIFIED | Real PG unasserted mutation WARN, protected wrong-data BLOCK, explicit value/schema PASS |
 | Offline report verifier | LOCAL_VERIFIED | Strict parse/tamper/rehashed-contradiction/trusted-anchor and historical/unanchored tests |
 | Pre-apply review order | NOT_RUN | Accepted T27 evidence precedes first T24 live write |
 | Agent behavior evaluations | NOT_RUN | Real trace/state results for config/agent-evaluation-plan.json |
-| Expert budget accounting | LOCAL_VERIFIED | A1/A2 remain NOT_USED pending actual pre-live gate; Astra sessions 0; vendor usage NOT_OBSERVED |
+| Expert budget accounting | LOCAL_VERIFIED | A1 consumed/closed after accepted code review; A2 unused; vendor usage NOT_OBSERVED |
 
 ## Operator AWS CLI setup — 2026-09-26
 
