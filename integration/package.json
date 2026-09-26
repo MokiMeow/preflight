@@ -1,0 +1,12 @@
+{
+  "name": "preflight-trueforge-probe",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Pinned local compatibility probe for Preflight and TrueForge",
+  "engines": {
+    "node": ">=22.14.0"
+  },
+  "dependencies": {
+    "@truefoundry/trueforge": "0.2.1"
+  }
+}
