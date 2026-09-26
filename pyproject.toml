@@ -31,6 +31,8 @@ exclude = ["/.worktrees", "/.venv", "/.venv-clean", "/var", "/dist", "**/node_mo
 "evidence/connected/local-sandbox-canaries.json" = "evidence/connected/local-sandbox-canaries.json"
 "evidence/connected/saved-agent-code-mode.json" = "evidence/connected/saved-agent-code-mode.json"
 "evidence/connected/cleanup-approval-request.json" = "evidence/connected/cleanup-approval-request.json"
+"evidence/connected/unlimited-rehearsal.json" = "evidence/connected/unlimited-rehearsal.json"
+"evidence/connected/unlimited-code-mode-progress.json" = "evidence/connected/unlimited-code-mode-progress.json"
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]

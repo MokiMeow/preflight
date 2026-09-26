@@ -60,7 +60,7 @@
   "prd_sha256": "5f607b53bd7c439c94e3f97d3826e24e441cb5d007863eca023313347533b6bf",
   "expert_sessions_used": 0,
   "distribution": {
-    "source_archive_members": 175,
+    "source_archive_members": 181,
     "private_artifacts": 0,
     "wheel_python_modules": 18,
     "original_prd_hash_match": true,
@@ -69,7 +69,9 @@
     "isolated_imports": "PASSED",
     "offline_report_anchor": "EXPECTED_DIGEST_MATCH",
     "historical_only": true,
-    "current_apply_eligibility": "NOT_EVALUATED"
+    "current_apply_eligibility": "NOT_EVALUATED",
+    "revision": "70e761b",
+    "installed_wheel_scope": "Prior installed-wheel gate at22d883f; current rebuilt source/wheel distribution verified, current installed-wheel refresh pending."
   },
   "manifest_envelope_delta": {
     "revision": "878d64a",
@@ -109,7 +111,8 @@
       "elapsed_seconds": 38.7,
       "profiled_symbols": 225,
       "exit_code": 0,
-      "scope": "Selected unit/cloud tests only, not branch coverage/all-function execution"
+      "scope": "Selected unit/cloud tests only, not branch coverage/all-function execution",
+      "command": ".venv-clean/Scripts/python.exe var/profile_current_unit_cloud.py"
     }
   }
 }

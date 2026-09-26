@@ -1,6 +1,6 @@
 # First-party file and function inventory
 
-Snapshot: `83526f6576cc64f4c266cefee5d07012f9483f58`. 179 files; 1036 declared symbols.
+Snapshot: `70e761ba24a8a996c81098e337e26cdba8c589e8`. 183 files; 1050 declared symbols.
 
 Every file below was read as UTF-8 and hashed. JSON and Python were parsed. This inventory is static accounting, not a claim that every branch/function was executed. Private ignored configuration and vendor/runtime directories are excluded. Audit outputs do not hash themselves.
 
@@ -120,7 +120,7 @@ configuration or documented contract. 3901 bytes; JSON_PARSED. SHA-256: `18d240b
 
 ## config/settings.example.json
 
-configuration or documented contract. 731 bytes; JSON_PARSED. SHA-256: `06a8382399e4efbf398afa6be6e9d5acc4b18c5e855d3dded1c20c0065dfd047`.
+configuration or documented contract. 732 bytes; JSON_PARSED. SHA-256: `1fe8c4a17cd42643c472e4d7d7ec04e9aec858df6bb7d28a7e7e0f9321faf697`.
 
 ## config/task-index.json
 
@@ -140,7 +140,7 @@ configuration or documented contract. 225 bytes; JSON_PARSED. SHA-256: `983918df
 
 ## docs/00_PRODUCT_AND_DECISIONS.md
 
-configuration or documented contract. 20486 bytes; TEXT_INVENTORIED. SHA-256: `23fedbab6c2f131d777c44697404696230f9fff744332fd6bedb75b9a43cbc4d`.
+configuration or documented contract. 21477 bytes; TEXT_INVENTORIED. SHA-256: `0e467da51f141f91d5560dc8f3ca75fb035a9cbb2d04ab646913fe39e44a5b3f`.
 
 ## docs/01_ARCHITECTURE.md
 
@@ -156,7 +156,7 @@ configuration or documented contract. 54817 bytes; TEXT_INVENTORIED. SHA-256: `7
 
 ## docs/04_CLOUD_RUNBOOK.md
 
-configuration or documented contract. 23204 bytes; TEXT_INVENTORIED. SHA-256: `055a10795303a48634128839d14b30f8dd921e4af5f4256956a5b1db6102017f`.
+configuration or documented contract. 23623 bytes; TEXT_INVENTORIED. SHA-256: `4e65ebaf1d03e5f8a5c0860c136674ab9889ba8ec031c2c91b563d49a235cfbc`.
 
 ## docs/05_TRUEFORGE_AGENT.md
 
@@ -168,7 +168,7 @@ configuration or documented contract. 29766 bytes; TEXT_INVENTORIED. SHA-256: `6
 
 ## docs/07_DEMO_AND_SUBMISSION.md
 
-configuration or documented contract. 23121 bytes; TEXT_INVENTORIED. SHA-256: `16f1322d23475a5342828bb6189aea34d4dfd10847f42d0a4a11ef8f275f7828`.
+configuration or documented contract. 23317 bytes; TEXT_INVENTORIED. SHA-256: `e8e89ef45b6cd05916810586ed99c92023a94a7e4223df64d21d207d9bc5f6e0`.
 
 ## docs/08_RESEARCH.md
 
@@ -176,7 +176,7 @@ configuration or documented contract. 25654 bytes; TEXT_INVENTORIED. SHA-256: `d
 
 ## docs/09_BUILD_STATUS.md
 
-configuration or documented contract. 26346 bytes; TEXT_INVENTORIED. SHA-256: `1d3f6da3a9866a70e9202aa1852439afc4616a9bf7048a68e20acc5182a6b947`.
+configuration or documented contract. 26959 bytes; TEXT_INVENTORIED. SHA-256: `6c6ef39c36c87762f38a0aa3b1fc52148a5245a95db29452559b8605ade48e2c`.
 
 ## docs/10_CODEX_OPERATING_SYSTEM.md
 
@@ -200,7 +200,7 @@ configuration or documented contract. 4331 bytes; TEXT_INVENTORIED. SHA-256: `5b
 
 ## docs/audit/LOCAL_SANDBOX_CONTINUATION_REPORT.md
 
-configuration or documented contract. 23855 bytes; TEXT_INVENTORIED. SHA-256: `b15ccc643f3544e9cd6fc350d0bae523b47ce3db50223dec01be89dbd380c501`.
+configuration or documented contract. 25428 bytes; TEXT_INVENTORIED. SHA-256: `8d14b4eec3333e55c263a2b73e7ab26eb3234e4c2697c2ce22be6a7d0933affb`.
 
 ## docs/audit/SCENARIO_MATRIX.md
 
@@ -210,6 +210,10 @@ configuration or documented contract. 83813 bytes; TEXT_INVENTORIED. SHA-256: `7
 
 configuration or documented contract. 58270 bytes; TEXT_INVENTORIED. SHA-256: `a05f7ee7e7758fdb67c4eeeab02cb50ef83205ca6ac9f4374158f5c299503c4a`.
 
+## docs/audit/THREE_MINUTE_WALKTHROUGH.md
+
+configuration or documented contract. 9645 bytes; TEXT_INVENTORIED. SHA-256: `94c6d8a4198ac74e7985a9c5110178817eefb03c2a524b92251ee571b9520832`.
+
 ## docs/audit/continuation-distribution.json
 
 configuration or documented contract. 1690 bytes; JSON_PARSED. SHA-256: `01d558779cf7822ace2b121567c5ac5c95290164ff5e4d5ce3946238ab0520a6`.
@@ -217,6 +221,10 @@ configuration or documented contract. 1690 bytes; JSON_PARSED. SHA-256: `01d5587
 ## docs/audit/continuation-verification.json
 
 configuration or documented contract. 1562 bytes; JSON_PARSED. SHA-256: `9dc270d2ac4d0c2bc8a6cfcb5e6427aa081b722e113b5062975dfefd7bbb7d69`.
+
+## docs/audit/current-function-call-observations.json
+
+configuration or documented contract. 26929 bytes; JSON_PARSED. SHA-256: `1af7708b3f0c9eecdd9055898d61a7188ef6b70332003a685a08cb65b429a054`.
 
 ## docs/audit/distribution.json
 
@@ -228,7 +236,7 @@ configuration or documented contract. 32584 bytes; JSON_PARSED. SHA-256: `b6aa8b
 
 ## docs/audit/local-sandbox-verification.json
 
-configuration or documented contract. 3463 bytes; JSON_PARSED. SHA-256: `c5ef9780283a058bbfd30d7aff23d93d8e84d4df2d5e0fafcb65fdb6b4c38f2a`.
+configuration or documented contract. 4114 bytes; JSON_PARSED. SHA-256: `fe0f0bf7e01e71d79b590ab3d28e3d6ac43b19cc33ad7af4f432194c05ed594d`.
 
 ## docs/audit/review-notes.json
 
@@ -269,6 +277,14 @@ local historical report; not AWS/human proof. 1737 bytes; JSON_PARSED. SHA-256: 
 ## evidence/connected/saved-agent-code-mode.json
 
 local historical report; not AWS/human proof. 2162 bytes; JSON_PARSED. SHA-256: `7e1a528657cf23bf9f56ad3999b58c2593ecfee215d9ccf51d6f9e72fca8f1ad`.
+
+## evidence/connected/unlimited-code-mode-progress.json
+
+local historical report; not AWS/human proof. 1513 bytes; JSON_PARSED. SHA-256: `ffa0eb2de69121e512448c2d50a7009c47188e3375e8e3037d5949c3733873d4`.
+
+## evidence/connected/unlimited-rehearsal.json
+
+local historical report; not AWS/human proof. 2076 bytes; JSON_PARSED. SHA-256: `6a0d7b1f85a19136f29113a9f5a49348ac009323f7ce398368b0000e9e7f94d7`.
 
 ## evidence/local/block-mcp-report.json
 
@@ -429,7 +445,7 @@ configuration or documented contract. 3355 bytes; JSON_PARSED. SHA-256: `e291785
 
 ## pyproject.toml
 
-configuration or documented contract. 1827 bytes; TEXT_INVENTORIED. SHA-256: `d38c3198bc0bbc1d160ad9d48d07ec06dcf1af197b3092528bb3c20254da4f1f`.
+configuration or documented contract. 2129 bytes; TEXT_INVENTORIED. SHA-256: `180945035c2ffcbf106003e835ca04ca4fbe55eebb8b62d5f4792b5ddd65364b`.
 
 ## reference/Preflight-PRD.md
 
@@ -728,7 +744,7 @@ implementation. 35314 bytes; PYTHON_AST_PARSED. SHA-256: `f5ad04e5215319690f1d0f
 
 ## src/preflight/budget.py
 
-implementation. 16988 bytes; PYTHON_AST_PARSED. SHA-256: `2c9aa009a344a694196234610881c25e599a30af09aa14f5c0f2a1c735623d09`.
+implementation. 16959 bytes; PYTHON_AST_PARSED. SHA-256: `e95c8f4c624a4e3f462c7e04b26e8fcd6ed81c916384d289ab0afad2f67b4418`.
 
 | Symbol | Line | Purpose | Unit/cloud calls at older commit | Review test references |
 |---|---:|---|---:|---|
@@ -765,16 +781,16 @@ implementation. 6472 bytes; PYTHON_AST_PARSED. SHA-256: `0acdafc5a527b2fa8b90faf
 
 ## src/preflight/config.py
 
-implementation. 6181 bytes; PYTHON_AST_PARSED. SHA-256: `beae715a5705747361b2651e88b33c50749e2920bb93c4557ea721aec96b9297`.
+implementation. 6502 bytes; PYTHON_AST_PARSED. SHA-256: `e1948968cd5c2cc9002b0331acc6f11d36133aeef9ae31e46578a04bd87d2cf4`.
 
 | Symbol | Line | Purpose | Unit/cloud calls at older commit | Review test references |
 |---|---:|---|---:|---|
 | `Settings` (class) | 13 | Settings | 1 | No standalone mapping; see scenario matrix |
 | `Settings.<lambda@22:61>` (lambda) | 22 | Anonymous callback/expression; inspect its enclosing function and scenario tests. | 0 | No standalone mapping; see scenario matrix |
-| `Settings.authorization_dependencies` (function) | 40 | authorization dependencies | 4 | No standalone mapping; see scenario matrix |
-| `load_settings` (function) | 55 | load settings | 0 | No standalone mapping; see scenario matrix |
-| `readiness` (function) | 62 | readiness | 0 | No standalone mapping; see scenario matrix |
-| `state_storage_status` (function) | 84 | Read-only local diagnostics; empty state is never proof of no AWS resources. | 0 | No standalone mapping; see scenario matrix |
+| `Settings.authorization_dependencies` (function) | 43 | authorization dependencies | 4 | No standalone mapping; see scenario matrix |
+| `load_settings` (function) | 60 | load settings | 0 | No standalone mapping; see scenario matrix |
+| `readiness` (function) | 67 | readiness | 0 | No standalone mapping; see scenario matrix |
+| `state_storage_status` (function) | 89 | Read-only local diagnostics; empty state is never proof of no AWS resources. | 0 | No standalone mapping; see scenario matrix |
 
 ## src/preflight/db.py
 
@@ -924,7 +940,7 @@ implementation. 10462 bytes; PYTHON_AST_PARSED. SHA-256: `9fb3860af1b2a09d3a762d
 
 ## src/preflight/runtime.py
 
-implementation. 11946 bytes; PYTHON_AST_PARSED. SHA-256: `019539c77144f4cb40414174d814e5c344d1ce2179fd2178e89b4dabaa72dc6f`.
+implementation. 12312 bytes; PYTHON_AST_PARSED. SHA-256: `36dc235842dbc28b26d65825358658074fa1dee9b13c5d283b539a1c6fb65cc9`.
 
 | Symbol | Line | Purpose | Unit/cloud calls at older commit | Review test references |
 |---|---:|---|---:|---|
@@ -939,7 +955,7 @@ implementation. 11946 bytes; PYTHON_AST_PARSED. SHA-256: `019539c77144f4cb404141
 | `AwsRuntime.cleanup` (function) | 155 | cleanup | 0 | No standalone mapping; see scenario matrix |
 | `AwsRuntime.observe_cleanup` (function) | 185 | observe cleanup | 0 | No standalone mapping; see scenario matrix |
 | `build_runtime` (function) | 207 | build runtime | 1 | No standalone mapping; see scenario matrix |
-| `build_runtime.reserve_budget` (function) | 258 | reserve budget | 0 | No standalone mapping; see scenario matrix |
+| `build_runtime.reserve_budget` (function) | 262 | reserve budget | 0 | No standalone mapping; see scenario matrix |
 
 ## src/preflight/server.py
 
@@ -1760,7 +1776,7 @@ test assertion. 10108 bytes; PYTHON_AST_PARSED. SHA-256: `f2cfa82c554037f330f1be
 
 ## tests/unit/test_budget.py
 
-test assertion. 16431 bytes; PYTHON_AST_PARSED. SHA-256: `8e21ed5abc0a09941444a6df036ae0afacc83a6cfbff30def5bc52691e424c49`.
+test assertion. 17050 bytes; PYTHON_AST_PARSED. SHA-256: `a5ced81124dde2f561d88e881cd2f7a3a1525e7b340b0fac281b5d4dd5370de4`.
 
 | Symbol | Line | Purpose | Unit/cloud calls at older commit | Review test references |
 |---|---:|---|---:|---|
@@ -1787,16 +1803,17 @@ test assertion. 16431 bytes; PYTHON_AST_PARSED. SHA-256: `8e21ed5abc0a09941444a6
 | `test_ledger_baseline_future_reserve_plus_ledger_sum_not_overwritten` (function) | 216 | test ledger baseline future reserve plus ledger sum not overwritten | 0 | No standalone mapping; see scenario matrix |
 | `test_ledger_even_existing_key_requires_current_complete_cost_facts` (function) | 240 | test ledger even existing key requires current complete cost facts | 0 | No standalone mapping; see scenario matrix |
 | `test_ledger_quote_changes_cannot_reuse_or_silently_expand_old_reservation` (function) | 251 | test ledger quote changes cannot reuse or silently expand old reservation | 0 | No standalone mapping; see scenario matrix |
-| `test_ledger_persisted_ceiling_cannot_be_changed_or_exceed_authorization` (function) | 272 | test ledger persisted ceiling cannot be changed or exceed authorization | 0 | No standalone mapping; see scenario matrix |
-| `test_ledger_live_handle_refuses_changed_persisted_ceiling` (function) | 289 | test ledger live handle refuses changed persisted ceiling | 0 | No standalone mapping; see scenario matrix |
-| `test_ledger_invalid_identity_cannot_reserve` (function) | 313 | test ledger invalid identity cannot reserve | 0 | No standalone mapping; see scenario matrix |
-| `test_ledger_storage_failure_never_echoes_private_path` (function) | 319 | test ledger storage failure never echoes private path | 0 | No standalone mapping; see scenario matrix |
-| `test_ledger_unknown_cost_observation_survives_restart` (function) | 327 | test ledger unknown cost observation survives restart | 0 | No standalone mapping; see scenario matrix |
-| `test_ledger_invalid_quote_publication_has_safe_failure` (function) | 339 | test ledger invalid quote publication has safe failure | 0 | No standalone mapping; see scenario matrix |
-| `test_two_ledger_instances_cannot_both_reserve_last_headroom` (function) | 346 | test two ledger instances cannot both reserve last headroom | 0 | No standalone mapping; see scenario matrix |
-| `test_two_ledger_instances_cannot_both_reserve_last_headroom.reserve` (function) | 354 | reserve | 0 | No standalone mapping; see scenario matrix |
-| `process_reserve_budget` (function) | 365 | process reserve budget | 0 | No standalone mapping; see scenario matrix |
-| `test_independent_processes_atomically_reserve_without_overspend_or_duplicate` (function) | 373 | test independent processes atomically reserve without overspend or duplicate | 0 | No standalone mapping; see scenario matrix |
+| `test_ledger_persisted_ceiling_cannot_be_changed` (function) | 272 | test ledger persisted ceiling cannot be changed | 0 | No standalone mapping; see scenario matrix |
+| `test_new_ledger_can_use_explicit_larger_authorized_ceiling` (function) | 289 | test new ledger can use explicit larger authorized ceiling | 0 | No standalone mapping; see scenario matrix |
+| `test_ledger_live_handle_refuses_changed_persisted_ceiling` (function) | 303 | test ledger live handle refuses changed persisted ceiling | 0 | No standalone mapping; see scenario matrix |
+| `test_ledger_invalid_identity_cannot_reserve` (function) | 327 | test ledger invalid identity cannot reserve | 0 | No standalone mapping; see scenario matrix |
+| `test_ledger_storage_failure_never_echoes_private_path` (function) | 333 | test ledger storage failure never echoes private path | 0 | No standalone mapping; see scenario matrix |
+| `test_ledger_unknown_cost_observation_survives_restart` (function) | 341 | test ledger unknown cost observation survives restart | 0 | No standalone mapping; see scenario matrix |
+| `test_ledger_invalid_quote_publication_has_safe_failure` (function) | 353 | test ledger invalid quote publication has safe failure | 0 | No standalone mapping; see scenario matrix |
+| `test_two_ledger_instances_cannot_both_reserve_last_headroom` (function) | 360 | test two ledger instances cannot both reserve last headroom | 0 | No standalone mapping; see scenario matrix |
+| `test_two_ledger_instances_cannot_both_reserve_last_headroom.reserve` (function) | 368 | reserve | 0 | No standalone mapping; see scenario matrix |
+| `process_reserve_budget` (function) | 379 | process reserve budget | 0 | No standalone mapping; see scenario matrix |
+| `test_independent_processes_atomically_reserve_without_overspend_or_duplicate` (function) | 387 | test independent processes atomically reserve without overspend or duplicate | 0 | No standalone mapping; see scenario matrix |
 
 ## tests/unit/test_contracts.py
 
@@ -1920,7 +1937,7 @@ test assertion. 9426 bytes; PYTHON_AST_PARSED. SHA-256: `3b2c4912abcba4ceb28e4a9
 
 ## tests/unit/test_runtime.py
 
-test assertion. 1603 bytes; PYTHON_AST_PARSED. SHA-256: `fa4062b78e186a0c83e96d848c65cae9479cc833380dfaa88d9059c2d8241d72`.
+test assertion. 7303 bytes; PYTHON_AST_PARSED. SHA-256: `3c427d2461670c3574a83a16a51871e94d9f23a006bea0464194d372d2efc32e`.
 
 | Symbol | Line | Purpose | Unit/cloud calls at older commit | Review test references |
 |---|---:|---|---:|---|
@@ -1928,7 +1945,20 @@ test assertion. 1603 bytes; PYTHON_AST_PARSED. SHA-256: `fa4062b78e186a0c83e96d8
 | `test_cloud_runtime_wires_tag_inventory_client.Session` (class) | 14 | Session | 0 | No standalone mapping; see scenario matrix |
 | `test_cloud_runtime_wires_tag_inventory_client.Session.__init__` (function) | 15 | init | 0 | No standalone mapping; see scenario matrix |
 | `test_cloud_runtime_wires_tag_inventory_client.Session.client` (function) | 18 | client | 0 | No standalone mapping; see scenario matrix |
-| `test_operator_budget_ceiling_above_100_refused` (function) | 41 | test operator budget ceiling above 100 refused | 0 | No standalone mapping; see scenario matrix |
+| `test_explicit_bounded_ceiling_can_exceed_previous_operator_limit` (function) | 41 | test explicit bounded ceiling can exceed previous operator limit | 0 | No standalone mapping; see scenario matrix |
+| `_runtime_settings` (function) | 52 | runtime settings | 0 | No standalone mapping; see scenario matrix |
+| `_inert_clients` (function) | 67 | inert clients | 0 | No standalone mapping; see scenario matrix |
+| `_inert_clients.Session` (class) | 70 | Session | 0 | No standalone mapping; see scenario matrix |
+| `_inert_clients.Session.__init__` (function) | 71 | init | 0 | No standalone mapping; see scenario matrix |
+| `_inert_clients.Session.client` (function) | 74 | client | 0 | No standalone mapping; see scenario matrix |
+| `test_explicit_unlimited_authorization_bypasses_only_budget_admission` (function) | 80 | test explicit unlimited authorization bypasses only budget admission | 0 | No standalone mapping; see scenario matrix |
+| `test_explicit_unlimited_authorization_bypasses_only_budget_admission.<lambda@91:8>` (lambda) | 91 | Anonymous callback/expression; inspect its enclosing function and scenario tests. | 0 | No standalone mapping; see scenario matrix |
+| `test_default_bounded_runtime_still_refuses_unknown_costs` (function) | 112 | test default bounded runtime still refuses unknown costs | 0 | No standalone mapping; see scenario matrix |
+| `test_unlimited_does_not_authorize_creation_or_default_clients` (function) | 129 | test unlimited does not authorize creation or default clients | 0 | No standalone mapping; see scenario matrix |
+| `test_unlimited_does_not_authorize_creation_or_default_clients.<lambda@137:8>` (lambda) | 137 | Anonymous callback/expression; inspect its enclosing function and scenario tests. | 0 | No standalone mapping; see scenario matrix |
+| `test_unlimited_requires_actual_boolean_and_scoped_creation` (function) | 146 | test unlimited requires actual boolean and scoped creation | 0 | No standalone mapping; see scenario matrix |
+| `test_unlimited_preserves_existing_bounded_ledger` (function) | 159 | test unlimited preserves existing bounded ledger | 0 | No standalone mapping; see scenario matrix |
+| `test_unlimited_paused_scoped_runtime_keeps_creation_gate` (function) | 173 | test unlimited paused scoped runtime keeps creation gate | 0 | No standalone mapping; see scenario matrix |
 
 ## tests/unit/test_service_privacy.py
 

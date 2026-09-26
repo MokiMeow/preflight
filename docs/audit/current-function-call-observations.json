@@ -1,6 +1,6 @@
 {
   "revision": "0af9337028f49d09ecd91e5051859a9b412f871a",
-  "command": "py -3.12 -m uv run --locked python var/profile_current_unit_cloud.py",
+  "command": ".venv-clean/Scripts/python.exe var/profile_current_unit_cloud.py",
   "scope": "Call events for selected unit/cloud tests only. Excludes PG/MCP/JS and child processes. Coroutine resume may add events. Not branch coverage or every-function execution.",
   "test_exit_code": 0,
   "calls": [
@@ -1129,5 +1129,6 @@
       "function": "invariant_requirements",
       "calls": 23
     }
-  ]
+  ],
+  "earlier_uv_attempt": "Failed before execution because running preflight.exe prevented uv editable-install replacement; direct existing locked-environment interpreter then ran successfully."
 }
