@@ -18,7 +18,7 @@ from pathlib import Path
 from typing import Any
 from urllib.error import HTTPError, URLError
 from urllib.parse import urlencode, urlsplit
-from urllib.request import Request, urlopen
+from urllib.request import HTTPRedirectHandler, ProxyHandler, Request, build_opener
 
 TRUEFORGE_DEFAULT = "http://127.0.0.1:18790"
 GATEWAY_BASE_URL = "https://gateway.truefoundry.ai"
@@ -50,6 +50,13 @@ class BootstrapError(Exception):
         super().__init__(code)
         self.code = code
         self.exit_code = exit_code
+        self.operation: str | None = None
+        self.completed: tuple[str, ...] = ()
+
+
+class _NoRedirectHandler(HTTPRedirectHandler):
+    def redirect_request(self, req, fp, code, msg, headers, newurl):
+        return None
 
 
 def _reject_duplicate_keys(pairs: list[tuple[str, Any]]) -> dict[str, Any]:
@@ -156,6 +163,9 @@ class TrueForgeClient:
     def __init__(self, base_url: str, timeout_seconds: int) -> None:
         self.base_url = _validate_trueforge_url(base_url)
         self.timeout_seconds = timeout_seconds
+        # Provider and sandbox PUT bodies contain secrets. They must go only to
+        # the explicitly validated loopback host, regardless of host proxy env.
+        self.opener = build_opener(ProxyHandler({}), _NoRedirectHandler())
 
     def request(
         self,
@@ -175,11 +185,13 @@ class TrueForgeClient:
             headers["Content-Type"] = "application/json"
         request = Request(self.base_url + path, data=data, headers=headers, method=method)
         try:
-            with urlopen(request, timeout=self.timeout_seconds) as response:
+            with self.opener.open(request, timeout=self.timeout_seconds) as response:
                 if response.status != expected_status:
                     raise BootstrapError(f"TRUEFORGE_HTTP_{response.status}", 5)
                 raw = response.read(MAX_RESPONSE_BYTES + 1)
         except HTTPError as error:
+            if 300 <= error.code < 400:
+                raise BootstrapError("TRUEFORGE_REDIRECT_REFUSED", 5) from error
             raise BootstrapError(f"TRUEFORGE_HTTP_{error.code}", 5) from error
         except (URLError, TimeoutError, OSError) as error:
             raise BootstrapError("TRUEFORGE_UNAVAILABLE", 5) from error
@@ -276,6 +288,15 @@ def _save_agent(client: TrueForgeClient, payload: dict[str, Any]) -> tuple[str, 
     return action, saved_data["id"]
 
 
+def _step(operation: str, completed: list[str], callback):
+    try:
+        return callback()
+    except BootstrapError as error:
+        error.operation = operation
+        error.completed = tuple(completed)
+        raise
+
+
 def _plan(daytona_path: Path, stage: str) -> dict[str, Any]:
     return {
         "ok": False,
@@ -319,16 +340,34 @@ def execute(args: argparse.Namespace) -> dict[str, Any]:
     client = TrueForgeClient(base_url, args.timeout_seconds)
     completed: list[str] = []
     if daytona_key is not None:
-        client.request(
-            "PUT", "/api/v1/settings/sandbox-providers", body=_sandbox_body(daytona_key)
+        _step(
+            "daytona",
+            completed,
+            lambda: client.request(
+                "PUT", "/api/v1/settings/sandbox-providers", body=_sandbox_body(daytona_key)
+            ),
         )
         completed.append("daytona")
-    client.request("PUT", "/api/v1/settings/model-providers", body=_provider_body(gateway_key))
+    _step(
+        "model_provider",
+        completed,
+        lambda: client.request(
+            "PUT", "/api/v1/settings/model-providers", body=_provider_body(gateway_key)
+        ),
+    )
     completed.append("model_provider")
-    client.request("PUT", "/api/v1/settings/mcp-servers", body=_mcp_body())
+    _step(
+        "mcp_connector",
+        completed,
+        lambda: client.request("PUT", "/api/v1/settings/mcp-servers", body=_mcp_body()),
+    )
     completed.append("mcp_connector")
-    tools = client.request("GET", "/api/v1/mcp-servers/preflight/tools")
-    _verify_tools(tools)
+    tools = _step(
+        "mcp_tool_schema",
+        completed,
+        lambda: client.request("GET", "/api/v1/mcp-servers/preflight/tools"),
+    )
+    _step("mcp_tool_schema", completed, lambda: _verify_tools(tools))
     completed.append("mcp_tool_schema")
     if args.stage == "provider-mcp":
         return {
@@ -345,7 +384,9 @@ def execute(args: argparse.Namespace) -> dict[str, Any]:
             "model_turns": 0,
             "next_step": "Provide protected Daytona credentials and run --stage complete.",
         }
-    agent_action, agent_id = _save_agent(client, payload)
+    agent_action, agent_id = _step(
+        "agent", completed, lambda: _save_agent(client, payload)
+    )
     completed.append(f"agent_{agent_action}")
     return {
         "ok": True,
@@ -391,11 +432,16 @@ def main(argv: list[str] | None = None) -> int:
         print(json.dumps(result, separators=(",", ":")))
         return 0 if result.get("ok") else 4
     except BootstrapError as error:
+        failure: dict[str, Any] = {
+            "ok": False,
+            "state": "BLOCKED_EXTERNAL",
+            "error_code": error.code,
+        }
+        if error.operation is not None:
+            failure["operation"] = error.operation
+            failure["completed"] = list(error.completed)
         print(
-            json.dumps(
-                {"ok": False, "state": "BLOCKED_EXTERNAL", "error_code": error.code},
-                separators=(",", ":"),
-            )
+            json.dumps(failure, separators=(",", ":"))
         )
         return error.exit_code
     except Exception:

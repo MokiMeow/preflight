@@ -21,6 +21,7 @@ def _load_module():
 
 class _TrueForgeHandler(BaseHTTPRequestHandler):
     requests: list[tuple[str, str, dict[str, Any] | None]] = []
+    provider_redirect: str | None = None
 
     def log_message(self, format: str, *args: object) -> None:
         return
@@ -44,6 +45,11 @@ class _TrueForgeHandler(BaseHTTPRequestHandler):
     def do_PUT(self) -> None:
         body = self._body()
         self.requests.append(("PUT", self.path, body))
+        if self.path == "/api/v1/settings/model-providers" and self.provider_redirect:
+            self.send_response(307)
+            self.send_header("Location", self.provider_redirect)
+            self.end_headers()
+            return
         if self.path not in {
             "/api/v1/settings/sandbox-providers",
             "/api/v1/settings/model-providers",
@@ -81,14 +87,48 @@ class _TrueForgeHandler(BaseHTTPRequestHandler):
         self._reply(201, {"data": {"id": "agent-local-test"}})
 
 
+class _CaptureHandler(BaseHTTPRequestHandler):
+    requests: list[tuple[str, str]] = []
+
+    def log_message(self, format: str, *args: object) -> None:
+        return
+
+    def _record(self) -> None:
+        length = int(self.headers.get("Content-Length", "0"))
+        if length:
+            self.rfile.read(length)
+        self.requests.append((self.command, self.path))
+        self.send_response(502)
+        self.end_headers()
+
+    do_GET = _record
+    do_POST = _record
+    do_PUT = _record
+
+
 @pytest.fixture
 def fake_trueforge():
     _TrueForgeHandler.requests = []
+    _TrueForgeHandler.provider_redirect = None
     server = ThreadingHTTPServer(("127.0.0.1", 0), _TrueForgeHandler)
     thread = threading.Thread(target=server.serve_forever, daemon=True)
     thread.start()
     try:
         yield f"http://127.0.0.1:{server.server_port}", _TrueForgeHandler.requests
+    finally:
+        server.shutdown()
+        thread.join(timeout=5)
+        server.server_close()
+
+
+@pytest.fixture
+def capture_server():
+    _CaptureHandler.requests = []
+    server = ThreadingHTTPServer(("127.0.0.1", 0), _CaptureHandler)
+    thread = threading.Thread(target=server.serve_forever, daemon=True)
+    thread.start()
+    try:
+        yield f"http://127.0.0.1:{server.server_port}", _CaptureHandler.requests
     finally:
         server.shutdown()
         thread.join(timeout=5)
@@ -169,6 +209,73 @@ def test_provider_mcp_stage_continues_without_daytona_and_stops_before_agent(
         ("PUT", "/api/v1/settings/mcp-servers"),
         ("GET", "/api/v1/mcp-servers/preflight/tools"),
     ]
+
+
+def test_transport_ignores_proxy_environment(
+    tmp_path, fake_trueforge, capture_server, monkeypatch, capsys
+):
+    module = _load_module()
+    base_url, requests = fake_trueforge
+    proxy_url, proxy_requests = capture_server
+    gateway = tmp_path / "gateway.json"
+    _secret(gateway, "gateway-test-secret")
+    for name in ("HTTP_PROXY", "HTTPS_PROXY", "ALL_PROXY"):
+        monkeypatch.setenv(name, proxy_url)
+    monkeypatch.setenv("NO_PROXY", "")
+    code = module.main(
+        [
+            "--execute",
+            "--stage",
+            "provider-mcp",
+            "--trueforge-url",
+            base_url,
+            "--gateway-secret",
+            str(gateway),
+            "--agent-template",
+            str(ROOT / "config/trueforge-agent.example.json"),
+        ]
+    )
+    assert code == 0, capsys.readouterr().out
+    assert proxy_requests == []
+    assert requests
+
+
+def test_transport_refuses_redirect_without_forwarding_secret(
+    tmp_path, fake_trueforge, capture_server, capsys
+):
+    module = _load_module()
+    base_url, requests = fake_trueforge
+    receiver_url, receiver_requests = capture_server
+    _TrueForgeHandler.provider_redirect = receiver_url + "/capture"
+    gateway = tmp_path / "gateway.json"
+    _secret(gateway, "gateway-test-secret")
+    code = module.main(
+        [
+            "--execute",
+            "--stage",
+            "provider-mcp",
+            "--trueforge-url",
+            base_url,
+            "--gateway-secret",
+            str(gateway),
+            "--agent-template",
+            str(ROOT / "config/trueforge-agent.example.json"),
+        ]
+    )
+    assert code == 5
+    output_text = capsys.readouterr().out
+    assert "gateway-test-secret" not in output_text
+    assert json.loads(output_text) == {
+        "ok": False,
+        "state": "BLOCKED_EXTERNAL",
+        "error_code": "TRUEFORGE_REDIRECT_REFUSED",
+        "operation": "model_provider",
+        "completed": [],
+    }
+    assert [request[:2] for request in requests] == [
+        ("PUT", "/api/v1/settings/model-providers")
+    ]
+    assert receiver_requests == []
 
 
 def test_execute_sends_exact_safe_manifests_without_running_tools(
