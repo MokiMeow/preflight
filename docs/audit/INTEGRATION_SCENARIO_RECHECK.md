@@ -32,3 +32,7 @@ The lead owns the real native Gateway and MCP compatibility evidence for `get_ru
 `BLOCKED_EXTERNAL` until authorized credentials and quota are available. None of those facts
 changes the local classifications above, and this packet makes no saved-agent, Code Mode, RDS,
 approval, or source-write claim.
+
+## Lead closure of N21
+
+At frozen application9f75cc1, the actual installed MCP SDK test `tests/trueforge/test_status_transport_responsiveness.py` proves client.ping and typed get_run each respond within one second while a real service mutation lock remains held in MIGRATING. The mutator runs exactly once. Database cancellation/deadline tests retain unknown-outcome rules, and `tests/unit/test_status_cleanup_races.py` prevents stale cleanup observations overwriting a later selection. Independent Sol/high review passed29 focused tests; full integration passed485 tests in236.95s. N21 is locally verified; these local injected long-operation tests do not confer real AWS/Daytona acceptance. The earlier removed test-double approach remains excluded from evidence.

@@ -1,6 +1,6 @@
 # First-party file and function inventory
 
-Snapshot: `f86a80facf0a0542ff46f207e27996ab87aebfb9`. 134 files; 660 declared symbols.
+Snapshot: `e693c53e6b647a46bd16ef78f5a0723b90f8a080`. 152 files; 869 declared symbols.
 
 Every file below was read as UTF-8 and hashed. JSON and Python were parsed. This inventory is static accounting, not a claim that every branch/function was executed. Private ignored configuration and vendor/runtime directories are excluded. Audit outputs do not hash themselves.
 
@@ -136,7 +136,7 @@ configuration or documented contract. 225 bytes; JSON_PARSED. SHA-256: `983918df
 
 ## docs/00_PRODUCT_AND_DECISIONS.md
 
-configuration or documented contract. 18189 bytes; TEXT_INVENTORIED. SHA-256: `15e57c8ab36e3cbc566d2415025437dcce9aa7feb9e6b84dd24a8507304e3c68`.
+configuration or documented contract. 18944 bytes; TEXT_INVENTORIED. SHA-256: `dc250497aad2b8c5555e5d33d1faf4b4ceef6bf7d8f7f9f4a40118048d6eded7`.
 
 ## docs/01_ARCHITECTURE.md
 
@@ -172,7 +172,7 @@ configuration or documented contract. 25654 bytes; TEXT_INVENTORIED. SHA-256: `d
 
 ## docs/09_BUILD_STATUS.md
 
-configuration or documented contract. 23279 bytes; TEXT_INVENTORIED. SHA-256: `083f20004c02b72b856efc6e6f44092814f7f5e91bc446164e644a59fe203806`.
+configuration or documented contract. 25271 bytes; TEXT_INVENTORIED. SHA-256: `f1581c2b292f55f923b0562d193bc660be402a2a6e9d65ee450872c029f38780`.
 
 ## docs/10_CODEX_OPERATING_SYSTEM.md
 
@@ -180,7 +180,19 @@ configuration or documented contract. 21416 bytes; TEXT_INVENTORIED. SHA-256: `4
 
 ## docs/11_PROJECT_AUDIT.md
 
-configuration or documented contract. 17324 bytes; TEXT_INVENTORIED. SHA-256: `388d01352dc540bf2988af215955ac6e59d005e6b564a1e400b0f3eec28a2900`.
+configuration or documented contract. 17650 bytes; TEXT_INVENTORIED. SHA-256: `d38f5f9b4751d8b5a5e660fcddf56fad911dd72df78fab937f698b5d0d7ec0d5`.
+
+## evidence/connected/native-compatibility.json
+
+local historical report; not AWS/human proof. 1197 bytes; JSON_PARSED. SHA-256: `4a2d8af16c851573c7fafc2438d97136c19e79d77d6061e4d136c2a81a67b63d`.
+
+## evidence/connected/native-source-status.json
+
+local historical report; not AWS/human proof. 1770 bytes; JSON_PARSED. SHA-256: `7dcad7334aef11a48ce8c49d3392fbde26f4332398e8dbe833dcb04f03e7910c`.
+
+## evidence/connected/postdeployment-source-status.json
+
+local historical report; not AWS/human proof. 1737 bytes; JSON_PARSED. SHA-256: `d8450e439e9f0ff360b4d800c141312bf7e36784a31060b5b5d6998e43d3210e`.
 
 ## evidence/local/block-mcp-report.json
 
@@ -347,6 +359,41 @@ configuration or documented contract. 1827 bytes; TEXT_INVENTORIED. SHA-256: `d3
 
 immutable source requirement. 45711 bytes; TEXT_INVENTORIED. SHA-256: `5f607b53bd7c439c94e3f97d3826e24e441cb5d007863eca023313347533b6bf`.
 
+## scripts/configure_trueforge_host.py
+
+probe/build/audit tooling. 16901 bytes; PYTHON_AST_PARSED. SHA-256: `42d722a34215cfa0da6c50627fb71f60a257f6637dfbfeb670409ac947e132ec`.
+
+| Symbol | Line | Purpose | Unit/cloud calls at older commit | Review test references |
+|---|---:|---|---:|---|
+| `BootstrapError` (class) | 46 | A fixed, credential-safe bootstrap failure. | 0 | No standalone mapping; see scenario matrix |
+| `BootstrapError.__init__` (function) | 49 | init | 0 | No standalone mapping; see scenario matrix |
+| `_NoRedirectHandler` (class) | 57 | NoRedirectHandler | 0 | No standalone mapping; see scenario matrix |
+| `_NoRedirectHandler.redirect_request` (function) | 58 | redirect request | 0 | No standalone mapping; see scenario matrix |
+| `_reject_duplicate_keys` (function) | 62 | reject duplicate keys | 0 | No standalone mapping; see scenario matrix |
+| `_load_json` (function) | 71 | load json | 0 | No standalone mapping; see scenario matrix |
+| `_read_secret` (function) | 92 | read secret | 0 | No standalone mapping; see scenario matrix |
+| `_validate_trueforge_url` (function) | 111 | validate trueforge url | 0 | No standalone mapping; see scenario matrix |
+| `_agent_payload` (function) | 127 | agent payload | 0 | No standalone mapping; see scenario matrix |
+| `TrueForgeClient` (class) | 162 | TrueForgeClient | 0 | No standalone mapping; see scenario matrix |
+| `TrueForgeClient.__init__` (function) | 163 | init | 0 | No standalone mapping; see scenario matrix |
+| `TrueForgeClient.request` (function) | 170 | request | 0 | No standalone mapping; see scenario matrix |
+| `_provider_body` (function) | 209 | provider body | 0 | No standalone mapping; see scenario matrix |
+| `_mcp_body` (function) | 226 | mcp body | 0 | No standalone mapping; see scenario matrix |
+| `_sandbox_body` (function) | 237 | sandbox body | 0 | No standalone mapping; see scenario matrix |
+| `_verify_tools` (function) | 250 | verify tools | 0 | No standalone mapping; see scenario matrix |
+| `_save_agent` (function) | 263 | save agent | 0 | No standalone mapping; see scenario matrix |
+| `_step` (function) | 291 | step | 0 | No standalone mapping; see scenario matrix |
+| `_plan` (function) | 300 | plan | 0 | No standalone mapping; see scenario matrix |
+| `execute` (function) | 330 | execute | 0 | No standalone mapping; see scenario matrix |
+| `execute.<lambda@346:12>` (lambda) | 346 | Anonymous callback/expression; inspect its enclosing function and scenario tests. | 0 | No standalone mapping; see scenario matrix |
+| `execute.<lambda@354:8>` (lambda) | 354 | Anonymous callback/expression; inspect its enclosing function and scenario tests. | 0 | No standalone mapping; see scenario matrix |
+| `execute.<lambda@362:8>` (lambda) | 362 | Anonymous callback/expression; inspect its enclosing function and scenario tests. | 0 | No standalone mapping; see scenario matrix |
+| `execute.<lambda@368:8>` (lambda) | 368 | Anonymous callback/expression; inspect its enclosing function and scenario tests. | 0 | No standalone mapping; see scenario matrix |
+| `execute.<lambda@370:40>` (lambda) | 370 | Anonymous callback/expression; inspect its enclosing function and scenario tests. | 0 | No standalone mapping; see scenario matrix |
+| `execute.<lambda@388:28>` (lambda) | 388 | Anonymous callback/expression; inspect its enclosing function and scenario tests. | 0 | No standalone mapping; see scenario matrix |
+| `parse_args` (function) | 407 | parse args | 0 | No standalone mapping; see scenario matrix |
+| `main` (function) | 428 | main | 0 | No standalone mapping; see scenario matrix |
+
 ## scripts/generate_dependency_inventory.py
 
 probe/build/audit tooling. 6071 bytes; PYTHON_AST_PARSED. SHA-256: `7c39e2d8e09e837cbe36fbe0d8d279ed9d955ea3c88741a64e9b4fee82df1351`.
@@ -374,21 +421,22 @@ probe/build/audit tooling. 12613 bytes; PYTHON_AST_PARSED. SHA-256: `8c0c3d9a7cb
 
 ## scripts/probe_gateway_responses.mjs
 
-probe/build/audit tooling. 6278 bytes; JAVASCRIPT_SYNTAX_TREE_PARSED. SHA-256: `ccede409a050305777118cf75363b25c90e44ac1df854d25e9376f6343aa8768`.
+probe/build/audit tooling. 7514 bytes; JAVASCRIPT_SYNTAX_TREE_PARSED. SHA-256: `6043e0b804b7a7100e4581bd90d4301fcf9825a6f44d9d31c6bb11a1f0a91258`.
 
 | Symbol | Line | Purpose | Unit/cloud calls at older commit | Review test references |
 |---|---:|---|---:|---|
-| `SafeProbeError` (javascript class_declaration) | 16 | SafeProbeError | 0 | No standalone mapping; see scenario matrix |
-| `SafeProbeError.constructor` (javascript method_definition) | 17 | constructor | 0 | No standalone mapping; see scenario matrix |
-| `fail` (javascript function_declaration) | 24 | fail | 0 | No standalone mapping; see scenario matrix |
-| `validateConfig` (javascript function_declaration) | 28 | validateConfig | 0 | No standalone mapping; see scenario matrix |
-| `validateConfig.<anonymous@31:54>` (javascript arrow_function) | 31 | Anonymous callback; inspect enclosing definition. | 0 | No standalone mapping; see scenario matrix |
-| `loadConfig` (javascript function_declaration) | 74 | loadConfig | 0 | No standalone mapping; see scenario matrix |
-| `consume` (javascript function_declaration) | 91 | consume | 0 | No standalone mapping; see scenario matrix |
-| `providerFailure` (javascript function_declaration) | 96 | providerFailure | 0 | No standalone mapping; see scenario matrix |
-| `execute` (javascript function_declaration) | 108 | execute | 0 | No standalone mapping; see scenario matrix |
-| `main` (javascript function_declaration) | 174 | main | 0 | No standalone mapping; see scenario matrix |
-| `main.<anonymous@177:30>` (javascript arrow_function) | 177 | Anonymous callback; inspect enclosing definition. | 0 | No standalone mapping; see scenario matrix |
+| `SafeProbeError` (javascript class_declaration) | 17 | SafeProbeError | 0 | No standalone mapping; see scenario matrix |
+| `SafeProbeError.constructor` (javascript method_definition) | 18 | constructor | 0 | No standalone mapping; see scenario matrix |
+| `fail` (javascript function_declaration) | 25 | fail | 0 | No standalone mapping; see scenario matrix |
+| `validateConfig` (javascript function_declaration) | 29 | validateConfig | 0 | No standalone mapping; see scenario matrix |
+| `validateConfig.<anonymous@32:54>` (javascript arrow_function) | 32 | Anonymous callback; inspect enclosing definition. | 0 | No standalone mapping; see scenario matrix |
+| `loadConfig` (javascript function_declaration) | 81 | loadConfig | 0 | No standalone mapping; see scenario matrix |
+| `consume` (javascript function_declaration) | 98 | consume | 0 | No standalone mapping; see scenario matrix |
+| `providerFailure` (javascript function_declaration) | 113 | providerFailure | 0 | No standalone mapping; see scenario matrix |
+| `reasoningRequestOptions` (javascript function_declaration) | 125 | reasoningRequestOptions | 0 | No standalone mapping; see scenario matrix |
+| `execute` (javascript function_declaration) | 129 | execute | 0 | No standalone mapping; see scenario matrix |
+| `main` (javascript function_declaration) | 198 | main | 0 | No standalone mapping; see scenario matrix |
+| `main.<anonymous@201:30>` (javascript arrow_function) | 201 | Anonymous callback; inspect enclosing definition. | 0 | No standalone mapping; see scenario matrix |
 
 ## scripts/probe_mcp.py
 
@@ -402,14 +450,14 @@ probe/build/audit tooling. 965 bytes; PYTHON_AST_PARSED. SHA-256: `754d544a42d5f
 
 ## scripts/probe_trueforge_config.py
 
-probe/build/audit tooling. 4599 bytes; PYTHON_AST_PARSED. SHA-256: `dadd4d494e3531b654fd03d08367206760137ceee67b2f97e5593bc75a44f8b9`.
+probe/build/audit tooling. 4837 bytes; PYTHON_AST_PARSED. SHA-256: `3122a2d0dc97f5f80f3cd9c83a791696e009eb1aca1a6a0ebfae8617ea360e69`.
 
 | Symbol | Line | Purpose | Unit/cloud calls at older commit | Review test references |
 |---|---:|---|---:|---|
-| `ConfigProbeError` (class) | 26 | ConfigProbeError | 0 | No standalone mapping; see scenario matrix |
-| `_keys` (function) | 30 | keys | 0 | No standalone mapping; see scenario matrix |
-| `validate_agent_config` (function) | 35 | validate agent config | 0 | No standalone mapping; see scenario matrix |
-| `main` (function) | 102 | main | 0 | No standalone mapping; see scenario matrix |
+| `ConfigProbeError` (class) | 27 | ConfigProbeError | 0 | No standalone mapping; see scenario matrix |
+| `_keys` (function) | 31 | keys | 0 | No standalone mapping; see scenario matrix |
+| `validate_agent_config` (function) | 36 | validate agent config | 0 | No standalone mapping; see scenario matrix |
+| `main` (function) | 105 | main | 0 | No standalone mapping; see scenario matrix |
 
 ## scripts/probe_trueforge_mcp_client.mjs
 
@@ -435,7 +483,7 @@ probe/build/audit tooling. 1069 bytes; JAVASCRIPT_SYNTAX_TREE_PARSED. SHA-256: `
 
 ## scripts/responses_stream_state.mjs
 
-probe/build/audit tooling. 5500 bytes; JAVASCRIPT_SYNTAX_TREE_PARSED. SHA-256: `323f9da07b62e69f5829dc86e4b453e69fdbf7be4d06118dbca61416d396c143`.
+probe/build/audit tooling. 5703 bytes; JAVASCRIPT_SYNTAX_TREE_PARSED. SHA-256: `13810b9553e4faff97dbf1b98b625aa42ee8e4210e5bcb16d0ac3a4b7dd3ac5b`.
 
 | Symbol | Line | Purpose | Unit/cloud calls at older commit | Review test references |
 |---|---:|---|---:|---|
@@ -446,11 +494,11 @@ probe/build/audit tooling. 5500 bytes; JAVASCRIPT_SYNTAX_TREE_PARSED. SHA-256: `
 | `ToolCallState.constructor` (javascript method_definition) | 15 | constructor | 0 | No standalone mapping; see scenario matrix |
 | `ToolCallState.adopt` (javascript method_definition) | 25 | adopt | 0 | No standalone mapping; see scenario matrix |
 | `ToolCallState.accept` (javascript method_definition) | 43 | accept | 0 | No standalone mapping; see scenario matrix |
-| `ToolCallState.finish` (javascript method_definition) | 77 | finish | 0 | No standalone mapping; see scenario matrix |
-| `FinalTextState` (javascript class_declaration) | 109 | FinalTextState | 0 | No standalone mapping; see scenario matrix |
-| `FinalTextState.constructor` (javascript method_definition) | 110 | constructor | 0 | No standalone mapping; see scenario matrix |
-| `FinalTextState.accept` (javascript method_definition) | 117 | accept | 0 | No standalone mapping; see scenario matrix |
-| `FinalTextState.finish` (javascript method_definition) | 151 | finish | 0 | No standalone mapping; see scenario matrix |
+| `ToolCallState.finish` (javascript method_definition) | 81 | finish | 0 | No standalone mapping; see scenario matrix |
+| `FinalTextState` (javascript class_declaration) | 113 | FinalTextState | 0 | No standalone mapping; see scenario matrix |
+| `FinalTextState.constructor` (javascript method_definition) | 114 | constructor | 0 | No standalone mapping; see scenario matrix |
+| `FinalTextState.accept` (javascript method_definition) | 121 | accept | 0 | No standalone mapping; see scenario matrix |
+| `FinalTextState.finish` (javascript method_definition) | 155 | finish | 0 | No standalone mapping; see scenario matrix |
 
 ## scripts/verify_distribution.py
 
@@ -487,7 +535,7 @@ implementation. 3492 bytes; PYTHON_AST_PARSED. SHA-256: `672980417b293f7d160e95d
 
 ## src/preflight/aws_rds.py
 
-implementation. 31440 bytes; PYTHON_AST_PARSED. SHA-256: `b11b6c04559cfba938c7defbeab572596939c92cd9734ef0ebd6113c948036ff`.
+implementation. 34876 bytes; PYTHON_AST_PARSED. SHA-256: `682c699924b4ce0acdb0e03f40182afb7bd27aa98b0a1ee228273444cf850248`.
 
 | Symbol | Line | Purpose | Unit/cloud calls at older commit | Review test references |
 |---|---:|---|---:|---|
@@ -500,45 +548,47 @@ implementation. 31440 bytes; PYTHON_AST_PARSED. SHA-256: `b11b6c04559cfba938c7de
 | `RdsAdapter.__init__` (function) | 103 | init | 49 | test_rds.py; test_rds_reconciliation.py; test_inventory.py; test_storage.py |
 | `RdsAdapter._resource_registry` (function) | 121 | resource registry | 15 | test_rds.py; test_rds_reconciliation.py; test_inventory.py; test_storage.py |
 | `RdsAdapter.owned_resource_inventory` (function) | 138 | Doctor metadata only: paginated owned tags plus fresh exact-resource reads. | 12 | test_rds.py; test_rds_reconciliation.py; test_inventory.py; test_storage.py |
-| `RdsAdapter.owned_resource_inventory.<lambda@237:27>` (lambda) | 237 | Anonymous callback/expression; inspect its enclosing function and scenario tests. | 0 | No standalone mapping; see scenario matrix |
-| `RdsAdapter._enforce_live_inventory` (function) | 250 | enforce live inventory | 8 | test_rds.py; test_rds_reconciliation.py; test_inventory.py; test_storage.py |
-| `RdsAdapter._call` (function) | 275 | call | 227 | test_rds.py; test_rds_reconciliation.py; test_inventory.py; test_storage.py |
-| `RdsAdapter._identity` (function) | 304 | identity | 84 | test_rds.py; test_rds_reconciliation.py; test_inventory.py; test_storage.py |
-| `RdsAdapter._arn` (function) | 309 | arn | 65 | test_rds.py; test_rds_reconciliation.py; test_inventory.py; test_storage.py |
-| `RdsAdapter._tags` (function) | 317 | tags | 51 | test_rds.py; test_rds_reconciliation.py; test_inventory.py; test_storage.py |
-| `RdsAdapter._owned` (function) | 325 | owned | 15 | test_rds.py; test_rds_reconciliation.py; test_inventory.py; test_storage.py |
-| `RdsAdapter._intent` (function) | 330 | intent | 79 | test_rds.py; test_rds_reconciliation.py; test_inventory.py; test_storage.py |
-| `RdsAdapter._engine_encryption` (function) | 350 | engine encryption | 56 | test_rds.py; test_rds_reconciliation.py; test_inventory.py; test_storage.py |
-| `RdsAdapter._instance` (function) | 367 | instance | 48 | test_rds.py; test_rds_reconciliation.py; test_inventory.py; test_storage.py |
-| `RdsAdapter._observation` (function) | 385 | observation | 40 | test_rds.py; test_rds_reconciliation.py; test_inventory.py; test_storage.py |
-| `RdsAdapter.inspect_source` (function) | 423 | inspect source | 36 | test_rds.py; test_rds_reconciliation.py; test_inventory.py; test_storage.py |
-| `RdsAdapter._snapshot` (function) | 440 | snapshot | 26 | test_rds.py; test_rds_reconciliation.py; test_inventory.py; test_storage.py |
-| `RdsAdapter.inspect_snapshot` (function) | 454 | inspect snapshot | 19 | test_rds.py; test_rds_reconciliation.py; test_inventory.py; test_storage.py |
-| `RdsAdapter.inspect_clone` (function) | 461 | inspect clone | 12 | test_rds.py; test_rds_reconciliation.py; test_inventory.py; test_storage.py |
-| `RdsAdapter._creation` (function) | 490 | creation | 13 | test_rds.py; test_rds_reconciliation.py; test_inventory.py; test_storage.py |
-| `RdsAdapter.ensure_snapshot` (function) | 497 | ensure snapshot | 9 | test_rds.py; test_rds_reconciliation.py; test_inventory.py; test_storage.py |
-| `RdsAdapter.ensure_clone` (function) | 525 | ensure clone | 4 | test_rds.py; test_rds_reconciliation.py; test_inventory.py; test_storage.py |
-| `RdsAdapter.verify_recovery_snapshot` (function) | 567 | verify recovery snapshot | 2 | test_rds.py; test_rds_reconciliation.py; test_inventory.py; test_storage.py |
-| `RdsAdapter.cleanup` (function) | 595 | cleanup | 15 | test_rds.py; test_rds_reconciliation.py; test_inventory.py; test_storage.py |
-| `RdsAdapter.observe_cleanup` (function) | 684 | Read-only AWS reconciliation; never issues another deletion request. | 4 | test_rds.py; test_rds_reconciliation.py; test_inventory.py; test_storage.py |
+| `RdsAdapter.owned_resource_inventory.<lambda@263:27>` (lambda) | 263 | Anonymous callback/expression; inspect its enclosing function and scenario tests. | 0 | No standalone mapping; see scenario matrix |
+| `RdsAdapter.owned_resource_inventory.<lambda@267:70>` (lambda) | 267 | Anonymous callback/expression; inspect its enclosing function and scenario tests. | 0 | No standalone mapping; see scenario matrix |
+| `RdsAdapter._enforce_live_inventory` (function) | 277 | enforce live inventory | 8 | test_rds.py; test_rds_reconciliation.py; test_inventory.py; test_storage.py |
+| `RdsAdapter._call` (function) | 302 | call | 227 | test_rds.py; test_rds_reconciliation.py; test_inventory.py; test_storage.py |
+| `RdsAdapter._identity` (function) | 331 | identity | 84 | test_rds.py; test_rds_reconciliation.py; test_inventory.py; test_storage.py |
+| `RdsAdapter._arn` (function) | 336 | arn | 65 | test_rds.py; test_rds_reconciliation.py; test_inventory.py; test_storage.py |
+| `RdsAdapter._tags` (function) | 344 | tags | 51 | test_rds.py; test_rds_reconciliation.py; test_inventory.py; test_storage.py |
+| `RdsAdapter._owned` (function) | 352 | owned | 15 | test_rds.py; test_rds_reconciliation.py; test_inventory.py; test_storage.py |
+| `RdsAdapter._intent` (function) | 357 | intent | 79 | test_rds.py; test_rds_reconciliation.py; test_inventory.py; test_storage.py |
+| `RdsAdapter._engine_encryption` (function) | 377 | engine encryption | 56 | test_rds.py; test_rds_reconciliation.py; test_inventory.py; test_storage.py |
+| `RdsAdapter._instance` (function) | 394 | instance | 48 | test_rds.py; test_rds_reconciliation.py; test_inventory.py; test_storage.py |
+| `RdsAdapter._observation` (function) | 412 | observation | 40 | test_rds.py; test_rds_reconciliation.py; test_inventory.py; test_storage.py |
+| `RdsAdapter.inspect_source` (function) | 450 | inspect source | 36 | test_rds.py; test_rds_reconciliation.py; test_inventory.py; test_storage.py |
+| `RdsAdapter._automatic_source_backup` (function) | 467 | Observe only AWS-managed backups of the exact source, never run resources. | 0 | No standalone mapping; see scenario matrix |
+| `RdsAdapter._snapshot` (function) | 510 | snapshot | 26 | test_rds.py; test_rds_reconciliation.py; test_inventory.py; test_storage.py |
+| `RdsAdapter.inspect_snapshot` (function) | 524 | inspect snapshot | 19 | test_rds.py; test_rds_reconciliation.py; test_inventory.py; test_storage.py |
+| `RdsAdapter.inspect_clone` (function) | 531 | inspect clone | 12 | test_rds.py; test_rds_reconciliation.py; test_inventory.py; test_storage.py |
+| `RdsAdapter._creation` (function) | 560 | creation | 13 | test_rds.py; test_rds_reconciliation.py; test_inventory.py; test_storage.py |
+| `RdsAdapter.ensure_snapshot` (function) | 567 | ensure snapshot | 9 | test_rds.py; test_rds_reconciliation.py; test_inventory.py; test_storage.py |
+| `RdsAdapter.ensure_clone` (function) | 595 | ensure clone | 4 | test_rds.py; test_rds_reconciliation.py; test_inventory.py; test_storage.py |
+| `RdsAdapter.verify_recovery_snapshot` (function) | 637 | verify recovery snapshot | 2 | test_rds.py; test_rds_reconciliation.py; test_inventory.py; test_storage.py |
+| `RdsAdapter.cleanup` (function) | 665 | cleanup | 15 | test_rds.py; test_rds_reconciliation.py; test_inventory.py; test_storage.py |
+| `RdsAdapter.observe_cleanup` (function) | 759 | Read-only AWS reconciliation; never issues another deletion request. | 4 | test_rds.py; test_rds_reconciliation.py; test_inventory.py; test_storage.py |
 
 ## src/preflight/cli.py
 
-implementation. 6389 bytes; PYTHON_AST_PARSED. SHA-256: `7a1cbc38491edddac0df1beace0411fc5d0aea0379daefbc975af6ef7e0cc1ad`.
+implementation. 6472 bytes; PYTHON_AST_PARSED. SHA-256: `0acdafc5a527b2fa8b90faf79a3340f86f494a8972a9cdc0083bbde076e31d1c`.
 
 | Symbol | Line | Purpose | Unit/cloud calls at older commit | Review test references |
 |---|---:|---|---:|---|
 | `doctor` (function) | 27 | doctor | 0 | No standalone mapping; see scenario matrix |
-| `intake` (function) | 53 | intake | 0 | No standalone mapping; see scenario matrix |
-| `serve` (function) | 94 | serve | 0 | No standalone mapping; see scenario matrix |
-| `verify_evidence` (function) | 115 | verify evidence | 0 | No standalone mapping; see scenario matrix |
-| `export_evidence` (function) | 129 | export evidence | 0 | No standalone mapping; see scenario matrix |
-| `verify_local` (function) | 152 | verify local | 0 | No standalone mapping; see scenario matrix |
-| `list_resources` (function) | 164 | list resources | 0 | No standalone mapping; see scenario matrix |
+| `intake` (function) | 54 | intake | 0 | No standalone mapping; see scenario matrix |
+| `serve` (function) | 95 | serve | 0 | No standalone mapping; see scenario matrix |
+| `verify_evidence` (function) | 116 | verify evidence | 0 | No standalone mapping; see scenario matrix |
+| `export_evidence` (function) | 130 | export evidence | 0 | No standalone mapping; see scenario matrix |
+| `verify_local` (function) | 153 | verify local | 0 | No standalone mapping; see scenario matrix |
+| `list_resources` (function) | 165 | list resources | 0 | No standalone mapping; see scenario matrix |
 
 ## src/preflight/config.py
 
-implementation. 3449 bytes; PYTHON_AST_PARSED. SHA-256: `03338d1981bb4ec8ce1f455361393721a9b385afd796ca88603d20a1eca914c0`.
+implementation. 6161 bytes; PYTHON_AST_PARSED. SHA-256: `613b8f2890ad1e22c586079c70cd7bc6a0f018ffe5095b3aa7878d69e1ee1e07`.
 
 | Symbol | Line | Purpose | Unit/cloud calls at older commit | Review test references |
 |---|---:|---|---:|---|
@@ -547,6 +597,7 @@ implementation. 3449 bytes; PYTHON_AST_PARSED. SHA-256: `03338d1981bb4ec8ce1f455
 | `Settings.authorization_dependencies` (function) | 40 | authorization dependencies | 4 | No standalone mapping; see scenario matrix |
 | `load_settings` (function) | 55 | load settings | 0 | No standalone mapping; see scenario matrix |
 | `readiness` (function) | 62 | readiness | 0 | No standalone mapping; see scenario matrix |
+| `state_storage_status` (function) | 84 | Read-only local diagnostics; empty state is never proof of no AWS resources. | 0 | No standalone mapping; see scenario matrix |
 
 ## src/preflight/db.py
 
@@ -565,22 +616,24 @@ implementation. 17718 bytes; PYTHON_AST_PARSED. SHA-256: `70b63e5a6d7c814aa16a03
 
 ## src/preflight/evidence.py
 
-implementation. 12737 bytes; PYTHON_AST_PARSED. SHA-256: `1c66ccac35641a7d39c074672d700e0b6eb94e43e1d38f644edc0f44be2e05f7`.
+implementation. 13766 bytes; PYTHON_AST_PARSED. SHA-256: `ba40728e644defebc68851b9f8663ddffa9d74fe75f4332390f72f68b2d61ce0`.
 
 | Symbol | Line | Purpose | Unit/cloud calls at older commit | Review test references |
 |---|---:|---|---:|---|
-| `canonical` (function) | 24 | canonical | 9 | tests/unit/test_evidence.py::test_type_tags_are_distinct |
-| `typed_value` (function) | 30 | typed value | 18 | tests/unit/test_evidence.py::test_type_tags_are_distinct; tests/unit/test_evidence.py::test_utc_microseconds; tests/unit/test_evidence.py::test_unsupported_no_stringification |
-| `_digest` (function) | 42 | digest | 6 | tests/unit/test_evidence.py::test_domain_length_and_order |
-| `_root` (function) | 51 | root | 2 | tests/unit/test_evidence.py::test_domain_length_and_order |
-| `EvidenceBundle` (class) | 57 | Intentionally not a Pydantic/dataclass model: never JSON serialize this object. | 1 | tests/unit/test_evidence.py::test_private_bundle_not_serializable |
-| `EvidenceBundle.__init__` (function) | 62 | init | 1 | Indirect integration coverage through parent API; standalone boundary proof absent |
-| `EvidenceBundle.__repr__` (function) | 67 | repr | 1 | Indirect integration coverage through parent API; standalone boundary proof absent |
-| `_capture` (function) | 71 | capture | 0 | Indirect integration coverage through parent API; standalone boundary proof absent |
-| `capture_evidence` (function) | 150 | Fresh baselines use one read-only RR snapshot; locked apply callbacks reuse theirs. | 0 | tests/postgres/test_database.py::test_bad_rolls_back_complete_baseline; tests/postgres/test_database.py::test_good_commits_real_notnull; tests/postgres/test_database.py::test_wrong_data_committed_then_block; tests/postgres/test_database.py::test_source_precommit_wrong_data_rolls_back; tests/postgres/test_database.py::test_multiple_statement_failure_rolls_back_first; tests/postgres/test_database.py::test_unasserted_existing_column_and_explicit_control; tests/postgres/test_database.py::test_new_column_null_assertion; tests/postgres/test_database.py::test_zero_nulls_is_not_notnull; tests/postgres/test_database.py::test_changed_keys_and_order_and_full_drift; tests/postgres/test_database.py::test_scan_budget_and_huge_cell; tests/postgres/test_database.py::test_whole_deadline_precommit; tests/postgres/test_database.py::test_repeatable_read_snapshot_survives_concurrent_writer; tests/postgres/test_database.py::test_commit_response_loss_is_unknown_not_rollback; tests/postgres/test_database.py::test_connection_loss_before_commit_is_unknown; tests/postgres/test_database.py::test_legacy_missing_schema_is_incomplete; tests/postgres/test_database.py::test_whole_script_deadline_across_quick_updates; tests/postgres/test_database.py::test_separate_readonly_role_cannot_migrate; tests/postgres/test_seed_demo.py::test_fresh_fixture_roles_and_runtime_evidence |
-| `baseline_matches` (function) | 175 | baseline matches | 0 | tests/postgres/test_database.py::test_bad_rolls_back_complete_baseline; tests/postgres/test_database.py::test_source_precommit_wrong_data_rolls_back; tests/postgres/test_database.py::test_multiple_statement_failure_rolls_back_first; tests/postgres/test_database.py::test_unasserted_existing_column_and_explicit_control; tests/postgres/test_database.py::test_changed_keys_and_order_and_full_drift; tests/postgres/test_database.py::test_whole_deadline_precommit; tests/postgres/test_database.py::test_repeatable_read_snapshot_survives_concurrent_writer; tests/postgres/test_database.py::test_connection_loss_before_commit_is_unknown; tests/postgres/test_database.py::test_whole_script_deadline_across_quick_updates; tests/postgres/test_database.py::test_separate_readonly_role_cannot_migrate |
-| `compare_evidence` (function) | 183 | compare evidence | 0 | tests/postgres/test_database.py::test_good_commits_real_notnull; tests/postgres/test_database.py::test_wrong_data_committed_then_block; tests/postgres/test_database.py::test_source_precommit_wrong_data_rolls_back; tests/postgres/test_database.py::test_unasserted_existing_column_and_explicit_control; tests/postgres/test_database.py::test_new_column_null_assertion; tests/postgres/test_database.py::test_zero_nulls_is_not_notnull; tests/postgres/test_database.py::test_changed_keys_and_order_and_full_drift; tests/postgres/test_database.py::test_legacy_missing_schema_is_incomplete |
-| `compare_evidence.record` (function) | 188 | record | 0 | Indirect integration coverage through parent API; standalone boundary proof absent |
+| `canonical` (function) | 26 | canonical | 9 | tests/unit/test_evidence.py::test_type_tags_are_distinct |
+| `typed_value` (function) | 32 | typed value | 18 | tests/unit/test_evidence.py::test_type_tags_are_distinct; tests/unit/test_evidence.py::test_utc_microseconds; tests/unit/test_evidence.py::test_unsupported_no_stringification |
+| `_digest` (function) | 44 | digest | 6 | tests/unit/test_evidence.py::test_domain_length_and_order |
+| `_root` (function) | 53 | root | 2 | tests/unit/test_evidence.py::test_domain_length_and_order |
+| `EvidenceBundle` (class) | 59 | Intentionally not a Pydantic/dataclass model: never JSON serialize this object. | 1 | tests/unit/test_evidence.py::test_private_bundle_not_serializable |
+| `EvidenceBundle.__init__` (function) | 64 | init | 1 | Indirect integration coverage through parent API; standalone boundary proof absent |
+| `EvidenceBundle.__repr__` (function) | 69 | repr | 1 | Indirect integration coverage through parent API; standalone boundary proof absent |
+| `_capture` (function) | 73 | capture | 0 | Indirect integration coverage through parent API; standalone boundary proof absent |
+| `capture_evidence` (function) | 160 | Fresh baselines use one read-only RR snapshot; locked apply callbacks reuse theirs. | 0 | tests/postgres/test_database.py::test_bad_rolls_back_complete_baseline; tests/postgres/test_database.py::test_good_commits_real_notnull; tests/postgres/test_database.py::test_wrong_data_committed_then_block; tests/postgres/test_database.py::test_source_precommit_wrong_data_rolls_back; tests/postgres/test_database.py::test_multiple_statement_failure_rolls_back_first; tests/postgres/test_database.py::test_unasserted_existing_column_and_explicit_control; tests/postgres/test_database.py::test_new_column_null_assertion; tests/postgres/test_database.py::test_zero_nulls_is_not_notnull; tests/postgres/test_database.py::test_changed_keys_and_order_and_full_drift; tests/postgres/test_database.py::test_scan_budget_and_huge_cell; tests/postgres/test_database.py::test_whole_deadline_precommit; tests/postgres/test_database.py::test_repeatable_read_snapshot_survives_concurrent_writer; tests/postgres/test_database.py::test_commit_response_loss_is_unknown_not_rollback; tests/postgres/test_database.py::test_connection_loss_before_commit_is_unknown; tests/postgres/test_database.py::test_legacy_missing_schema_is_incomplete; tests/postgres/test_database.py::test_whole_script_deadline_across_quick_updates; tests/postgres/test_database.py::test_separate_readonly_role_cannot_migrate; tests/postgres/test_seed_demo.py::test_fresh_fixture_roles_and_runtime_evidence |
+| `capture_evidence.cancel` (function) | 172 | cancel | 0 | No standalone mapping; see scenario matrix |
+| `capture_evidence.check_deadline` (function) | 179 | check deadline | 0 | No standalone mapping; see scenario matrix |
+| `baseline_matches` (function) | 212 | baseline matches | 0 | tests/postgres/test_database.py::test_bad_rolls_back_complete_baseline; tests/postgres/test_database.py::test_source_precommit_wrong_data_rolls_back; tests/postgres/test_database.py::test_multiple_statement_failure_rolls_back_first; tests/postgres/test_database.py::test_unasserted_existing_column_and_explicit_control; tests/postgres/test_database.py::test_changed_keys_and_order_and_full_drift; tests/postgres/test_database.py::test_whole_deadline_precommit; tests/postgres/test_database.py::test_repeatable_read_snapshot_survives_concurrent_writer; tests/postgres/test_database.py::test_connection_loss_before_commit_is_unknown; tests/postgres/test_database.py::test_whole_script_deadline_across_quick_updates; tests/postgres/test_database.py::test_separate_readonly_role_cannot_migrate |
+| `compare_evidence` (function) | 220 | compare evidence | 0 | tests/postgres/test_database.py::test_good_commits_real_notnull; tests/postgres/test_database.py::test_wrong_data_committed_then_block; tests/postgres/test_database.py::test_source_precommit_wrong_data_rolls_back; tests/postgres/test_database.py::test_unasserted_existing_column_and_explicit_control; tests/postgres/test_database.py::test_new_column_null_assertion; tests/postgres/test_database.py::test_zero_nulls_is_not_notnull; tests/postgres/test_database.py::test_changed_keys_and_order_and_full_drift; tests/postgres/test_database.py::test_legacy_missing_schema_is_incomplete |
+| `compare_evidence.record` (function) | 225 | record | 0 | Indirect integration coverage through parent API; standalone boundary proof absent |
 
 ## src/preflight/jobs.py
 
@@ -694,7 +747,7 @@ implementation. 10462 bytes; PYTHON_AST_PARSED. SHA-256: `9fb3860af1b2a09d3a762d
 
 ## src/preflight/runtime.py
 
-implementation. 10557 bytes; PYTHON_AST_PARSED. SHA-256: `7823223d05b1ec687f83270a6faac701c65b2acdeea095cc1e8e7a0880d4e3a8`.
+implementation. 11480 bytes; PYTHON_AST_PARSED. SHA-256: `0f053a1821754119e0fb267b5c879dd1d2a0f7ab06b075625b1c0b848e73cb04`.
 
 | Symbol | Line | Purpose | Unit/cloud calls at older commit | Review test references |
 |---|---:|---|---:|---|
@@ -726,7 +779,7 @@ implementation. 2953 bytes; PYTHON_AST_PARSED. SHA-256: `501bcc8491913c104fad941
 
 ## src/preflight/service.py
 
-implementation. 38287 bytes; PYTHON_AST_PARSED. SHA-256: `a476e94e833da5853394858491660acfc7334aa63dd7b890cc3a7a2b65d4d8d9`.
+implementation. 39130 bytes; PYTHON_AST_PARSED. SHA-256: `69666885949f27fdeb6903df956a99d0aee0ef0d784ef2b1aaf7d868fb2bb05c`.
 
 | Symbol | Line | Purpose | Unit/cloud calls at older commit | Review test references |
 |---|---:|---|---:|---|
@@ -736,22 +789,22 @@ implementation. 38287 bytes; PYTHON_AST_PARSED. SHA-256: `a476e94e833da585339485
 | `RehearsalService.__init__` (function) | 40 | init | 3 | No standalone mapping; see scenario matrix |
 | `RehearsalService.lock` (function) | 66 | lock | 1 | No standalone mapping; see scenario matrix |
 | `RehearsalService.call` (function) | 70 | call | 3 | No standalone mapping; see scenario matrix |
-| `RehearsalService.candidate` (function) | 143 | candidate | 0 | No standalone mapping; see scenario matrix |
-| `RehearsalService.register_candidate` (function) | 155 | register candidate | 0 | No standalone mapping; see scenario matrix |
-| `RehearsalService.start_rehearsal` (function) | 260 | start rehearsal | 1 | No standalone mapping; see scenario matrix |
-| `RehearsalService._source_guard` (function) | 284 | source guard | 1 | No standalone mapping; see scenario matrix |
-| `RehearsalService.get_run` (function) | 292 | get run | 0 | No standalone mapping; see scenario matrix |
-| `RehearsalService.get_source_status` (function) | 372 | get source status | 0 | No standalone mapping; see scenario matrix |
-| `RehearsalService.capture_baseline` (function) | 443 | capture baseline | 0 | No standalone mapping; see scenario matrix |
-| `RehearsalService.apply_to_clone` (function) | 494 | apply to clone | 0 | No standalone mapping; see scenario matrix |
-| `RehearsalService._complete_checks` (function) | 545 | complete checks | 0 | No standalone mapping; see scenario matrix |
-| `RehearsalService.validate_rehearsal` (function) | 575 | validate rehearsal | 0 | No standalone mapping; see scenario matrix |
-| `RehearsalService._publish_report` (function) | 665 | Resume a durable sealed publication without remeasuring or changing timestamps. | 0 | No standalone mapping; see scenario matrix |
-| `RehearsalService.get_report` (function) | 694 | get report | 0 | No standalone mapping; see scenario matrix |
-| `RehearsalService.apply_to_demo_source` (function) | 722 | apply to demo source | 0 | No standalone mapping; see scenario matrix |
-| `RehearsalService.apply_to_demo_source.precheck` (function) | 761 | precheck | 0 | No standalone mapping; see scenario matrix |
-| `RehearsalService.apply_to_demo_source.postcheck` (function) | 778 | postcheck | 0 | No standalone mapping; see scenario matrix |
-| `RehearsalService.cleanup_run` (function) | 840 | cleanup run | 0 | No standalone mapping; see scenario matrix |
+| `RehearsalService.candidate` (function) | 154 | candidate | 0 | No standalone mapping; see scenario matrix |
+| `RehearsalService.register_candidate` (function) | 166 | register candidate | 0 | No standalone mapping; see scenario matrix |
+| `RehearsalService.start_rehearsal` (function) | 264 | start rehearsal | 1 | No standalone mapping; see scenario matrix |
+| `RehearsalService._source_guard` (function) | 288 | source guard | 1 | No standalone mapping; see scenario matrix |
+| `RehearsalService.get_run` (function) | 296 | get run | 0 | No standalone mapping; see scenario matrix |
+| `RehearsalService.get_source_status` (function) | 385 | get source status | 0 | No standalone mapping; see scenario matrix |
+| `RehearsalService.capture_baseline` (function) | 454 | capture baseline | 0 | No standalone mapping; see scenario matrix |
+| `RehearsalService.apply_to_clone` (function) | 505 | apply to clone | 0 | No standalone mapping; see scenario matrix |
+| `RehearsalService._complete_checks` (function) | 556 | complete checks | 0 | No standalone mapping; see scenario matrix |
+| `RehearsalService.validate_rehearsal` (function) | 586 | validate rehearsal | 0 | No standalone mapping; see scenario matrix |
+| `RehearsalService._publish_report` (function) | 676 | Resume a durable sealed publication without remeasuring or changing timestamps. | 0 | No standalone mapping; see scenario matrix |
+| `RehearsalService.get_report` (function) | 705 | get report | 0 | No standalone mapping; see scenario matrix |
+| `RehearsalService.apply_to_demo_source` (function) | 733 | apply to demo source | 0 | No standalone mapping; see scenario matrix |
+| `RehearsalService.apply_to_demo_source.precheck` (function) | 772 | precheck | 0 | No standalone mapping; see scenario matrix |
+| `RehearsalService.apply_to_demo_source.postcheck` (function) | 789 | postcheck | 0 | No standalone mapping; see scenario matrix |
+| `RehearsalService.cleanup_run` (function) | 851 | cleanup run | 0 | No standalone mapping; see scenario matrix |
 
 ## src/preflight/sql_policy.py
 
@@ -811,6 +864,21 @@ test assertion. 41 bytes; PYTHON_AST_PARSED. SHA-256: `8fc5f88372436b335451eedf9
 ## tests/cloud/__init__.py
 
 test assertion. 52 bytes; PYTHON_AST_PARSED. SHA-256: `c8799d32531e088481f572f7fe300885d560376bbc8f0500d15b70167bbb4f13`.
+
+## tests/cloud/test_automatic_backups.py
+
+test assertion. 4875 bytes; PYTHON_AST_PARSED. SHA-256: `b9006f134bd498d34ef41667a8a1ffbebb763bae841cbd28026b24d389df4984`.
+
+| Symbol | Line | Purpose | Unit/cloud calls at older commit | Review test references |
+|---|---:|---|---:|---|
+| `automatic` (function) | 11 | automatic | 0 | No standalone mapping; see scenario matrix |
+| `describe` (function) | 20 | describe | 0 | No standalone mapping; see scenario matrix |
+| `test_automatic_source_backup_separate_from_disposable_inventory` (function) | 28 | test automatic source backup separate from disposable inventory | 0 | No standalone mapping; see scenario matrix |
+| `test_automatic_source_backup_fresh_boundary_checks` (function) | 49 | test automatic source backup fresh boundary checks | 0 | No standalone mapping; see scenario matrix |
+| `test_other_source_automatic_identifier_refused_before_describe` (function) | 71 | test other source automatic identifier refused before describe | 0 | No standalone mapping; see scenario matrix |
+| `test_unknown_manual_resource_still_blocks_with_automatic_backup` (function) | 78 | test unknown manual resource still blocks with automatic backup | 0 | No standalone mapping; see scenario matrix |
+| `test_unknown_clone_still_blocks_with_automatic_backup` (function) | 91 | test unknown clone still blocks with automatic backup | 0 | No standalone mapping; see scenario matrix |
+| `test_automatic_backup_does_not_exempt_tracked_manual_capacity` (function) | 112 | test automatic backup does not exempt tracked manual capacity | 0 | No standalone mapping; see scenario matrix |
 
 ## tests/cloud/test_bootstrap.py
 
@@ -904,7 +972,7 @@ test assertion. 13868 bytes; PYTHON_AST_PARSED. SHA-256: `2b5a4647182eb4527966f9
 
 ## tests/cloud/test_rds.py
 
-test assertion. 14904 bytes; PYTHON_AST_PARSED. SHA-256: `65d1013452919536c793ca290492d172da9cde631d592a11c6902b4d05610afe`.
+test assertion. 15744 bytes; PYTHON_AST_PARSED. SHA-256: `b580e41c54aef20f934892a3a8ca59283c794c391c5f833d1570b3aed5c27c9e`.
 
 | Symbol | Line | Purpose | Unit/cloud calls at older commit | Review test references |
 |---|---:|---|---:|---|
@@ -932,10 +1000,11 @@ test assertion. 14904 bytes; PYTHON_AST_PARSED. SHA-256: `65d1013452919536c793ca
 | `test_snapshot_collision_wrong_owner_blocks` (function) | 319 | test snapshot collision wrong owner blocks | 0 | No standalone mapping; see scenario matrix |
 | `test_cleanup_static_refusals_no_aws` (function) | 347 | test cleanup static refusals no aws | 0 | No standalone mapping; see scenario matrix |
 | `test_delete_exact_clone_then_observe_absence` (function) | 353 | test delete exact clone then observe absence | 0 | No standalone mapping; see scenario matrix |
-| `test_preflight_all_selections_before_any_delete` (function) | 372 | test preflight all selections before any delete | 0 | No standalone mapping; see scenario matrix |
-| `test_source_apply_attempt_retains_backup_without_independent_attestation` (function) | 382 | test source apply attempt retains backup without independent attestation | 0 | No standalone mapping; see scenario matrix |
-| `test_verified_preapply_independent_backup` (function) | 398 | test verified preapply independent backup | 0 | No standalone mapping; see scenario matrix |
-| `test_verified_preapply_independent_backup.<lambda@399:41>` (lambda) | 399 | Anonymous callback/expression; inspect its enclosing function and scenario tests. | 0 | No standalone mapping; see scenario matrix |
+| `test_approved_absent_cleanup_releases_only_selected_reservations` (function) | 376 | test approved absent cleanup releases only selected reservations | 0 | No standalone mapping; see scenario matrix |
+| `test_preflight_all_selections_before_any_delete` (function) | 394 | test preflight all selections before any delete | 0 | No standalone mapping; see scenario matrix |
+| `test_source_apply_attempt_retains_backup_without_independent_attestation` (function) | 404 | test source apply attempt retains backup without independent attestation | 0 | No standalone mapping; see scenario matrix |
+| `test_verified_preapply_independent_backup` (function) | 420 | test verified preapply independent backup | 0 | No standalone mapping; see scenario matrix |
+| `test_verified_preapply_independent_backup.<lambda@421:41>` (lambda) | 421 | Anonymous callback/expression; inspect its enclosing function and scenario tests. | 0 | No standalone mapping; see scenario matrix |
 
 ## tests/cloud/test_rds_reconciliation.py
 
@@ -949,6 +1018,17 @@ test assertion. 3033 bytes; PYTHON_AST_PARSED. SHA-256: `c93cbbf09284b1b089aacae
 | `test_throttle_is_sanitized_retryable` (function) | 47 | test throttle is sanitized retryable | 0 | No standalone mapping; see scenario matrix |
 | `test_cleanup_observation_frees_only_proven_absence` (function) | 59 | test cleanup observation frees only proven absence | 0 | No standalone mapping; see scenario matrix |
 | `test_missing_source_is_not_absent_clone` (function) | 79 | test missing source is not absent clone | 0 | No standalone mapping; see scenario matrix |
+
+## tests/cloud/test_remaining_rds_boundaries.py
+
+test assertion. 5606 bytes; PYTHON_AST_PARSED. SHA-256: `dd85cbd5dd79582e623a0923376b14f1596b46233052403e00f62b6b50b261ff`.
+
+| Symbol | Line | Purpose | Unit/cloud calls at older commit | Review test references |
+|---|---:|---|---:|---|
+| `test_lost_restore_ack_reopened_adapter_describes_exact_clone_without_second_restore` (function) | 20 | test lost restore ack reopened adapter describes exact clone without second restore | 0 | No standalone mapping; see scenario matrix |
+| `test_lost_restore_ack_reopened_adapter_describes_exact_clone_without_second_restore.lost_ack` (function) | 25 | lost ack | 0 | No standalone mapping; see scenario matrix |
+| `test_cleanup_collision_fresh_identity_tags_refuse_before_any_delete` (function) | 57 | test cleanup collision fresh identity tags refuse before any delete | 0 | No standalone mapping; see scenario matrix |
+| `test_distinct_processes_resume_pending_job_with_same_resource_identity` (function) | 95 | test distinct processes resume pending job with same resource identity | 0 | No standalone mapping; see scenario matrix |
 
 ## tests/cloud/test_storage.py
 
@@ -1054,6 +1134,81 @@ test assertion. 29294 bytes; PYTHON_AST_PARSED. SHA-256: `1ed840d04797624fe7db60
 | `test_precommit_explicit_passing_return_commits.check` (function) | 679 | check | 0 | No standalone mapping; see scenario matrix |
 | `test_aggregate_missing_extra_and_changed_rows_are_safe_counts` (function) | 694 | test aggregate missing extra and changed rows are safe counts | 0 | No standalone mapping; see scenario matrix |
 | `test_no_inherit_notnull_constraint_rejected` (function) | 715 | test no inherit notnull constraint rejected | 0 | No standalone mapping; see scenario matrix |
+
+## tests/postgres/test_remaining_catalog_boundaries.py
+
+test assertion. 13549 bytes; PYTHON_AST_PARSED. SHA-256: `b2ed934aa92c65f8796bbfef1090ed79a65399066729bfec7b09a871fa0792ca`.
+
+| Symbol | Line | Purpose | Unit/cloud calls at older commit | Review test references |
+|---|---:|---|---:|---|
+| `admin` (function) | 21 | admin | 0 | No standalone mapping; see scenario matrix |
+| `test_p11_p12_unsupported_catalog_capability_never_returns_evidence` (function) | 91 | test p11 p12 unsupported catalog capability never returns evidence | 0 | No standalone mapping; see scenario matrix |
+| `test_p11_enabled_event_trigger_rejected_without_firing_it` (function) | 100 | test p11 enabled event trigger rejected without firing it | 0 | No standalone mapping; see scenario matrix |
+| `test_p12_user_defined_operator_class_rejected` (function) | 111 | test p12 user defined operator class rejected | 0 | No standalone mapping; see scenario matrix |
+| `test_d09_missing_table_primary_key_or_preserved_column_is_specific` (function) | 129 | test d09 missing table primary key or preserved column is specific | 0 | No standalone mapping; see scenario matrix |
+| `test_d09_inaccessible_catalog_does_not_fabricate_metadata` (function) | 137 | test d09 inaccessible catalog does not fabricate metadata | 0 | No standalone mapping; see scenario matrix |
+| `test_d09_inaccessible_rows_do_not_become_zero_count` (function) | 146 | test d09 inaccessible rows do not become zero count | 0 | No standalone mapping; see scenario matrix |
+| `test_d09_missing_full_baseline_column_is_not_silently_omitted` (function) | 165 | test d09 missing full baseline column is not silently omitted | 0 | No standalone mapping; see scenario matrix |
+| `test_d10_serialized_budget_excludes_escape_expansion_overrun` (function) | 170 | test d10 serialized budget excludes escape expansion overrun | 0 | No standalone mapping; see scenario matrix |
+| `test_d10_whole_capture_deadline_includes_row_processing` (function) | 186 | test d10 whole capture deadline includes row processing | 0 | No standalone mapping; see scenario matrix |
+| `test_d10_whole_capture_deadline_includes_row_processing.SlowScan` (class) | 189 | SlowScan | 0 | No standalone mapping; see scenario matrix |
+| `test_d10_whole_capture_deadline_includes_row_processing.SlowScan.__init__` (function) | 190 | init | 0 | No standalone mapping; see scenario matrix |
+| `test_d10_whole_capture_deadline_includes_row_processing.SlowScan.__getattr__` (function) | 193 | getattr | 0 | No standalone mapping; see scenario matrix |
+| `test_d10_whole_capture_deadline_includes_row_processing.SlowScan.itersize` (function) | 197 | itersize | 0 | No standalone mapping; see scenario matrix |
+| `test_d10_whole_capture_deadline_includes_row_processing.SlowScan.itersize` (function) | 201 | itersize | 0 | No standalone mapping; see scenario matrix |
+| `test_d10_whole_capture_deadline_includes_row_processing.SlowScan.__enter__` (function) | 204 | enter | 0 | No standalone mapping; see scenario matrix |
+| `test_d10_whole_capture_deadline_includes_row_processing.SlowScan.__exit__` (function) | 208 | exit | 0 | No standalone mapping; see scenario matrix |
+| `test_d10_whole_capture_deadline_includes_row_processing.SlowScan.__iter__` (function) | 211 | iter | 0 | No standalone mapping; see scenario matrix |
+| `test_d10_whole_capture_deadline_includes_row_processing.SlowCapture` (class) | 221 | SlowCapture | 0 | No standalone mapping; see scenario matrix |
+| `test_d10_whole_capture_deadline_includes_row_processing.SlowCapture.__getattr__` (function) | 222 | getattr | 0 | No standalone mapping; see scenario matrix |
+| `test_d10_whole_capture_deadline_includes_row_processing.SlowCapture.cursor` (function) | 225 | cursor | 0 | No standalone mapping; see scenario matrix |
+| `test_d10_whole_capture_deadline_includes_catalog_processing` (function) | 246 | test d10 whole capture deadline includes catalog processing | 0 | No standalone mapping; see scenario matrix |
+| `test_d10_whole_capture_deadline_includes_catalog_processing.slow_catalog` (function) | 251 | slow catalog | 0 | No standalone mapping; see scenario matrix |
+| `test_d10_deadline_error_suppresses_private_underlying_exception` (function) | 263 | test d10 deadline error suppresses private underlying exception | 0 | No standalone mapping; see scenario matrix |
+| `test_d10_deadline_error_suppresses_private_underlying_exception.delayed_failure` (function) | 268 | delayed failure | 0 | No standalone mapping; see scenario matrix |
+| `test_d10_baseline_query_timeout_cannot_return_partial_evidence` (function) | 281 | test d10 baseline query timeout cannot return partial evidence | 0 | No standalone mapping; see scenario matrix |
+| `test_v28_all_equal_null_requires_actual_null_values` (function) | 296 | test v28 all equal null requires actual null values | 0 | No standalone mapping; see scenario matrix |
+| `test_v28_empty_table_missing_null_asserted_column_is_not_vacuously_passing` (function) | 310 | test v28 empty table missing null asserted column is not vacuously passing | 0 | No standalone mapping; see scenario matrix |
+
+## tests/postgres/test_remaining_state_races.py
+
+test assertion. 10247 bytes; PYTHON_AST_PARSED. SHA-256: `05c359ac346892d43a72a90e254c3af1483231f9978296f0b110524f619179e4`.
+
+| Symbol | Line | Purpose | Unit/cloud calls at older commit | Review test references |
+|---|---:|---|---:|---|
+| `ReservationRuntime` (class) | 28 | Reuse actual resource naming/reservation; never invoke provider creation. | 0 | No standalone mapping; see scenario matrix |
+| `ReservationRuntime.__init__` (function) | 31 | init | 0 | No standalone mapping; see scenario matrix |
+| `ReservationRuntime.advance_jobs` (function) | 35 | advance jobs | 0 | No standalone mapping; see scenario matrix |
+| `test_u06_simultaneous_service_starts_share_active_run_and_job_caps` (function) | 39 | test u06 simultaneous service starts share active run and job caps | 0 | No standalone mapping; see scenario matrix |
+| `test_u06_simultaneous_service_starts_share_active_run_and_job_caps.simultaneous_create` (function) | 60 | simultaneous create | 0 | No standalone mapping; see scenario matrix |
+| `test_u06_simultaneous_service_starts_share_active_run_and_job_caps.<lambda@69:20>` (lambda) | 69 | Anonymous callback/expression; inspect its enclosing function and scenario tests. | 0 | No standalone mapping; see scenario matrix |
+| `test_u06_simultaneous_job_reservations_enforce_retained_clone_cap` (function) | 96 | test u06 simultaneous job reservations enforce retained clone cap | 0 | No standalone mapping; see scenario matrix |
+| `test_u06_simultaneous_job_reservations_enforce_retained_clone_cap.reserve` (function) | 101 | reserve | 0 | No standalone mapping; see scenario matrix |
+| `test_u08_same_parent_race_publishes_one_revision_with_unchanged_full_baseline` (function) | 131 | test u08 same parent race publishes one revision with unchanged full baseline | 0 | No standalone mapping; see scenario matrix |
+| `test_u08_same_parent_race_publishes_one_revision_with_unchanged_full_baseline.simultaneous_publish` (function) | 146 | simultaneous publish | 0 | No standalone mapping; see scenario matrix |
+| `test_u08_same_parent_race_publishes_one_revision_with_unchanged_full_baseline.<lambda@155:20>` (lambda) | 155 | Anonymous callback/expression; inspect its enclosing function and scenario tests. | 0 | No standalone mapping; see scenario matrix |
+| `test_c13_actual_local_clone_deletion_retains_anchored_report_and_receipt` (function) | 186 | test c13 actual local clone deletion retains anchored report and receipt | 0 | No standalone mapping; see scenario matrix |
+| `test_c13_actual_local_clone_deletion_retains_anchored_report_and_receipt.cleanup` (function) | 204 | cleanup | 0 | No standalone mapping; see scenario matrix |
+
+## tests/postgres/test_remaining_transaction_boundaries.py
+
+test assertion. 16703 bytes; PYTHON_AST_PARSED. SHA-256: `08a2eaf99abed542a89cac4687b3d2f9145df461786fa8b96adc0dfc6c786a75`.
+
+| Symbol | Line | Purpose | Unit/cloud calls at older commit | Review test references |
+|---|---:|---|---:|---|
+| `revision_request` (function) | 19 | revision request | 0 | No standalone mapping; see scenario matrix |
+| `failed_rehearsal` (function) | 32 | failed rehearsal | 0 | No standalone mapping; see scenario matrix |
+| `test_d05_real_physical_row_order_changes_without_changing_roots` (function) | 43 | test d05 real physical row order changes without changing roots | 0 | No standalone mapping; see scenario matrix |
+| `test_d18_independent_table_and_index_oids_do_not_change_normalized_roots` (function) | 53 | test d18 independent table and index oids do not change normalized roots | 0 | No standalone mapping; see scenario matrix |
+| `test_d19_d20_revision_requires_private_maps_and_full_unchanged_baseline` (function) | 84 | test d19 d20 revision requires private maps and full unchanged baseline | 0 | No standalone mapping; see scenario matrix |
+| `test_a05_a07_source_drift_stales_before_migration` (function) | 114 | test a05 a07 source drift stales before migration | 0 | No standalone mapping; see scenario matrix |
+| `test_a11_same_and_new_request_ids_cannot_reexecute_committed_source` (function) | 154 | test a11 same and new request ids cannot reexecute committed source | 0 | No standalone mapping; see scenario matrix |
+| `test_a15_a16_restart_after_durable_intent_without_sql_never_replays` (function) | 169 | test a15 a16 restart after durable intent without sql never replays | 0 | No standalone mapping; see scenario matrix |
+| `test_d15_private_database_error_value_absent_from_tool_logs_and_reports` (function) | 193 | test d15 private database error value absent from tool logs and reports | 0 | No standalone mapping; see scenario matrix |
+| `test_a02_source_scope_refusal_precedes_writer` (function) | 227 | test a02 source scope refusal precedes writer | 0 | No standalone mapping; see scenario matrix |
+| `test_a03_approved_artifact_changes_refused_without_writer` (function) | 255 | test a03 approved artifact changes refused without writer | 0 | No standalone mapping; see scenario matrix |
+| `test_a04_ineligible_run_refused_without_writer` (function) | 297 | test a04 ineligible run refused without writer | 0 | No standalone mapping; see scenario matrix |
+| `test_a04_warn_with_passing_weak_checks_refuses_source_writer` (function) | 318 | test a04 warn with passing weak checks refuses source writer | 0 | No standalone mapping; see scenario matrix |
 
 ## tests/postgres/test_seed_demo.py
 
@@ -1169,7 +1324,7 @@ test assertion. 769 bytes; PYTHON_AST_PARSED. SHA-256: `c2ddd5f1dcd16f3bd5b0aecb
 
 ## tests/trueforge/test_config.py
 
-test assertion. 1820 bytes; PYTHON_AST_PARSED. SHA-256: `3cfc4c5c986fefe784a66aaf5fc011fd11b346eec377e6813be1328bc87c9e79`.
+test assertion. 2687 bytes; PYTHON_AST_PARSED. SHA-256: `b46cf053c4ef82c5157dbc2b80652af4608ab21c2f076234b37097190edb2525`.
 
 | Symbol | Line | Purpose | Unit/cloud calls at older commit | Review test references |
 |---|---:|---|---:|---|
@@ -1177,6 +1332,59 @@ test assertion. 1820 bytes; PYTHON_AST_PARSED. SHA-256: `3cfc4c5c986fefe784a66aa
 | `test_saved_agent_template_preserves_ten_tools_and_two_literal_gates` (function) | 16 | test saved agent template preserves ten tools and two literal gates | 0 | No standalone mapping; see scenario matrix |
 | `test_deployment_validation_rejects_placeholder_model` (function) | 32 | test deployment validation rejects placeholder model | 0 | No standalone mapping; see scenario matrix |
 | `test_config_probe_rejects_removed_literal_gate` (function) | 41 | test config probe rejects removed literal gate | 0 | No standalone mapping; see scenario matrix |
+| `test_config_probe_accepts_only_exact_authorized_alias_without_reasoning` (function) | 51 | test config probe accepts only exact authorized alias without reasoning | 0 | No standalone mapping; see scenario matrix |
+
+## tests/trueforge/test_configure_trueforge_host.py
+
+test assertion. 11299 bytes; PYTHON_AST_PARSED. SHA-256: `b0b877abd7e7f1e0788484d5372ef037d4a0f07295222cd31397190d12414a3e`.
+
+| Symbol | Line | Purpose | Unit/cloud calls at older commit | Review test references |
+|---|---:|---|---:|---|
+| `_load_module` (function) | 14 | load module | 0 | No standalone mapping; see scenario matrix |
+| `_TrueForgeHandler` (class) | 22 | TrueForgeHandler | 0 | No standalone mapping; see scenario matrix |
+| `_TrueForgeHandler.log_message` (function) | 26 | log message | 0 | No standalone mapping; see scenario matrix |
+| `_TrueForgeHandler._body` (function) | 29 | body | 0 | No standalone mapping; see scenario matrix |
+| `_TrueForgeHandler._reply` (function) | 37 | reply | 0 | No standalone mapping; see scenario matrix |
+| `_TrueForgeHandler.do_PUT` (function) | 45 | do PUT | 0 | No standalone mapping; see scenario matrix |
+| `_TrueForgeHandler.do_GET` (function) | 62 | do GET | 0 | No standalone mapping; see scenario matrix |
+| `_TrueForgeHandler.do_POST` (function) | 81 | do POST | 0 | No standalone mapping; see scenario matrix |
+| `_CaptureHandler` (class) | 90 | CaptureHandler | 0 | No standalone mapping; see scenario matrix |
+| `_CaptureHandler.log_message` (function) | 93 | log message | 0 | No standalone mapping; see scenario matrix |
+| `_CaptureHandler._record` (function) | 96 | record | 0 | No standalone mapping; see scenario matrix |
+| `fake_trueforge` (function) | 110 | fake trueforge | 0 | No standalone mapping; see scenario matrix |
+| `capture_server` (function) | 125 | capture server | 0 | No standalone mapping; see scenario matrix |
+| `_secret` (function) | 138 | secret | 0 | No standalone mapping; see scenario matrix |
+| `test_dry_run_never_reads_credentials_or_sends_requests` (function) | 143 | test dry run never reads credentials or sends requests | 0 | No standalone mapping; see scenario matrix |
+| `test_execute_requires_daytona_before_any_http_request` (function) | 156 | test execute requires daytona before any http request | 0 | No standalone mapping; see scenario matrix |
+| `test_provider_mcp_stage_continues_without_daytona_and_stops_before_agent` (function) | 180 | test provider mcp stage continues without daytona and stops before agent | 0 | No standalone mapping; see scenario matrix |
+| `test_transport_ignores_proxy_environment` (function) | 214 | test transport ignores proxy environment | 0 | No standalone mapping; see scenario matrix |
+| `test_transport_refuses_redirect_without_forwarding_secret` (function) | 243 | test transport refuses redirect without forwarding secret | 0 | No standalone mapping; see scenario matrix |
+| `test_execute_sends_exact_safe_manifests_without_running_tools` (function) | 281 | test execute sends exact safe manifests without running tools | 0 | No standalone mapping; see scenario matrix |
+
+## tests/trueforge/test_connected_runtime_boundaries.py
+
+test assertion. 13977 bytes; PYTHON_AST_PARSED. SHA-256: `c06c0fe18e4af98f3fe8e407c5a98e9b1cb667a73708e1190406e6d9f9b1743b`.
+
+| Symbol | Line | Purpose | Unit/cloud calls at older commit | Review test references |
+|---|---:|---|---:|---|
+| `_unused_port` (function) | 39 | unused port | 0 | No standalone mapping; see scenario matrix |
+| `_wait_for_listener` (function) | 45 | wait for listener | 0 | No standalone mapping; see scenario matrix |
+| `_CaptureServer` (class) | 56 | CaptureServer | 0 | No standalone mapping; see scenario matrix |
+| `_CaptureServer.__init__` (function) | 60 | init | 0 | No standalone mapping; see scenario matrix |
+| `_CaptureHandler` (class) | 65 | CaptureHandler | 0 | No standalone mapping; see scenario matrix |
+| `_CaptureHandler.log_message` (function) | 68 | log message | 0 | No standalone mapping; see scenario matrix |
+| `_CaptureHandler.do_GET` (function) | 71 | do GET | 0 | No standalone mapping; see scenario matrix |
+| `_CaptureHandler.do_POST` (function) | 87 | do POST | 0 | No standalone mapping; see scenario matrix |
+| `_run_daytona_probe` (function) | 111 | run daytona probe | 0 | No standalone mapping; see scenario matrix |
+| `test_n16_daytona_telemetry_default_and_enabled_export_do_not_leak_secret_data` (function) | 153 | Default is off; an enabled local exporter receives spans without header/body values. | 0 | No standalone mapping; see scenario matrix |
+| `_candidate_arguments` (function) | 184 | candidate arguments | 0 | No standalone mapping; see scenario matrix |
+| `_serve_slow_get_run` (function) | 194 | serve slow get run | 0 | No standalone mapping; see scenario matrix |
+| `_serve_slow_get_run.SlowDeliveryService` (class) | 197 | SlowDeliveryService | 0 | No standalone mapping; see scenario matrix |
+| `_serve_slow_get_run.SlowDeliveryService.call` (function) | 198 | call | 0 | No standalone mapping; see scenario matrix |
+| `test_n19_cancelled_get_run_delivery_reconnects_without_mutating_business_run` (function) | 208 | test n19 cancelled get run delivery reconnects without mutating business run | 0 | No standalone mapping; see scenario matrix |
+| `_evidence` (function) | 304 | evidence | 0 | No standalone mapping; see scenario matrix |
+| `_report_without_connected_trace_ids` (function) | 319 | report without connected trace ids | 0 | No standalone mapping; see scenario matrix |
+| `test_n26_missing_connected_trace_ids_do_not_change_sealed_report_identity` (function) | 364 | test n26 missing connected trace ids do not change sealed report identity | 0 | No standalone mapping; see scenario matrix |
 
 ## tests/trueforge/test_dependency_inventory.py
 
@@ -1190,13 +1398,15 @@ test assertion. 1840 bytes; PYTHON_AST_PARSED. SHA-256: `081e3e38bebe21620fa2649
 
 ## tests/trueforge/test_gateway_probe.py
 
-test assertion. 1874 bytes; PYTHON_AST_PARSED. SHA-256: `c5e51042fdb6886cc509a0323f58e0942a01fe03414e6b3aede0de3602fed919`.
+test assertion. 5015 bytes; PYTHON_AST_PARSED. SHA-256: `ebd0e286f115f2c16ed5107a3a15e58601126ec5e22dd1c5ce2a8045391397af`.
 
 | Symbol | Line | Purpose | Unit/cloud calls at older commit | Review test references |
 |---|---:|---|---:|---|
 | `test_responses_stream_state_machine` (function) | 8 | test responses stream state machine | 0 | No standalone mapping; see scenario matrix |
 | `test_probe_blocks_without_ignored_route_config` (function) | 21 | test probe blocks without ignored route config | 0 | No standalone mapping; see scenario matrix |
 | `test_probe_does_not_execute_without_explicit_flag` (function) | 37 | test probe does not execute without explicit flag | 0 | No standalone mapping; see scenario matrix |
+| `test_probe_accepts_only_the_explicit_authorized_non_sol_alias` (function) | 67 | test probe accepts only the explicit authorized non sol alias | 0 | No standalone mapping; see scenario matrix |
+| `test_probe_omits_reasoning_for_none_and_preserves_high` (function) | 138 | test probe omits reasoning for none and preserves high | 0 | No standalone mapping; see scenario matrix |
 
 ## tests/trueforge/test_mcp_interop.py
 
@@ -1217,19 +1427,48 @@ test assertion. 1174 bytes; PYTHON_AST_PARSED. SHA-256: `ae543cb6a9c136231353f5e
 | `test_trueforge_lock_is_exact_and_integrity_pinned` (function) | 13 | test trueforge lock is exact and integrity pinned | 0 | No standalone mapping; see scenario matrix |
 | `test_local_package_probe_reports_resolved_versions` (function) | 21 | test local package probe reports resolved versions | 0 | No standalone mapping; see scenario matrix |
 
+## tests/trueforge/test_remaining_transport_boundaries.py
+
+test assertion. 6724 bytes; PYTHON_AST_PARSED. SHA-256: `d3ebc2bdf2d9820e87acf1fcb85f0ef3fa57a899027d768728ee492d75b2e946`.
+
+| Symbol | Line | Purpose | Unit/cloud calls at older commit | Review test references |
+|---|---:|---|---:|---|
+| `_database_counts` (function) | 25 | database counts | 0 | No standalone mapping; see scenario matrix |
+| `test_n20_loopback_server_rejects_disallowed_host_and_origin` (function) | 38 | The selected MCP SDK applies its loopback DNS-rebinding policy. | 0 | No standalone mapping; see scenario matrix |
+| `test_n22_incomplete_stream_and_partial_mutation_arguments_have_no_effect` (function) | 77 | Both the stream decoder and all mutation schemas fail before persistence. | 0 | No standalone mapping; see scenario matrix |
+| `test_n29_inventory_notices_and_public_claims_remain_qualified` (function) | 124 | test n29 inventory notices and public claims remain qualified | 0 | No standalone mapping; see scenario matrix |
+
 ## tests/trueforge/test_responses_stream.mjs
 
-test assertion. 2968 bytes; JAVASCRIPT_SYNTAX_TREE_PARSED. SHA-256: `a633fa19ec2184635edee3c714639c029712de687fa0291658853972f478c62c`.
+test assertion. 3750 bytes; JAVASCRIPT_SYNTAX_TREE_PARSED. SHA-256: `cda704c803b0891b67ffeb475f8ff7d06addd18daf3026d2ba52a9a4c7b00737`.
 
 | Symbol | Line | Purpose | Unit/cloud calls at older commit | Review test references |
 |---|---:|---|---:|---|
 | `<anonymous@33:53>` (javascript arrow_function) | 33 | Anonymous callback; inspect enclosing definition. | 0 | No standalone mapping; see scenario matrix |
-| `<anonymous@45:67>` (javascript arrow_function) | 45 | Anonymous callback; inspect enclosing definition. | 0 | No standalone mapping; see scenario matrix |
-| `<anonymous@45:67>.<anonymous@50:4>` (javascript arrow_function) | 50 | Anonymous callback; inspect enclosing definition. | 0 | No standalone mapping; see scenario matrix |
-| `<anonymous@45:67>.<anonymous@61:4>` (javascript arrow_function) | 61 | Anonymous callback; inspect enclosing definition. | 0 | No standalone mapping; see scenario matrix |
-| `<anonymous@45:67>.<anonymous@79:4>` (javascript arrow_function) | 79 | Anonymous callback; inspect enclosing definition. | 0 | No standalone mapping; see scenario matrix |
-| `<anonymous@45:67>.<anonymous@80:4>` (javascript arrow_function) | 80 | Anonymous callback; inspect enclosing definition. | 0 | No standalone mapping; see scenario matrix |
-| `<anonymous@84:59>` (javascript arrow_function) | 84 | Anonymous callback; inspect enclosing definition. | 0 | No standalone mapping; see scenario matrix |
+| `<anonymous@45:73>` (javascript arrow_function) | 45 | Anonymous callback; inspect enclosing definition. | 0 | No standalone mapping; see scenario matrix |
+| `<anonymous@45:73>.<anonymous@46:49>` (javascript arrow_function) | 46 | Anonymous callback; inspect enclosing definition. | 0 | No standalone mapping; see scenario matrix |
+| `<anonymous@45:73>.<anonymous@56:4>` (javascript arrow_function) | 56 | Anonymous callback; inspect enclosing definition. | 0 | No standalone mapping; see scenario matrix |
+| `<anonymous@45:73>.<anonymous@63:4>` (javascript arrow_function) | 63 | Anonymous callback; inspect enclosing definition. | 0 | No standalone mapping; see scenario matrix |
+| `<anonymous@67:67>` (javascript arrow_function) | 67 | Anonymous callback; inspect enclosing definition. | 0 | No standalone mapping; see scenario matrix |
+| `<anonymous@67:67>.<anonymous@72:4>` (javascript arrow_function) | 72 | Anonymous callback; inspect enclosing definition. | 0 | No standalone mapping; see scenario matrix |
+| `<anonymous@67:67>.<anonymous@83:4>` (javascript arrow_function) | 83 | Anonymous callback; inspect enclosing definition. | 0 | No standalone mapping; see scenario matrix |
+| `<anonymous@67:67>.<anonymous@101:4>` (javascript arrow_function) | 101 | Anonymous callback; inspect enclosing definition. | 0 | No standalone mapping; see scenario matrix |
+| `<anonymous@67:67>.<anonymous@102:4>` (javascript arrow_function) | 102 | Anonymous callback; inspect enclosing definition. | 0 | No standalone mapping; see scenario matrix |
+| `<anonymous@106:59>` (javascript arrow_function) | 106 | Anonymous callback; inspect enclosing definition. | 0 | No standalone mapping; see scenario matrix |
+
+## tests/trueforge/test_status_transport_responsiveness.py
+
+test assertion. 8959 bytes; PYTHON_AST_PARSED. SHA-256: `24af1e81373fd4944c79f93062c01a022f39662414d49ca86432f3e04f550b9d`.
+
+| Symbol | Line | Purpose | Unit/cloud calls at older commit | Review test references |
+|---|---:|---|---:|---|
+| `_unused_port` (function) | 29 | unused port | 0 | No standalone mapping; see scenario matrix |
+| `_wait_for_listener` (function) | 35 | wait for listener | 0 | No standalone mapping; see scenario matrix |
+| `_create_baselined_run` (function) | 46 | create baselined run | 0 | No standalone mapping; see scenario matrix |
+| `_serve_with_held_apply` (function) | 85 | serve with held apply | 0 | No standalone mapping; see scenario matrix |
+| `_serve_with_held_apply.held_apply` (function) | 97 | held apply | 0 | No standalone mapping; see scenario matrix |
+| `_node_env` (function) | 117 | node env | 0 | No standalone mapping; see scenario matrix |
+| `test_n21_http_status_remains_typed_and_responsive_while_mutation_lock_is_held` (function) | 121 | test n21 http status remains typed and responsive while mutation lock is held | 0 | No standalone mapping; see scenario matrix |
 
 ## tests/unit/test_audit_contract_boundaries.py
 
@@ -1293,6 +1532,63 @@ test assertion. 1442 bytes; PYTHON_AST_PARSED. SHA-256: `35a8b7bf1ba9dfd098df5cf
 | `test_unsupported_no_stringification` (function) | 23 | test unsupported no stringification | 0 | tests/unit/test_evidence.py::test_unsupported_no_stringification |
 | `test_domain_length_and_order` (function) | 28 | test domain length and order | 0 | tests/unit/test_evidence.py::test_domain_length_and_order |
 | `test_private_bundle_not_serializable` (function) | 36 | test private bundle not serializable | 0 | tests/unit/test_evidence.py::test_private_bundle_not_serializable |
+
+## tests/unit/test_readonly_runtime.py
+
+test assertion. 7501 bytes; PYTHON_AST_PARSED. SHA-256: `0a773a611fefece21eb757eee7f18368cc4e000062007b42cfde30b0bc5d8582`.
+
+| Symbol | Line | Purpose | Unit/cloud calls at older commit | Review test references |
+|---|---:|---|---:|---|
+| `scoped_settings` (function) | 17 | scoped settings | 0 | No standalone mapping; see scenario matrix |
+| `test_incomplete_paused_configuration_constructs_no_clients` (function) | 47 | test incomplete paused configuration constructs no clients | 0 | No standalone mapping; see scenario matrix |
+| `test_incomplete_paused_configuration_constructs_no_clients.forbidden_session` (function) | 48 | forbidden session | 0 | No standalone mapping; see scenario matrix |
+| `test_unscoped_read_secret_constructs_no_clients` (function) | 69 | test unscoped read secret constructs no clients | 0 | No standalone mapping; see scenario matrix |
+| `test_unscoped_read_secret_constructs_no_clients.<lambda@70:42>` (lambda) | 70 | Anonymous callback/expression; inspect its enclosing function and scenario tests. | 0 | No standalone mapping; see scenario matrix |
+| `test_paused_runtime_reads_owned_private_source_without_enabling_writes` (function) | 78 | test paused runtime reads owned private source without enabling writes | 0 | No standalone mapping; see scenario matrix |
+| `test_paused_runtime_reads_owned_private_source_without_enabling_writes.Client` (class) | 84 | Client | 0 | No standalone mapping; see scenario matrix |
+| `test_paused_runtime_reads_owned_private_source_without_enabling_writes.Client.get_caller_identity` (function) | 87 | get caller identity | 0 | No standalone mapping; see scenario matrix |
+| `test_paused_runtime_reads_owned_private_source_without_enabling_writes.Client.describe_db_instances` (function) | 91 | describe db instances | 0 | No standalone mapping; see scenario matrix |
+| `test_paused_runtime_reads_owned_private_source_without_enabling_writes.Client.list_tags_for_resource` (function) | 112 | list tags for resource | 0 | No standalone mapping; see scenario matrix |
+| `test_paused_runtime_reads_owned_private_source_without_enabling_writes.Client.get_secret_value` (function) | 123 | get secret value | 0 | No standalone mapping; see scenario matrix |
+| `test_paused_runtime_reads_owned_private_source_without_enabling_writes.Session` (class) | 130 | Session | 0 | No standalone mapping; see scenario matrix |
+| `test_paused_runtime_reads_owned_private_source_without_enabling_writes.Session.__init__` (function) | 131 | init | 0 | No standalone mapping; see scenario matrix |
+| `test_paused_runtime_reads_owned_private_source_without_enabling_writes.Session.client` (function) | 134 | client | 0 | No standalone mapping; see scenario matrix |
+| `test_paused_runtime_reads_owned_private_source_without_enabling_writes.<lambda@152:39>` (lambda) | 152 | Anonymous callback/expression; inspect its enclosing function and scenario tests. | 0 | No standalone mapping; see scenario matrix |
+| `test_paused_runtime_reads_owned_private_source_without_enabling_writes.connect` (function) | 154 | connect | 0 | No standalone mapping; see scenario matrix |
+| `test_local_backend_remains_unconfigured_without_creation` (function) | 179 | test local backend remains unconfigured without creation | 0 | No standalone mapping; see scenario matrix |
+| `test_local_backend_remains_unconfigured_without_creation.<lambda@180:42>` (lambda) | 180 | Anonymous callback/expression; inspect its enclosing function and scenario tests. | 0 | No standalone mapping; see scenario matrix |
+| `test_invalid_private_scope_fails_before_client_construction` (function) | 187 | test invalid private scope fails before client construction | 0 | No standalone mapping; see scenario matrix |
+| `test_invalid_private_scope_fails_before_client_construction.<lambda@188:42>` (lambda) | 188 | Anonymous callback/expression; inspect its enclosing function and scenario tests. | 0 | No standalone mapping; see scenario matrix |
+
+## tests/unit/test_remaining_sql_boundaries.py
+
+test assertion. 3931 bytes; PYTHON_AST_PARSED. SHA-256: `b8dbe2275b1c1a6b92739a4755b85a8ac6e66ec6170a99a2391bc7586230ad3a`.
+
+| Symbol | Line | Purpose | Unit/cloud calls at older commit | Review test references |
+|---|---:|---|---:|---|
+| `contract` (function) | 13 | contract | 0 | No standalone mapping; see scenario matrix |
+| `test_p03_through_p08_unsupported_candidate_is_rejected` (function) | 52 | test p03 through p08 unsupported candidate is rejected | 0 | No standalone mapping; see scenario matrix |
+| `test_p09_forbidden_later_statement_rejects_entire_candidate` (function) | 62 | test p09 forbidden later statement rejects entire candidate | 0 | No standalone mapping; see scenario matrix |
+| `test_p08_unknown_target_read_or_predicate_column_refused_at_metadata` (function) | 76 | test p08 unknown target read or predicate column refused at metadata | 0 | No standalone mapping; see scenario matrix |
+| `test_p07_custom_builtin_lookalike_does_not_expand_grammar` (function) | 82 | test p07 custom builtin lookalike does not expand grammar | 0 | No standalone mapping; see scenario matrix |
+
+## tests/unit/test_remaining_verdict_boundaries.py
+
+test assertion. 8357 bytes; PYTHON_AST_PARSED. SHA-256: `728e610dde35fc9e010044b2df51eb46140c51843a018fcd6aa828a6278cbe9b`.
+
+| Symbol | Line | Purpose | Unit/cloud calls at older commit | Review test references |
+|---|---:|---|---:|---|
+| `test_v08_weak_checks_cannot_certify_unprotected_value_intent` (function) | 24 | test v08 weak checks cannot certify unprotected value intent | 0 | No standalone mapping; see scenario matrix |
+| `test_p14_parser_mismatch_refused_before_parse_or_execution` (function) | 46 | test p14 parser mismatch refused before parse or execution | 0 | No standalone mapping; see scenario matrix |
+| `test_p14_parser_mismatch_refused_before_parse_or_execution.<lambda@53:69>` (lambda) | 53 | Anonymous callback/expression; inspect its enclosing function and scenario tests. | 0 | No standalone mapping; see scenario matrix |
+| `test_p14_parser_mismatch_refused_before_parse_or_execution.<lambda@54:45>` (lambda) | 54 | Anonymous callback/expression; inspect its enclosing function and scenario tests. | 0 | No standalone mapping; see scenario matrix |
+| `test_p04_create_table_statement_is_rejected_without_a_plan` (function) | 59 | test p04 create table statement is rejected without a plan | 0 | No standalone mapping; see scenario matrix |
+| `test_a08_recovery_snapshot_refusal_uses_actual_adapter_without_network` (function) | 66 | test a08 recovery snapshot refusal uses actual adapter without network | 0 | No standalone mapping; see scenario matrix |
+| `real_local_run` (function) | 94 | real local run | 0 | No standalone mapping; see scenario matrix |
+| `test_n21_run_status_remains_responsive_during_long_mutation` (function) | 134 | test n21 run status remains responsive during long mutation | 0 | No standalone mapping; see scenario matrix |
+| `test_n21_run_status_remains_responsive_during_long_mutation.long_mutation` (function) | 147 | long mutation | 0 | No standalone mapping; see scenario matrix |
+| `test_n21_run_status_envelope_uses_same_phase_snapshot` (function) | 184 | test n21 run status envelope uses same phase snapshot | 0 | No standalone mapping; see scenario matrix |
+| `test_n21_run_status_envelope_uses_same_phase_snapshot.concurrent_completion` (function) | 189 | concurrent completion | 0 | No standalone mapping; see scenario matrix |
 
 ## tests/unit/test_reports.py
 
@@ -1360,6 +1656,36 @@ test assertion. 3491 bytes; PYTHON_AST_PARSED. SHA-256: `d7af09f16ec89c989d70d9c
 | `test_missing_value_assertion` (function) | 65 | test missing value assertion | 0 | tests/unit/test_sql_policy.py::test_missing_value_assertion |
 | `test_unknown_metadata_column` (function) | 74 | test unknown metadata column | 0 | tests/unit/test_sql_policy.py::test_unknown_metadata_column |
 | `test_good_write_set` (function) | 80 | test good write set | 0 | tests/unit/test_sql_policy.py::test_good_write_set |
+
+## tests/unit/test_state_doctor.py
+
+test assertion. 3552 bytes; PYTHON_AST_PARSED. SHA-256: `3d95ff7716fcfb39a4e19c7f127bbf4056a62f6ef835c1eeeb03aac5cc219579`.
+
+| Symbol | Line | Purpose | Unit/cloud calls at older commit | Review test references |
+|---|---:|---|---:|---|
+| `configured` (function) | 11 | configured | 0 | No standalone mapping; see scenario matrix |
+| `test_unconfigured_doctor_does_not_create_state` (function) | 17 | test unconfigured doctor does not create state | 0 | No standalone mapping; see scenario matrix |
+| `test_configured_missing_state_warns_without_creating_files` (function) | 22 | test configured missing state warns without creating files | 0 | No standalone mapping; see scenario matrix |
+| `test_configured_empty_state_is_not_cloud_absence` (function) | 29 | test configured empty state is not cloud absence | 0 | No standalone mapping; see scenario matrix |
+| `test_wrong_state_schema_diagnostic_contains_no_private_error` (function) | 39 | test wrong state schema diagnostic contains no private error | 0 | No standalone mapping; see scenario matrix |
+| `test_pending_wal_is_not_silently_ignored_or_modified` (function) | 50 | test pending wal is not silently ignored or modified | 0 | No standalone mapping; see scenario matrix |
+| `test_permission_error_does_not_echo_private_path` (function) | 63 | test permission error does not echo private path | 0 | No standalone mapping; see scenario matrix |
+| `test_permission_error_does_not_echo_private_path.denied` (function) | 64 | denied | 0 | No standalone mapping; see scenario matrix |
+| `test_wal_appearing_during_observation_requires_reconciliation` (function) | 73 | test wal appearing during observation requires reconciliation | 0 | No standalone mapping; see scenario matrix |
+| `test_wal_appearing_during_observation_requires_reconciliation.concurrent_wal` (function) | 78 | concurrent wal | 0 | No standalone mapping; see scenario matrix |
+
+## tests/unit/test_status_cleanup_races.py
+
+test assertion. 3169 bytes; PYTHON_AST_PARSED. SHA-256: `0c92cb5a7cbfbea8e42c441c270dccaadda1ab07ad3b0563cef004d4256dffcb`.
+
+| Symbol | Line | Purpose | Unit/cloud calls at older commit | Review test references |
+|---|---:|---|---:|---|
+| `test_busy_cleanup_returns_snapshot_without_waiting_or_observing` (function) | 11 | test busy cleanup returns snapshot without waiting or observing | 0 | No standalone mapping; see scenario matrix |
+| `test_busy_cleanup_returns_snapshot_without_waiting_or_observing.unexpected_observation` (function) | 16 | unexpected observation | 0 | No standalone mapping; see scenario matrix |
+| `test_busy_cleanup_returns_snapshot_without_waiting_or_observing.mutation` (function) | 21 | mutation | 0 | No standalone mapping; see scenario matrix |
+| `test_old_cleanup_observation_cannot_overwrite_new_selection` (function) | 44 | test old cleanup observation cannot overwrite new selection | 0 | No standalone mapping; see scenario matrix |
+| `test_old_cleanup_observation_cannot_overwrite_new_selection.observation` (function) | 49 | observation | 0 | No standalone mapping; see scenario matrix |
+| `test_old_cleanup_observation_cannot_overwrite_new_selection.new_selection` (function) | 57 | new selection | 0 | No standalone mapping; see scenario matrix |
 
 ## tests/unit/test_storage.py
 

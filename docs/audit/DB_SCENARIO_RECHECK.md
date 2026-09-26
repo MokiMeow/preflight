@@ -162,6 +162,5 @@ instead of anchor_status); both were corrected to the actual interfaces without
 product changes or weakening assertions.
 
 No new product defect was found. U06/U08/C13 are ready for LOCAL_VERIFIED after
-lead integration. Existing N21 deliberately failing regressions remain pending
-service-owner repair and its own recheck. PG55438 remains running; this worker
+lead integration. Lead integration now closes the N21 regression: service fix135123b plus the actual MCP ping/status test at ed15f5d passed the full485-test gate at9f75cc1. Independent review also passed29 focused tests, including cleanup-observation race and Doctor boundaries. This closes local status liveness and preserves all mutation and approval guards; connected product evaluation remains separate. PG55438 remains running; this worker
 returns the exclusive lane to the lead without stopping the retained cluster.
