@@ -1,4 +1,4 @@
-"""Pure USD admission arithmetic; no AWS clients, pricing table or hard-cap claim.
+"""USD admission arithmetic and durable ledger; no AWS clients or hard-cap claim.
 
 All costs refer to the same operator-authorized continuation window and scope.
 The caller must establish complete observed spend plus an upper bound for usage
@@ -20,11 +20,17 @@ https://docs.aws.amazon.com/cost-management/latest/userguide/ce-what-is.html
 https://aws.amazon.com/rds/postgresql/pricing/
 """
 
-from dataclasses import dataclass
+import re
+import sqlite3
+from collections.abc import Mapping
+from contextlib import contextmanager
+from dataclasses import dataclass, replace
 from datetime import datetime
 from decimal import ROUND_CEILING, ROUND_FLOOR, Decimal, DecimalException, localcontext
+from pathlib import Path
 from typing import Literal
 
+from .artifacts import canonical_json, strict_json
 from .models import PreflightError
 
 CENT = Decimal("0.01")
@@ -171,3 +177,221 @@ def admit(
         projected,
         remaining,
     )
+
+
+class BudgetLedger:
+    """Trusted server bookkeeping with durable, never auto-released reservations.
+
+    This is not a model tool, configuration parser, billing fetcher, credit
+    calculator or native AWS hard cap. Only a trusted owner may publish verified
+    complete observations/quotes. Missing facts remain missing. Provenance must
+    be nonsecret; this API does not accept credentials or evaluate their contents.
+    The observation's reserved_usd is the baseline future-resource allowance;
+    ALL ledger reservations are added conservatively, even after later billing
+    observations include their cost. Unknown create outcomes do not free funds.
+    """
+
+    def __init__(self, path: str | Path, ceiling: Decimal = Decimal("100")):
+        if not _known_amount(ceiling) or ceiling == 0 or ceiling > Decimal("100"):
+            raise PreflightError("BUDGET_AUTHORIZATION_INVALID")
+        self.path = Path(path).resolve()
+        self._ceiling = ceiling
+        self.path.parent.mkdir(parents=True, exist_ok=True, mode=0o700)
+        with self._transaction() as connection:
+            connection.execute(
+                "CREATE TABLE IF NOT EXISTS budget_metadata (key TEXT PRIMARY KEY,value TEXT NOT NULL)"
+            )
+            connection.execute(
+                "CREATE TABLE IF NOT EXISTS budget_observation (id INTEGER PRIMARY KEY CHECK(id=1),snapshot BLOB NOT NULL,quotes BLOB NOT NULL,provenance TEXT NOT NULL)"
+            )
+            connection.execute(
+                "CREATE TABLE IF NOT EXISTS budget_reservations (key TEXT PRIMARY KEY,kind TEXT NOT NULL,amount TEXT NOT NULL,created_at TEXT NOT NULL)"
+            )
+            previous = connection.execute(
+                "SELECT value FROM budget_metadata WHERE key='ceiling_usd'"
+            ).fetchone()
+            if previous is None:
+                connection.execute(
+                    "INSERT INTO budget_metadata VALUES('ceiling_usd',?)", (str(ceiling),)
+                )
+            elif Decimal(previous[0]) != ceiling:
+                raise PreflightError("BUDGET_CEILING_MISMATCH")
+
+    @property
+    def ceiling(self) -> Decimal:
+        return self._ceiling
+
+    def _assert_ceiling(self, connection) -> None:
+        stored = connection.execute(
+            "SELECT value FROM budget_metadata WHERE key='ceiling_usd'"
+        ).fetchone()
+        if stored is None or Decimal(stored[0]) != self.ceiling:
+            raise PreflightError("BUDGET_CEILING_MISMATCH")
+
+    @contextmanager
+    def _transaction(self):
+        connection = None
+        try:
+            connection = sqlite3.connect(self.path, timeout=5, isolation_level=None)
+            connection.execute("PRAGMA journal_mode=WAL")
+            connection.execute("PRAGMA synchronous=FULL")
+            connection.execute("PRAGMA busy_timeout=5000")
+            connection.execute("BEGIN IMMEDIATE")
+            yield connection
+            connection.commit()
+        except PreflightError:
+            raise
+        except Exception:
+            raise PreflightError("BUDGET_LEDGER_FAILED") from None
+        finally:
+            if connection is not None:
+                connection.close()  # uncommitted SQLite transactions roll back
+
+    def record_observation(
+        self,
+        snapshot: BudgetSnapshot,
+        per_kind_quotes: Mapping[str, Decimal],
+        provenance: str,
+    ) -> None:
+        """Publish trusted nonsecret facts; None costs persist as unknown.
+
+        No environment/CLI/model input path exists here. Calling this method is
+        not evidence that observations or provider prices were actually verified.
+        The caller owns the continuation window, resource inventory and provenance.
+        """
+        if snapshot.ceiling_usd != self.ceiling:
+            raise PreflightError("BUDGET_CEILING_MISMATCH")
+        if not isinstance(provenance, str) or not provenance.strip() or len(provenance) > 4096:
+            raise PreflightError("BUDGET_PROVENANCE_INVALID")
+        quotes = {}
+        for kind, amount in per_kind_quotes.items():
+            if (
+                not isinstance(kind, str)
+                or not re.fullmatch(r"[a-z][a-z0-9_]{0,63}", kind)
+                or not _known_amount(amount)
+            ):
+                raise PreflightError("BUDGET_QUOTE_INVALID")
+            quotes[kind] = str(amount)
+        data = dict(snapshot.__dict__)
+        for field in (
+            "ceiling_usd",
+            "spent_usd",
+            "accrual_upper_bound_usd",
+            "reserved_usd",
+            "safety_reserve_usd",
+        ):
+            value = data[field]
+            if value is not None and not isinstance(value, Decimal):
+                raise PreflightError("BUDGET_OBSERVATION_INVALID")
+            data[field] = str(value) if value is not None else None
+        if snapshot.observed_at is not None and not isinstance(snapshot.observed_at, datetime):
+            raise PreflightError("BUDGET_OBSERVATION_INVALID")
+        data["observed_at"] = snapshot.observed_at.isoformat() if snapshot.observed_at else None
+        with self._transaction() as connection:
+            self._assert_ceiling(connection)
+            connection.execute(
+                "INSERT INTO budget_observation VALUES(1,?,?,?) ON CONFLICT(id) DO UPDATE SET snapshot=excluded.snapshot,quotes=excluded.quotes,provenance=excluded.provenance",
+                (canonical_json(data), canonical_json(quotes), provenance),
+            )
+
+    @staticmethod
+    def _total(connection) -> Decimal:
+        with localcontext() as context:
+            context.prec = 50
+            context.rounding = ROUND_CEILING
+            amounts = [
+                Decimal(row[0])
+                for row in connection.execute("SELECT amount FROM budget_reservations")
+            ]
+            if not all(_known_amount(amount) for amount in amounts):
+                raise PreflightError("BUDGET_LEDGER_FAILED")
+            return sum(amounts, Decimal(0))
+
+    def total_reserved_usd(self) -> Decimal:
+        with self._transaction() as connection:
+            return self._total(connection)
+
+    def authorize(
+        self,
+        reservation_key: str,
+        kind: str,
+        now: datetime,
+        max_age_seconds: int = 300,
+    ) -> BudgetDecision:
+        """Atomically check fresh facts and persist funds before a billable intent.
+
+        Keys identify exact billable intents; snapshot/clone/recovery are distinct.
+        An existing key is not permission to skip freshness/ceiling guards. A
+        current quote larger than its existing reservation refuses instead of
+        adding funds or reusing an insufficient bound. There is no release method.
+        """
+
+        def refuse(code: str) -> BudgetDecision:
+            return BudgetDecision(False, code, self.ceiling)
+
+        if (
+            not isinstance(reservation_key, str)
+            or not re.fullmatch(r"[A-Za-z0-9][A-Za-z0-9_.:/-]{0,255}", reservation_key)
+            or not isinstance(kind, str)
+            or not re.fullmatch(r"[a-z][a-z0-9_]{0,63}", kind)
+        ):
+            return refuse("BUDGET_RESERVATION_ID_INVALID")
+        with self._transaction() as connection:
+            self._assert_ceiling(connection)
+            row = connection.execute(
+                "SELECT snapshot,quotes FROM budget_observation WHERE id=1"
+            ).fetchone()
+            if row is None:
+                return refuse("BUDGET_OBSERVATION_UNKNOWN")
+            data = strict_json(bytes(row[0]))
+            for field in (
+                "ceiling_usd",
+                "spent_usd",
+                "accrual_upper_bound_usd",
+                "reserved_usd",
+                "safety_reserve_usd",
+            ):
+                data[field] = Decimal(data[field]) if data[field] is not None else None
+            data["observed_at"] = (
+                datetime.fromisoformat(data["observed_at"]) if data["observed_at"] else None
+            )
+            snapshot = BudgetSnapshot(**data)
+            if snapshot.ceiling_usd != self.ceiling:
+                return refuse("BUDGET_CEILING_MISMATCH")
+            quotes = strict_json(bytes(row[1]))
+            quote = Decimal(quotes[kind]) if kind in quotes else None
+            if not _known_amount(quote):
+                return refuse("BUDGET_QUOTE_UNKNOWN")
+            assert quote is not None
+            existing = connection.execute(
+                "SELECT kind,amount FROM budget_reservations WHERE key=?", (reservation_key,)
+            ).fetchone()
+            if existing and existing[0] != kind:
+                return refuse("BUDGET_RESERVATION_KEY_CONFLICT")
+            if existing and quote > Decimal(existing[1]):
+                return refuse("BUDGET_RESERVATION_BOUND_CHANGED")
+            with localcontext() as context:
+                context.prec = 50
+                context.rounding = ROUND_CEILING
+                reserved = (
+                    snapshot.reserved_usd + self._total(connection)
+                    if isinstance(snapshot.reserved_usd, Decimal)
+                    and _known_amount(snapshot.reserved_usd)
+                    else None
+                )
+            decision = admit(
+                replace(snapshot, reserved_usd=reserved),
+                Decimal(0) if existing else quote,
+                now=now,
+                max_age_seconds=max_age_seconds,
+                max_authorized_ceiling_usd=self.ceiling,
+            )
+            if decision.admitted and not existing:
+                with localcontext() as context:
+                    context.prec = 50
+                    amount = quote.quantize(CENT, rounding=ROUND_CEILING)
+                connection.execute(
+                    "INSERT INTO budget_reservations VALUES(?,?,?,?)",
+                    (reservation_key, kind, str(amount), now.isoformat()),
+                )
+            return decision

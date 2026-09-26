@@ -6,7 +6,7 @@ from decimal import Decimal, localcontext
 
 import pytest
 
-from preflight.budget import BudgetSnapshot, accrue_usd, admit
+from preflight.budget import BudgetLedger, BudgetSnapshot, accrue_usd, admit
 from preflight.models import PreflightError
 
 NOW = datetime(2026, 9, 26, 12, tzinfo=UTC)
@@ -177,3 +177,226 @@ def test_unknown_usage_is_not_replaced_with_credits_or_a_network_query(monkeypat
     monkeypatch.setattr(socket, "socket", lambda *a, **k: pytest.fail("pure budget network call"))
     unknown = replace(known(), spent_usd=None, accrual_upper_bound_usd=None)
     assert decide(unknown).reason_code == "BUDGET_COST_UNKNOWN"
+
+
+def funded_ledger(path):
+    ledger = BudgetLedger(path)
+    ledger.record_observation(
+        known(),
+        {"snapshot": Decimal("5"), "clone": Decimal("5"), "recovery": Decimal("5")},
+        "synthetic unit facts; not actual AWS cost/pricing",
+    )
+    return ledger
+
+
+def test_ledger_no_observation_or_missing_quote_never_reserves(tmp_path):
+    ledger = BudgetLedger(tmp_path / "budget.sqlite")
+    assert (
+        ledger.authorize("run:snapshot", "snapshot", NOW).reason_code
+        == "BUDGET_OBSERVATION_UNKNOWN"
+    )
+    ledger.record_observation(known(), {}, "synthetic missing quote")
+    assert ledger.authorize("run:snapshot", "snapshot", NOW).reason_code == "BUDGET_QUOTE_UNKNOWN"
+    assert ledger.total_reserved_usd() == 0
+
+
+def test_ledger_reserves_before_return_and_preserves_same_key_across_restart(tmp_path):
+    path = tmp_path / "budget.sqlite"
+    ledger = funded_ledger(path)
+    first = ledger.authorize("run:snapshot", "snapshot", NOW)
+    assert first.admitted and first.projected_usd == Decimal(100)
+    restarted = BudgetLedger(path)
+    assert restarted.total_reserved_usd() == Decimal(5)
+    assert restarted.authorize("run:snapshot", "snapshot", NOW).admitted
+    assert restarted.total_reserved_usd() == Decimal(5)
+    assert restarted.authorize("run:clone", "clone", NOW).reason_code == "BUDGET_EXCEEDED"
+    assert restarted.authorize("run:recovery", "recovery", NOW).reason_code == "BUDGET_EXCEEDED"
+
+
+def test_ledger_baseline_future_reserve_plus_ledger_sum_not_overwritten(tmp_path):
+    ledger = funded_ledger(tmp_path / "budget.sqlite")
+    assert ledger.authorize("snapshot", "snapshot", NOW).admitted
+    ledger.record_observation(
+        replace(known(), spent_usd=Decimal("15")),
+        {"snapshot": Decimal(5)},
+        "synthetic billed later; outstanding reservation retained conservatively",
+    )
+    refusal = ledger.authorize("snapshot", "snapshot", NOW)
+    assert refusal.reason_code == "BUDGET_EXCEEDED"
+    assert refusal.accounted_usd == Decimal(105)
+    assert ledger.total_reserved_usd() == Decimal(5)
+
+
+@pytest.mark.parametrize(
+    "changes,reason",
+    [
+        ({"spent_usd": None}, "BUDGET_COST_UNKNOWN"),
+        ({"accrual_upper_bound_usd": None}, "BUDGET_COST_UNKNOWN"),
+        ({"scope_complete": False}, "BUDGET_SCOPE_INCOMPLETE"),
+        ({"ongoing_costs_bounded": False}, "BUDGET_ONGOING_COST_UNBOUNDED"),
+        ({"observed_at": NOW - timedelta(seconds=301)}, "BUDGET_OBSERVATION_STALE"),
+    ],
+)
+def test_ledger_even_existing_key_requires_current_complete_cost_facts(tmp_path, changes, reason):
+    ledger = funded_ledger(tmp_path / "budget.sqlite")
+    assert ledger.authorize("snapshot", "snapshot", NOW).admitted
+    ledger.record_observation(
+        replace(known(), **changes), {"snapshot": Decimal(5)}, "synthetic invalidated observation"
+    )
+    assert ledger.authorize("snapshot", "snapshot", NOW).reason_code == reason
+    assert ledger.authorize("additional", "snapshot", NOW).reason_code == reason
+    assert ledger.total_reserved_usd() == Decimal(5)
+
+
+def test_ledger_quote_changes_cannot_reuse_or_silently_expand_old_reservation(tmp_path):
+    ledger = funded_ledger(tmp_path / "budget.sqlite")
+    assert ledger.authorize("shared-key", "snapshot", NOW).admitted
+    assert (
+        ledger.authorize("shared-key", "clone", NOW).reason_code
+        == "BUDGET_RESERVATION_KEY_CONFLICT"
+    )
+    ledger.record_observation(known(), {"snapshot": Decimal(6)}, "synthetic larger maximum")
+    assert (
+        ledger.authorize("shared-key", "snapshot", NOW).reason_code
+        == "BUDGET_RESERVATION_BOUND_CHANGED"
+    )
+    ledger.record_observation(
+        known(), {"snapshot": Decimal(1)}, "synthetic smaller maximum; no refund"
+    )
+    assert ledger.authorize("shared-key", "snapshot", NOW).admitted
+    ledger.record_observation(known(), {}, "synthetic now unknown quote")
+    assert ledger.authorize("shared-key", "snapshot", NOW).reason_code == "BUDGET_QUOTE_UNKNOWN"
+    assert ledger.total_reserved_usd() == Decimal(5)
+
+
+def test_ledger_persisted_ceiling_cannot_be_changed_or_exceed_authorization(tmp_path):
+    path = tmp_path / "budget.sqlite"
+    ledger = funded_ledger(path)
+    assert ledger.authorize("snapshot", "snapshot", NOW).admitted
+    with pytest.raises(PreflightError, match="BUDGET_CEILING_MISMATCH"):
+        BudgetLedger(path, Decimal(90))
+    with pytest.raises(PreflightError, match="BUDGET_AUTHORIZATION_INVALID"):
+        BudgetLedger(path, Decimal("100.01"))
+    with pytest.raises(PreflightError, match="BUDGET_CEILING_MISMATCH"):
+        ledger.record_observation(
+            replace(known(), ceiling_usd=Decimal(101)),
+            {"snapshot": Decimal(0)},
+            "synthetic mismatched ceiling",
+        )
+    assert BudgetLedger(path).total_reserved_usd() == Decimal(5)
+
+
+def test_ledger_live_handle_refuses_changed_persisted_ceiling(tmp_path):
+    import sqlite3
+
+    path = tmp_path / "budget.sqlite"
+    ledger = funded_ledger(path)
+    with pytest.raises(AttributeError):
+        ledger.ceiling = Decimal(200)
+    with sqlite3.connect(path) as connection:
+        connection.execute("UPDATE budget_metadata SET value='50' WHERE key='ceiling_usd'")
+    with pytest.raises(PreflightError, match="BUDGET_CEILING_MISMATCH"):
+        ledger.authorize("snapshot", "snapshot", NOW)
+    assert ledger.total_reserved_usd() == 0
+
+
+@pytest.mark.parametrize(
+    "key,kind",
+    [
+        (None, "snapshot"),
+        ("", "snapshot"),
+        ("run", ""),
+        ("run", "snapshot;DELETE"),
+        ("x" * 257, "snapshot"),
+    ],
+)
+def test_ledger_invalid_identity_cannot_reserve(tmp_path, key, kind):
+    ledger = funded_ledger(tmp_path / "budget.sqlite")
+    assert ledger.authorize(key, kind, NOW).reason_code == "BUDGET_RESERVATION_ID_INVALID"
+    assert ledger.total_reserved_usd() == 0
+
+
+def test_ledger_storage_failure_never_echoes_private_path(tmp_path):
+    path = tmp_path / "PRIVATE_PATH_SENTINEL.sqlite"
+    path.write_bytes(b"not a SQLite database")
+    with pytest.raises(PreflightError, match="BUDGET_LEDGER_FAILED") as error:
+        BudgetLedger(path)
+    assert "PRIVATE_PATH_SENTINEL" not in str(error.value)
+
+
+def test_ledger_unknown_cost_observation_survives_restart(tmp_path):
+    path = tmp_path / "budget.sqlite"
+    ledger = funded_ledger(path)
+    ledger.record_observation(
+        replace(known(), spent_usd=None), {"snapshot": Decimal(5)}, "synthetic missing billing data"
+    )
+    restarted = BudgetLedger(path)
+    assert restarted.authorize("snapshot", "snapshot", NOW).reason_code == "BUDGET_COST_UNKNOWN"
+    assert restarted.total_reserved_usd() == 0
+
+
+@pytest.mark.parametrize("quote", [None, "5", 5.0, Decimal("NaN"), Decimal("-1")])
+def test_ledger_invalid_quote_publication_has_safe_failure(tmp_path, quote):
+    ledger = BudgetLedger(tmp_path / "budget.sqlite")
+    with pytest.raises(PreflightError, match="BUDGET_QUOTE_INVALID"):
+        ledger.record_observation(known(), {"snapshot": quote}, "synthetic invalid quote")
+    assert ledger.authorize("snapshot", "snapshot", NOW).reason_code == "BUDGET_OBSERVATION_UNKNOWN"
+
+
+def test_two_ledger_instances_cannot_both_reserve_last_headroom(tmp_path):
+    import threading
+    from concurrent.futures import ThreadPoolExecutor
+
+    path = tmp_path / "budget.sqlite"
+    ledgers = [funded_ledger(path), BudgetLedger(path)]
+    barrier = threading.Barrier(2)
+
+    def reserve(index):
+        barrier.wait(timeout=3)
+        return ledgers[index].authorize(f"run:{index}", "snapshot", NOW)
+
+    with ThreadPoolExecutor(max_workers=2) as pool:
+        results = list(pool.map(reserve, range(2)))
+    assert sum(result.admitted for result in results) == 1
+    assert {result.reason_code for result in results} == {"BUDGET_ADMITTED", "BUDGET_EXCEEDED"}
+    assert BudgetLedger(path).total_reserved_usd() == Decimal(5)
+
+
+def process_reserve_budget(path, key, barrier, queue):
+    ledger = BudgetLedger(path)
+    barrier.wait(timeout=10)
+    decision = ledger.authorize(key, "snapshot", NOW)
+    queue.put((decision.admitted, decision.reason_code))
+
+
+@pytest.mark.parametrize("same_key", [False, True])
+def test_independent_processes_atomically_reserve_without_overspend_or_duplicate(
+    tmp_path, same_key
+):
+    import multiprocessing
+
+    path = tmp_path / "budget.sqlite"
+    funded_ledger(path)
+    context = multiprocessing.get_context("spawn")
+    barrier, queue = context.Barrier(2), context.Queue()
+    keys = ["same", "same"] if same_key else ["first", "second"]
+    workers = [
+        context.Process(target=process_reserve_budget, args=(path, key, barrier, queue))
+        for key in keys
+    ]
+    try:
+        for worker in workers:
+            worker.start()
+        results = [queue.get(timeout=15) for _ in workers]
+        assert sum(result[0] for result in results) == (2 if same_key else 1)
+        assert BudgetLedger(path).total_reserved_usd() == Decimal(5)
+        for worker in workers:
+            worker.join(timeout=5)
+            assert worker.exitcode == 0
+    finally:
+        for worker in workers:
+            if worker.is_alive():
+                worker.terminate()
+                worker.join(timeout=5)
+        queue.close()
+        queue.join_thread()
