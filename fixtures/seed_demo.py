@@ -2,6 +2,7 @@
 
 import argparse
 import json
+import os
 import re
 from datetime import datetime, timezone
 from pathlib import Path
@@ -456,10 +457,24 @@ def apply_connected(plan: SeedPlan, *, sts, rds, secrets):
 
 
 def _write_once(path, value):
+    missing = []
+    ancestor = path.parent
+    while not ancestor.exists():
+        missing.append(ancestor)
+        ancestor = ancestor.parent
     path.parent.mkdir(parents=True, exist_ok=True, mode=0o700)
     with path.open("xb") as handle:
+        path.chmod(0o600)
         handle.write(canonical_json(value) + b"\n")
-    path.chmod(0o600)
+        handle.flush()
+        os.fsync(handle.fileno())
+    if os.name != "nt":
+        for directory in dict.fromkeys([path.parent, *(p.parent for p in missing)]):
+            fd = os.open(directory, os.O_RDONLY | getattr(os, "O_DIRECTORY", 0))
+            try:
+                os.fsync(fd)
+            finally:
+                os.close(fd)
 
 
 def _intent_path(plan):

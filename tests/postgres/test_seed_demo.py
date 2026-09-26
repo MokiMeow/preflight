@@ -20,6 +20,24 @@ spec.loader.exec_module(seed)
 pytestmark = pytest.mark.postgres
 
 
+def test_intent_is_fsynced_and_never_replaced(monkeypatch, tmp_path):
+    real_fsync = seed.os.fsync
+    calls = []
+
+    def sync(fd):
+        calls.append(fd)
+        real_fsync(fd)
+
+    monkeypatch.setattr(seed.os, "fsync", sync)
+    intent = tmp_path / "new" / "state" / "intent.json"
+    seed._write_once(intent, {"status": "ATTEMPTED"})
+    assert calls
+    original = intent.read_bytes()
+    with pytest.raises(FileExistsError):
+        seed._write_once(intent, {"status": "RETRY"})
+    assert intent.read_bytes() == original
+
+
 @pytest.fixture
 def fresh():
     port = os.environ.get("PREFLIGHT_TEST_PG_PORT")
