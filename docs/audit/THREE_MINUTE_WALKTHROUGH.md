@@ -9,10 +9,11 @@ Open the saved `preflight` TrueForge agent, the current run status, the sanitize
 Current proof that may be stated now:
 
 - The native saved agent and approved Gateway route are real.
-- A model-generated Python/MCP step ran inside the patched TrueForge local Linux sandbox after correcting an initial bare-Python shell mistake. The successful shell execution observed 1,000 rows and three columns, but the referenced business run was `ERROR` with `cleanup_state=NOT_REQUESTED`; this is not a successful rehearsal.
+- A model-generated Python/MCP step ran inside the patched TrueForge local Linux sandbox after correcting an initial bare-Python shell mistake. The later corrected post-deploy call `call_cP0dXmj55AAFu40YuqzVek4Z` observed 1,000 rows and three columns through the actual nested envelope, but the referenced business run was `ERROR`; this is not a successful rehearsal. Its current `cleanup_state` is `COMPLETE`.
 - The connected sandbox canary verified the bounded filesystem, process/environment, network, per-session socket, launcher-environment and timeout checks recorded in the sanitized receipt.
-- The frozen local suite passed 636 tests with zero failures, errors or skips; local tests are not RDS execution evidence.
-- At the time this script was written, no live run-owned snapshot/clone, bad-to-good RDS result, source SQL apply, human denial/allowance or cleanup decision was available for the recording.
+- The current local suite at revision `878d64a` passed 641 tests with zero failures, errors or skips in 263.60 seconds; local tests are not RDS execution evidence.
+- At 10:42:10 UTC the human operator selected **Allow** for the separate cleanup gate. Cleanup completed with receipt `da3e1dc4-60df-4fa4-b8f3-7d14d806f58d`; the run-owned clone and snapshot are both absent. The coding agent did not click the gate.
+- At the time this script was updated, no successful live bad-to-good RDS result, source SQL apply or source-apply denial/allowance was available for the recording.
 
 ## Timed script
 
@@ -28,7 +29,7 @@ Add: “This is evidence for this source and snapshot, not a guarantee of produc
 
 **Show:** the sanitized saved-agent session/turn and Code Mode execution receipt, then the local-sandbox verification receipt.
 
-**Say:** “This is the saved product agent using the real model route, private Preflight MCP service and TrueForge’s local Linux sandbox. The first attempt incorrectly sent Python directly to a shell and exited 2. The model corrected it with an explicit Python script; the shell exited 0. We still treat the business result separately: that trace found 1,000 rows and three columns, but its run was ERROR and cleanup was not requested. A zero shell exit is not a PASS.”
+**Say:** “This is the saved product agent using the real model route, private Preflight MCP service and TrueForge’s local Linux sandbox. The first attempt incorrectly sent Python directly to a shell and exited 2. The model corrected it with an explicit Python script; the shell exited 0. A later corrected post-deploy call read the real nested result: 1,000 rows, three columns, run ERROR and cleanup COMPLETE. A zero shell exit is not a PASS.”
 
 Point to the canary summary: own-session socket allowed, foreign socket denied, host bytes/metadata unchanged, private/metadata network denied, launcher injection refused and timed-out child absent. Do not claim that these bounded checks prove universal containment.
 
@@ -46,7 +47,7 @@ If the live RDS run is still unavailable, say exactly: “The live snapshot/clon
 
 **Say:** “The bad migration failed on the populated clone and rolled back; the source remained unchanged. The corrected candidate is a new exact artifact. It passed the complete declared checks on this restored clone and is awaiting a human decision.”
 
-**If any part is unavailable:** keep this section visibly labeled **NOT RUN** or **PENDING** and say which exact state is known. Do not substitute the 636-test local gate, an old report or the earlier ERROR agent turn.
+**If any part is unavailable:** keep this section visibly labeled **NOT RUN** or **PENDING** and say which exact state is known. Do not substitute the 641-test local gate, an old report or the earlier ERROR agent turn.
 
 ### 2:05–2:35 — Human control
 
@@ -56,7 +57,7 @@ If the live RDS run is still unavailable, say exactly: “The live snapshot/clon
 
 For a denial recording, the designated engineer selects **Deny**, then show the source unchanged. For an allowed recording, T27 must already be accepted and the designated engineer explicitly selects **Allow** for the exact target; then show the separate receipt and read-only source check. Do not combine denial and allowance by silently resetting the source. If neither action has happened, say: “The human gate has not been exercised; source apply remains false.”
 
-Cleanup is a second literal gate. Do not click it during this beat or imply that absent resources equal approved cleanup.
+Cleanup is a second literal gate. In the retained trace, the human operator—not the coding agent—selected Allow at 10:42:10 UTC. Show receipt `da3e1dc4-60df-4fa4-b8f3-7d14d806f58d`, `cleanup_state=COMPLETE`, and the separately observed clone/snapshot absence. Do not imply that absence alone proves approval; the receipt supplies that link.
 
 ### 2:35–3:00 — Integrity, limitations and handoff
 
@@ -64,7 +65,7 @@ Cleanup is a second literal gate. Do not click it during this beat or imply that
 
 **Say:** “The sealed artifact records what was observed, and an independently retained expected digest detects replacement. It does not prove current source eligibility. Unknown commit outcomes are never retried automatically. Resource retention and cleanup remain explicit operator decisions.”
 
-Close with the exact current state: run phase, source applied true/false, cleanup state, retained snapshot/clone IDs or `NONE`, and the next safe action. If the live RDS flow is incomplete, close with: “The native agent and sandbox are connected; the live RDS outcome and human gates remain unavailable, so this walkthrough stops here rather than inventing the result.”
+Close with the exact current state: run phase, source applied true/false, cleanup state, retained snapshot/clone IDs or `NONE`, and the next safe action. If the live RDS flow is incomplete, close with: “The native agent and sandbox are connected, and operator-approved cleanup is complete with both run-owned resources absent. The live RDS rehearsal and source-apply human gate remain unavailable, so this walkthrough stops here rather than inventing the result.”
 
 ## Recording acceptance checklist
 
@@ -72,7 +73,7 @@ Close with the exact current state: run phase, source applied true/false, cleanu
 - Every AWS/model/sandbox/database claim names its backend and actual observation.
 - The bad and corrected candidates have distinct exact hashes.
 - A PASS is shown only with a complete connected requirement manifest and evidence.
-- The first exit-2 sandbox attempt and corrected exit-0 attempt are described honestly if that trace is used.
+- The first exit-2 sandbox attempt, corrected exit-0 attempt and later envelope-correct post-deploy call are described honestly if those traces are used.
 - Deny, Allow and cleanup appear only when performed by the human operator and recorded as separate actions.
 - No credentials, raw rows, private connection strings, hidden error details or unreviewed provider logs are visible.
 - Any unavailable snapshot, clone, RDS outcome, apply receipt, replay refusal or cleanup receipt is labeled `NOT_RUN`, `PENDING` or `UNAVAILABLE`.
