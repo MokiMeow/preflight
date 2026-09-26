@@ -717,11 +717,11 @@
       "skill": "preflight-integration",
       "independent_review_required": false,
       "review_model": null,
-      "status": "IN_PROGRESS",
+      "status": "CONNECTED_VERIFIED",
       "max_child_agents": 0,
       "execution_note": "Use the matching Sol High role and verify effective settings. No automatic Astra promotion. Exceptional review only through an admitted A1/A2 ticket in config/model-policy.json; Sol implements and repairs.",
       "review_reasoning_effort": null,
-      "current_execution_note": "Native direct mutation sequence after pinnedCodeMode bridge refusal; baseline captured. Bad/good outcomes and sealed reports pending."
+      "current_execution_note": "Actual native badrolledbackBLOCK and revisedgoodcommittedPASS; both sealedaws_rds reports anchoredverified; native-bad-good-rehearsal.json."
     },
     {
       "id": "T24",
@@ -750,10 +750,11 @@
       "skill": "preflight-integration",
       "independent_review_required": false,
       "review_model": null,
-      "status": "BLOCKED_EXTERNAL",
+      "status": "CONNECTED_VERIFIED",
       "max_child_agents": 0,
       "execution_note": "Use the matching Sol High role and verify effective settings. No automatic Astra promotion. Exceptional review only through an admitted A1/A2 ticket in config/model-policy.json; Sol implements and repairs.",
-      "review_reasoning_effort": null
+      "review_reasoning_effort": null,
+      "current_execution_note": "GenuinehumanDeny/nochange thenlaterAllow/APPLIED, sourcepost-evidence+intendedvaluesverified; freshhuman-approved replay SOURCE_APPLY_REPLAY_REJECTED. source-and-cleanup-proof.json."
     },
     {
       "id": "T25",
@@ -841,12 +842,12 @@
       "skill": "preflight-verification",
       "independent_review_required": true,
       "review_model": "gpt-6-sol",
-      "status": "IN_PROGRESS",
+      "status": "CONNECTED_VERIFIED",
       "max_child_agents": 0,
       "execution_note": "Use the matching Sol High role and verify effective settings. No automatic Astra promotion. Exceptional review only through an admitted A1/A2 ticket in config/model-policy.json; Sol implements and repairs.",
       "review_reasoning_effort": "high",
       "astra_checkpoint": "A1: bounded focused review; independent Sol audit/repairs remain separate.",
-      "current_execution_note": "Separate Sol and boundedA1 code review accepted, deployed/private bindings reconciled. Await actual sealedPASS/report/currentcandidate linkage before source gate."
+      "current_execution_note": "IndependentSol/high reviewed actualsealedPASS/currentcandidate/deployedprivatebinding; ACCEPTED_FOR_T24 a7e18d8 before source request. Scopepreapplyboundary, notallnativeevaluations."
     },
     {
       "id": "T28",
@@ -901,11 +902,11 @@
       "skill": "preflight-rds",
       "independent_review_required": true,
       "review_model": "gpt-6-sol",
-      "status": "BLOCKED_EXTERNAL",
+      "status": "CONNECTED_VERIFIED",
       "max_child_agents": 0,
       "execution_note": "Use the matching Sol High role and verify effective settings. No automatic Astra promotion. Exceptional review only through an admitted A1/A2 ticket in config/model-policy.json; Sol implements and repairs.",
       "review_reasoning_effort": "high",
-      "current_execution_note": "Actual failed-run corrected humanAllow cleanupCOMPLETE retained. New availableclone/snapshot cleanup and recovery retention await separateoperator gate."
+      "current_execution_note": "Genuinehumanclone-onlycleanup; actualAWScloneABSENT encryptedownedpreapplysnapshotAVAILABLE retained; finalRETAINED_RECOVERY. Source/host active, notbroadteardown."
     },
     {
       "id": "T30",
@@ -1114,5 +1115,5 @@
     "live_apply_requires_accepted_review_task": "T27",
     "v3_specification_checked_date": "2026-09-25"
   },
-  "checkpoint": "984bb45 plus observedconnected BASELINED state; no sourceSQL or sealedPASS inferred"
+  "checkpoint": "e20a1ea connected sourceAPPLIED/replayrefused/cloneABSENT/recoveryretained; fullnativeevals/video notcomplete"
 }
