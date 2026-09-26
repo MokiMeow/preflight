@@ -29,7 +29,7 @@ def test_cloud_runtime_wires_tag_inventory_client(monkeypatch, tmp_path):
             source_instance_id="owned-source",
             source_allowlist=["owned-source"],
             db_subnet_group_name="private-subnets",
-            clone_security_group_ids=["sg-test"],
+            clone_security_group_ids=["sg-123abc"],
         )
     )
     assert runtime.adapter.tagging is clients["resourcegroupstaggingapi"]
