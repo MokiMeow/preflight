@@ -140,18 +140,24 @@ def read_protected_config(path):
     """OS boundary: root only, no symlinks, no writable ancestor or config."""
     if os.name != "posix" or os.geteuid() != 0:
         _refuse("BUDGET_OPERATOR_CONTEXT_REQUIRED")
-    path = Path(path).absolute()
-    for target in (path, *path.parents):
-        info = target.lstat()
-        if stat.S_ISLNK(info.st_mode) or info.st_uid != 0 or info.st_mode & 0o022:
+    try:
+        path = Path(path).absolute()
+        for target in (path, *path.parents):
+            info = target.lstat()
+            if stat.S_ISLNK(info.st_mode) or info.st_uid != 0 or info.st_mode & 0o022:
+                _refuse("BUDGET_OPERATOR_CONFIGURATION_UNPROTECTED")
+        info = path.stat()
+        if not stat.S_ISREG(info.st_mode) or info.st_mode & 0o077:
             _refuse("BUDGET_OPERATOR_CONFIGURATION_UNPROTECTED")
-    info = path.stat()
-    if not stat.S_ISREG(info.st_mode) or info.st_mode & 0o077:
+        # O_NOFOLLOW closes the leaf symlink race; protected ancestors prevent swaps.
+        descriptor = os.open(path, os.O_RDONLY | os.O_NOFOLLOW)
+        with os.fdopen(descriptor, "rb") as handle:
+            raw = handle.read(16385)
+    except FileNotFoundError:
+        _refuse("BUDGET_OPERATOR_CONFIGURATION_MISSING")
+    except (OSError, ValueError, TypeError):
         _refuse("BUDGET_OPERATOR_CONFIGURATION_UNPROTECTED")
-    # O_NOFOLLOW closes the leaf symlink race; protected ancestors prevent swaps.
-    descriptor = os.open(path, os.O_RDONLY | os.O_NOFOLLOW)
-    with os.fdopen(descriptor, "rb") as handle:
-        return strict_json(handle.read(16385), 16384)
+    return strict_json(raw, 16384)
 
 
 def prepare_ledger_writer(path):

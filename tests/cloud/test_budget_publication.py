@@ -360,3 +360,60 @@ def test_short_billing_window_is_not_invented_as_zero(config, clients, tmp_path)
     with pytest.raises(PreflightError, match="BUDGET_COST_WINDOW_UNAVAILABLE"):
         publish(config, ce, sts, tmp_path / "absent.sqlite", now=NOW)
     assert not (tmp_path / "absent.sqlite").exists()
+
+
+@pytest.mark.parametrize("boundary", ["file", "ancestor"])
+def test_missing_protected_configuration_has_stable_cli_refusal(monkeypatch, capsys, boundary):
+    import stat
+    import sys
+    from pathlib import Path
+    from types import SimpleNamespace
+
+    import scripts.publish_preflight_budget as module
+
+    path = Path("/etc/preflight/operator-budget.json").absolute()
+    monkeypatch.setattr(module, "os", SimpleNamespace(name="posix", geteuid=lambda: 0))
+
+    def metadata(target):
+        if target == (path if boundary == "file" else path.parent):
+            raise FileNotFoundError("SECRET missing path")
+        return SimpleNamespace(st_uid=0, st_mode=stat.S_IFREG | 0o600)
+
+    monkeypatch.setattr(Path, "lstat", metadata)
+    monkeypatch.setattr(
+        sys, "argv", ["publish", "--config", str(path), "--ledger", "unused.sqlite"]
+    )
+    monkeypatch.setattr(boto3, "Session", lambda **kwargs: pytest.fail("No clients allowed"))
+    monkeypatch.setattr(
+        module, "prepare_ledger_writer", lambda _: pytest.fail("No ledger operation allowed")
+    )
+    assert module.main() == 2
+    output = capsys.readouterr().out
+    assert '"reason_code":"BUDGET_OPERATOR_CONFIGURATION_MISSING"' in output
+    assert '"status":"BLOCKED"' in output
+    assert "SECRET" not in output
+
+
+@pytest.mark.parametrize(
+    "error",
+    [
+        PermissionError("SECRET denied"),
+        NotADirectoryError("SECRET invalid"),
+        ValueError("SECRET invalid path"),
+    ],
+)
+def test_inaccessible_or_invalid_configuration_is_protected_refusal(monkeypatch, error):
+    from pathlib import Path
+    from types import SimpleNamespace
+
+    import scripts.publish_preflight_budget as module
+
+    monkeypatch.setattr(module, "os", SimpleNamespace(name="posix", geteuid=lambda: 0))
+
+    def metadata(target):
+        raise error
+
+    monkeypatch.setattr(Path, "lstat", metadata)
+    with pytest.raises(PreflightError, match="BUDGET_OPERATOR_CONFIGURATION_UNPROTECTED") as exc:
+        module.read_protected_config("invalid-config-path")
+    assert "SECRET" not in str(exc.value)
