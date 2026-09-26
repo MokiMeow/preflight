@@ -227,5 +227,18 @@
       "currency": null,
       "measurement_source": null
     }
+  },
+  "operator_runtime_override": {
+    "decision": "D25",
+    "saved_model": "openai/gpt-model",
+    "alias": "vm-polaris/openai",
+    "observed_resolved_model": "gpt-4o-mini-2024-07-18",
+    "reasoning_parameter": "OMITTED_UNSUPPORTED",
+    "scope": "Explicit runtime exception only; coding/review model assignments remain Sol/high. Default and alternate fields preserve original planned routing, not an executed runtime claim."
+  },
+  "sandbox_operator_override": {
+    "decision": "D26",
+    "backend": "native TrueForge local Linux sandbox",
+    "daytona_required": false
   }
 }

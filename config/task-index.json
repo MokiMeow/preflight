@@ -139,10 +139,11 @@
       "skill": "preflight-rds",
       "independent_review_required": true,
       "review_model": "gpt-6-sol",
-      "status": "BLOCKED_EXTERNAL",
+      "status": "CONNECTED_VERIFIED",
       "max_child_agents": 0,
       "execution_note": "Use the matching Sol High role and verify effective settings. No automatic Astra promotion. Exceptional review only through an admitted A1/A2 ticket in config/model-policy.json; Sol implements and repairs.",
-      "review_reasoning_effort": "high"
+      "review_reasoning_effort": "high",
+      "current_execution_note": "Operator D28 unlimited financial scope; owned singleton account/source/private footprint observed. Cost usage remains unknown, no zero-cost claim."
     },
     {
       "id": "T05",
@@ -169,10 +170,11 @@
       "skill": "preflight-rds",
       "independent_review_required": true,
       "review_model": "gpt-6-sol",
-      "status": "BLOCKED_EXTERNAL",
+      "status": "CONNECTED_VERIFIED",
       "max_child_agents": 0,
       "execution_note": "Use the matching Sol High role and verify effective settings. No automatic Astra promotion. Exceptional review only through an admitted A1/A2 ticket in config/model-policy.json; Sol implements and repairs.",
-      "review_reasoning_effort": "high"
+      "review_reasoning_effort": "high",
+      "current_execution_note": "Actual owned private source/host and restored clone; scoped runtime IAM restore succeeded, private TLS PG18.6 verified. See deployed-boundary-verification.json."
     },
     {
       "id": "T06",
@@ -619,10 +621,11 @@
       "skill": "preflight-integration",
       "independent_review_required": true,
       "review_model": "gpt-6-sol",
-      "status": "BLOCKED_EXTERNAL",
+      "status": "IN_PROGRESS",
       "max_child_agents": 0,
       "execution_note": "Use the matching Sol High role and verify effective settings. No automatic Astra promotion. Exceptional review only through an admitted A1/A2 ticket in config/model-policy.json; Sol implements and repairs.",
-      "review_reasoning_effort": "high"
+      "review_reasoning_effort": "high",
+      "current_execution_note": "Actual Gateway D25 route/native local sandbox D26/official MCP and bounded CodeMode observed. Remaining runtime evaluation cases are not all executed."
     },
     {
       "id": "T21",
@@ -650,10 +653,11 @@
       "skill": "preflight-integration",
       "independent_review_required": true,
       "review_model": "gpt-6-sol",
-      "status": "BLOCKED_EXTERNAL",
+      "status": "CONNECTED_VERIFIED",
       "max_child_agents": 0,
       "execution_note": "Use the matching Sol High role and verify effective settings. No automatic Astra promotion. Exceptional review only through an admitted A1/A2 ticket in config/model-policy.json; Sol implements and repairs.",
-      "review_reasoning_effort": "high"
+      "review_reasoning_effort": "high",
+      "current_execution_note": "All18 deployed module Gitblob hashes match3dea928; bothprivate servicesactive; exact saved10tools/two literal gates/currentguidance bytehash verified. Live reboot fault behavior is not inferred."
     },
     {
       "id": "T22",
@@ -680,10 +684,11 @@
       "skill": "preflight-rds",
       "independent_review_required": false,
       "review_model": null,
-      "status": "BLOCKED_EXTERNAL",
+      "status": "CONNECTED_VERIFIED",
       "max_child_agents": 0,
       "execution_note": "Use the matching Sol High role and verify effective settings. No automatic Astra promotion. Exceptional review only through an admitted A1/A2 ticket in config/model-policy.json; Sol implements and repairs.",
-      "review_reasoning_effort": null
+      "review_reasoning_effort": null,
+      "current_execution_note": "Actual private encrypted snapshot-restored PG18.6 clone available; source binding/tags/account/region/approvedSG/subnet/TLS verified; official phaseBASELINED/source1000rows3columns."
     },
     {
       "id": "T23",
@@ -712,10 +717,11 @@
       "skill": "preflight-integration",
       "independent_review_required": false,
       "review_model": null,
-      "status": "BLOCKED_EXTERNAL",
+      "status": "IN_PROGRESS",
       "max_child_agents": 0,
       "execution_note": "Use the matching Sol High role and verify effective settings. No automatic Astra promotion. Exceptional review only through an admitted A1/A2 ticket in config/model-policy.json; Sol implements and repairs.",
-      "review_reasoning_effort": null
+      "review_reasoning_effort": null,
+      "current_execution_note": "Native direct mutation sequence after pinnedCodeMode bridge refusal; baseline captured. Bad/good outcomes and sealed reports pending."
     },
     {
       "id": "T24",
@@ -835,11 +841,12 @@
       "skill": "preflight-verification",
       "independent_review_required": true,
       "review_model": "gpt-6-sol",
-      "status": "BLOCKED_EXTERNAL",
+      "status": "IN_PROGRESS",
       "max_child_agents": 0,
       "execution_note": "Use the matching Sol High role and verify effective settings. No automatic Astra promotion. Exceptional review only through an admitted A1/A2 ticket in config/model-policy.json; Sol implements and repairs.",
       "review_reasoning_effort": "high",
-      "astra_checkpoint": "A1: bounded focused review; independent Sol audit/repairs remain separate."
+      "astra_checkpoint": "A1: bounded focused review; independent Sol audit/repairs remain separate.",
+      "current_execution_note": "Separate Sol and boundedA1 code review accepted, deployed/private bindings reconciled. Await actual sealedPASS/report/currentcandidate linkage before source gate."
     },
     {
       "id": "T28",
@@ -864,10 +871,11 @@
       "skill": "preflight-integration",
       "independent_review_required": false,
       "review_model": null,
-      "status": "BLOCKED_EXTERNAL",
+      "status": "IN_PROGRESS",
       "max_child_agents": 0,
       "execution_note": "Use the matching Sol High role and verify effective settings. No automatic Astra promotion. Exceptional review only through an admitted A1/A2 ticket in config/model-policy.json; Sol implements and repairs.",
-      "review_reasoning_effort": null
+      "review_reasoning_effort": null,
+      "current_execution_note": "Actual native savedagent and privateUI operate; connected report/source human demonstration pending."
     },
     {
       "id": "T29",
@@ -896,7 +904,8 @@
       "status": "BLOCKED_EXTERNAL",
       "max_child_agents": 0,
       "execution_note": "Use the matching Sol High role and verify effective settings. No automatic Astra promotion. Exceptional review only through an admitted A1/A2 ticket in config/model-policy.json; Sol implements and repairs.",
-      "review_reasoning_effort": "high"
+      "review_reasoning_effort": "high",
+      "current_execution_note": "Actual failed-run corrected humanAllow cleanupCOMPLETE retained. New availableclone/snapshot cleanup and recovery retention await separateoperator gate."
     },
     {
       "id": "T30",
@@ -958,10 +967,11 @@
       "skill": "preflight-verification",
       "independent_review_required": true,
       "review_model": "gpt-6-sol",
-      "status": "BLOCKED_EXTERNAL",
+      "status": "LOCAL_VERIFIED",
       "max_child_agents": 0,
       "execution_note": "Use the matching Sol High role and verify effective settings. No automatic Astra promotion. Exceptional review only through an admitted A1/A2 ticket in config/model-policy.json; Sol implements and repairs.",
-      "review_reasoning_effort": "high"
+      "review_reasoning_effort": "high",
+      "current_execution_note": "668full local acceptance tests passed0fail/error/skip248.38s5c2a56d; manifestdelta13passed5.44s; currentRuff/mypy18pass. Local tests not AWSproof."
     },
     {
       "id": "T32",
@@ -1021,10 +1031,11 @@
       "skill": "preflight-verification",
       "independent_review_required": false,
       "review_model": null,
-      "status": "BLOCKED_EXTERNAL",
+      "status": "NOT_STARTED",
       "max_child_agents": 0,
       "execution_note": "Use the matching Sol High role and verify effective settings. No automatic Astra promotion. Exceptional review only through an admitted A1/A2 ticket in config/model-policy.json; Sol implements and repairs.",
-      "review_reasoning_effort": null
+      "review_reasoning_effort": null,
+      "current_execution_note": "Truthful three-minute script exists; no actual recording artifact yet. Record after observedconnecteddemo."
     },
     {
       "id": "T34",
@@ -1040,7 +1051,7 @@
         "07"
       ],
       "subtasks": [
-        "Inspect current resources, source schema, backup status, saved-agent configuration and evidence hashes. Do not replay an applied migration to “check readiness.”",
+        "Inspect current resources, source schema, backup status, saved-agent configuration and evidence hashes. Do not replay an applied migration to \u201ccheck readiness.\u201d",
         "Confirm which session/run is staged for live judging versus recorded evidence and whether the source has already been mutated. A fresh live re-run requires an explicitly reset synthetic fixture/new rehearsal, not hidden state changes.",
         "Provide a clear completion report naming passed gates, exact run/candidate/hashes and any remaining external action.",
         "Verify final organizer submission details, actual model route, all effective gates, report/receipt hashes, model degradation status and retained resource owner. Do not start another source migration to make the screen look fresh.",
@@ -1053,11 +1064,12 @@
       "skill": "preflight-verification",
       "independent_review_required": true,
       "review_model": "gpt-6-sol",
-      "status": "BLOCKED_EXTERNAL",
+      "status": "IN_PROGRESS",
       "max_child_agents": 0,
       "execution_note": "Use the matching Sol High role and verify effective settings. No automatic Astra promotion. Exceptional review only through an admitted A1/A2 ticket in config/model-policy.json; Sol implements and repairs.",
       "review_reasoning_effort": "high",
-      "astra_checkpoint": "A2: conditional delta review; skip if no material safety delta or slot already consumed."
+      "astra_checkpoint": "A2: conditional delta review; skip if no material safety delta or slot already consumed.",
+      "current_execution_note": "Currentdeployed18modulehash/privategates/restore reconciled; source result/resourcehandoff/evaluation limits remain for finalaudit."
     },
     {
       "id": "T35",
@@ -1101,5 +1113,6 @@
     "max_astra_review_sessions_without_further_user_authorization": 2,
     "live_apply_requires_accepted_review_task": "T27",
     "v3_specification_checked_date": "2026-09-25"
-  }
+  },
+  "checkpoint": "984bb45 plus observedconnected BASELINED state; no sourceSQL or sealedPASS inferred"
 }
