@@ -364,9 +364,31 @@ def test_delete_exact_clone_then_observe_absence(cloud):
         },
     )
     assert cloud.adapter.cleanup(cloud.intent, cleanup(cloud)) == {"clone": "DELETING"}
+    assert cloud.store.get(cloud.intent.run_id)["clone_reserved"] == 1
     cloud.source()
     cloud.absent_clone()
     assert cloud.adapter.cleanup(cloud.intent, cleanup(cloud)) == {"clone": "ABSENT"}
+    row = cloud.store.get(cloud.intent.run_id)
+    assert row["clone_reserved"] == 0
+    assert row["snapshot_reserved"] == 1
+
+
+def test_approved_absent_cleanup_releases_only_selected_reservations(cloud):
+    cloud.store.update(cloud.intent.run_id, phase="ERROR", aws_status=None)
+    cloud.source()
+    cloud.absent_clone()
+    cloud.absent_snapshot()
+    selection = replace(
+        cleanup(cloud, delete_snapshot=True, snapshot_id=cloud.intent.snapshot_id),
+        run_phase="ERROR",
+    )
+    assert cloud.adapter.cleanup(cloud.intent, selection) == {
+        "clone": "ABSENT",
+        "snapshot": "ABSENT",
+    }
+    row = cloud.store.get(cloud.intent.run_id)
+    assert row["clone_reserved"] == row["snapshot_reserved"] == 0
+    assert row["phase"] == "ERROR"
 
 
 def test_preflight_all_selections_before_any_delete(cloud):

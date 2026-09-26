@@ -188,12 +188,38 @@ class RdsAdapter:
         else:
             raise PreflightError("AWS_INVENTORY_INCOMPLETE")
         resources = []
+        automatic_backups = []
         for arn, _ in mappings:
-            parts = arn.split(":")
-            if len(parts) != 7 or parts[5] not in {"db", "snapshot"} or not valid_id(parts[6]):
+            parts = arn.split(":", 6)
+            if len(parts) != 7 or parts[5] not in {"db", "snapshot"}:
                 raise PreflightError("AWS_INVENTORY_RESOURCE_INVALID")
             resource_type, identifier = parts[5], parts[6]
             self._arn(arn, resource_type, identifier)
+            if resource_type == "snapshot" and identifier.startswith("rds:"):
+                if not re.fullmatch(
+                    "rds:"
+                    + re.escape(self.policy.source_instance_id)
+                    + r"-\d{4}-\d{2}-\d{2}-\d{2}-\d{2}",
+                    identifier,
+                ):
+                    raise PreflightError("AWS_INVENTORY_RESOURCE_INVALID")
+                try:
+                    value = self._automatic_source_backup(identifier)
+                except PreflightError as exc:
+                    if exc.code == "AWS_RESOURCE_ABSENT":
+                        continue
+                    raise
+                automatic_backups.append(
+                    {
+                        "resource_id": identifier,
+                        "kind": "source_automatic_backup",
+                        "status": value["Status"],
+                        "managed_by": "aws_rds",
+                    }
+                )
+                continue
+            if not valid_id(identifier):
+                raise PreflightError("AWS_INVENTORY_RESOURCE_INVALID")
             if resource_type == "db" and identifier == self.policy.source_instance_id:
                 # Never counted as a disposable clone.
                 continue
@@ -238,6 +264,7 @@ class RdsAdapter:
         counts = {kind: sum(r["kind"] == kind for r in resources) for kind in ("clone", "snapshot")}
         return {
             "resources": resources,
+            "automatic_source_backups": sorted(automatic_backups, key=lambda r: r["resource_id"]),
             "counts": counts,
             "complete": True,
             "visibility": "eventually_consistent_tag_index",
@@ -436,6 +463,49 @@ class RdsAdapter:
         ):
             raise PreflightError("SOURCE_NOT_OWNED_SYNTHETIC")
         return self._observation(resource)
+
+    def _automatic_source_backup(self, identifier: str) -> dict:
+        """Observe only AWS-managed backups of the exact source, never run resources.
+
+        Fresh Describe TagList verifies ownership without widening ListTags grants.
+        This does not establish run provenance or eligibility for deletion/recovery.
+        """
+        response = self._call(
+            self.rds,
+            "describe_db_snapshots",
+            DBSnapshotIdentifier=identifier,
+            SnapshotType="automated",
+        )
+        values = response.get("DBSnapshots", [])
+        if len(values) != 1 or values[0].get("DBSnapshotIdentifier") != identifier:
+            raise PreflightError("AWS_RESOURCE_IDENTITY_MISMATCH")
+        value = values[0]
+        self._arn(value.get("DBSnapshotArn", ""), "snapshot", identifier)
+        self._engine_encryption(value, snapshot=True)
+        if value.get("DBInstanceIdentifier") != self.policy.source_instance_id:
+            raise PreflightError("AWS_SNAPSHOT_SOURCE_MISMATCH")
+        if value.get("SnapshotType") != "automated":
+            raise PreflightError("AWS_SNAPSHOT_TYPE_MISMATCH")
+        pairs = value.get("TagList", [])
+        if not isinstance(pairs, list) or any(
+            not isinstance(t, dict)
+            or not isinstance(t.get("Key"), str)
+            or not isinstance(t.get("Value"), str)
+            for t in pairs
+        ):
+            raise PreflightError("AWS_INVENTORY_TAG_MISMATCH")
+        tags = {t.get("Key"): t.get("Value") for t in pairs}
+        if (
+            len(tags) != len(pairs)
+            or tags.get("Project") != "Preflight"
+            or tags.get("Owner") != self.policy.owner
+            or any(k in tags for k in ("RunId", "SnapshotId"))
+        ):
+            raise PreflightError("AWS_INVENTORY_TAG_MISMATCH")
+        status = value.get("Status")
+        if not isinstance(status, str) or not re.fullmatch(r"[a-z][a-z-]{0,63}", status):
+            raise PreflightError("AWS_INVENTORY_RESOURCE_INVALID")
+        return value
 
     def _snapshot(self, identifier: str) -> dict:
         response = self._call(self.rds, "describe_db_snapshots", DBSnapshotIdentifier=identifier)
@@ -679,6 +749,11 @@ class RdsAdapter:
                         self.rds, "delete_db_snapshot", DBSnapshotIdentifier=intent.snapshot_id
                     )
                 result[kind] = "DELETING"
+            self.store.release_reservation(
+                intent,
+                clone_absent=result.get("clone") == "ABSENT",
+                snapshot_absent=result.get("snapshot") == "ABSENT",
+            )
             return result
 
     def observe_cleanup(self, intent: ResourceIntent) -> dict[str, str]:
