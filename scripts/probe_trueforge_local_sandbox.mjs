@@ -80,9 +80,20 @@ try {
   await fs.mkdir(parent, {mode: 0o700});
   for (const file of files.slice(0, 2)) await fs.writeFile(file, nonce, {flag: 'wx', mode: 0o600});
   assert.equal((await fs.stat(optCanary)).isFile(), true);
+  const optBefore = await fs.readFile(optCanary);
+  assert.equal((await fs.stat(optCanary)).uid, process.getuid());
+  await fs.appendFile(optCanary, 'host-positive-inert-write');
+  assert.equal((await fs.readFile(optCanary)).length, optBefore.length + 25);
+  await fs.writeFile(optCanary, optBefore);
+  const optStat = await fs.stat(optCanary);
+  const statKeys = ['dev', 'ino', 'mode', 'uid', 'gid', 'size'];
+  summary.host_file_read_write_positive_control = true;
   await listen(aPath, 'own');
   await listen(bPath, 'foreign');
-  const tcp = net.createServer(socket => socket.end('inert-canary'));
+  const tcp = net.createServer(socket => {
+    socket.on('error', () => {});
+    socket.end('inert-canary');
+  });
   await new Promise((resolve, reject) => {
     tcp.once('error', reject);
     tcp.listen(0, '0.0.0.0', resolve);
@@ -112,7 +123,9 @@ checks={}
 for i,p in enumerate(targets):
  for mode in ('rb','ab'):
   try:
-   f=open(p,mode); f.close(); allowed=True
+   f=open(p,mode)
+   if mode=='ab': f.write(b'preflight-inert-write')
+   f.close(); allowed=True
   except OSError: allowed=False
   checks[str(i)+'_'+mode+'_denied']=not allowed
 link='private-link'
@@ -155,6 +168,16 @@ for label,p,expected in [('own',${JSON.stringify(aPath)},'own'),('foreign',${JSO
  checks[label+'_bridge_'+('allowed' if label=='own' else 'denied')]=allowed if label=='own' else not allowed
 print(json.dumps(checks))`;
   summary.checks = await run(code, {TFY_MCP_SOCK: aPath});
+  // denyRead creates an empty per-execution tmpfs. A writable shadow is not
+  // a host write; the independent host read must prove original bytes intact.
+  summary.opt_shadow_write_observed = !summary.checks['2_ab_denied'];
+  delete summary.checks['2_ab_denied'];
+  summary.checks.opt_host_bytes_preserved = optBefore.equals(await fs.readFile(optCanary));
+  const optAfterStat = await fs.stat(optCanary);
+  summary.checks.opt_host_metadata_preserved = statKeys.every(key => optStat[key] === optAfterStat[key]);
+  if (!Object.values(summary.checks).every(value => value === true)) {
+    console.log(JSON.stringify({...summary, accepted: false}));
+  }
   assert.ok(Object.values(summary.checks).every(value => value === true), 'all isolation canaries required');
   for (const file of files.slice(0, 2)) assert.equal(await fs.readFile(file, 'utf8'), nonce);
   assert.equal(await fs.readFile(sibling, 'utf8'), nonce);
