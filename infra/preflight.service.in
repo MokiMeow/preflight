@@ -1,0 +1,30 @@
+[Unit]
+Description=Preflight private migration rehearsal service
+After=network-online.target
+Wants=network-online.target
+RequiresMountsFor=/var/lib/preflight
+
+[Service]
+Type=simple
+User=preflight
+Group=preflight
+WorkingDirectory=/opt/preflight
+EnvironmentFile=/etc/preflight/preflight.env
+ExecStartPre=/usr/bin/test -d /var/lib/preflight
+ExecStartPre=/usr/bin/test -x /opt/preflight/.venv/bin/preflight
+ExecStart=/opt/preflight/.venv/bin/preflight serve
+UMask=0077
+Restart=on-failure
+RestartSec=5
+TimeoutStopSec=30
+KillSignal=SIGTERM
+NoNewPrivileges=true
+ProtectSystem=strict
+ProtectHome=true
+PrivateTmp=true
+ReadWritePaths=/var/lib/preflight
+StandardOutput=journal
+StandardError=journal
+
+[Install]
+WantedBy=multi-user.target

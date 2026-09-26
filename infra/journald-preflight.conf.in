@@ -1,0 +1,4 @@
+# Operator-reviewed proposal; install only after verifying host-wide policy.
+[Journal]
+SystemMaxUse=100M
+MaxRetentionSec=7day

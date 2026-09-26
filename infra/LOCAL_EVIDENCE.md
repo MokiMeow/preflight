@@ -1,0 +1,42 @@
+# T04/T12/T13/T17 local cloud evidence
+
+Assigned checkout: `.worktrees/cloud`, branch `preflight/cloud`.
+Base commit: `5790a6a4f2cbeb2ef86c6918b08abdcae8568240`.
+Effective own session `turn_context`: model `gpt-6-sol`, effort `high`.
+Only that thread's matching session file was inspected; no credentials or full
+session messages were emitted.
+
+Backend: Boto3/Botocore Stubber and pure unit job fixtures only. Actual AWS identity,
+pricing, source/host creation, snapshot restore, TLS readiness, human cleanup,
+live deletion, Linux systemd startup and source mutation have NOT_RUN.
+No operator-inputs.local.json, AWS resource identifiers or creation/spend scope
+were supplied. T04 connected authorization is BLOCKED_EXTERNAL.
+
+Commands from this checkout, using the existing lead Python 3.12 venv:
+
+```
+$env:PYTHONPATH = (Join-Path (Get-Location) 'src')
+& '../../.venv/Scripts/python.exe' -m pytest tests/cloud -q
+& '../../.venv/Scripts/python.exe' -m ruff check src/preflight/aws_rds.py src/preflight/jobs.py infra tests/cloud
+& '../../.venv/Scripts/python.exe' -m ruff format --check src/preflight/aws_rds.py src/preflight/jobs.py infra tests/cloud
+```
+
+The cloud suite covers exact private/encrypted restore construction, account,
+source/network/engine/tag checks, deterministic collision refusal, resource caps,
+separate mutation lease, restart/poll/deadline behavior, preserved uncertainty IDs,
+provider error sanitization, lost-create reconciliation, literal cleanup gate,
+source/unknown-outcome/report-retention refusal, independent recovery attestation,
+exact deletion and absence observation. Bootstrap source/host request shapes use
+Stubber; admin runtime policy, absent scopes and mismatched plan digests refuse.
+
+Observed final cloud run: `47 passed in 6.42s`. Ruff check passed. Mypy
+`--follow-imports=silent --ignore-missing-imports` passed for both cloud source
+modules. `git diff --check` passed. These are local results, not live proof.
+
+T12/T13/T17 are LOCAL_VERIFIED. No independent
+cloud boundary review is claimed. Lead integration must hold application run CAS
+through cleanup/source apply, supply trusted recovery evidence, promote AWS
+availability to READY only after TLS/role/object checks, and expose only real
+production clients under approved CloudPolicy. Both runtime and bootstrap share
+the same durable `cloud.sqlite` and mutation lease. Never free reservations just
+because a job expired or a deletion request returned.
