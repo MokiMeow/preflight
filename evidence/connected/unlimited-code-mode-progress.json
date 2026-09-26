@@ -1,0 +1,50 @@
+{
+  "state": "CONNECTED_VERIFIED",
+  "scope": "Saved preflight agent generated bounded Python in the reviewed TrueForge local Linux sandbox to observe one existing run with read-only get_run calls only; no mutation or approval tool",
+  "implementation_commit": "d3715ca",
+  "run_id": "fef79c61-dcea-42c3-a760-c2f9c4235abc",
+  "session_id": "01m3enza6j26kqqw6xheb3q696",
+  "turn_id": "01m3enznyrfk8zjbd2tppmvvrh",
+  "system_tool_call_id": "call_k0Pj6hTVOLj8QeYtX9wIo4tz",
+  "system_tool": "exec",
+  "tool_response_linked": true,
+  "generated_program_preflight_tools": [
+    "get_run"
+  ],
+  "mutation_or_approval_tool_calls": 0,
+  "bounded_poll": {
+    "max_polls": 4,
+    "monotonic_deadline_seconds": 45,
+    "max_wait_seconds": 10
+  },
+  "exec": {
+    "success": true,
+    "exit_code": 0
+  },
+  "observed": {
+    "phase_sequence": [
+      "SNAPSHOTTING"
+    ],
+    "final_phase": "SNAPSHOTTING",
+    "cleanup_state": "NOT_REQUESTED",
+    "error_code": null
+  },
+  "turn_status": "done",
+  "required_actions": 0,
+  "event_types": [
+    "turn.created",
+    "model.message",
+    "sandbox.created",
+    "tool.response",
+    "model.message",
+    "turn.done"
+  ],
+  "created_at": "2026-09-26T11:00:41.057Z",
+  "completed_at": "2026-09-26T11:01:38.581Z",
+  "turn_elapsed_seconds": 57.524,
+  "exec_event_elapsed_seconds": 51.479,
+  "final_text_sha256": "a9c7abc5d47aa58e9fb4e91270297a71266ea36eb37c379b42cdbaf08e4159d5",
+  "raw_rows_exposed": false,
+  "secrets_exposed": false,
+  "source_sql_executed_by_turn": false
+}

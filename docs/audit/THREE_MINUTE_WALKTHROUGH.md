@@ -13,6 +13,8 @@ Current proof that may be stated now:
 - The connected sandbox canary verified the bounded filesystem, process/environment, network, per-session socket, launcher-environment and timeout checks recorded in the sanitized receipt.
 - The current local suite at revision `878d64a` passed 641 tests with zero failures, errors or skips in 263.60 seconds; local tests are not RDS execution evidence.
 - At 10:42:10 UTC the human operator selected **Allow** for the separate cleanup gate. Cleanup completed with receipt `da3e1dc4-60df-4fa4-b8f3-7d14d806f58d`; the run-owned clone and snapshot are both absent. The coding agent did not click the gate.
+- The new authorized live run is `fef79c61-dcea-42c3-a760-c2f9c4235abc`. At 11:01:38 UTC, saved-agent session `01m3enza6j26kqqw6xheb3q696`, turn `01m3enznyrfk8zjbd2tppmvvrh`, generated one bounded read-only Code Mode Python program. System `exec` call `call_k0Pj6hTVOLj8QeYtX9wIo4tz` exited 0 after calling only `get_run`; it observed `SNAPSHOTTING`, `cleanup_state=NOT_REQUESTED`, and no error code. No approval or mutation tool was called.
+- The run records snapshot identifier `preflight-fef79c61dcea42c3a760c2f9c4235abc-snap` and clone identifier `preflight-fef79c61dcea42c3a760c2f9c4235abc-clone`. `SNAPSHOTTING` does not prove that the clone exists or is database-ready.
 - At the time this script was updated, no successful live bad-to-good RDS result, source SQL apply or source-apply denial/allowance was available for the recording.
 
 ## Timed script
@@ -29,7 +31,7 @@ Add: “This is evidence for this source and snapshot, not a guarantee of produc
 
 **Show:** the sanitized saved-agent session/turn and Code Mode execution receipt, then the local-sandbox verification receipt.
 
-**Say:** “This is the saved product agent using the real model route, private Preflight MCP service and TrueForge’s local Linux sandbox. The first attempt incorrectly sent Python directly to a shell and exited 2. The model corrected it with an explicit Python script; the shell exited 0. A later corrected post-deploy call read the real nested result: 1,000 rows, three columns, run ERROR and cleanup COMPLETE. A zero shell exit is not a PASS.”
+**Say:** “This is the saved product agent using the real model route, private Preflight MCP service and TrueForge’s local Linux sandbox. The first attempt incorrectly sent Python directly to a shell and exited 2. The model corrected it with an explicit Python script; the shell exited 0. A later corrected post-deploy call read 1,000 rows, three columns, run ERROR and cleanup COMPLETE. For the new live run, another generated program used only read-only `get_run` polling and observed SNAPSHOTTING. A zero shell exit is not a PASS.”
 
 Point to the canary summary: own-session socket allowed, foreign socket denied, host bytes/metadata unchanged, private/metadata network denied, launcher injection refused and timed-out child absent. Do not claim that these bounded checks prove universal containment.
 
@@ -39,7 +41,7 @@ Point to the canary summary: own-session socket allowed, foreign socket denied, 
 
 **Say:** “The model explains the result, but deterministic service checks decide it. Exact SQL bytes, the contract, baseline, primary keys, protected values, schema and coverage must all agree. Missing fields are a schema mismatch, never an excuse to print N/A or infer success.”
 
-If the live RDS run is still unavailable, say exactly: “The live snapshot/clone and RDS migration outcomes are not available yet, so I am not showing a PASS.” Then show only the current persisted state and move to the limitation beat below.
+For the current trace, show `evidence/connected/unlimited-code-mode-progress.json` and say: “The durable run is SNAPSHOTTING. The agent made at most four read-only observations under a 45-second monotonic deadline, saw no phase change and stopped. The snapshot and clone identifiers are recorded, but clone readiness and migration outcomes are not available, so I am not showing a PASS.” Then show only the current persisted state and move to the limitation beat below.
 
 ### 1:25–2:05 — Live RDS result, only if observed
 
@@ -47,7 +49,7 @@ If the live RDS run is still unavailable, say exactly: “The live snapshot/clon
 
 **Say:** “The bad migration failed on the populated clone and rolled back; the source remained unchanged. The corrected candidate is a new exact artifact. It passed the complete declared checks on this restored clone and is awaiting a human decision.”
 
-**If any part is unavailable:** keep this section visibly labeled **NOT RUN** or **PENDING** and say which exact state is known. Do not substitute the 641-test local gate, an old report or the earlier ERROR agent turn.
+**Current state:** keep this section visibly labeled **PENDING — SNAPSHOTTING** until a later independently retained receipt proves the next state. Do not substitute the 641-test local gate, an old report, the earlier ERROR agent turn, or the planned clone identifier for an available clone.
 
 ### 2:05–2:35 — Human control
 
@@ -65,7 +67,7 @@ Cleanup is a second literal gate. In the retained trace, the human operator—no
 
 **Say:** “The sealed artifact records what was observed, and an independently retained expected digest detects replacement. It does not prove current source eligibility. Unknown commit outcomes are never retried automatically. Resource retention and cleanup remain explicit operator decisions.”
 
-Close with the exact current state: run phase, source applied true/false, cleanup state, retained snapshot/clone IDs or `NONE`, and the next safe action. If the live RDS flow is incomplete, close with: “The native agent and sandbox are connected, and operator-approved cleanup is complete with both run-owned resources absent. The live RDS rehearsal and source-apply human gate remain unavailable, so this walkthrough stops here rather than inventing the result.”
+Close with the exact current state: run phase, source applied true/false, cleanup state, retained snapshot/clone IDs or `NONE`, and the next safe action. For the current checkpoint, close with: “The native agent and sandbox are connected. The previous failed run was cleaned up by the human operator. The new run is SNAPSHOTTING; clone readiness, the migration outcomes and the source-apply human gate remain unavailable, so this walkthrough stops here rather than inventing the result.”
 
 ## Recording acceptance checklist
 
