@@ -39,6 +39,14 @@ not connected cloud proof; preserve the doctor's `NOT_RUN` and `NOT_OBSERVED` fi
   as local-only. It must remain behind an SSH tunnel; never publish its port.
 - The installed OpenAPI schema is at `/api/v1/openapi.json`; interactive docs are at
   `/api/v1/docs`.
+- On the first Windows start after the locked install, the CLI was silent while it awaited the
+  bundled `main.js` dependency graph: the isolated SQLite file appeared 63 seconds after process
+  creation. A separate cold reproduction took 52 seconds to create SQLite and 54 seconds to answer
+  HTTP; a warmed start took 2 seconds. The shipped `better-sqlite3@13.0.3` `win32-x64` prebuild
+  loaded successfully with SQLite `3.53.4`, so the missing banner was not a missing native addon.
+  Use a bounded readiness check against `/api/v1/openapi.json` before diagnosing the first silent
+  minute as a permanent hang. The lower-level Windows filesystem/security-scanner contribution was
+  not isolated and must not be stated as the cause.
 
 Install exactly the lockfile and rerun the package probe:
 
@@ -58,8 +66,16 @@ On the private host, with the repository checkout and runtime settings already p
 
 ```bash
 cd integration
+export OUTBOUND_URL_ALLOWED_HOSTS='["127.0.0.1"]'
 npx trueforge --port 8790
 ```
+
+TrueForge `0.2.1` enables its outbound URL guard by default and blocks `127.0.0.0/8` unless the
+exact connector host is allowlisted. Without the line above, creating the documented
+`http://127.0.0.1:8000/mcp` connector returns `400 Outbound URL blocked`. Keep
+`NETWORK_POLICY_ENABLED` at its default `true`; do not disable the guard or add a broad host range.
+Set the allowlist only in the private TrueForge process environment, not in a global or personal
+profile.
 
 Keep the process on the private host and access it through a tunnel:
 
@@ -167,6 +183,59 @@ node scripts/probe_trueforge_mcp_client.mjs http://127.0.0.1:18002/mcp
 The expected output identifies `probe_only`, both observed SDK versions, Streamable HTTP, and the
 single `status` tool. This proves local wire interoperability only. It is not a Gateway response,
 Daytona run, Preflight business trace, or approval test.
+
+## Native UI connector evidence and resume state
+
+The sanitized local observation is recorded in
+[`trueforge-native-connector-evidence.json`](trueforge-native-connector-evidence.json). The native
+TrueForge REST API created the `preflight-local-probe` connector in an isolated SQLite database and
+discovered exactly the ten Preflight business tools from `http://127.0.0.1:18000/mcp`. Every input
+schema was an object with `additionalProperties: false`, every tool exposed an output schema, and
+the two literal gate names were present. No MCP tool, agent, model, provider, Daytona, source apply,
+cleanup, or human decision ran during this observation.
+
+To resume this local proof without touching personal TrueForge state:
+
+1. Start Preflight with the ignored `config/ui-probe.local.json` and its isolated
+   `var/ui-probe-service` state. Require source `NONE`, cloud/apply disabled, and no credential
+   values.
+2. Start TrueForge on `127.0.0.1:18790` with `SQLITE_PATH` pointing to the isolated
+   `var/trueforge-probe.sqlite`, `APP_DATA_DIR_SUFFIX=preflight-probe`, and the exact loopback
+   allowlist above. Do not export these variables through a global or personal profile.
+3. Wait up to 90 seconds for `GET http://127.0.0.1:18790/api/v1/openapi.json` to return 200 on a
+   cold Windows start. A missing early banner is not readiness evidence.
+4. Open Connectors in the native UI and inspect `preflight-local-probe`, or call read-only
+   `GET /api/v1/mcp-servers/preflight-local-probe/tools`. Do not invoke either literal gate.
+5. Stop only the processes whose command, port, and isolated paths match this probe. TrueForge
+   `0.2.1` exposes no connector-delete route in the observed OpenAPI schema; remove the isolated
+   SQLite files only after stopping TrueForge when the local evidence is no longer needed.
+
+The actual Windows resume commands use process-scoped environment variables. Run each server in
+its own repository-root PowerShell; do not copy these variables into a profile:
+
+```powershell
+# Shell 1: isolated, fail-closed Preflight service on port 18000.
+$env:PREFLIGHT_SETTINGS = (Resolve-Path 'config/ui-probe.local.json').Path
+uv run --locked preflight doctor --json
+uv run --locked preflight serve
+```
+
+```powershell
+# Shell 2: isolated native TrueForge UI/API on port 18790.
+$env:HOST = '127.0.0.1'
+$env:SQLITE_PATH = (Join-Path (Get-Location) 'var/trueforge-probe.sqlite')
+$env:APP_DATA_DIR_SUFFIX = 'preflight-probe'
+$env:OUTBOUND_URL_ALLOWED_HOSTS = '["127.0.0.1"]'
+$env:NODE_ENV = 'production'
+node integration/node_modules/@truefoundry/trueforge/dist/cli.js --port 18790
+```
+
+In a third shell, perform only the readiness and schema observations:
+
+```powershell
+Invoke-WebRequest 'http://127.0.0.1:18790/api/v1/openapi.json' -UseBasicParsing -TimeoutSec 10
+Invoke-WebRequest 'http://127.0.0.1:18790/api/v1/mcp-servers/preflight-local-probe/tools' -UseBasicParsing -TimeoutSec 20
+```
 
 ## Connected acceptance still required
 

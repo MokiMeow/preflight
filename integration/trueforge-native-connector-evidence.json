@@ -1,0 +1,96 @@
+{
+  "schema_version": "1.0",
+  "evidence_kind": "trueforge_native_connector_probe",
+  "verification_level": "LOCAL_VERIFIED",
+  "observed_at": "2026-09-26T12:08:18+05:30",
+  "repository_head": "0d1a461a5e84f525c897f525d7bf4505adcd7bee",
+  "repository_worktree_clean": false,
+  "trueforge": {
+    "package": "@truefoundry/trueforge",
+    "version": "0.2.1",
+    "host": "127.0.0.1",
+    "port": 18790,
+    "persistence": "isolated_sqlite",
+    "network_policy_enabled": true,
+    "outbound_url_allowed_hosts": [
+      "127.0.0.1"
+    ],
+    "http_observations": {
+      "/": 200,
+      "/api/v1/docs": 200,
+      "/api/v1/openapi.json": 200
+    },
+    "native_browser_observations": {
+      "settings_rendered": true,
+      "configured_connectors": 1,
+      "connector_state": "Connected",
+      "configured_providers": 0
+    }
+  },
+  "preflight_service": {
+    "mcp_url": "http://127.0.0.1:18000/mcp",
+    "source": "NONE",
+    "cloud_enabled": false,
+    "source_apply_enabled": false,
+    "credential_values_present": false,
+    "runtime_state": "isolated_empty"
+  },
+  "connector": {
+    "name": "preflight-local-probe",
+    "type": "remote",
+    "auth_status": "not_required",
+    "create_http_status": 201,
+    "tools_list_http_status": 200,
+    "tools_list_duration_ms": 321,
+    "canonical_tools_response_sha256": "af26b949290e5ba88ba43d7ee5dac792765cfee05b7c42e8af2218cc8ba648d9",
+    "canonical_tools_response_bytes": 12495,
+    "tool_names": [
+      "register_candidate",
+      "start_rehearsal",
+      "get_run",
+      "get_source_status",
+      "capture_baseline",
+      "apply_to_clone",
+      "validate_rehearsal",
+      "get_report",
+      "apply_to_demo_source",
+      "cleanup_run"
+    ],
+    "exact_expected_tool_set": true,
+    "all_input_schemas_are_objects": true,
+    "all_input_schemas_reject_unknown_fields": true,
+    "all_tools_have_output_schema": true,
+    "literal_human_gate_tools_present": [
+      "apply_to_demo_source",
+      "cleanup_run"
+    ]
+  },
+  "startup_observations": {
+    "initial_process_created": "2026-09-26T11:59:37+05:30",
+    "initial_sqlite_created": "2026-09-26T12:00:40+05:30",
+    "reproduced_cold_process_created": "2026-09-26T12:02:35+05:30",
+    "reproduced_cold_sqlite_created": "2026-09-26T12:03:27+05:30",
+    "reproduced_cold_http_observed": "2026-09-26T12:03:29+05:30",
+    "warmed_process_created": "2026-09-26T12:04:39+05:30",
+    "warmed_sqlite_created": "2026-09-26T12:04:41+05:30",
+    "silent_stage": "cli_awaiting_main_module_import_before_banner",
+    "better_sqlite3_version": "13.0.3",
+    "better_sqlite3_native_prebuild": "win32-x64",
+    "sqlite_version": "3.53.4"
+  },
+  "actions_not_performed": {
+    "mcp_tool_calls": 0,
+    "agents_created": 0,
+    "model_requests": 0,
+    "provider_requests": 0,
+    "daytona_requests": 0,
+    "source_apply_requests": 0,
+    "cleanup_requests": 0,
+    "human_gate_decisions": 0
+  },
+  "limits": [
+    "This is local native TrueForge connector and schema-discovery evidence, not a model, Daytona, cloud, approval, or source-write trace.",
+    "The repository worktree was not clean, so the live schemas are the evidence; repository_head alone does not identify every service byte.",
+    "TrueForge 0.2.1 exposes no connector deletion route in its observed OpenAPI document; this connector remains only in the isolated probe database."
+  ]
+}
