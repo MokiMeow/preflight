@@ -2,6 +2,17 @@
 
 **Current state:** implemented Python service, deterministic evidence, guarded AWS adapters and pinned native TrueForge integration. Local verification passed; connected deployment and human demonstrations await operator access. The archive began as specifications only.
 
+**Goal status: BLOCKED_EXTERNAL.** The same missing approved cloud/provider setup
+persisted through the final 229-test checkpoint, isolated wheel-install checkpoint
+and current revalidation. Independent authorized work is exhausted. Current
+`uv run --locked preflight doctor --json` reports local_ready=true with cloud,
+Gateway, Daytona, provider-roundtrip, human-approval and apply readiness false;
+only capability/UI-probe local configuration files exist, and no Git remote is
+configured. Native TrueForge's OpenAPI remains available; provider settings GET
+returned HTTP 404, which supplies no evidence of configured providers. No live
+cloud/model job is pending. Resume when the operator supplies the consolidated
+inputs below; do not substitute local tests for connected acceptance.
+
 ## Current checkpoint
 
 - Event start: operator confirmed organizer authorizes coding now on 2026-09-26, before first application edit. Final submission fields remain unconfirmed.
