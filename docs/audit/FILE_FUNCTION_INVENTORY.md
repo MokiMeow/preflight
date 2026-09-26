@@ -1,6 +1,6 @@
 # First-party file and function inventory
 
-Snapshot: `70e761ba24a8a996c81098e337e26cdba8c589e8`. 183 files; 1050 declared symbols.
+Snapshot: `908c56efd25fce43c3d06629a776d6a433372511`. 190 files; 1056 declared symbols.
 
 Every file below was read as UTF-8 and hashed. JSON and Python were parsed. This inventory is static accounting, not a claim that every branch/function was executed. Private ignored configuration and vendor/runtime directories are excluded. Audit outputs do not hash themselves.
 
@@ -96,7 +96,7 @@ configuration or documented contract. 1001 bytes; JSON_PARSED. SHA-256: `7bd7f9f
 
 ## config/model-policy.json
 
-configuration or documented contract. 4691 bytes; JSON_PARSED. SHA-256: `84db978abb800d50b6958b1132122a3cc3bf587aa82e9562c199bd82ed50cb5a`.
+configuration or documented contract. 5302 bytes; JSON_PARSED. SHA-256: `07c9842037cfbaade39d69ac34c81186c17637cec108c0638261e9eea05bf772`.
 
 ## config/operator-inputs.example.json
 
@@ -104,7 +104,7 @@ configuration or documented contract. 4031 bytes; JSON_PARSED. SHA-256: `a7350d2
 
 ## config/preflight-agent.yaml
 
-configuration or documented contract. 9581 bytes; TEXT_INVENTORIED. SHA-256: `9933674d4ca3d2e3122f185fce5e1271094eef6c6db9a1ec5804b1e63f524cf7`.
+configuration or documented contract. 10305 bytes; TEXT_INVENTORIED. SHA-256: `db06e28cd1901f3ec13f9071406da7e6bb866dd7dbae8d022a8543f1e605fb93`.
 
 ## config/research-index.json
 
@@ -140,11 +140,11 @@ configuration or documented contract. 225 bytes; JSON_PARSED. SHA-256: `983918df
 
 ## docs/00_PRODUCT_AND_DECISIONS.md
 
-configuration or documented contract. 21477 bytes; TEXT_INVENTORIED. SHA-256: `0e467da51f141f91d5560dc8f3ca75fb035a9cbb2d04ab646913fe39e44a5b3f`.
+configuration or documented contract. 21498 bytes; TEXT_INVENTORIED. SHA-256: `18f1cbcd2c5f2ea146177a28f9d99336d975ad90130762dc0e0ba26568545315`.
 
 ## docs/01_ARCHITECTURE.md
 
-configuration or documented contract. 20829 bytes; TEXT_INVENTORIED. SHA-256: `60e5179ed5ba697f705dd37daf2a1072e128f2567d654738704c3bff9586a75c`.
+configuration or documented contract. 21024 bytes; TEXT_INVENTORIED. SHA-256: `a38e83c261913156c069268cf793ce5764ba4973fc8e127a0c3d4fb798a1419a`.
 
 ## docs/02_CONTRACTS_AND_SAFETY.md
 
@@ -152,7 +152,7 @@ configuration or documented contract. 40735 bytes; TEXT_INVENTORIED. SHA-256: `6
 
 ## docs/03_BUILD_PLAN.md
 
-configuration or documented contract. 54817 bytes; TEXT_INVENTORIED. SHA-256: `79ba58056f4c2262b47d6c7caa2498a410208fd0f88a34a0a0b5ce389e5c7be9`.
+configuration or documented contract. 55012 bytes; TEXT_INVENTORIED. SHA-256: `56dc74968be06e558fdd2b44291db740a24049354f9d34f07633e0abc06b5290`.
 
 ## docs/04_CLOUD_RUNBOOK.md
 
@@ -176,7 +176,7 @@ configuration or documented contract. 25654 bytes; TEXT_INVENTORIED. SHA-256: `d
 
 ## docs/09_BUILD_STATUS.md
 
-configuration or documented contract. 26959 bytes; TEXT_INVENTORIED. SHA-256: `6c6ef39c36c87762f38a0aa3b1fc52148a5245a95db29452559b8605ade48e2c`.
+configuration or documented contract. 29935 bytes; TEXT_INVENTORIED. SHA-256: `362e466dbb77de6ad8f5efadd4b535f3e4a07b7420e45798f7a9381a51aed0a0`.
 
 ## docs/10_CODEX_OPERATING_SYSTEM.md
 
@@ -185,6 +185,10 @@ configuration or documented contract. 21770 bytes; TEXT_INVENTORIED. SHA-256: `6
 ## docs/11_PROJECT_AUDIT.md
 
 configuration or documented contract. 17650 bytes; TEXT_INVENTORIED. SHA-256: `d38f5f9b4751d8b5a5e660fcddf56fad911dd72df78fab937f698b5d0d7ec0d5`.
+
+## docs/audit/A1_BOUNDARY_REVIEW.md
+
+configuration or documented contract. 1224 bytes; TEXT_INVENTORIED. SHA-256: `42fbf572512356f8627f8a4bbb13e61e78ac7e889f852934b7c91954ac10348b`.
 
 ## docs/audit/CONTINUATION_REPORT.md
 
@@ -200,7 +204,7 @@ configuration or documented contract. 4331 bytes; TEXT_INVENTORIED. SHA-256: `5b
 
 ## docs/audit/LOCAL_SANDBOX_CONTINUATION_REPORT.md
 
-configuration or documented contract. 25428 bytes; TEXT_INVENTORIED. SHA-256: `8d14b4eec3333e55c263a2b73e7ab26eb3234e4c2697c2ce22be6a7d0933affb`.
+configuration or documented contract. 28154 bytes; TEXT_INVENTORIED. SHA-256: `d57db215e38c5487bea4c8695527cf8b3a799b18d4965eb4148ae6843f61b846`.
 
 ## docs/audit/SCENARIO_MATRIX.md
 
@@ -212,7 +216,7 @@ configuration or documented contract. 58270 bytes; TEXT_INVENTORIED. SHA-256: `a
 
 ## docs/audit/THREE_MINUTE_WALKTHROUGH.md
 
-configuration or documented contract. 9645 bytes; TEXT_INVENTORIED. SHA-256: `94c6d8a4198ac74e7985a9c5110178817eefb03c2a524b92251ee571b9520832`.
+configuration or documented contract. 10442 bytes; TEXT_INVENTORIED. SHA-256: `cc06a4271a3498f854da9d543cc4823d49f7e99a1dcabf9538b9cf7531e52d53`.
 
 ## docs/audit/continuation-distribution.json
 
@@ -224,11 +228,15 @@ configuration or documented contract. 1562 bytes; JSON_PARSED. SHA-256: `9dc270d
 
 ## docs/audit/current-function-call-observations.json
 
-configuration or documented contract. 26929 bytes; JSON_PARSED. SHA-256: `1af7708b3f0c9eecdd9055898d61a7188ef6b70332003a685a08cb65b429a054`.
+configuration or documented contract. 27120 bytes; JSON_PARSED. SHA-256: `27f80175955825b1d63a980a6f24c5273e751baaaf409561f9e9a63da9687258`.
 
 ## docs/audit/distribution.json
 
 configuration or documented contract. 2249 bytes; JSON_PARSED. SHA-256: `450d2ca911f460322449c51510f1d6e9db0fabf0b330ce6a944005c58f231526`.
+
+## docs/audit/exact-bad-ddl-privacy.json
+
+configuration or documented contract. 4190 bytes; JSON_PARSED. SHA-256: `1335eb64ef3ec33441e729a219a4a74e699a38be153eeec19171cf7880c20a5e`.
 
 ## docs/audit/function-call-observations.json
 
@@ -236,7 +244,7 @@ configuration or documented contract. 32584 bytes; JSON_PARSED. SHA-256: `b6aa8b
 
 ## docs/audit/local-sandbox-verification.json
 
-configuration or documented contract. 4114 bytes; JSON_PARSED. SHA-256: `fe0f0bf7e01e71d79b590ab3d28e3d6ac43b19cc33ad7af4f432194c05ed594d`.
+configuration or documented contract. 5028 bytes; JSON_PARSED. SHA-256: `645a4dc89d4a3a3b71ddef441b959dc9668294e4afbc0088c7dc01ab61cf33cb`.
 
 ## docs/audit/review-notes.json
 
@@ -258,6 +266,10 @@ configuration or documented contract. 34099 bytes; JSON_PARSED. SHA-256: `4e5116
 
 local historical report; not AWS/human proof. 1292 bytes; JSON_PARSED. SHA-256: `9393ba2d75dce99219d43f00be045321a0c5ccf4c8a78efbac958353c4d34ab5`.
 
+## evidence/connected/deployed-boundary-verification.json
+
+local historical report; not AWS/human proof. 4916 bytes; JSON_PARSED. SHA-256: `54e889dd58cb9f6d41fcb9a44c2f4672696d49b02963e3d02e1c41846365dc74`.
+
 ## evidence/connected/local-sandbox-canaries.json
 
 local historical report; not AWS/human proof. 2176 bytes; JSON_PARSED. SHA-256: `7ffb3956f0ea54ff249d6633cbb0c534d72571303ca4b1224631e0b9cd50f71f`.
@@ -274,9 +286,21 @@ local historical report; not AWS/human proof. 1770 bytes; JSON_PARSED. SHA-256: 
 
 local historical report; not AWS/human proof. 1737 bytes; JSON_PARSED. SHA-256: `d8450e439e9f0ff360b4d800c141312bf7e36784a31060b5b5d6998e43d3210e`.
 
+## evidence/connected/replacement-rehearsal.json
+
+local historical report; not AWS/human proof. 983 bytes; JSON_PARSED. SHA-256: `1d0f11001e60e473a7d932f1062684438d841c67b2552a62d89ae4e13711ce4b`.
+
 ## evidence/connected/saved-agent-code-mode.json
 
 local historical report; not AWS/human proof. 2162 bytes; JSON_PARSED. SHA-256: `7e1a528657cf23bf9f56ad3999b58c2593ecfee215d9ccf51d6f9e72fca8f1ad`.
+
+## evidence/connected/unlimited-cleanup-approval-corrected.json
+
+local historical report; not AWS/human proof. 2905 bytes; JSON_PARSED. SHA-256: `e1ff29dd88991368d8aa7f6e491733ed9ff9a0a836675a64c3c2f482601322ce`.
+
+## evidence/connected/unlimited-cleanup-approval-request.json
+
+local historical report; not AWS/human proof. 2510 bytes; JSON_PARSED. SHA-256: `f385ce88edc374d65b700a914b717e0361c9d237a2da6835871d6d5fc3a58496`.
 
 ## evidence/connected/unlimited-code-mode-progress.json
 
@@ -407,13 +431,17 @@ implementation. 726 bytes; TEXT_INVENTORIED. SHA-256: `94c3101c70dd0a5866050e1a1
 
 ## infra/prerequisites.py
 
-implementation. 9817 bytes; PYTHON_AST_PARSED. SHA-256: `c466b6424e3d29707db7480ed08ec208384d99f893b33a43e4d0965d7c96f209`.
+implementation. 10606 bytes; PYTHON_AST_PARSED. SHA-256: `e023873fdcd76bfc7fd95375b4c935fb95d6eca989f10e38af29af551b8ca067`.
 
 | Symbol | Line | Purpose | Unit/cloud calls at older commit | Review test references |
 |---|---:|---|---:|---|
-| `validate_runtime_documents` (function) | 14 | validate runtime documents | 16 | test_prerequisites.py; test_bootstrap_driver.py |
-| `validate_role_trust` (function) | 129 | validate role trust | 4 | test_prerequisites.py; test_bootstrap_driver.py |
-| `validate_security_groups` (function) | 148 | validate security groups | 7 | test_prerequisites.py; test_bootstrap_driver.py |
+| `validate_runtime_documents` (function) | 15 | validate runtime documents | 16 | test_prerequisites.py; test_bootstrap_driver.py |
+| `validate_role_trust` (function) | 145 | validate role trust | 4 | test_prerequisites.py; test_bootstrap_driver.py |
+| `validate_security_groups` (function) | 164 | validate security groups | 7 | test_prerequisites.py; test_bootstrap_driver.py |
+
+## infra/runtime-policy.template.json
+
+implementation. 580 bytes; JSON_PARSED. SHA-256: `7726adfd7064b512fb6302272d78f220e04b9421d986cb371aeca63a5cdaffde`.
 
 ## integration/DEMO_RUNBOOK.md
 
@@ -445,7 +473,7 @@ configuration or documented contract. 3355 bytes; JSON_PARSED. SHA-256: `e291785
 
 ## pyproject.toml
 
-configuration or documented contract. 2129 bytes; TEXT_INVENTORIED. SHA-256: `180945035c2ffcbf106003e835ca04ca4fbe55eebb8b62d5f4792b5ddd65364b`.
+configuration or documented contract. 2335 bytes; TEXT_INVENTORIED. SHA-256: `f16942bd6fc89c40230af9258b941d75f41658a81c61bdb7c2761061dfc3cddc`.
 
 ## reference/Preflight-PRD.md
 
@@ -1204,24 +1232,30 @@ test assertion. 4051 bytes; PYTHON_AST_PARSED. SHA-256: `6d6ff4399dd351dffa67e80
 
 ## tests/cloud/test_prerequisites.py
 
-test assertion. 13868 bytes; PYTHON_AST_PARSED. SHA-256: `2b5a4647182eb4527966f9db5f3ad18e928864ff1368fec215a7420c1bd72e0d`.
+test assertion. 18472 bytes; PYTHON_AST_PARSED. SHA-256: `ef5154fd9dc16ff2dbd93a6289e4d4831cabc9d633e59bddfea9453435d84ca6`.
 
 | Symbol | Line | Purpose | Unit/cloud calls at older commit | Review test references |
 |---|---:|---|---:|---|
 | `groups` (function) | 21 | groups | 0 | No standalone mapping; see scenario matrix |
 | `document` (function) | 56 | document | 0 | No standalone mapping; see scenario matrix |
-| `test_runtime_delete_requires_unconditional_owner_and_run_tag_guards` (function) | 119 | test runtime delete requires unconditional owner and run tag guards | 0 | No standalone mapping; see scenario matrix |
-| `test_runtime_source_prefix_collision_cannot_allow_source_delete` (function) | 135 | test runtime source prefix collision cannot allow source delete | 0 | No standalone mapping; see scenario matrix |
-| `test_runtime_policy_missing_restore_permissions_refused` (function) | 145 | test runtime policy missing restore permissions refused | 0 | No standalone mapping; see scenario matrix |
-| `stub_prerequisites` (function) | 155 | stub prerequisites | 0 | No standalone mapping; see scenario matrix |
-| `test_private_host_public_service_rule_refused_before_mutation` (function) | 251 | test private host public service rule refused before mutation | 0 | No standalone mapping; see scenario matrix |
-| `test_private_host_and_db_prerequisite_reads_pass` (function) | 267 | test private host and db prerequisite reads pass | 0 | No standalone mapping; see scenario matrix |
-| `test_network_exact_prerequisite_guards` (function) | 298 | test network exact prerequisite guards | 0 | No standalone mapping; see scenario matrix |
-| `test_runtime_role_cannot_have_bootstrap_or_unrelated_targets` (function) | 326 | test runtime role cannot have bootstrap or unrelated targets | 0 | No standalone mapping; see scenario matrix |
-| `test_runtime_role_trust_cannot_admit_external_principal` (function) | 334 | test runtime role trust cannot admit external principal | 0 | No standalone mapping; see scenario matrix |
-| `test_runtime_unmodeled_or_malformed_grant_conditions_fail_closed` (function) | 352 | test runtime unmodeled or malformed grant conditions fail closed | 0 | No standalone mapping; see scenario matrix |
-| `test_runtime_malformed_run_tag_is_safe_error` (function) | 360 | test runtime malformed run tag is safe error | 0 | No standalone mapping; see scenario matrix |
-| `test_conditional_delete_statement_cannot_supply_required_restore_grant` (function) | 368 | test conditional delete statement cannot supply required restore grant | 0 | No standalone mapping; see scenario matrix |
+| `test_runtime_delete_requires_unconditional_owner_and_run_tag_guards` (function) | 125 | test runtime delete requires unconditional owner and run tag guards | 0 | No standalone mapping; see scenario matrix |
+| `test_runtime_source_prefix_collision_cannot_allow_source_delete` (function) | 141 | test runtime source prefix collision cannot allow source delete | 0 | No standalone mapping; see scenario matrix |
+| `test_runtime_policy_missing_restore_permissions_refused` (function) | 151 | test runtime policy missing restore permissions refused | 0 | No standalone mapping; see scenario matrix |
+| `test_runtime_restore_requires_all_approved_dependency_resources` (function) | 162 | test runtime restore requires all approved dependency resources | 0 | No standalone mapping; see scenario matrix |
+| `test_runtime_restore_accepts_exact_approved_subnet_and_builtin_pg18_groups` (function) | 175 | test runtime restore accepts exact approved subnet and builtin pg18 groups | 0 | No standalone mapping; see scenario matrix |
+| `test_runtime_restore_cannot_admit_other_or_wildcard_group_resources` (function) | 193 | test runtime restore cannot admit other or wildcard group resources | 0 | No standalone mapping; see scenario matrix |
+| `test_restore_group_scopes_do_not_expand_other_actions` (function) | 207 | test restore group scopes do not expand other actions | 0 | No standalone mapping; see scenario matrix |
+| `test_runtime_restore_group_inputs_cannot_invent_scope` (function) | 230 | test runtime restore group inputs cannot invent scope | 0 | No standalone mapping; see scenario matrix |
+| `test_production_restore_template_supplies_only_exact_restore_dependencies` (function) | 238 | test production restore template supplies only exact restore dependencies | 0 | No standalone mapping; see scenario matrix |
+| `stub_prerequisites` (function) | 266 | stub prerequisites | 0 | No standalone mapping; see scenario matrix |
+| `test_private_host_public_service_rule_refused_before_mutation` (function) | 362 | test private host public service rule refused before mutation | 0 | No standalone mapping; see scenario matrix |
+| `test_private_host_and_db_prerequisite_reads_pass` (function) | 378 | test private host and db prerequisite reads pass | 0 | No standalone mapping; see scenario matrix |
+| `test_network_exact_prerequisite_guards` (function) | 409 | test network exact prerequisite guards | 0 | No standalone mapping; see scenario matrix |
+| `test_runtime_role_cannot_have_bootstrap_or_unrelated_targets` (function) | 437 | test runtime role cannot have bootstrap or unrelated targets | 0 | No standalone mapping; see scenario matrix |
+| `test_runtime_role_trust_cannot_admit_external_principal` (function) | 445 | test runtime role trust cannot admit external principal | 0 | No standalone mapping; see scenario matrix |
+| `test_runtime_unmodeled_or_malformed_grant_conditions_fail_closed` (function) | 463 | test runtime unmodeled or malformed grant conditions fail closed | 0 | No standalone mapping; see scenario matrix |
+| `test_runtime_malformed_run_tag_is_safe_error` (function) | 471 | test runtime malformed run tag is safe error | 0 | No standalone mapping; see scenario matrix |
+| `test_conditional_delete_statement_cannot_supply_required_restore_grant` (function) | 479 | test conditional delete statement cannot supply required restore grant | 0 | No standalone mapping; see scenario matrix |
 
 ## tests/cloud/test_rds.py
 
