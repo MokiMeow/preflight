@@ -1,0 +1,233 @@
+{
+  "schema_version": "1.0",
+  "status": "CONNECTED_VERIFIED_REQUESTED_SOURCE_AND_CLEANUP_DEMONSTRATION",
+  "run_id": "7f1a627e-a6d0-4c9f-a5ce-58984b38d41e",
+  "T27_prerequisite_commit": "a7e18d8",
+  "coding_agent_clicked_any_gate": false,
+  "source_deny": {
+    "schema_version": "1.0",
+    "state": "DENIED_NO_SOURCE_CHANGE",
+    "session_id": "01m3erfv85amha55k4kysc0hhn",
+    "turn_id": "01m3erfv891961vn48ryqx5myg",
+    "tool_call_id": "call_G2Ci15B0fFJ0wNm9tXOfZr5W",
+    "approval_event_id": "01m3erfx2epc66vtccjy2d5kcb",
+    "created_at": "2026-09-26T11:44:29.774Z",
+    "arguments": {
+      "run_id": "7f1a627e-a6d0-4c9f-a5ce-58984b38d41e",
+      "candidate_id": "a09bf95e-30e3-4bd2-95e9-f62fa2551be7",
+      "migration_sha256": "5060eff8b32278aaf28e2ad69fa6bfd6f59ec910ed5e22f9a46244bf314bf97b",
+      "report_sha256": "6e069069851c9af3a2f1c021a9afb9ba43ba24f586c27556faa78e3cdda562ab",
+      "source_instance_id": "preflight-source",
+      "request_id": "06d1e0ac-10c2-42c7-95bd-b157fb8d7951"
+    },
+    "T27_accepted_commit": "a7e18d8",
+    "coding_agent_clicked_gate": false,
+    "source_before": {
+      "rows": 1000,
+      "columns": 3
+    },
+    "human_decision": {
+      "status": "deny",
+      "event_id": "01m3erhd1b8t39yfh180ehwdsn",
+      "created_at": "2026-09-26T11:45:18.889Z",
+      "tool_call_id": "call_G2Ci15B0fFJ0wNm9tXOfZr5W"
+    },
+    "source_after": {
+      "rows": 1000,
+      "columns": 3,
+      "phase": "AWAITING_APPROVAL",
+      "report_sha256": "6e069069851c9af3a2f1c021a9afb9ba43ba24f586c27556faa78e3cdda562ab"
+    }
+  },
+  "source_allow": {
+    "decision": "allow",
+    "decision_event_id": "01m3erkg8pchb0gnjhpkrrqcm2",
+    "decision_created_at": "2026-09-26T11:46:27.733Z",
+    "tool_call_id": "call_8VxA3nKVADMXb86xt4ltjYv9",
+    "response_event_id": "01m3erkhwpstqhkfyzty8kkz8r",
+    "response_created_at": "2026-09-26T11:46:29.396Z",
+    "tool_request": {
+      "mcp_server": "preflight",
+      "tool_name": "apply_to_demo_source",
+      "input": {
+        "run_id": "7f1a627e-a6d0-4c9f-a5ce-58984b38d41e",
+        "candidate_id": "a09bf95e-30e3-4bd2-95e9-f62fa2551be7",
+        "migration_sha256": "5060eff8b32278aaf28e2ad69fa6bfd6f59ec910ed5e22f9a46244bf314bf97b",
+        "report_sha256": "6e069069851c9af3a2f1c021a9afb9ba43ba24f586c27556faa78e3cdda562ab",
+        "source_instance_id": "preflight-source",
+        "request_id": "5fcbb359-7109-47fd-928d-8d2124453629"
+      }
+    },
+    "result": {
+      "ok": true,
+      "request_id": "5fcbb359-7109-47fd-928d-8d2124453629",
+      "run_id": "7f1a627e-a6d0-4c9f-a5ce-58984b38d41e",
+      "state": "APPLIED",
+      "data": {
+        "receipt_id": "375f73b2-f60f-418a-9061-ed03d3019f9d",
+        "run_id": "7f1a627e-a6d0-4c9f-a5ce-58984b38d41e",
+        "report_sha256": "6e069069851c9af3a2f1c021a9afb9ba43ba24f586c27556faa78e3cdda562ab",
+        "migration_sha256": "5060eff8b32278aaf28e2ad69fa6bfd6f59ec910ed5e22f9a46244bf314bf97b",
+        "source_instance_id": "preflight-source",
+        "transaction": {
+          "outcome": "committed",
+          "elapsed_ms": 130,
+          "sqlstate": null,
+          "reason_code": null
+        },
+        "confirmation": true,
+        "state": "APPLIED",
+        "created_at": "2026-09-26T11:46:29.367974Z",
+        "precheck_status": "MATCH"
+      },
+      "error_code": null,
+      "retryable": false
+    }
+  },
+  "replay_refusal": {
+    "decision": "allow",
+    "decision_event_id": "01m3errbcqmgz798wh8x1y8t4j",
+    "decision_created_at": "2026-09-26T11:49:06.581Z",
+    "tool_call_id": "call_DXftz2UNFYMFuPG2FcbSWiYS",
+    "response_event_id": "01m3errbeyc564ydye3wzjb4kc",
+    "response_created_at": "2026-09-26T11:49:06.653Z",
+    "tool_request": {
+      "mcp_server": "preflight",
+      "tool_name": "apply_to_demo_source",
+      "input": {
+        "run_id": "7f1a627e-a6d0-4c9f-a5ce-58984b38d41e",
+        "candidate_id": "a09bf95e-30e3-4bd2-95e9-f62fa2551be7",
+        "migration_sha256": "5060eff8b32278aaf28e2ad69fa6bfd6f59ec910ed5e22f9a46244bf314bf97b",
+        "report_sha256": "6e069069851c9af3a2f1c021a9afb9ba43ba24f586c27556faa78e3cdda562ab",
+        "source_instance_id": "preflight-source",
+        "request_id": "7ee8d4c2-0abd-43e6-bed6-79e36a9bb33c"
+      }
+    },
+    "result": {
+      "ok": false,
+      "request_id": "7ee8d4c2-0abd-43e6-bed6-79e36a9bb33c",
+      "run_id": "7f1a627e-a6d0-4c9f-a5ce-58984b38d41e",
+      "state": null,
+      "data": {
+        "message": "SOURCE_APPLY_REPLAY_REJECTED"
+      },
+      "error_code": "SOURCE_APPLY_REPLAY_REJECTED",
+      "retryable": false
+    }
+  },
+  "clone_cleanup_allow_initial": {
+    "decision": "allow",
+    "decision_event_id": "01m3erntdp6mz6jbx28skwqd4r",
+    "decision_created_at": "2026-09-26T11:47:43.668Z",
+    "tool_call_id": "call_YaDXcZOWq1G93ikwImoaTS7C",
+    "response_event_id": "01m3ernvfyssmmc2bvrkyt9rnk",
+    "response_created_at": "2026-09-26T11:47:44.764Z",
+    "tool_request": {
+      "mcp_server": "preflight",
+      "tool_name": "cleanup_run",
+      "input": {
+        "request_id": "9eeddec0-3296-48c5-9faa-c262cb1b10d9",
+        "run_id": "7f1a627e-a6d0-4c9f-a5ce-58984b38d41e",
+        "clone_instance_id": "preflight-7f1a627ea6d04c9fa5ce58984b38d41e-clone",
+        "snapshot_id": "preflight-7f1a627ea6d04c9fa5ce58984b38d41e-snap",
+        "delete_clone": true,
+        "delete_snapshot": false
+      }
+    },
+    "result": {
+      "ok": true,
+      "request_id": "9eeddec0-3296-48c5-9faa-c262cb1b10d9",
+      "run_id": "7f1a627e-a6d0-4c9f-a5ce-58984b38d41e",
+      "state": "APPLIED",
+      "data": {
+        "receipt_id": "5767be8c-b435-4edb-84aa-63990d936111",
+        "run_id": "7f1a627e-a6d0-4c9f-a5ce-58984b38d41e",
+        "kind": "cleanup",
+        "created_at": "2026-09-26T11:47:44.743053Z",
+        "actions": {
+          "clone": "DELETING",
+          "snapshot": null
+        },
+        "cleanup_state": "DELETING_CLONE"
+      },
+      "error_code": null,
+      "retryable": false
+    }
+  },
+  "final_source_verification": {
+    "run_id": "7f1a627e-a6d0-4c9f-a5ce-58984b38d41e",
+    "phase": "APPLIED",
+    "cleanup_state": "RETAINED_RECOVERY",
+    "source_matches_complete_rehearsal_after_evidence": true,
+    "source_evidence": {
+      "algorithm_version": "preflight-evidence-1",
+      "tables": [
+        {
+          "name": "public.customers",
+          "row_count": 1000,
+          "schema_sha256": "f00078073f299382075c8e7c5ff5c30eb595ec0529f866b8b479bef06a99f19d",
+          "preserved_sha256": "adb3ddb070ec6968e1ec28143a38f50875bf39d965095af070e0653e83df6c17",
+          "full_sha256": "dc1744787b061fc7a96efdcc3b3b9e0dc4b2899a8d09c18bf962e4666a2bd9aa",
+          "schema_summary": [
+            {
+              "name": "id",
+              "type": "integer",
+              "nullable": false,
+              "position": 1,
+              "default": false
+            },
+            {
+              "name": "email",
+              "type": "text",
+              "nullable": false,
+              "position": 2,
+              "default": false
+            },
+            {
+              "name": "created_at",
+              "type": "timestamp with time zone",
+              "nullable": false,
+              "position": 3,
+              "default": false
+            },
+            {
+              "name": "account_tier",
+              "type": "text",
+              "nullable": false,
+              "position": 4,
+              "default": false
+            }
+          ]
+        }
+      ]
+    },
+    "intended_value_violation_counts": {
+      "public.customers.account_tier": 0
+    },
+    "hash_projection": "Frozen pre-migration existing columns, matching sealed report; intended new values checked separately",
+    "report_sha256": "6e069069851c9af3a2f1c021a9afb9ba43ba24f586c27556faa78e3cdda562ab",
+    "apply_eligible_now": false,
+    "eligibility_reason": "PHASE_NOT_AWAITING_APPROVAL"
+  },
+  "final_resource_verification": {
+    "observed_at": "2026-09-26T11:51:42.535726+00:00",
+    "run_id": "7f1a627e-a6d0-4c9f-a5ce-58984b38d41e",
+    "clone_id": "preflight-7f1a627ea6d04c9fa5ce58984b38d41e-clone",
+    "clone_status": "ABSENT",
+    "snapshot_id": "preflight-7f1a627ea6d04c9fa5ce58984b38d41e-snap",
+    "snapshot_status": "available",
+    "snapshot_encrypted": true,
+    "snapshot_source_matches": true,
+    "snapshot_owner_run_tags_match": true,
+    "cleanup_state": "RETAINED_RECOVERY",
+    "source_phase": "APPLIED",
+    "aws_snapshot_request_id": "a2f404b5-b7d0-4451-83a6-d203c71393f4",
+    "retention_reason": "Pre-apply recovery snapshot retained after confirmed source migration; not automatically reversible"
+  },
+  "diagnostic_correction": "Initial read-only postapply helper compared all-current-column full hash with the sealed frozen-existing-column projection and failed its assertion. Corrected helper used the same frozen projection and separately counted every intended-value violation; both passed. No SQL mutation/retry occurred during this diagnostic.",
+  "limits": [
+    "This is actual source/cleanup proof for this owned synthetic run, not all runtime evaluation cases or a video recording.",
+    "Successful source migration is not automatically reversible; retained snapshot is recovery evidence.",
+    "Source and EC2 remain active; this is clone-only cleanup, not broad AWS teardown."
+  ]
+}
