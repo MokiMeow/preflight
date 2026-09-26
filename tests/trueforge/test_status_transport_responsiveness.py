@@ -165,8 +165,8 @@ process.stdout.write(JSON.stringify(result.structuredContent));
         assert entered.wait(5), "controlled apply did not enter while holding the run lock"
         assert executions.value == 1
 
-        # The MCP app does not expose a health route. Its 404 must still be
-        # prompt while the mutation worker is held.
+        # The MCP app does not expose an application health route. This only
+        # checks that an unrelated HTTP request remains prompt.
         health_started = time.monotonic()
         connection = http.client.HTTPConnection("127.0.0.1", port, timeout=1)
         connection.request("GET", "/health")
@@ -181,13 +181,21 @@ import { Client } from './integration/node_modules/@modelcontextprotocol/sdk/dis
 import { StreamableHTTPClientTransport } from './integration/node_modules/@modelcontextprotocol/sdk/dist/esm/client/streamableHttp.js';
 const client = new Client({ name: 'n21-status-observer', version: '1.0.0' });
 await client.connect(new StreamableHTTPClientTransport(new URL(process.env.N21_ENDPOINT)));
+const pingStarted = performance.now();
+const ping = await client.ping();
+const pingElapsedMs = performance.now() - pingStarted;
 const started = performance.now();
 const result = await client.callTool({
   name: 'get_run',
   arguments: { request_id: process.env.N21_STATUS_REQUEST, run_id: process.env.N21_RUN_ID },
 });
 await client.close();
-process.stdout.write(JSON.stringify({ elapsed_ms: performance.now() - started, result }));
+process.stdout.write(JSON.stringify({
+  ping,
+  ping_elapsed_ms: pingElapsedMs,
+  elapsed_ms: performance.now() - started,
+  result,
+}));
 """
         observed = subprocess.run(
             ["node", "--input-type=module", "--eval", status_script],
@@ -202,12 +210,15 @@ process.stdout.write(JSON.stringify({ elapsed_ms: performance.now() - started, r
         )
         assert observed.returncode == 0, observed.stderr or observed.stdout
         decoded = json.loads(observed.stdout)
+        assert decoded["ping"] == {}
+        assert decoded["ping_elapsed_ms"] < 1_000
         assert decoded["elapsed_ms"] < 1_000
         assert decoded["result"]["isError"] is False
         envelope = decoded["result"]["structuredContent"]
         assert envelope["ok"] is True
         assert envelope["run_id"] == run_id
         assert envelope["state"] == envelope["data"]["phase"] == "MIGRATING"
+        assert entered.is_set()
         assert executions.value == 1
 
         # Cancel only the client delivery. The controlled handler is released
