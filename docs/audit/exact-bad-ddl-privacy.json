@@ -1,0 +1,69 @@
+{
+  "kind": "EXACT_BAD_DDL_DISPOSABLE_PG18_CLIENT_AND_SERVER_PRIVACY_PROOF",
+  "status": "LOCAL_VERIFIED",
+  "implementation_commit": "e2c8848b00d08e83423d490faddff7e7085ed9e6",
+  "observed_at_utc": "2026-09-26T11:31:49.121036+00:00",
+  "actual_model": "gpt-6-sol",
+  "actual_reasoning_effort": "high",
+  "backend": "fresh independent disposable loopback PostgreSQL18 cluster; not AWS/RDS/source/clone proof",
+  "port": 58439,
+  "engine_version": 180006,
+  "engine_name": "PostgreSQL18.6",
+  "sql_path": "fixtures/bad.sql",
+  "sql_sha256": "10101d7c639d383807f6fbe855b63bfa15b6a7f603ca44b85d9f44eaa7349c64",
+  "sql_bytes": 68,
+  "ordinary_table_owner_without_admin_flags": true,
+  "logging_settings": {
+    "log_error_verbosity": "default",
+    "log_min_error_statement": "error",
+    "log_statement": "none",
+    "log_min_messages": "warning",
+    "log_destination": "stderr",
+    "logging_collector": "off"
+  },
+  "all_logging_settings_equal_engine_boot_defaults": true,
+  "result": {
+    "sqlstate": "23502",
+    "client_detail_present": false,
+    "primary_matches_column_null_message": true,
+    "server_error_observed": true,
+    "server_primary_matches_column_null_message": true,
+    "server_exact_statement_observed": true,
+    "server_detail_present": false,
+    "server_row_marker_present": false,
+    "server_error_count": 1,
+    "rollback_full_baseline_matches": true,
+    "rows_before": 1000,
+    "rows_after": 1000
+  },
+  "server_stderr_capture_sha256": "a8275d979f42a4b26ea0ecef248274d551696750fa037c1fed43eab8aeb2aaf8",
+  "server_log_sink": "standalone pg_ctl -l <fresh ignored cluster>/server.log; captured bytes only after exact statement start",
+  "raw_logs_or_rows_published": false,
+  "probe_cluster_stopped": true,
+  "probe_port_no_response_after_stop": true,
+  "retained_port55438_still_accepting_connections": true,
+  "retained_daemon_restarted_or_reconfigured": false,
+  "cleanup": "Only the fresh probe daemon stopped; ignored disposable fixture/data retained. No source/clone or shared daemon changes.",
+  "commands": [
+    "git branch --show-current; git rev-parse HEAD; git status --short",
+    "python stdin: pg_isready58439 must report no server; initdb -D <fresh ignored .local-pg/privacy-UUID>/data -U postgres -A trust -E UTF8 --no-locale; postgres --version",
+    "Standalone pg_ctl -D <same fresh cluster>/data -l <same fresh cluster>/server.log -o \"-p58439 -h127.0.0.1\" start",
+    "pg_isready -h127.0.0.1 -p58439",
+    "PYTHONPATH=src python stdin: create only synthetic1000-row customers fixture in fresh cluster; admin prepares ordinary tableowner; ordinary connection captures before evidence; exact fixtures/bad.sql bytes execute inside psycopg transaction; client metadata and captured serverstderr Booleans asserted; capture after evidence and assert fullbaseline equality",
+    "Standalone pg_ctl -D <same fresh cluster>/data -m fast stop",
+    "pg_isready -h127.0.0.1 -p58439 -> no response; pg_isready -h127.0.0.1 -p55438 -> accepting connections"
+  ],
+  "source_attribution": {
+    "url": "https://raw.githubusercontent.com/postgres/postgres/REL_18_STABLE/src/backend/commands/tablecmds.c",
+    "function": "ATRewriteTable",
+    "lines": "6093-6101",
+    "interpretation": "This specific not-null validation emits23502, column/relation primary and table-column metadata. It does not invoke errdetail or errdetail_log. Actual local client/server capture agrees."
+  },
+  "limits": [
+    "Only exact fixtures/bad.sql ADD COLUMN account_tier text NOT NULL against the ordinary supported1000-row fixture is proven.",
+    "Other SQL errors may expose row DETAIL or values. This is not a general server-error privacy guarantee.",
+    "RDS logging/export configuration, provider changes and human approval behavior were not exercised.",
+    "Earlier known logfile had no observed ERROR and was not used as proof; separate fresh-cluster stderr positive observation supersedes it.",
+    "Initial full fixture/capture command was denied by tool policy; narrower fresh-cluster table setup omitted database deletion. Application catalog guard refused the initial superuser evidence capture; actual successful probe used the ordinary tableowner."
+  ]
+}
