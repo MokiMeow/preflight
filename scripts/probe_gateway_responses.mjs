@@ -1,7 +1,6 @@
 import { createHash } from "node:crypto";
 import { readFile } from "node:fs/promises";
 
-import OpenAI from "../integration/node_modules/openai/index.mjs";
 import { FinalTextState, ProbeProtocolError, ToolCallState } from "./responses_stream_state.mjs";
 
 const EXPECTED_KEYS = new Set([
@@ -109,6 +108,12 @@ function providerFailure(error) {
 async function execute(config) {
   const apiKey = process.env[config.api_key_env];
   if (typeof apiKey !== "string" || apiKey.length === 0) fail("PROVIDER_CREDENTIAL_MISSING", 4);
+  let OpenAI;
+  try {
+    ({ default: OpenAI } = await import("../integration/node_modules/openai/index.mjs"));
+  } catch {
+    fail("OPENAI_CLIENT_UNAVAILABLE", 4);
+  }
   const client = new OpenAI({
     apiKey,
     baseURL: config.base_url,

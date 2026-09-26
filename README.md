@@ -112,8 +112,8 @@ Run local verification:
 
 ```bash
 uv run pytest tests/unit tests/mcp tests/trueforge -q
-uv run ruff check src scripts tests
-uv run mypy src
+uv run pytest tests/cloud -q
+uv run ruff check src scripts tests infra
 node scripts/probe_trueforge_package.mjs
 uv run python scripts/probe_trueforge_config.py config/trueforge-agent.example.json --template
 ```
