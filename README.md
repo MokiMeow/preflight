@@ -9,6 +9,10 @@ The preserved source brief is
 `docs/00_PRODUCT_AND_DECISIONS.md`. The actual event URL and final submission fields have not been
 provided, so this README does not invent them.
 
+The comprehensive implementation audit, file/function inventory, task acceptance review and
+scenario-by-scenario evidence are in [the project audit](docs/11_PROJECT_AUDIT.md).
+That audit supersedes older readiness summaries; local implementation is not connected demo acceptance.
+
 ## Safety and product boundary
 
 Preflight has one native surface: the bundled TrueForge chat, tool trace, Markdown report, Code Mode,
@@ -60,11 +64,12 @@ The implementation has been locally verified with:
   policy, and actual disposable PostgreSQL tests;
 - installed TrueForge configuration/package probes and cross-language MCP interoperability tests.
 
-The package, schema, and local MCP results are `LOCAL_VERIFIED`. Gateway/OpenAI Responses,
-TrueForge model streaming, Daytona execution, private deployment, real Preflight connector traces,
-and approval behavior are `BLOCKED_EXTERNAL` until credentials, quota, host, and a human operator
-are available. No model response, Daytona run, AWS action, source write, cleanup, or approval was
-simulated or claimed.
+The package, schema, and local MCP results are `LOCAL_VERIFIED`. The native TrueForge connector
+was also observed connected to the local fail-closed service with ten tools and no configured agent.
+Gateway/OpenAI Responses, TrueForge model streaming, Daytona execution, private deployment,
+real RDS rehearsal, and human approval behavior are `BLOCKED_EXTERNAL`. Local AWS client stubs
+and disposable PostgreSQL fault tests are explicitly labeled; they are not connected provider,
+RDS source-write, cleanup, or human-approval evidence.
 
 ## Local development
 

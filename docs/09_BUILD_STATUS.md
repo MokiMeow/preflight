@@ -2,18 +2,18 @@
 
 **Current state:** implemented Python service, deterministic evidence, guarded AWS adapters and pinned native TrueForge integration. Local verification passed; connected deployment and human demonstrations await operator access. The archive began as specifications only.
 
-**Goal status: BLOCKED_EXTERNAL.** The same missing approved cloud/provider setup
-persisted through the final 229-test checkpoint, isolated wheel-install checkpoint
-and current revalidation. Independent authorized work is exhausted. Current
-`uv run --locked preflight doctor --json` reports local_ready=true with cloud,
-Gateway, Daytona, provider-roundtrip, human-approval and apply readiness false;
-only capability/UI-probe local configuration files exist, and no Git remote is
-configured. Native TrueForge's OpenAPI remains available; provider settings GET
-returned HTTP 404, which supplies no evidence of configured providers. No live
-cloud/model job is pending. Resume when the operator supplies the consolidated
-inputs below; do not substitute local tests for connected acceptance.
+**Comprehensive audit checkpoint:** local implementation repairs are integrated at `221a79a`.
+The final integrated audit gate passed **314 tests, zero failures/errors/skips, 182.74s**.
+The earlier statement that independent work was exhausted was too broad: this audit found
+and repaired DB, MCP contract and bootstrap gaps. [The audit report](11_PROJECT_AUDIT.md)
+and its complete task/scenario/file appendices now own the detailed readiness assessment.
+Connected deployment, real RDS/runtime evidence, genuine human gates and submission remain
+`BLOCKED_EXTERNAL`. Remaining assertion coverage gaps are named in the audit; test counts
+are not a claim that every specified scenario passed. Source apply remains disabled.
 
-## Current checkpoint
+## Historical pre-audit checkpoint
+
+These earlier observations remain historical; the audit checkpoint above supersedes their readiness conclusion.
 
 - Event start: operator confirmed organizer authorizes coding now on 2026-09-26, before first application edit. Final submission fields remain unconfirmed.
 - Implementation checkpoint: 0d1a461 (last application/initializer change), native probe documentation/evidence 330c60f; all independent local implementation integrated.
@@ -66,7 +66,7 @@ Use status `NOT_STARTED`, `IN_PROGRESS`, `BLOCKED_EXTERNAL`, `FAILED`, `LOCAL_VE
 | T29 — Exercise cleanup guards and record deliberate retention | cloud | BLOCKED_EXTERNAL | Local cleanup guard tests passed; actual operator cleanup choice/resources absent |
 | T30 — Verify reproducible installation and operational handoff | lead | LOCAL_VERIFIED | Fresh locked env full229 passed; wheel/sdist built; offline verifier works with/without expected digest; 414-component installed inventory current |
 | T31 — Run the final regression and close review findings | lead | BLOCKED_EXTERNAL | Final local229 gate green at9d73204, local findings closed; mandatory real AWS/runtime/gate evidence pending |
-| T32 — Prepare the complete repository submission | integration | LOCAL_VERIFIED | Runnable source/archive, README/deployment/demo/414-component license inventory and truthful evidence prepared; no remote publication or final event fields inferred |
+| T32 — Prepare the complete repository submission | integration | BLOCKED_EXTERNAL | Local materials/package prepared; full acceptance waits T24/T28, final event fields and publication authorization; previous LOCAL_VERIFIED overstated submission completion |
 | T33 — Record and rehearse the evidence-led pitch | integration | BLOCKED_EXTERNAL | Demo material preparation; actual connected proof/recording pending |
 | T34 — Perform the final read-only demo-readiness audit | lead | BLOCKED_EXTERNAL | Final connected evidence/A1 audit pending; local review ongoing |
 | T35 — Close out resources after the demonstration | cloud | BLOCKED_EXTERNAL | No AWS resources created; connected deliberate cleanup/retention not demonstrated |
@@ -199,3 +199,10 @@ Write the ticket from docs 10 **before** spawning the exceptional reviewer. A sl
 | Pre-apply review order | NOT_RUN | Accepted T27 evidence precedes first T24 live write |
 | Agent behavior evaluations | NOT_RUN | Real trace/state results for config/agent-evaluation-plan.json |
 | Expert budget accounting | LOCAL_VERIFIED | A1/A2 remain NOT_USED pending actual pre-live gate; Astra sessions 0; vendor usage NOT_OBSERVED |
+
+## Operator AWS CLI setup — 2026-09-26
+
+- Installed official Amazon.AWSCLI 2.37.4 system-wide with `winget install --id Amazon.AWSCLI --exact --source winget --scope machine --silent --accept-package-agreements --accept-source-agreements --disable-interactivity`; installer hash verified and installation completed. Verified `C:\Program Files\Amazon\AWSCLIV2\aws.exe --version` and machine PATH entry.
+- Operator completed browser IAM sign-in initiated with `aws login --region us-east-1 --profile default`. No console password or credential material was captured in repository evidence.
+- Configured default profile region `us-east-1` and output `json`. `aws sts get-caller-identity --profile default --query Account --output text` succeeded; account identifier omitted from recorded evidence. CLI authentication: CONNECTED_VERIFIED. Authentication tokens are temporary; no permanent authentication claim.
+- This setup establishes CLI identity only. Cloud footprint approval, resource permissions, private runtime connectivity, provider setup and T27/T24 acceptance remain unverified. No resources created, cloud spend initiated, database mutation or cleanup performed. No application changes or test rerun required for this host tool setup.

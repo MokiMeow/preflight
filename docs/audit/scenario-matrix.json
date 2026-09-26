@@ -1,0 +1,2461 @@
+{
+  "kind": "WHOLE_ASSERTION_AUDIT_NOT_A_TEST_COUNT",
+  "implementation_commit": "221a79a",
+  "full_gate": "314passed zeroerrors/failures/skips182.74s",
+  "classification": "LOCAL_VERIFIED means mapped complete localassertion; PARTIAL means executed narrowerassertions; BLOCKED_EXTERNAL means actualprovider/human proofmissing; NOT_RUN means no qualifyingcomplete observation. Local status nevermeans realRDS/demoacceptance.",
+  "counts": {
+    "LOCAL_VERIFIED": 58,
+    "PARTIAL": 65,
+    "BLOCKED_EXTERNAL": 22,
+    "NOT_RUN": 8
+  },
+  "scenarios": [
+    {
+      "id": "U01",
+      "scenario": "Text/base64 intake with trailing newline, CRLF, Unicode comments",
+      "required_assertion": "SHA-256 matches original bytes; no normalization",
+      "task": null,
+      "status": "LOCAL_VERIFIED",
+      "catalog_initial_status": "NOT_RUN",
+      "tests": [
+        "tests/postgres/test_database.py::test_exact_utf8_bytes_and_string_semantics",
+        "tests/unit/test_audit_contract_boundaries.py::test_u01_registration_preserves_exact_utf8_crlf_comment_and_trailing_newline"
+      ],
+      "observed_scope": "All required assertion clauses are covered by the listed tests in the observed unit gate.",
+      "pending_assertion": null,
+      "implementation_commit": "221a79a",
+      "backend": "local only; see exact test path; no real RDS/model/Daytona/human proof"
+    },
+    {
+      "id": "U02",
+      "scenario": "Wrong expected hash, invalid UTF-8/base64/NUL/oversize/empty SQL",
+      "required_assertion": "Candidate rejected before any DB action",
+      "task": null,
+      "status": "LOCAL_VERIFIED",
+      "catalog_initial_status": "NOT_RUN",
+      "tests": [
+        "tests/postgres/test_database.py::test_non_utf8_session_rejected_before_execution",
+        "tests/unit/test_audit_contract_boundaries.py::test_u02_registration_rejects_invalid_bytes_before_runtime_or_publication"
+      ],
+      "observed_scope": "All required assertion clauses are covered by the listed tests in the observed unit gate.",
+      "pending_assertion": null,
+      "implementation_commit": "221a79a",
+      "backend": "local only; see exact test path; no real RDS/model/Daytona/human proof"
+    },
+    {
+      "id": "U03",
+      "scenario": "Canonical contract vs differently formatted input JSON",
+      "required_assertion": "Same canonical hash, distinct optional raw-file hash; labels accurate",
+      "task": null,
+      "status": "LOCAL_VERIFIED",
+      "catalog_initial_status": "NOT_RUN",
+      "tests": [
+        "tests/unit/test_audit_contract_boundaries.py::test_u03_canonical_contract_hash_and_raw_file_hash_labels_are_distinct"
+      ],
+      "observed_scope": "All required assertion clauses are covered by the listed tests in the observed unit gate.",
+      "pending_assertion": null,
+      "implementation_commit": "221a79a",
+      "backend": "local only; see exact test path; no real RDS/model/Daytona/human proof"
+    },
+    {
+      "id": "U04",
+      "scenario": "Unknown contract fields, duplicate JSON keys, unsupported checks, missing PK coverage",
+      "required_assertion": "Reject or explicit coverage WARN per schema; never a complete PASS",
+      "task": null,
+      "status": "LOCAL_VERIFIED",
+      "catalog_initial_status": "NOT_RUN",
+      "tests": [
+        "tests/postgres/test_database.py::test_legacy_missing_schema_is_incomplete",
+        "tests/postgres/test_database.py::test_precommit_empty_or_implicit_return_rolls_back",
+        "tests/unit/test_audit_contract_boundaries.py::test_u04_unsupported_checks_and_primary_key_coverage_fail_closed",
+        "tests/unit/test_contracts.py::test_no_unknown_contract_or_duplicate_keys",
+        "tests/unit/test_service_privacy.py::test_registration_reports_static_missing_coverage_without_echoing_sql"
+      ],
+      "observed_scope": "All required assertion clauses are covered by the listed tests in the observed unit gate.",
+      "pending_assertion": null,
+      "implementation_commit": "221a79a",
+      "backend": "local only; see exact test path; no real RDS/model/Daytona/human proof"
+    },
+    {
+      "id": "U05",
+      "scenario": "Same request ID repeated / same ID changed payload",
+      "required_assertion": "Same safe result / IDEMPOTENCY_CONFLICT",
+      "task": null,
+      "status": "LOCAL_VERIFIED",
+      "catalog_initial_status": "NOT_RUN",
+      "tests": [
+        "tests/unit/test_storage.py::test_single_active_and_idempotency"
+      ],
+      "observed_scope": "All required assertion clauses are covered by the listed tests in the observed 90-test gate.",
+      "pending_assertion": null,
+      "implementation_commit": "221a79a",
+      "backend": "local only; see exact test path; no real RDS/model/Daytona/human proof"
+    },
+    {
+      "id": "U06",
+      "scenario": "Two concurrent start calls",
+      "required_assertion": "Single active run; resource caps held transactionally",
+      "task": null,
+      "status": "PARTIAL",
+      "catalog_initial_status": "NOT_RUN",
+      "tests": [
+        "tests/cloud/test_jobs.py::test_single_mutation_lease",
+        "tests/unit/test_storage.py::test_single_active_and_idempotency"
+      ],
+      "observed_scope": "The listed local assertions passed; the missing clause prevents full credit.",
+      "pending_assertion": "Single-active refusal is asserted sequentially; concurrent start and transactional cloud resource-cap reservation are not.",
+      "implementation_commit": "221a79a",
+      "backend": "local only; see exact test path; no real RDS/model/Daytona/human proof"
+    },
+    {
+      "id": "U07",
+      "scenario": "Invalid run/candidate/source ID or path traversal",
+      "required_assertion": "Refused without a file/DB/cloud side effect",
+      "task": null,
+      "status": "PARTIAL",
+      "catalog_initial_status": "NOT_RUN",
+      "tests": [
+        "tests/cloud/test_rds.py::test_cleanup_static_refusals_no_aws",
+        "tests/mcp/test_transport.py::test_ten_flat_strict_schemas_structured_error_and_no_source_write",
+        "tests/unit/test_service_privacy.py::test_absent_cloud_scope_no_start_effects",
+        "tests/unit/test_service_privacy.py::test_invalid_argument_sentinel_never_echoed",
+        "tests/unit/test_storage.py::test_exact_bytes_immutable_and_traversal"
+      ],
+      "observed_scope": "The listed local assertions passed; the missing clause prevents full credit.",
+      "pending_assertion": "Traversal, missing run, invalid input, and unowned source refusals are asserted; invalid candidate/source/run variants and every side-effect boundary are not.",
+      "implementation_commit": "221a79a",
+      "backend": "local only; see exact test path; no real RDS/model/Daytona/human proof"
+    },
+    {
+      "id": "U08",
+      "scenario": "Two workers race phase transition or candidate parent change",
+      "required_assertion": "Only correct CAS wins; no stale attachment",
+      "task": null,
+      "status": "PARTIAL",
+      "catalog_initial_status": "NOT_RUN",
+      "tests": [
+        "tests/unit/test_storage.py::test_cas_and_illegal_transition"
+      ],
+      "observed_scope": "The listed local assertions passed; the missing clause prevents full credit.",
+      "pending_assertion": "Two-thread phase CAS is asserted; concurrent candidate-parent attachment is not.",
+      "implementation_commit": "221a79a",
+      "backend": "local only; see exact test path; no real RDS/model/Daytona/human proof"
+    },
+    {
+      "id": "U09",
+      "scenario": "Report envelope digest verification",
+      "required_assertion": "Payload-only digest; no self-reference; tamper detected",
+      "task": null,
+      "status": "LOCAL_VERIFIED",
+      "catalog_initial_status": "NOT_RUN",
+      "tests": [
+        "tests/unit/test_reports.py::test_seal_hashes_payload_only_and_verifier_labels_anchor",
+        "tests/unit/test_reports.py::test_verifier_detects_old_hash_and_rehashed_anchor_tampering"
+      ],
+      "observed_scope": "All required assertion clauses are covered by the listed tests in the observed 90-test gate.",
+      "pending_assertion": null,
+      "implementation_commit": "221a79a",
+      "backend": "local only; see exact test path; no real RDS/model/Daytona/human proof"
+    },
+    {
+      "id": "U10",
+      "scenario": "New candidate report and later apply receipt",
+      "required_assertion": "Old report bytes/digest unchanged",
+      "task": null,
+      "status": "LOCAL_VERIFIED",
+      "catalog_initial_status": "NOT_RUN",
+      "tests": [
+        "tests/postgres/test_service.py::test_bad_rollback_revision_good_pass_exact_report_and_disabled_source",
+        "tests/postgres/test_service.py::test_source_service_guarded_apply_and_replay_receipt_local_only",
+        "tests/unit/test_storage.py::test_exact_bytes_immutable_and_traversal"
+      ],
+      "observed_scope": "Old candidate report hash remains after new candidate; sealed report digest remains after actual local source apply/receipt; ArtifactStore immutable bytes and report integrity checks.",
+      "pending_assertion": "",
+      "implementation_commit": "221a79a",
+      "backend": "local only; see exact test path; no real RDS/model/Daytona/human proof"
+    },
+    {
+      "id": "U11",
+      "scenario": "Crash between report file publication and SQLite reference",
+      "required_assertion": "Orphan reconciled safely; no false PASS/approval",
+      "task": null,
+      "status": "LOCAL_VERIFIED",
+      "catalog_initial_status": "NOT_RUN",
+      "tests": [
+        "tests/postgres/test_service.py::test_report_publication_fault_retry_reuses_sealed_payload",
+        "tests/postgres/test_service.py::test_report_restart_publication_retains_history_without_reenabling_source"
+      ],
+      "observed_scope": "Injected interruption after JSON publication; exact bytes/timestamp retained; restart ERROR keeps historical proof without restoring current source eligibility.",
+      "pending_assertion": "",
+      "implementation_commit": "221a79a",
+      "backend": "local only; see exact test path; no real RDS/model/Daytona/human proof"
+    },
+    {
+      "id": "U12",
+      "scenario": "Accidental public serialization of private evidence object",
+      "required_assertion": "Raw keys, rows and private maps are absent",
+      "task": null,
+      "status": "LOCAL_VERIFIED",
+      "catalog_initial_status": "NOT_RUN",
+      "tests": [
+        "tests/unit/test_evidence.py::test_private_bundle_not_serializable"
+      ],
+      "observed_scope": "All required assertion clauses are covered by the listed tests in the observed 90-test gate.",
+      "pending_assertion": null,
+      "implementation_commit": "221a79a",
+      "backend": "local only; see exact test path; no real RDS/model/Daytona/human proof"
+    },
+    {
+      "id": "U13",
+      "scenario": "Service started against empty/wrong state directory with live resources",
+      "required_assertion": "Doctor warns/fails; no accidental adoption/replay",
+      "task": null,
+      "status": "PARTIAL",
+      "catalog_initial_status": "NOT_RUN",
+      "tests": [
+        "tests/cloud/test_inventory.py::test_new_database_cannot_create_with_unknown_owned_snapshot_below_cap",
+        "tests/cloud/test_inventory.py::test_released_reservation_live_resource_refuses_creation",
+        "tests/cloud/test_inventory.py::test_unknown_owned_clone_refuses_restore"
+      ],
+      "observed_scope": "Empty/new cloud store blocks creation when owner-filtered inventory discovers existing resources.",
+      "pending_assertion": "Actual Doctor/startup wrong-state live resources, eventual invisibility, and bootstrap EC2/EBS lost state not observed.",
+      "implementation_commit": "221a79a",
+      "backend": "local only; see exact test path; no real RDS/model/Daytona/human proof"
+    },
+    {
+      "id": "P01",
+      "scenario": "bad.sql and good.sql",
+      "required_assertion": "Both pass syntax policy; semantic failure remains observable on clone",
+      "task": null,
+      "status": "LOCAL_VERIFIED",
+      "catalog_initial_status": "NOT_RUN",
+      "tests": [
+        "tests/postgres/test_database.py::test_bad_rolls_back_complete_baseline",
+        "tests/postgres/test_database.py::test_good_commits_real_notnull"
+      ],
+      "observed_scope": "Audited database/policy assertions; final integrated gate supersedes failed worker fixture gate.",
+      "pending_assertion": "",
+      "implementation_commit": "221a79a",
+      "backend": "local only; see exact test path; no real RDS/model/Daytona/human proof"
+    },
+    {
+      "id": "P02",
+      "scenario": "Quoted semicolon/comment with word COMMIT",
+      "required_assertion": "AST interprets correctly; no naive string splitting",
+      "task": null,
+      "status": "BLOCKED_EXTERNAL",
+      "catalog_initial_status": "NOT_RUN",
+      "tests": [
+        "tests/unit/test_sql_policy.py::test_comments_semicolons_and_protected_update"
+      ],
+      "observed_scope": "Audited database/policy assertions; final integrated gate supersedes failed worker fixture gate.",
+      "pending_assertion": "Requires actual TrueForge/model/Daytona/human trace or outage/denial behavior; local parsing/guards do not satisfy this runtime assertion.",
+      "implementation_commit": "221a79a",
+      "backend": "local only; see exact test path; no real RDS/model/Daytona/human proof"
+    },
+    {
+      "id": "P03",
+      "scenario": "Explicit BEGIN/COMMIT/ROLLBACK, psql backslash command",
+      "required_assertion": "Reject",
+      "task": null,
+      "status": "PARTIAL",
+      "catalog_initial_status": "NOT_RUN",
+      "tests": [
+        "tests/unit/test_sql_policy.py::test_recursive_rejection",
+        "tests/unit/test_sql_policy.py::test_unknown_metadata_column"
+      ],
+      "observed_scope": "Audited database/policy assertions; final integrated gate supersedes failed worker fixture gate.",
+      "pending_assertion": "Selected parametrized negative syntax cases; psql/CALL/INSERT/TRUNCATE/GRANT/DROP/generated/identity/custom-type branches not individually asserted here. Unit SQL inspected, not reexecuted in audit. Tests now executed in final314 gate; listed proof remains narrower than complete scenario.",
+      "implementation_commit": "221a79a",
+      "backend": "local only; see exact test path; no real RDS/model/Daytona/human proof"
+    },
+    {
+      "id": "P04",
+      "scenario": "DO/CALL/COPY/SELECT/DELETE/INSERT/TRUNCATE/GRANT/CREATE/DROP",
+      "required_assertion": "Reject",
+      "task": null,
+      "status": "PARTIAL",
+      "catalog_initial_status": "NOT_RUN",
+      "tests": [
+        "tests/unit/test_sql_policy.py::test_recursive_rejection",
+        "tests/unit/test_sql_policy.py::test_unknown_metadata_column"
+      ],
+      "observed_scope": "Audited database/policy assertions; final integrated gate supersedes failed worker fixture gate.",
+      "pending_assertion": "Selected parametrized negative syntax cases; psql/CALL/INSERT/TRUNCATE/GRANT/DROP/generated/identity/custom-type branches not individually asserted here. Unit SQL inspected, not reexecuted in audit. Tests now executed in final314 gate; listed proof remains narrower than complete scenario.",
+      "implementation_commit": "221a79a",
+      "backend": "local only; see exact test path; no real RDS/model/Daytona/human proof"
+    },
+    {
+      "id": "P05",
+      "scenario": "CREATE INDEX CONCURRENTLY or unsupported ALTER subcommand",
+      "required_assertion": "Reject",
+      "task": null,
+      "status": "PARTIAL",
+      "catalog_initial_status": "NOT_RUN",
+      "tests": [
+        "tests/unit/test_sql_policy.py::test_recursive_rejection",
+        "tests/unit/test_sql_policy.py::test_unknown_metadata_column"
+      ],
+      "observed_scope": "Audited database/policy assertions; final integrated gate supersedes failed worker fixture gate.",
+      "pending_assertion": "Selected parametrized negative syntax cases; psql/CALL/INSERT/TRUNCATE/GRANT/DROP/generated/identity/custom-type branches not individually asserted here. Unit SQL inspected, not reexecuted in audit. Tests now executed in final314 gate; listed proof remains narrower than complete scenario.",
+      "implementation_commit": "221a79a",
+      "backend": "local only; see exact test path; no real RDS/model/Daytona/human proof"
+    },
+    {
+      "id": "P06",
+      "scenario": "UPDATE with CTE, FROM, RETURNING, nested query or function call",
+      "required_assertion": "Reject recursively",
+      "task": null,
+      "status": "PARTIAL",
+      "catalog_initial_status": "NOT_RUN",
+      "tests": [
+        "tests/unit/test_sql_policy.py::test_recursive_rejection",
+        "tests/unit/test_sql_policy.py::test_unknown_metadata_column"
+      ],
+      "observed_scope": "Audited database/policy assertions; final integrated gate supersedes failed worker fixture gate.",
+      "pending_assertion": "Selected parametrized negative syntax cases; psql/CALL/INSERT/TRUNCATE/GRANT/DROP/generated/identity/custom-type branches not individually asserted here. Unit SQL inspected, not reexecuted in audit. Tests now executed in final314 gate; listed proof remains narrower than complete scenario.",
+      "implementation_commit": "221a79a",
+      "backend": "local only; see exact test path; no real RDS/model/Daytona/human proof"
+    },
+    {
+      "id": "P07",
+      "scenario": "Default/generated/identity expression or user-defined cast/operator/type",
+      "required_assertion": "Reject",
+      "task": null,
+      "status": "PARTIAL",
+      "catalog_initial_status": "NOT_RUN",
+      "tests": [
+        "tests/unit/test_sql_policy.py::test_recursive_rejection",
+        "tests/unit/test_sql_policy.py::test_unknown_metadata_column"
+      ],
+      "observed_scope": "Audited database/policy assertions; final integrated gate supersedes failed worker fixture gate.",
+      "pending_assertion": "Selected parametrized negative syntax cases; psql/CALL/INSERT/TRUNCATE/GRANT/DROP/generated/identity/custom-type branches not individually asserted here. Unit SQL inspected, not reexecuted in audit. Tests now executed in final314 gate; listed proof remains narrower than complete scenario.",
+      "implementation_commit": "221a79a",
+      "backend": "local only; see exact test path; no real RDS/model/Daytona/human proof"
+    },
+    {
+      "id": "P08",
+      "scenario": "Wrong schema/table, unqualified target, unknown column, PK mutation",
+      "required_assertion": "Reject",
+      "task": null,
+      "status": "PARTIAL",
+      "catalog_initial_status": "NOT_RUN",
+      "tests": [
+        "tests/unit/test_sql_policy.py::test_recursive_rejection",
+        "tests/unit/test_sql_policy.py::test_unknown_metadata_column"
+      ],
+      "observed_scope": "Audited database/policy assertions; final integrated gate supersedes failed worker fixture gate.",
+      "pending_assertion": "Selected parametrized negative syntax cases; psql/CALL/INSERT/TRUNCATE/GRANT/DROP/generated/identity/custom-type branches not individually asserted here. Unit SQL inspected, not reexecuted in audit. Tests now executed in final314 gate; listed proof remains narrower than complete scenario.",
+      "implementation_commit": "221a79a",
+      "backend": "local only; see exact test path; no real RDS/model/Daytona/human proof"
+    },
+    {
+      "id": "P09",
+      "scenario": "Multiple statements where later statement is forbidden",
+      "required_assertion": "Entire candidate rejected before execution",
+      "task": null,
+      "status": "PARTIAL",
+      "catalog_initial_status": "NOT_RUN",
+      "tests": [
+        "tests/unit/test_sql_policy.py::test_recursive_rejection",
+        "tests/unit/test_sql_policy.py::test_unknown_metadata_column"
+      ],
+      "observed_scope": "Audited database/policy assertions; final integrated gate supersedes failed worker fixture gate.",
+      "pending_assertion": "Selected parametrized negative syntax cases; psql/CALL/INSERT/TRUNCATE/GRANT/DROP/generated/identity/custom-type branches not individually asserted here. Unit SQL inspected, not reexecuted in audit. Tests now executed in final314 gate; listed proof remains narrower than complete scenario.",
+      "implementation_commit": "221a79a",
+      "backend": "local only; see exact test path; no real RDS/model/Daytona/human proof"
+    },
+    {
+      "id": "P10",
+      "scenario": "Supported statement plus malicious SQL-comment instructions",
+      "required_assertion": "Comments remain inert; tool/approval policy unchanged",
+      "task": null,
+      "status": "BLOCKED_EXTERNAL",
+      "catalog_initial_status": "NOT_RUN",
+      "tests": [
+        "tests/unit/test_sql_policy.py::test_comments_semicolons_and_protected_update"
+      ],
+      "observed_scope": "Audited database/policy assertions; final integrated gate supersedes failed worker fixture gate.",
+      "pending_assertion": "Requires actual TrueForge/model/Daytona/human trace or outage/denial behavior; local parsing/guards do not satisfy this runtime assertion.",
+      "implementation_commit": "221a79a",
+      "backend": "local only; see exact test path; no real RDS/model/Daytona/human proof"
+    },
+    {
+      "id": "P11",
+      "scenario": "Unreviewed triggers/rules/event triggers, RLS, foreign-key/cascade graph, partitions/inheritance",
+      "required_assertion": "Object policy refuses support, never disables the feature",
+      "task": null,
+      "status": "PARTIAL",
+      "catalog_initial_status": "NOT_RUN",
+      "tests": [
+        "tests/postgres/test_database.py::test_no_inherit_notnull_constraint_rejected",
+        "tests/postgres/test_database.py::test_semantic_unsafe_objects",
+        "tests/postgres/test_database.py::test_trigger_and_inheritance_rejected"
+      ],
+      "observed_scope": "Audited database/policy assertions; final integrated gate supersedes failed worker fixture gate.",
+      "pending_assertion": "Selected capabilities; event trigger/partition/exclusion direct variants missing in assigned tests. Latest integrated gate failed affected service case (missing ready_run created_at), or one transient PG connect timeout; previous bounded proof separately recorded.",
+      "implementation_commit": "221a79a",
+      "backend": "local only; see exact test path; no real RDS/model/Daytona/human proof"
+    },
+    {
+      "id": "P12",
+      "scenario": "Unsafe CHECK/exclusion constraint or expression/partial index, user-defined collation",
+      "required_assertion": "Reject unsupported execution surface",
+      "task": null,
+      "status": "PARTIAL",
+      "catalog_initial_status": "NOT_RUN",
+      "tests": [
+        "tests/postgres/test_database.py::test_no_inherit_notnull_constraint_rejected",
+        "tests/postgres/test_database.py::test_semantic_unsafe_objects",
+        "tests/postgres/test_database.py::test_trigger_and_inheritance_rejected"
+      ],
+      "observed_scope": "Audited database/policy assertions; final integrated gate supersedes failed worker fixture gate.",
+      "pending_assertion": "Selected capabilities; event trigger/partition/exclusion direct variants missing in assigned tests. Latest integrated gate failed affected service case (missing ready_run created_at), or one transient PG connect timeout; previous bounded proof separately recorded.",
+      "implementation_commit": "221a79a",
+      "backend": "local only; see exact test path; no real RDS/model/Daytona/human proof"
+    },
+    {
+      "id": "P13",
+      "scenario": "Supported UPDATE of a protected non-PK value",
+      "required_assertion": "Syntax accepted; preservation violation caught by comparator",
+      "task": null,
+      "status": "LOCAL_VERIFIED",
+      "catalog_initial_status": "NOT_RUN",
+      "tests": [
+        "tests/postgres/test_database.py::test_wrong_data_committed_then_block"
+      ],
+      "observed_scope": "Audited database/policy assertions; final integrated gate supersedes failed worker fixture gate.",
+      "pending_assertion": "",
+      "implementation_commit": "221a79a",
+      "backend": "local only; see exact test path; no real RDS/model/Daytona/human proof"
+    },
+    {
+      "id": "P14",
+      "scenario": "Parser/database major mismatch",
+      "required_assertion": "Readiness fails before migration",
+      "task": null,
+      "status": "PARTIAL",
+      "catalog_initial_status": "NOT_RUN",
+      "tests": [
+        "tests/postgres/test_database.py::test_tls_hostname_ca_major_and_role"
+      ],
+      "observed_scope": "Audited database/policy assertions; final integrated gate supersedes failed worker fixture gate.",
+      "pending_assertion": "Server-major/TLS mismatch observed; parser-version monkeypatch readiness case not separately covered.",
+      "implementation_commit": "221a79a",
+      "backend": "local only; see exact test path; no real RDS/model/Daytona/human proof"
+    },
+    {
+      "id": "D01",
+      "scenario": "Add a NOT NULL text column to populated table without backfill",
+      "required_assertion": "PostgreSQL failure; confirmed rollback; pre-state preserved",
+      "task": null,
+      "status": "LOCAL_VERIFIED",
+      "catalog_initial_status": "NOT_RUN",
+      "tests": [
+        "tests/postgres/test_database.py::test_bad_rolls_back_complete_baseline",
+        "tests/postgres/test_database.py::test_good_commits_real_notnull",
+        "tests/postgres/test_database.py::test_wrong_data_committed_then_block"
+      ],
+      "observed_scope": "Audited database/policy assertions; final integrated gate supersedes failed worker fixture gate.",
+      "pending_assertion": "",
+      "implementation_commit": "221a79a",
+      "backend": "local only; see exact test path; no real RDS/model/Daytona/human proof"
+    },
+    {
+      "id": "D02",
+      "scenario": "Add nullable column, backfill, set NOT NULL",
+      "required_assertion": "SQL commits and schema flag truly NOT NULL",
+      "task": null,
+      "status": "LOCAL_VERIFIED",
+      "catalog_initial_status": "NOT_RUN",
+      "tests": [
+        "tests/postgres/test_database.py::test_bad_rolls_back_complete_baseline",
+        "tests/postgres/test_database.py::test_good_commits_real_notnull",
+        "tests/postgres/test_database.py::test_wrong_data_committed_then_block"
+      ],
+      "observed_scope": "Audited database/policy assertions; final integrated gate supersedes failed worker fixture gate.",
+      "pending_assertion": "",
+      "implementation_commit": "221a79a",
+      "backend": "local only; see exact test path; no real RDS/model/Daytona/human proof"
+    },
+    {
+      "id": "D03",
+      "scenario": "Correct row count but one altered protected email",
+      "required_assertion": "SQL can commit; preserved-hash check fails; verdict BLOCK",
+      "task": null,
+      "status": "LOCAL_VERIFIED",
+      "catalog_initial_status": "NOT_RUN",
+      "tests": [
+        "tests/postgres/test_database.py::test_bad_rolls_back_complete_baseline",
+        "tests/postgres/test_database.py::test_good_commits_real_notnull",
+        "tests/postgres/test_database.py::test_wrong_data_committed_then_block"
+      ],
+      "observed_scope": "Audited database/policy assertions; final integrated gate supersedes failed worker fixture gate.",
+      "pending_assertion": "",
+      "implementation_commit": "221a79a",
+      "backend": "local only; see exact test path; no real RDS/model/Daytona/human proof"
+    },
+    {
+      "id": "D04",
+      "scenario": "Equal row count but different primary-key set",
+      "required_assertion": "Missing/extra keys reported as counts; not treated as unchanged",
+      "task": null,
+      "status": "LOCAL_VERIFIED",
+      "catalog_initial_status": "NOT_RUN",
+      "tests": [
+        "tests/postgres/test_database.py::test_aggregate_missing_extra_and_changed_rows_are_safe_counts",
+        "tests/postgres/test_database.py::test_changed_keys_and_order_and_full_drift"
+      ],
+      "observed_scope": "Audited database/policy assertions; final integrated gate supersedes failed worker fixture gate.",
+      "pending_assertion": "Safe missing/extra/changed counts now asserted exactly.",
+      "implementation_commit": "221a79a",
+      "backend": "local only; see exact test path; no real RDS/model/Daytona/human proof"
+    },
+    {
+      "id": "D05",
+      "scenario": "Same rows inserted/retrieved in different order",
+      "required_assertion": "Canonical aggregate roots match",
+      "task": null,
+      "status": "PARTIAL",
+      "catalog_initial_status": "NOT_RUN",
+      "tests": [
+        "tests/postgres/test_database.py::test_changed_keys_and_order_and_full_drift",
+        "tests/unit/test_evidence.py::test_domain_length_and_order"
+      ],
+      "observed_scope": "Audited database/policy assertions; final integrated gate supersedes failed worker fixture gate.",
+      "pending_assertion": "CLUSTER on initially ordered data may not reorder physical rows; pure root test reverses maps, no new unit reexecution.",
+      "implementation_commit": "221a79a",
+      "backend": "local only; see exact test path; no real RDS/model/Daytona/human proof"
+    },
+    {
+      "id": "D06",
+      "scenario": "Integer 1 vs text \"1\", NULL vs empty text vs text \"null\"",
+      "required_assertion": "Distinct encodings/digests",
+      "task": null,
+      "status": "LOCAL_VERIFIED",
+      "catalog_initial_status": "NOT_RUN",
+      "tests": [
+        "tests/unit/test_evidence.py::test_type_tags_are_distinct",
+        "tests/unit/test_evidence.py::test_unsupported_no_stringification",
+        "tests/unit/test_evidence.py::test_utc_microseconds"
+      ],
+      "observed_scope": "Audited database/policy assertions; final integrated gate supersedes failed worker fixture gate.",
+      "pending_assertion": "Equivalent timestamp/null/type encodings; BC/infinity values unsupported conversion remain unproven.",
+      "implementation_commit": "221a79a",
+      "backend": "local only; see exact test path; no real RDS/model/Daytona/human proof"
+    },
+    {
+      "id": "D07",
+      "scenario": "Equivalent timestamptz values in different offsets",
+      "required_assertion": "Same UTC microsecond encoding",
+      "task": null,
+      "status": "LOCAL_VERIFIED",
+      "catalog_initial_status": "NOT_RUN",
+      "tests": [
+        "tests/unit/test_evidence.py::test_type_tags_are_distinct",
+        "tests/unit/test_evidence.py::test_unsupported_no_stringification",
+        "tests/unit/test_evidence.py::test_utc_microseconds"
+      ],
+      "observed_scope": "Audited database/policy assertions; final integrated gate supersedes failed worker fixture gate.",
+      "pending_assertion": "Equivalent timestamp/null/type encodings; BC/infinity values unsupported conversion remain unproven.",
+      "implementation_commit": "221a79a",
+      "backend": "local only; see exact test path; no real RDS/model/Daytona/human proof"
+    },
+    {
+      "id": "D08",
+      "scenario": "Naive timestamp or unsupported float/JSON/array/custom type",
+      "required_assertion": "Coverage incomplete; never silent stringification/PASS",
+      "task": null,
+      "status": "LOCAL_VERIFIED",
+      "catalog_initial_status": "NOT_RUN",
+      "tests": [
+        "tests/unit/test_evidence.py::test_type_tags_are_distinct",
+        "tests/unit/test_evidence.py::test_unsupported_no_stringification",
+        "tests/unit/test_evidence.py::test_utc_microseconds"
+      ],
+      "observed_scope": "Audited database/policy assertions; final integrated gate supersedes failed worker fixture gate.",
+      "pending_assertion": "Equivalent timestamp/null/type encodings; BC/infinity values unsupported conversion remain unproven.",
+      "implementation_commit": "221a79a",
+      "backend": "local only; see exact test path; no real RDS/model/Daytona/human proof"
+    },
+    {
+      "id": "D09",
+      "scenario": "Missing PK/table/column or inaccessible metadata",
+      "required_assertion": "Specific failure/not_run, no fabricated zero count",
+      "task": null,
+      "status": "PARTIAL",
+      "catalog_initial_status": "NOT_RUN",
+      "tests": [
+        "tests/unit/test_sql_policy.py::test_unknown_metadata_column"
+      ],
+      "observed_scope": "Audited database/policy assertions; final integrated gate supersedes failed worker fixture gate.",
+      "pending_assertion": "Missing table/PK/inaccessible metadata need additional explicit negative proof.",
+      "implementation_commit": "221a79a",
+      "backend": "local only; see exact test path; no real RDS/model/Daytona/human proof"
+    },
+    {
+      "id": "D10",
+      "scenario": "Scan exceeds rows, bytes or deadline",
+      "required_assertion": "Stops within budget and cannot PASS",
+      "task": null,
+      "status": "PARTIAL",
+      "catalog_initial_status": "NOT_RUN",
+      "tests": [
+        "tests/postgres/test_database.py::test_scan_budget_and_huge_cell",
+        "tests/postgres/test_database.py::test_whole_deadline_precommit"
+      ],
+      "observed_scope": "Audited database/policy assertions; final integrated gate supersedes failed worker fixture gate.",
+      "pending_assertion": "Rows/bytes and migration/callback deadline; independent long baseline scan total deadline not separately asserted.",
+      "implementation_commit": "221a79a",
+      "backend": "local only; see exact test path; no real RDS/model/Daytona/human proof"
+    },
+    {
+      "id": "D11",
+      "scenario": "All required checks absent/not_run",
+      "required_assertion": "WARN or BLOCK according to cause, never PASS",
+      "task": null,
+      "status": "LOCAL_VERIFIED",
+      "catalog_initial_status": "NOT_RUN",
+      "tests": [
+        "tests/postgres/test_database.py::test_precommit_empty_or_implicit_return_rolls_back",
+        "tests/postgres/test_database.py::test_precommit_typed_manifest_fail_closed"
+      ],
+      "observed_scope": "Audited database/policy assertions; final integrated gate supersedes failed worker fixture gate.",
+      "pending_assertion": "Strict adapter callbacks checked; verdict missing-check manifest logic belongs lead lane.",
+      "implementation_commit": "221a79a",
+      "backend": "local only; see exact test path; no real RDS/model/Daytona/human proof"
+    },
+    {
+      "id": "D12",
+      "scenario": "Multiple statements: first mutates, second fails",
+      "required_assertion": "First mutation rolled back too",
+      "task": null,
+      "status": "LOCAL_VERIFIED",
+      "catalog_initial_status": "NOT_RUN",
+      "tests": [
+        "tests/postgres/test_database.py::test_lock_timeout_and_no_leak",
+        "tests/postgres/test_database.py::test_multiple_statement_failure_rolls_back_first",
+        "tests/postgres/test_database.py::test_whole_script_deadline_across_quick_updates"
+      ],
+      "observed_scope": "Audited database/policy assertions; final integrated gate supersedes failed worker fixture gate.",
+      "pending_assertion": "",
+      "implementation_commit": "221a79a",
+      "backend": "local only; see exact test path; no real RDS/model/Daytona/human proof"
+    },
+    {
+      "id": "D13",
+      "scenario": "Several individually quick statements exceed whole-script limit",
+      "required_assertion": "Deadline enforced; no PASS based only on statement timeout",
+      "task": null,
+      "status": "LOCAL_VERIFIED",
+      "catalog_initial_status": "NOT_RUN",
+      "tests": [
+        "tests/postgres/test_database.py::test_lock_timeout_and_no_leak",
+        "tests/postgres/test_database.py::test_multiple_statement_failure_rolls_back_first",
+        "tests/postgres/test_database.py::test_whole_script_deadline_across_quick_updates"
+      ],
+      "observed_scope": "Audited database/policy assertions; final integrated gate supersedes failed worker fixture gate.",
+      "pending_assertion": "",
+      "implementation_commit": "221a79a",
+      "backend": "local only; see exact test path; no real RDS/model/Daytona/human proof"
+    },
+    {
+      "id": "D14",
+      "scenario": "Lock contention or cancellation",
+      "required_assertion": "Safe timeout/known-outcome classification, no leaked DETAIL",
+      "task": null,
+      "status": "LOCAL_VERIFIED",
+      "catalog_initial_status": "NOT_RUN",
+      "tests": [
+        "tests/postgres/test_database.py::test_lock_timeout_and_no_leak",
+        "tests/postgres/test_database.py::test_multiple_statement_failure_rolls_back_first",
+        "tests/postgres/test_database.py::test_whole_script_deadline_across_quick_updates"
+      ],
+      "observed_scope": "Audited database/policy assertions; final integrated gate supersedes failed worker fixture gate.",
+      "pending_assertion": "",
+      "implementation_commit": "221a79a",
+      "backend": "local only; see exact test path; no real RDS/model/Daytona/human proof"
+    },
+    {
+      "id": "D15",
+      "scenario": "DB error that embeds a row value/password-like sentinel",
+      "required_assertion": "Tool/log/report output contains only safe classification",
+      "task": null,
+      "status": "PARTIAL",
+      "catalog_initial_status": "NOT_RUN",
+      "tests": [
+        "tests/postgres/test_database.py::test_lock_timeout_and_no_leak",
+        "tests/postgres/test_database.py::test_multiple_statement_failure_rolls_back_first",
+        "tests/postgres/test_database.py::test_whole_script_deadline_across_quick_updates"
+      ],
+      "observed_scope": "Audited database/policy assertions; final integrated gate supersedes failed worker fixture gate.",
+      "pending_assertion": "",
+      "implementation_commit": "221a79a",
+      "backend": "local only; see exact test path; no real RDS/model/Daytona/human proof"
+    },
+    {
+      "id": "D16",
+      "scenario": "Legacy contract missing explicit schema expectations",
+      "required_assertion": "Incomplete coverage; propose revision, never silent upgrade",
+      "task": null,
+      "status": "LOCAL_VERIFIED",
+      "catalog_initial_status": "NOT_RUN",
+      "tests": [
+        "tests/postgres/test_database.py::test_legacy_missing_schema_is_incomplete",
+        "tests/postgres/test_database.py::test_zero_nulls_is_not_notnull"
+      ],
+      "observed_scope": "Audited database/policy assertions; final integrated gate supersedes failed worker fixture gate.",
+      "pending_assertion": "",
+      "implementation_commit": "221a79a",
+      "backend": "local only; see exact test path; no real RDS/model/Daytona/human proof"
+    },
+    {
+      "id": "D17",
+      "scenario": "A nullable column happens to contain no NULLs",
+      "required_assertion": "no_nulls may pass but column_not_null/schema check fails",
+      "task": null,
+      "status": "LOCAL_VERIFIED",
+      "catalog_initial_status": "NOT_RUN",
+      "tests": [
+        "tests/postgres/test_database.py::test_legacy_missing_schema_is_incomplete",
+        "tests/postgres/test_database.py::test_zero_nulls_is_not_notnull"
+      ],
+      "observed_scope": "Audited database/policy assertions; final integrated gate supersedes failed worker fixture gate.",
+      "pending_assertion": "",
+      "implementation_commit": "221a79a",
+      "backend": "local only; see exact test path; no real RDS/model/Daytona/human proof"
+    },
+    {
+      "id": "D18",
+      "scenario": "Consistent source/clone state but different irrelevant OIDs",
+      "required_assertion": "Normalized schema fingerprints match",
+      "task": null,
+      "status": "PARTIAL",
+      "catalog_initial_status": "NOT_RUN",
+      "tests": [
+        "tests/postgres/test_seed_demo.py::test_fresh_fixture_roles_and_runtime_evidence"
+      ],
+      "observed_scope": "Audited database/policy assertions; final integrated gate supersedes failed worker fixture gate.",
+      "pending_assertion": "Local independent objects useful; actual snapshot-restored RDS normalization not observed. Tests now executed in final314 gate; listed proof remains narrower than complete scenario.",
+      "implementation_commit": "221a79a",
+      "backend": "local only; see exact test path; no real RDS/model/Daytona/human proof"
+    },
+    {
+      "id": "D19",
+      "scenario": "A failed candidate followed by an accepted same-contract revision",
+      "required_assertion": "Full unchanged baseline checked before clone reuse",
+      "task": null,
+      "status": "PARTIAL",
+      "catalog_initial_status": "NOT_RUN",
+      "tests": [
+        "tests/postgres/test_service.py::test_bad_rollback_revision_good_pass_exact_report_and_disabled_source",
+        "tests/postgres/test_service.py::test_committed_wrong_data_blocks_and_revision_refused",
+        "tests/postgres/test_service.py::test_report_restart_publication_retains_history_without_reenabling_source"
+      ],
+      "observed_scope": "Audited database/policy assertions; final integrated gate supersedes failed worker fixture gate.",
+      "pending_assertion": "Report restart proves no reenabling source; direct RAM-map-loss baseline case not separately asserted in DB lane. Latest integrated gate failed affected service case (missing ready_run created_at), or one transient PG connect timeout; previous bounded proof separately recorded.",
+      "implementation_commit": "221a79a",
+      "backend": "local only; see exact test path; no real RDS/model/Daytona/human proof"
+    },
+    {
+      "id": "D20",
+      "scenario": "Committed-but-invalid clone or lost baseline maps",
+      "required_assertion": "Same-clone revision refused; fresh rehearsal required",
+      "task": null,
+      "status": "PARTIAL",
+      "catalog_initial_status": "NOT_RUN",
+      "tests": [
+        "tests/postgres/test_service.py::test_bad_rollback_revision_good_pass_exact_report_and_disabled_source",
+        "tests/postgres/test_service.py::test_committed_wrong_data_blocks_and_revision_refused",
+        "tests/postgres/test_service.py::test_report_restart_publication_retains_history_without_reenabling_source"
+      ],
+      "observed_scope": "Audited database/policy assertions; final integrated gate supersedes failed worker fixture gate.",
+      "pending_assertion": "Report restart proves no reenabling source; direct RAM-map-loss baseline case not separately asserted in DB lane. Latest integrated gate failed affected service case (missing ready_run created_at), or one transient PG connect timeout; previous bounded proof separately recorded.",
+      "implementation_commit": "221a79a",
+      "backend": "local only; see exact test path; no real RDS/model/Daytona/human proof"
+    },
+    {
+      "id": "A01",
+      "scenario": "Source apply feature disabled",
+      "required_assertion": "Refuse before source writer acquired",
+      "task": null,
+      "status": "LOCAL_VERIFIED",
+      "catalog_initial_status": "NOT_RUN",
+      "tests": [
+        "tests/postgres/test_service.py::test_bad_rollback_revision_good_pass_exact_report_and_disabled_source",
+        "tests/postgres/test_service.py::test_source_service_guarded_apply_and_replay_receipt_local_only"
+      ],
+      "observed_scope": "Disabled source feature refuses before local source writer acquisition.",
+      "pending_assertion": "",
+      "implementation_commit": "221a79a",
+      "backend": "local only; see exact test path; no real RDS/model/Daytona/human proof"
+    },
+    {
+      "id": "A02",
+      "scenario": "Wrong source/account/database or source equal to clone",
+      "required_assertion": "Refuse",
+      "task": null,
+      "status": "PARTIAL",
+      "catalog_initial_status": "NOT_RUN",
+      "tests": [
+        "lead-owned service/security tests",
+        "tests/cloud/test_rds.py::test_cleanup_static_refusals_no_aws",
+        "tests/cloud/test_rds.py::test_source_negative_before_tags",
+        "tests/cloud/test_rds.py::test_wrong_account_before_resource_call"
+      ],
+      "observed_scope": "Audited database/policy assertions; final integrated gate supersedes failed worker fixture gate.",
+      "pending_assertion": "Must link independent lead evidence; DB lane does not claim these complete. Tests now executed in final314 gate; listed proof remains narrower than complete scenario.",
+      "implementation_commit": "221a79a",
+      "backend": "local only; see exact test path; no real RDS/model/Daytona/human proof"
+    },
+    {
+      "id": "A03",
+      "scenario": "Wrong migration/report hash, altered stored contract or report",
+      "required_assertion": "Refuse, no write",
+      "task": null,
+      "status": "PARTIAL",
+      "catalog_initial_status": "NOT_RUN",
+      "tests": [
+        "lead-owned service/security tests"
+      ],
+      "observed_scope": "Audited database/policy assertions; final integrated gate supersedes failed worker fixture gate.",
+      "pending_assertion": "Must link independent lead evidence; DB lane does not claim these complete. Tests now executed in final314 gate; listed proof remains narrower than complete scenario.",
+      "implementation_commit": "221a79a",
+      "backend": "local only; see exact test path; no real RDS/model/Daytona/human proof"
+    },
+    {
+      "id": "A04",
+      "scenario": "Non-current candidate or WARN/BLOCK/incomplete run",
+      "required_assertion": "Refuse",
+      "task": null,
+      "status": "PARTIAL",
+      "catalog_initial_status": "NOT_RUN",
+      "tests": [
+        "lead-owned service/security tests"
+      ],
+      "observed_scope": "Audited database/policy assertions; final integrated gate supersedes failed worker fixture gate.",
+      "pending_assertion": "Must link independent lead evidence; DB lane does not claim these complete. Tests now executed in final314 gate; listed proof remains narrower than complete scenario.",
+      "implementation_commit": "221a79a",
+      "backend": "local only; see exact test path; no real RDS/model/Daytona/human proof"
+    },
+    {
+      "id": "A05",
+      "scenario": "Source schema drift",
+      "required_assertion": "STALE; no migration applied",
+      "task": null,
+      "status": "PARTIAL",
+      "catalog_initial_status": "NOT_RUN",
+      "tests": [
+        "tests/postgres/test_database.py::test_index_semantic_drift_changes_schema_root"
+      ],
+      "observed_scope": "Audited database/policy assertions; final integrated gate supersedes failed worker fixture gate.",
+      "pending_assertion": "Real fingerprint regression proves sort/null ordering/opclass/distinctness changes differ; service STALE handling covered by drift test for data, index-service end-to-end not separately run.",
+      "implementation_commit": "221a79a",
+      "backend": "local only; see exact test path; no real RDS/model/Daytona/human proof"
+    },
+    {
+      "id": "A06",
+      "scenario": "Source preserved-data drift",
+      "required_assertion": "STALE; no migration applied",
+      "task": null,
+      "status": "LOCAL_VERIFIED",
+      "catalog_initial_status": "NOT_RUN",
+      "tests": [
+        "tests/postgres/test_service.py::test_source_locked_drift_refused_and_backup_before_writer"
+      ],
+      "observed_scope": "Committed preserved-data drift is compared under source locks and yields STALE/rolled_back.",
+      "pending_assertion": "",
+      "implementation_commit": "221a79a",
+      "backend": "local only; see exact test path; no real RDS/model/Daytona/human proof"
+    },
+    {
+      "id": "A07",
+      "scenario": "Pre-existing nonpreserved column drift",
+      "required_assertion": "Full-data guard catches it even though preservation subset matches",
+      "task": null,
+      "status": "PARTIAL",
+      "catalog_initial_status": "NOT_RUN",
+      "tests": [
+        "tests/postgres/test_database.py::test_unasserted_existing_column_and_explicit_control"
+      ],
+      "observed_scope": "Audited database/policy assertions; final integrated gate supersedes failed worker fixture gate.",
+      "pending_assertion": "Full-root nonpreserved drift proven at adapter comparison; local source service nonpreserved drift case missing here.",
+      "implementation_commit": "221a79a",
+      "backend": "local only; see exact test path; no real RDS/model/Daytona/human proof"
+    },
+    {
+      "id": "A08",
+      "scenario": "Missing/failed/wrong-source recovery snapshot",
+      "required_assertion": "Refuse",
+      "task": null,
+      "status": "PARTIAL",
+      "catalog_initial_status": "NOT_RUN",
+      "tests": [
+        "lead-owned service/security tests",
+        "tests/cloud/test_rds.py::test_source_apply_attempt_retains_backup_without_independent_attestation",
+        "tests/postgres/test_service.py::test_source_locked_drift_refused_and_backup_before_writer"
+      ],
+      "observed_scope": "Audited database/policy assertions; final integrated gate supersedes failed worker fixture gate.",
+      "pending_assertion": "Must link independent lead evidence; DB lane does not claim these complete. Tests now executed in final314 gate; listed proof remains narrower than complete scenario.",
+      "implementation_commit": "221a79a",
+      "backend": "local only; see exact test path; no real RDS/model/Daytona/human proof"
+    },
+    {
+      "id": "A09",
+      "scenario": "Competing source writer before versus after table locks",
+      "required_assertion": "Post-lock comparison is authoritative; no check/write window",
+      "task": null,
+      "status": "LOCAL_VERIFIED",
+      "catalog_initial_status": "NOT_RUN",
+      "tests": [
+        "tests/postgres/test_database.py::test_lock_timeout_and_no_leak",
+        "tests/postgres/test_database.py::test_repeatable_read_snapshot_survives_concurrent_writer",
+        "tests/postgres/test_source_concurrency.py::test_writer_after_source_locks_waits_until_transaction_finishes",
+        "tests/postgres/test_source_concurrency.py::test_writer_committed_before_source_locks_is_detected"
+      ],
+      "observed_scope": "Real concurrent PostgreSQL writer beforelocks detected; writer afterlocks observed waiting inpg_stat_activity until commit.",
+      "pending_assertion": "",
+      "implementation_commit": "221a79a",
+      "backend": "local only; see exact test path; no real RDS/model/Daytona/human proof"
+    },
+    {
+      "id": "A10",
+      "scenario": "Two concurrently allowed apply requests",
+      "required_assertion": "Only one accepted source attempt; other refused",
+      "task": null,
+      "status": "LOCAL_VERIFIED",
+      "catalog_initial_status": "NOT_RUN",
+      "tests": [
+        "tests/postgres/test_database.py::test_lock_timeout_and_no_leak",
+        "tests/postgres/test_database.py::test_repeatable_read_snapshot_survives_concurrent_writer",
+        "tests/postgres/test_source_concurrency.py::test_two_concurrent_source_requests_accept_exactly_one"
+      ],
+      "observed_scope": "Two concurrent calls: one accepted/sourcewriter, one durable replay refusal.",
+      "pending_assertion": "",
+      "implementation_commit": "221a79a",
+      "backend": "local only; see exact test path; no real RDS/model/Daytona/human proof"
+    },
+    {
+      "id": "A11",
+      "scenario": "Same/new request ID after committed source apply",
+      "required_assertion": "Refuse replay regardless of request ID",
+      "task": null,
+      "status": "PARTIAL",
+      "catalog_initial_status": "NOT_RUN",
+      "tests": [
+        "tests/postgres/test_service.py::test_bad_rollback_revision_good_pass_exact_report_and_disabled_source",
+        "tests/postgres/test_service.py::test_source_service_guarded_apply_and_replay_receipt_local_only"
+      ],
+      "observed_scope": "Audited database/policy assertions; final integrated gate supersedes failed worker fixture gate.",
+      "pending_assertion": "Service calls are local test injections, not human approval evidence. Latest integrated gate failed affected service case (missing ready_run created_at), or one transient PG connect timeout; previous bounded proof separately recorded.",
+      "implementation_commit": "221a79a",
+      "backend": "local only; see exact test path; no real RDS/model/Daytona/human proof"
+    },
+    {
+      "id": "A12",
+      "scenario": "Source mandatory check fails before commit",
+      "required_assertion": "Confirmed rollback → APPLY_FAILED",
+      "task": null,
+      "status": "LOCAL_VERIFIED",
+      "catalog_initial_status": "NOT_RUN",
+      "tests": [
+        "tests/postgres/test_database.py::test_precommit_typed_manifest_fail_closed",
+        "tests/postgres/test_database.py::test_source_precommit_wrong_data_rolls_back"
+      ],
+      "observed_scope": "Audited database/policy assertions; final integrated gate supersedes failed worker fixture gate.",
+      "pending_assertion": "Adapter source-style precommit rollback real; service integration return protocol fixed by dependency.",
+      "implementation_commit": "221a79a",
+      "backend": "local only; see exact test path; no real RDS/model/Daytona/human proof"
+    },
+    {
+      "id": "A13",
+      "scenario": "Source commit confirmed, read-only confirmation fails",
+      "required_assertion": "APPLIED_NEEDS_ATTENTION; no retry",
+      "task": null,
+      "status": "LOCAL_VERIFIED",
+      "catalog_initial_status": "NOT_RUN",
+      "tests": [
+        "tests/postgres/test_database.py::test_commit_response_loss_is_unknown_not_rollback",
+        "tests/postgres/test_seed_demo.py::test_commit_response_loss_is_honest_unknown",
+        "tests/postgres/test_source_concurrency.py::test_source_postcommit_confirmation_failure_never_retries"
+      ],
+      "observed_scope": "Real source transaction committed; injected source-read confirmation failure yields attention, no replay.",
+      "pending_assertion": "",
+      "implementation_commit": "221a79a",
+      "backend": "local only; see exact test path; no real RDS/model/Daytona/human proof"
+    },
+    {
+      "id": "A14",
+      "scenario": "Commit acknowledgement lost",
+      "required_assertion": "APPLY_OUTCOME_UNKNOWN; no retry or automated cleanup",
+      "task": null,
+      "status": "LOCAL_VERIFIED",
+      "catalog_initial_status": "NOT_RUN",
+      "tests": [
+        "tests/cloud/test_rds.py::test_cleanup_static_refusals_no_aws",
+        "tests/postgres/test_database.py::test_commit_response_loss_is_unknown_not_rollback",
+        "tests/postgres/test_seed_demo.py::test_commit_response_loss_is_honest_unknown",
+        "tests/postgres/test_source_concurrency.py::test_source_lost_commit_acknowledgement_remains_unknown"
+      ],
+      "observed_scope": "Actual COMMIT succeeds then proxy dropsack; durableUNKNOWN/replay/cleanup refused and committedschema inspected.",
+      "pending_assertion": "",
+      "implementation_commit": "221a79a",
+      "backend": "local only; see exact test path; no real RDS/model/Daytona/human proof"
+    },
+    {
+      "id": "A15",
+      "scenario": "Process restarts from durable APPLYING",
+      "required_assertion": "Unknown until manual resolution; execution count not incremented",
+      "task": null,
+      "status": "PARTIAL",
+      "catalog_initial_status": "NOT_RUN",
+      "tests": [
+        "tests/postgres/test_database.py::test_commit_response_loss_is_unknown_not_rollback",
+        "tests/postgres/test_seed_demo.py::test_commit_response_loss_is_honest_unknown",
+        "tests/unit/test_storage.py::test_restart_unknown_and_never_replay"
+      ],
+      "observed_scope": "Audited database/policy assertions; final integrated gate supersedes failed worker fixture gate.",
+      "pending_assertion": "Real clone/initializer lost acknowledgement observed; durable source attempt restart/no replay and independent postcommit source-read failure require lead tests.",
+      "implementation_commit": "221a79a",
+      "backend": "local only; see exact test path; no real RDS/model/Daytona/human proof"
+    },
+    {
+      "id": "A16",
+      "scenario": "Crash before SQL after intent persisted",
+      "required_assertion": "Conservative unknown/manual resolution is allowed; never guess safe retry",
+      "task": null,
+      "status": "PARTIAL",
+      "catalog_initial_status": "NOT_RUN",
+      "tests": [
+        "tests/postgres/test_database.py::test_commit_response_loss_is_unknown_not_rollback",
+        "tests/postgres/test_seed_demo.py::test_commit_response_loss_is_honest_unknown",
+        "tests/unit/test_storage.py::test_restart_unknown_and_never_replay"
+      ],
+      "observed_scope": "Audited database/policy assertions; final integrated gate supersedes failed worker fixture gate.",
+      "pending_assertion": "Real clone/initializer lost acknowledgement observed; durable source attempt restart/no replay and independent postcommit source-read failure require lead tests.",
+      "implementation_commit": "221a79a",
+      "backend": "local only; see exact test path; no real RDS/model/Daytona/human proof"
+    },
+    {
+      "id": "A17",
+      "scenario": "Clone migration interrupted",
+      "required_assertion": "No automatic replay, no blind “rolled back” claim",
+      "task": null,
+      "status": "LOCAL_VERIFIED",
+      "catalog_initial_status": "NOT_RUN",
+      "tests": [
+        "tests/postgres/test_database.py::test_connection_loss_before_commit_is_unknown"
+      ],
+      "observed_scope": "Audited database/policy assertions; final integrated gate supersedes failed worker fixture gate.",
+      "pending_assertion": "Real backend termination reports unknown; service restart replay behavior outside this test.",
+      "implementation_commit": "221a79a",
+      "backend": "local only; see exact test path; no real RDS/model/Daytona/human proof"
+    },
+    {
+      "id": "A18",
+      "scenario": "Report was PASS, then clone deleted",
+      "required_assertion": "Current eligibility false; historical report unchanged",
+      "task": null,
+      "status": "BLOCKED_EXTERNAL",
+      "catalog_initial_status": "NOT_RUN",
+      "tests": [
+        "external human/provider/resource tests"
+      ],
+      "observed_scope": "Audited database/policy assertions; final integrated gate supersedes failed worker fixture gate.",
+      "pending_assertion": "Requires actual TrueForge/model/Daytona/human trace or outage/denial behavior; local parsing/guards do not satisfy this runtime assertion.",
+      "implementation_commit": "221a79a",
+      "backend": "local only; see exact test path; no real RDS/model/Daytona/human proof"
+    },
+    {
+      "id": "A19",
+      "scenario": "Denied request in the real UI",
+      "required_assertion": "No service execution/write connection; source unchanged",
+      "task": null,
+      "status": "BLOCKED_EXTERNAL",
+      "catalog_initial_status": "NOT_RUN",
+      "tests": [
+        "external human/provider/resource tests"
+      ],
+      "observed_scope": "Audited database/policy assertions; final integrated gate supersedes failed worker fixture gate.",
+      "pending_assertion": "Requires actual TrueForge/model/Daytona/human trace or outage/denial behavior; local parsing/guards do not satisfy this runtime assertion.",
+      "implementation_commit": "221a79a",
+      "backend": "local only; see exact test path; no real RDS/model/Daytona/human proof"
+    },
+    {
+      "id": "A20",
+      "scenario": "Model/provider failure after a sealed report",
+      "required_assertion": "Report immutable; agent workflow incomplete, no invented apply",
+      "task": null,
+      "status": "BLOCKED_EXTERNAL",
+      "catalog_initial_status": "NOT_RUN",
+      "tests": [
+        "external human/provider/resource tests"
+      ],
+      "observed_scope": "Audited database/policy assertions; final integrated gate supersedes failed worker fixture gate.",
+      "pending_assertion": "Actual provider outage after a sealed report has not been observed; local restart retention alone is insufficient.",
+      "implementation_commit": "221a79a",
+      "backend": "local only; see exact test path; no real RDS/model/Daytona/human proof"
+    },
+    {
+      "id": "C01",
+      "scenario": "Restore request construction",
+      "required_assertion": "New ID, exact snapshot, explicit subnet/SG/private settings and run tags",
+      "task": null,
+      "status": "LOCAL_VERIFIED",
+      "catalog_initial_status": "NOT_RUN",
+      "tests": [
+        "tests/cloud/test_rds.py::test_restore_private_exact_args_then_restart_reconciles"
+      ],
+      "observed_scope": "Stubber asserts exact new clone ID, snapshot, subnet/SG/private settings and run+snapshot tags.",
+      "pending_assertion": "Real AWS authorization and restored-resource provenance remain blocked; scenario request-construction assertion is local.",
+      "implementation_commit": "221a79a",
+      "backend": "local only; see exact test path; no real RDS/model/Daytona/human proof"
+    },
+    {
+      "id": "C02",
+      "scenario": "Ambiguous snapshot/restore create response",
+      "required_assertion": "Describe exact existing ID before retry; no duplicate random names",
+      "task": null,
+      "status": "PARTIAL",
+      "catalog_initial_status": "NOT_RUN",
+      "tests": [
+        "tests/cloud/test_jobs.py::test_ambiguous_or_throttled_keep_same_intent",
+        "tests/cloud/test_rds_reconciliation.py::test_lost_snapshot_response_reconciles_no_duplicate"
+      ],
+      "observed_scope": "Snapshot lost-response reconcile and generic scheduling uncertainty retain same intent.",
+      "pending_assertion": "No analogous lost clone-restore response fault test or real AWS ambiguity induced.",
+      "implementation_commit": "221a79a",
+      "backend": "local only; see exact test path; no real RDS/model/Daytona/human proof"
+    },
+    {
+      "id": "C03",
+      "scenario": "Restart while snapshot/clone pending",
+      "required_assertion": "Resume observation with same resource IDs",
+      "task": null,
+      "status": "PARTIAL",
+      "catalog_initial_status": "NOT_RUN",
+      "tests": [
+        "tests/cloud/test_jobs.py::test_restart_durable_request_and_caps",
+        "tests/cloud/test_jobs.py::test_tick_available_is_not_database_ready_and_poll_is_read_only",
+        "tests/cloud/test_rds.py::test_restore_private_exact_args_then_restart_reconciles",
+        "tests/cloud/test_rds.py::test_snapshot_create_exact_reconciled_once"
+      ],
+      "observed_scope": "Reopened SQLite scheduling and repeated adapter calls retain deterministic IDs.",
+      "pending_assertion": "No actual process crash/restart in both pending AWS phases; repeated call is not full restart proof.",
+      "implementation_commit": "221a79a",
+      "backend": "local only; see exact test path; no real RDS/model/Daytona/human proof"
+    },
+    {
+      "id": "C04",
+      "scenario": "Name exists with another run/account/tag",
+      "required_assertion": "Refuse adoption/deletion",
+      "task": null,
+      "status": "PARTIAL",
+      "catalog_initial_status": "NOT_RUN",
+      "tests": [
+        "tests/cloud/test_inventory.py::test_cross_account_mapping_never_described",
+        "tests/cloud/test_rds.py::test_snapshot_collision_wrong_owner_blocks",
+        "tests/cloud/test_rds.py::test_source_negative_before_tags"
+      ],
+      "observed_scope": "Snapshot wrong owner and wrong account ARN/source metadata refuse.",
+      "pending_assertion": "Direct clone-collision/wrong-run/missing-tag deletion path coverage thinner; no AWS ownership observations.",
+      "implementation_commit": "221a79a",
+      "backend": "local only; see exact test path; no real RDS/model/Daytona/human proof"
+    },
+    {
+      "id": "C05",
+      "scenario": "Throttling, denied IAM/KMS, unsupported class/engine, deadline",
+      "required_assertion": "Bounded error/backoff, no admin privilege escalation",
+      "task": null,
+      "status": "PARTIAL",
+      "catalog_initial_status": "NOT_RUN",
+      "tests": [
+        "tests/cloud/test_bootstrap_driver.py::test_runtime_admin_policy_refused",
+        "tests/cloud/test_inventory.py::test_expired_job_retains_counts_does_not_delete",
+        "tests/cloud/test_jobs.py::test_ambiguous_or_throttled_keep_same_intent",
+        "tests/cloud/test_jobs.py::test_job_failure_retains_exact_cleanup_names",
+        "tests/cloud/test_rds.py::test_provider_message_sanitized",
+        "tests/cloud/test_rds_reconciliation.py::test_throttle_is_sanitized_retryable"
+      ],
+      "observed_scope": "Sanitized denial/throttle, backoff/deadline and no admin policy accepted.",
+      "pending_assertion": "KMS-specific denied operation, unsupported actual class/region, real latency cancellation and deployed IAM not observed.",
+      "implementation_commit": "221a79a",
+      "backend": "local only; see exact test path; no real RDS/model/Daytona/human proof"
+    },
+    {
+      "id": "C06",
+      "scenario": "AWS available but DB TLS connection unavailable",
+      "required_assertion": "Not READY/BASELINED/PASS",
+      "task": null,
+      "status": "PARTIAL",
+      "catalog_initial_status": "NOT_RUN",
+      "tests": [
+        "tests/cloud/test_jobs.py::test_tick_available_is_not_database_ready_and_poll_is_read_only"
+      ],
+      "observed_scope": "Pure adapter job AVAILABLE is explicitly not READY.",
+      "pending_assertion": "Does not inject unavailable TLS into actual AWS-to-service readiness promotion; RDS TLS unavailable.",
+      "implementation_commit": "221a79a",
+      "backend": "local only; see exact test path; no real RDS/model/Daytona/human proof"
+    },
+    {
+      "id": "C07",
+      "scenario": "Wrong cleanup clone/snapshot or source ID substituted",
+      "required_assertion": "No delete call",
+      "task": null,
+      "status": "LOCAL_VERIFIED",
+      "catalog_initial_status": "NOT_RUN",
+      "tests": [
+        "tests/cloud/test_rds.py::test_cleanup_static_refusals_no_aws"
+      ],
+      "observed_scope": "Wrong supplied source/clone/snapshot/exact selections reject before any AWS delete.",
+      "pending_assertion": "No live deletion performed; local selection invariant fully asserted.",
+      "implementation_commit": "221a79a",
+      "backend": "local only; see exact test path; no real RDS/model/Daytona/human proof"
+    },
+    {
+      "id": "C08",
+      "scenario": "Missing tag or live ARN mismatch",
+      "required_assertion": "No delete call",
+      "task": null,
+      "status": "PARTIAL",
+      "catalog_initial_status": "NOT_RUN",
+      "tests": [
+        "tests/cloud/test_rds.py::test_preflight_all_selections_before_any_delete",
+        "tests/cloud/test_rds.py::test_snapshot_collision_wrong_owner_blocks",
+        "tests/cloud/test_rds.py::test_source_negative_before_tags"
+      ],
+      "observed_scope": "Ownership/ARN rejection helpers and all-selected preflight-before-delete assertions exist.",
+      "pending_assertion": "No direct parameterized deletion-target missingRunId/cloneARN tampering test; no live target tags.",
+      "implementation_commit": "221a79a",
+      "backend": "local only; see exact test path; no real RDS/model/Daytona/human proof"
+    },
+    {
+      "id": "C09",
+      "scenario": "Source applied/attempted, no independent pre-apply recovery backup",
+      "required_assertion": "Snapshot deletion blocked",
+      "task": null,
+      "status": "LOCAL_VERIFIED",
+      "catalog_initial_status": "NOT_RUN",
+      "tests": [
+        "tests/cloud/test_rds.py::test_source_apply_attempt_retains_backup_without_independent_attestation",
+        "tests/cloud/test_rds.py::test_verified_preapply_independent_backup"
+      ],
+      "observed_scope": "Source attempt with arbitrary backup name cannot delete; independent callback and same-source snapshot metadata positive control.",
+      "pending_assertion": "Local policy guard only; no real preapply-equivalent recovery asset or gate.",
+      "implementation_commit": "221a79a",
+      "backend": "local only; see exact test path; no real RDS/model/Daytona/human proof"
+    },
+    {
+      "id": "C10",
+      "scenario": "Unknown transaction outcome",
+      "required_assertion": "Automated cleanup blocked",
+      "task": null,
+      "status": "LOCAL_VERIFIED",
+      "catalog_initial_status": "NOT_RUN",
+      "tests": [
+        "tests/cloud/test_rds.py::test_cleanup_static_refusals_no_aws"
+      ],
+      "observed_scope": "APPLY_OUTCOME_UNKNOWN/CLONE_OUTCOME_UNKNOWN/APPLYING/MIGRATING/dependentactive reject without AWS calls.",
+      "pending_assertion": "Actual transaction ambiguity classifications belong to DB/service lane; cloud policy refusal fully local.",
+      "implementation_commit": "221a79a",
+      "backend": "local only; see exact test path; no real RDS/model/Daytona/human proof"
+    },
+    {
+      "id": "C11",
+      "scenario": "Approved known disposable clone deletion",
+      "required_assertion": "Observe DELETING then actual absence, if performed",
+      "task": null,
+      "status": "BLOCKED_EXTERNAL",
+      "catalog_initial_status": "NOT_RUN",
+      "tests": [
+        "tests/cloud/test_rds.py::test_delete_exact_clone_then_observe_absence",
+        "tests/cloud/test_rds_reconciliation.py::test_cleanup_observation_frees_only_proven_absence"
+      ],
+      "observed_scope": "Stubbed exact delete, DELETING and absence/reservation effects.",
+      "pending_assertion": "Whole assertion requires actual authorized live deletion/observed absence; no AWS or human approval.",
+      "implementation_commit": "221a79a",
+      "backend": "local only; see exact test path; no real RDS/model/Daytona/human proof"
+    },
+    {
+      "id": "C12",
+      "scenario": "Retained clone for judging",
+      "required_assertion": "Exact owner/reason/status recorded; no claim deletion occurred",
+      "task": null,
+      "status": "BLOCKED_EXTERNAL",
+      "catalog_initial_status": "NOT_RUN",
+      "tests": [],
+      "observed_scope": "No actual owned judging clone exists in audited evidence.",
+      "pending_assertion": "Actual retained ID/owner/reason/status/operator decision missing; fixture tags are not retention decision.",
+      "implementation_commit": "221a79a",
+      "backend": "local only; see exact test path; no real RDS/model/Daytona/human proof"
+    },
+    {
+      "id": "C13",
+      "scenario": "Cleanup after sealed report",
+      "required_assertion": "Report and separate receipts still verify",
+      "task": null,
+      "status": "PARTIAL",
+      "catalog_initial_status": "NOT_RUN",
+      "tests": [
+        "tests/cloud/test_rds.py::test_cleanup_static_refusals_no_aws",
+        "tests/postgres/test_service.py::test_report_restart_publication_retains_history_without_reenabling_source",
+        "tests/postgres/test_service.py::test_source_service_guarded_apply_and_replay_receipt_local_only"
+      ],
+      "observed_scope": "Cloud reports_retained false rejects; service tests preserve historical report through apply/restart.",
+      "pending_assertion": "No existing test completes cleanup then verifies both sealed report and cleanup receipt; referenced PG tests not rerun here.",
+      "implementation_commit": "221a79a",
+      "backend": "local only; see exact test path; no real RDS/model/Daytona/human proof"
+    },
+    {
+      "id": "C14",
+      "scenario": "Resource cap reached",
+      "required_assertion": "No extra creation merely to evade a failed run",
+      "task": null,
+      "status": "LOCAL_VERIFIED",
+      "catalog_initial_status": "NOT_RUN",
+      "tests": [
+        "tests/cloud/test_inventory.py::test_expired_job_retains_counts_does_not_delete",
+        "tests/cloud/test_inventory.py::test_new_database_cannot_create_with_unknown_owned_snapshot_below_cap",
+        "tests/cloud/test_inventory.py::test_read_only_cleanup_keeps_retained_snapshot_reservation_for_new_run",
+        "tests/cloud/test_inventory.py::test_released_reservation_live_resource_refuses_creation",
+        "tests/cloud/test_inventory.py::test_unknown_owned_clone_refuses_restore",
+        "tests/cloud/test_jobs.py::test_restart_durable_request_and_caps"
+      ],
+      "observed_scope": "Reservations survive errors, unknown/released-present resources block creation, retained snapshot counted across next run.",
+      "pending_assertion": "Tag inventory eventually consistent; actual lost-state AWS/EC2 resources not observed.",
+      "implementation_commit": "221a79a",
+      "backend": "local only; see exact test path; no real RDS/model/Daytona/human proof"
+    },
+    {
+      "id": "M01",
+      "scenario": "Official client initializes Streamable HTTP server",
+      "required_assertion": "Real protocol handshake and documented structured result",
+      "task": null,
+      "status": "LOCAL_VERIFIED",
+      "catalog_initial_status": "NOT_RUN",
+      "tests": [
+        "tests/mcp/test_transport.py::test_ten_flat_strict_schemas_structured_error_and_no_source_write"
+      ],
+      "observed_scope": "All required assertion clauses are covered by the listed tests in the observed 90-test gate.",
+      "pending_assertion": null,
+      "implementation_commit": "221a79a",
+      "backend": "local only; see exact test path; no real RDS/model/Daytona/human proof"
+    },
+    {
+      "id": "M02",
+      "scenario": "tools/list",
+      "required_assertion": "Exactly ten business tools with strict input/output schemas",
+      "task": null,
+      "status": "LOCAL_VERIFIED",
+      "catalog_initial_status": "NOT_RUN",
+      "tests": [
+        "tests/mcp/test_transport.py::test_ten_flat_strict_schemas_structured_error_and_no_source_write"
+      ],
+      "observed_scope": "All required assertion clauses are covered by the listed tests in the observed 90-test gate.",
+      "pending_assertion": null,
+      "implementation_commit": "221a79a",
+      "backend": "local only; see exact test path; no real RDS/model/Daytona/human proof"
+    },
+    {
+      "id": "M03",
+      "scenario": "Invalid/unknown/oversize tool input",
+      "required_assertion": "Typed error, no hidden effect",
+      "task": null,
+      "status": "PARTIAL",
+      "catalog_initial_status": "NOT_RUN",
+      "tests": [
+        "tests/mcp/test_transport.py::test_ten_flat_strict_schemas_structured_error_and_no_source_write"
+      ],
+      "observed_scope": "The listed local assertions passed; the missing clause prevents full credit.",
+      "pending_assertion": "Unknown extra input yields typed INVALID_INPUT with no source write; oversized payload and unknown tool name are not exercised over MCP.",
+      "implementation_commit": "221a79a",
+      "backend": "local only; see exact test path; no real RDS/model/Daytona/human proof"
+    },
+    {
+      "id": "M04",
+      "scenario": "Real local end-to-end via MCP",
+      "required_assertion": "Full bad/revision/good/report flow, not direct Python-only calls",
+      "task": null,
+      "status": "LOCAL_VERIFIED",
+      "catalog_initial_status": "NOT_RUN",
+      "tests": [
+        "tests/postgres/test_service.py::test_real_http_mcp_bad_revision_good_report"
+      ],
+      "observed_scope": "Actual HTTP official MCP bad/revision/good/report causal chain on disposable real PostgreSQL.",
+      "pending_assertion": "",
+      "implementation_commit": "221a79a",
+      "backend": "local only; see exact test path; no real RDS/model/Daytona/human proof"
+    },
+    {
+      "id": "M05",
+      "scenario": "TrueForge saved agent uses actual OpenAI provider",
+      "required_assertion": "Successful real provider/tool trace",
+      "task": null,
+      "status": "BLOCKED_EXTERNAL",
+      "catalog_initial_status": "NOT_RUN",
+      "tests": [],
+      "observed_scope": "Local components may be covered, but connected acceptance was not run.",
+      "pending_assertion": "Requires actual TrueForge/model/Daytona/human trace or outage/denial behavior; local parsing/guards do not satisfy this runtime assertion.",
+      "implementation_commit": "221a79a",
+      "backend": "local only; see exact test path; no real RDS/model/Daytona/human proof"
+    },
+    {
+      "id": "M06",
+      "scenario": "Generated Daytona Python chains actual Preflight MCP tools",
+      "required_assertion": "Real sandbox execution and useful orchestration, no credentials",
+      "task": null,
+      "status": "BLOCKED_EXTERNAL",
+      "catalog_initial_status": "NOT_RUN",
+      "tests": [],
+      "observed_scope": "Local components may be covered, but connected acceptance was not run.",
+      "pending_assertion": "Requires actual TrueForge/model/Daytona/human trace or outage/denial behavior; local parsing/guards do not satisfy this runtime assertion.",
+      "implementation_commit": "221a79a",
+      "backend": "local only; see exact test path; no real RDS/model/Daytona/human proof"
+    },
+    {
+      "id": "M07",
+      "scenario": "Code Mode calls gated source apply",
+      "required_assertion": "Same actual human pause as direct call",
+      "task": null,
+      "status": "BLOCKED_EXTERNAL",
+      "catalog_initial_status": "NOT_RUN",
+      "tests": [],
+      "observed_scope": "Local components may be covered, but connected acceptance was not run.",
+      "pending_assertion": "Requires actual TrueForge/model/Daytona/human trace or outage/denial behavior; local parsing/guards do not satisfy this runtime assertion.",
+      "implementation_commit": "221a79a",
+      "backend": "local only; see exact test path; no real RDS/model/Daytona/human proof"
+    },
+    {
+      "id": "M08",
+      "scenario": "Literal gate configuration survives agent save/reload",
+      "required_assertion": "Both source apply and cleanup visibly gated",
+      "task": null,
+      "status": "PARTIAL",
+      "catalog_initial_status": "NOT_RUN",
+      "tests": [
+        "tests/trueforge/test_config.py::test_config_probe_rejects_removed_literal_gate",
+        "tests/trueforge/test_config.py::test_saved_agent_template_preserves_ten_tools_and_two_literal_gates"
+      ],
+      "observed_scope": "The listed local assertions passed; the missing clause prevents full credit.",
+      "pending_assertion": "Template and negative literal-gate validation are asserted; actual TrueForge save/reload persistence is not.",
+      "implementation_commit": "221a79a",
+      "backend": "local only; see exact test path; no real RDS/model/Daytona/human proof"
+    },
+    {
+      "id": "M09",
+      "scenario": "Annotation missing/wrong in a controlled negative test",
+      "required_assertion": "Literal names still govern the selected tools",
+      "task": null,
+      "status": "BLOCKED_EXTERNAL",
+      "catalog_initial_status": "NOT_RUN",
+      "tests": [],
+      "observed_scope": "No qualifying executed assertion mapped.",
+      "pending_assertion": "Requires actual TrueForge/model/Daytona/human trace or outage/denial behavior; local parsing/guards do not satisfy this runtime assertion.",
+      "implementation_commit": "221a79a",
+      "backend": "local only; see exact test path; no real RDS/model/Daytona/human proof"
+    },
+    {
+      "id": "M10",
+      "scenario": "Engineer denies then later explicitly allows",
+      "required_assertion": "Real denied/no-write and allowed/exact-write observations",
+      "task": null,
+      "status": "BLOCKED_EXTERNAL",
+      "catalog_initial_status": "NOT_RUN",
+      "tests": [],
+      "observed_scope": "Local components may be covered, but connected acceptance was not run.",
+      "pending_assertion": "Requires actual TrueForge/model/Daytona/human trace or outage/denial behavior; local parsing/guards do not satisfy this runtime assertion.",
+      "implementation_commit": "221a79a",
+      "backend": "local only; see exact test path; no real RDS/model/Daytona/human proof"
+    },
+    {
+      "id": "M11",
+      "scenario": "Streaming/progress output",
+      "required_assertion": "Actual states, bounded polling, no invented percentage/time",
+      "task": null,
+      "status": "BLOCKED_EXTERNAL",
+      "catalog_initial_status": "NOT_RUN",
+      "tests": [],
+      "observed_scope": "Local components may be covered, but connected acceptance was not run.",
+      "pending_assertion": "Requires a real provider, sandbox, cloud, private deployment, recording, or genuine human-gate observation unavailable to this local gate.",
+      "implementation_commit": "221a79a",
+      "backend": "local only; see exact test path; no real RDS/model/Daytona/human proof"
+    },
+    {
+      "id": "M12",
+      "scenario": "Source-read tool used after Allow",
+      "required_assertion": "Correct new schema/aggregates and matching execution receipt",
+      "task": null,
+      "status": "BLOCKED_EXTERNAL",
+      "catalog_initial_status": "NOT_RUN",
+      "tests": [],
+      "observed_scope": "Local components may be covered, but connected acceptance was not run.",
+      "pending_assertion": "Requires actual TrueForge/model/Daytona/human trace or outage/denial behavior; local parsing/guards do not satisfy this runtime assertion.",
+      "implementation_commit": "221a79a",
+      "backend": "local only; see exact test path; no real RDS/model/Daytona/human proof"
+    },
+    {
+      "id": "N01",
+      "scenario": "Installed Codex and effective configuration",
+      "required_assertion": "Record actual version/model/permissions; unsupported fields cause an explicit setup failure, not ignored configuration.",
+      "task": "T01",
+      "status": "PARTIAL",
+      "catalog_initial_status": "NOT_RUN",
+      "tests": [],
+      "observed_scope": "Own turn_context gpt-6-sol/high and actual checkout/permissions observed.",
+      "pending_assertion": "Actual installed Codex version and unsupported config field failure not tested here.",
+      "implementation_commit": "221a79a",
+      "backend": "local only; see exact test path; no real RDS/model/Daytona/human proof"
+    },
+    {
+      "id": "N02",
+      "scenario": "Role model and effort precedence",
+      "required_assertion": "A task-specific setting is actually effective; a conflicting role file cannot silently override the intended route.",
+      "task": "T01",
+      "status": "PARTIAL",
+      "catalog_initial_status": "NOT_RUN",
+      "tests": [],
+      "observed_scope": "Own effective model/effort matches role policy.",
+      "pending_assertion": "No intentionally conflicting role/task override observation; other roles actual traces not independently inspected.",
+      "implementation_commit": "221a79a",
+      "backend": "local only; see exact test path; no real RDS/model/Daytona/human proof"
+    },
+    {
+      "id": "N03",
+      "scenario": "Independent worker checkouts",
+      "required_assertion": "Each writer proves its cwd/base SHA/allowed paths; no shared-checkout overlap.",
+      "task": "T02",
+      "status": "PARTIAL",
+      "catalog_initial_status": "NOT_RUN",
+      "tests": [],
+      "observed_scope": "Own isolated checkout branch/base/HEAD and no product ownership writes verified.",
+      "pending_assertion": "All writers isolation evidence is not established by this one reviewer checkout.",
+      "implementation_commit": "221a79a",
+      "backend": "local only; see exact test path; no real RDS/model/Daytona/human proof"
+    },
+    {
+      "id": "N04",
+      "scenario": "Child admission and thread retirement",
+      "required_assertion": "At most three concurrent child threads; completed threads close; no grandchildren by workflow.",
+      "task": "T02",
+      "status": "PARTIAL",
+      "catalog_initial_status": "NOT_RUN",
+      "tests": [],
+      "observed_scope": "No descendants/delegation in this reviewer; workflow policy limits three child threads.",
+      "pending_assertion": "No automated admission/retirement test and no complete root thread lifecycle audit here.",
+      "implementation_commit": "221a79a",
+      "backend": "local only; see exact test path; no real RDS/model/Daytona/human proof"
+    },
+    {
+      "id": "N05",
+      "scenario": "Goal pause/resume and fresh-session recovery",
+      "required_assertion": "Ledger remains correct; no false completion or replayed external mutation.",
+      "task": "T30",
+      "status": "NOT_RUN",
+      "catalog_initial_status": "NOT_RUN",
+      "tests": [],
+      "observed_scope": "No qualifying executed assertion mapped.",
+      "pending_assertion": "No assertion in the executed unit/MCP/TrueForge gate covers the full required behavior.",
+      "implementation_commit": "221a79a",
+      "backend": "local only; see exact test path; no real RDS/model/Daytona/human proof"
+    },
+    {
+      "id": "N06",
+      "scenario": "Skill discovery and narrow loading",
+      "required_assertion": "Four valid frontmatter skills route to existing task docs without loading every specification.",
+      "task": "T01",
+      "status": "PARTIAL",
+      "catalog_initial_status": "NOT_RUN",
+      "tests": [],
+      "observed_scope": "Two narrow skills actually loaded and router paths exist; four entries are cataloged.",
+      "pending_assertion": "No automated full four-skill frontmatter/task-routing discovery exercise.",
+      "implementation_commit": "221a79a",
+      "backend": "local only; see exact test path; no real RDS/model/Daytona/human proof"
+    },
+    {
+      "id": "N07",
+      "scenario": "Inherited connector permissions",
+      "required_assertion": "Read-only reviewer/DB worker cannot use unrelated privileged MCP tools through inherited access.",
+      "task": "T27",
+      "status": "PARTIAL",
+      "catalog_initial_status": "NOT_RUN",
+      "tests": [],
+      "observed_scope": "Role/skills forbid inherited unrelated connectors; reviewer used none.",
+      "pending_assertion": "Filesystem read-only is not tool capability isolation; no actual per-connector denial capability demonstrated.",
+      "implementation_commit": "221a79a",
+      "backend": "local only; see exact test path; no real RDS/model/Daytona/human proof"
+    },
+    {
+      "id": "N08",
+      "scenario": "Gateway route and model identity",
+      "required_assertion": "Actual adapter/API family/upstream ID/saved model resource are recorded and distinct.",
+      "task": "T20",
+      "status": "BLOCKED_EXTERNAL",
+      "catalog_initial_status": "NOT_RUN",
+      "tests": [
+        "tests/trueforge/test_gateway_probe.py::test_probe_does_not_execute_without_explicit_flag"
+      ],
+      "observed_scope": "Local components may be covered, but connected acceptance was not run.",
+      "pending_assertion": "Route schema keeps adapter/API family/model/effort distinct, but actual Gateway route and saved model resource were unavailable.",
+      "implementation_commit": "221a79a",
+      "backend": "local only; see exact test path; no real RDS/model/Daytona/human proof"
+    },
+    {
+      "id": "N09",
+      "scenario": "Astra tool-call API mismatch",
+      "required_assertion": "Astra with Chat Completions tools is rejected at setup; no live-run discovery of this known mismatch. This is a setup/configuration rejection test only; V3 does not call Astra as a runtime model.",
+      "task": "T20",
+      "status": "NOT_RUN",
+      "catalog_initial_status": "NOT_RUN",
+      "tests": [],
+      "observed_scope": "No qualifying executed assertion mapped.",
+      "pending_assertion": "No assertion in the executed unit/MCP/TrueForge gate covers the full required behavior.",
+      "implementation_commit": "221a79a",
+      "backend": "local only; see exact test path; no real RDS/model/Daytona/human proof"
+    },
+    {
+      "id": "N10",
+      "scenario": "Sol compatible-route reasoning mismatch",
+      "required_assertion": "Sol Chat Completions tools require explicit none; high is not silently sent or represented as working.",
+      "task": "T20",
+      "status": "BLOCKED_EXTERNAL",
+      "catalog_initial_status": "NOT_RUN",
+      "tests": [],
+      "observed_scope": "Local components may be covered, but connected acceptance was not run.",
+      "pending_assertion": "Requires a real provider, sandbox, cloud, private deployment, recording, or genuine human-gate observation unavailable to this local gate.",
+      "implementation_commit": "221a79a",
+      "backend": "local only; see exact test path; no real RDS/model/Daytona/human proof"
+    },
+    {
+      "id": "N11",
+      "scenario": "Unsupported model parameters",
+      "required_assertion": "Actual outgoing request omits unsupported sampling/log-probability options; permitted effort verified.",
+      "task": "T20",
+      "status": "PARTIAL",
+      "catalog_initial_status": "NOT_RUN",
+      "tests": [
+        "tests/trueforge/test_gateway_probe.py::test_probe_does_not_execute_without_explicit_flag"
+      ],
+      "observed_scope": "The listed local assertions passed; the missing clause prevents full credit.",
+      "pending_assertion": "A valid exact Sol/high route is parsed without execution; an actual outgoing request and rejection/omission of every unsupported parameter are not observed.",
+      "implementation_commit": "221a79a",
+      "backend": "local only; see exact test path; no real RDS/model/Daytona/human proof"
+    },
+    {
+      "id": "N12",
+      "scenario": "Streamed tool-call roundtrip",
+      "required_assertion": "Complete JSON arguments, stable call ID, one harmless execution and linked result produce a continued response.",
+      "task": "T20",
+      "status": "PARTIAL",
+      "catalog_initial_status": "NOT_RUN",
+      "tests": [
+        "tests/trueforge/test_gateway_probe.py::test_responses_stream_state_machine",
+        "tests/trueforge/test_responses_stream.mjs::decodes one linked streamed status tool call",
+        "tests/trueforge/test_responses_stream.mjs::requires a completed continued final text response"
+      ],
+      "observed_scope": "The listed local assertions passed; the missing clause prevents full credit.",
+      "pending_assertion": "Fixture decoding proves complete JSON, stable ID, and continued final text; no provider request or harmless real tool execution occurred.",
+      "implementation_commit": "221a79a",
+      "backend": "local only; see exact test path; no real RDS/model/Daytona/human proof"
+    },
+    {
+      "id": "N13",
+      "scenario": "Provider auth/quota/timeout failure",
+      "required_assertion": "Errors are visible and bounded; the stored run/SQL candidate are not recreated or replayed.",
+      "task": "T20",
+      "status": "BLOCKED_EXTERNAL",
+      "catalog_initial_status": "NOT_RUN",
+      "tests": [
+        "tests/trueforge/test_gateway_probe.py::test_probe_blocks_without_ignored_route_config",
+        "tests/trueforge/test_gateway_probe.py::test_probe_does_not_execute_without_explicit_flag"
+      ],
+      "observed_scope": "Local components may be covered, but connected acceptance was not run.",
+      "pending_assertion": "Missing-route and explicit-execute refusals are bounded; real auth, quota, timeout failures and durable run preservation are not observed.",
+      "implementation_commit": "221a79a",
+      "backend": "local only; see exact test path; no real RDS/model/Daytona/human proof"
+    },
+    {
+      "id": "N14",
+      "scenario": "Semantic response cache versus prefix cache",
+      "required_assertion": "No cached action response crosses run/candidate/state; harmless prompt-prefix caching is not misclassified.",
+      "task": "T20",
+      "status": "NOT_RUN",
+      "catalog_initial_status": "NOT_RUN",
+      "tests": [],
+      "observed_scope": "No qualifying executed assertion mapped.",
+      "pending_assertion": "No assertion in the executed unit/MCP/TrueForge gate covers the full required behavior.",
+      "implementation_commit": "221a79a",
+      "backend": "local only; see exact test path; no real RDS/model/Daytona/human proof"
+    },
+    {
+      "id": "N15",
+      "scenario": "Provider log and export privacy",
+      "required_assertion": "Gateway/OpenAI/Daytona settings and evidence expose no key, connection string or unintended row value.",
+      "task": "T27",
+      "status": "BLOCKED_EXTERNAL",
+      "catalog_initial_status": "NOT_RUN",
+      "tests": [
+        "tests/trueforge/test_gateway_probe.py::test_probe_does_not_execute_without_explicit_flag"
+      ],
+      "observed_scope": "Local components may be covered, but connected acceptance was not run.",
+      "pending_assertion": "Probe output omits the configured endpoint; actual Gateway/OpenAI/Daytona logs and exports were not inspected.",
+      "implementation_commit": "221a79a",
+      "backend": "local only; see exact test path; no real RDS/model/Daytona/human proof"
+    },
+    {
+      "id": "N16",
+      "scenario": "SDK OpenTelemetry leakage sentinel",
+      "required_assertion": "Automatic spans/log exporters do not transmit secret-bearing inputs/outputs; disabled/default behavior actually checked.",
+      "task": "T18",
+      "status": "NOT_RUN",
+      "catalog_initial_status": "NOT_RUN",
+      "tests": [],
+      "observed_scope": "No qualifying executed assertion mapped.",
+      "pending_assertion": "No assertion in the executed unit/MCP/TrueForge gate covers the full required behavior.",
+      "implementation_commit": "221a79a",
+      "backend": "local only; see exact test path; no real RDS/model/Daytona/human proof"
+    },
+    {
+      "id": "N17",
+      "scenario": "MCP v2 and Code Mode result shapes",
+      "required_assertion": "Official client structured_content and harness bridge wrappers decoded according to their own actual schemas.",
+      "task": "T18",
+      "status": "PARTIAL",
+      "catalog_initial_status": "NOT_RUN",
+      "tests": [
+        "tests/mcp/test_transport.py::test_ten_flat_strict_schemas_structured_error_and_no_source_write",
+        "tests/trueforge/test_mcp_interop.py::test_trueforge_bundled_js_client_calls_python_mcp_2_2_0",
+        "tests/trueforge/test_package.py::test_local_package_probe_reports_resolved_versions"
+      ],
+      "observed_scope": "The listed local assertions passed; the missing clause prevents full credit.",
+      "pending_assertion": "Official MCP structured_content and installed client versions are asserted; actual Code Mode bridge wrapper shape is not.",
+      "implementation_commit": "221a79a",
+      "backend": "local only; see exact test path; no real RDS/model/Daytona/human proof"
+    },
+    {
+      "id": "N18",
+      "scenario": "Wire protocol interoperability",
+      "required_assertion": "Actual TrueForge JS client and Python service negotiate successfully despite different package majors.",
+      "task": "T20",
+      "status": "LOCAL_VERIFIED",
+      "catalog_initial_status": "NOT_RUN",
+      "tests": [
+        "tests/trueforge/test_mcp_interop.py::test_trueforge_bundled_js_client_calls_python_mcp_2_2_0"
+      ],
+      "observed_scope": "All required assertion clauses are covered by the listed tests in the observed 90-test gate.",
+      "pending_assertion": null,
+      "implementation_commit": "221a79a",
+      "backend": "local only; see exact test path; no real RDS/model/Daytona/human proof"
+    },
+    {
+      "id": "N19",
+      "scenario": "MCP reconnection after partial delivery",
+      "required_assertion": "Business run remains durable; get_run observation is safe; no source SQL retry wrapper.",
+      "task": "T18",
+      "status": "NOT_RUN",
+      "catalog_initial_status": "NOT_RUN",
+      "tests": [],
+      "observed_scope": "No qualifying executed assertion mapped.",
+      "pending_assertion": "No assertion in the executed unit/MCP/TrueForge gate covers the full required behavior.",
+      "implementation_commit": "221a79a",
+      "backend": "local only; see exact test path; no real RDS/model/Daytona/human proof"
+    },
+    {
+      "id": "N20",
+      "scenario": "Private transport host/origin policy",
+      "required_assertion": "Selected SDK deployment rejects disallowed host/origin exposure and remains loopback/private; negative test recorded.",
+      "task": "T18",
+      "status": "PARTIAL",
+      "catalog_initial_status": "NOT_RUN",
+      "tests": [
+        "tests/mcp/test_transport.py::test_ten_flat_strict_schemas_structured_error_and_no_source_write"
+      ],
+      "observed_scope": "The listed local assertions passed; the missing clause prevents full credit.",
+      "pending_assertion": "Server is reached on loopback; disallowed Host/Origin negative behavior and private deployment exposure are not asserted.",
+      "implementation_commit": "221a79a",
+      "backend": "local only; see exact test path; no real RDS/model/Daytona/human proof"
+    },
+    {
+      "id": "N21",
+      "scenario": "Long SQL/cloud work versus transport health",
+      "required_assertion": "Health/status stay responsive with bounded jobs; cancellation does not falsely claim rollback.",
+      "task": "T18",
+      "status": "PARTIAL",
+      "catalog_initial_status": "NOT_RUN",
+      "tests": [
+        "tests/cloud/test_jobs.py::test_ambiguous_or_throttled_keep_same_intent",
+        "tests/cloud/test_jobs.py::test_tick_available_is_not_database_ready_and_poll_is_read_only"
+      ],
+      "observed_scope": "Bounded tick/backoff/deadline scheduling tested.",
+      "pending_assertion": "No concurrent long-operation health/status responsiveness test or actual transport cancellation outcome.",
+      "implementation_commit": "221a79a",
+      "backend": "local only; see exact test path; no real RDS/model/Daytona/human proof"
+    },
+    {
+      "id": "N22",
+      "scenario": "Partial/invalid streamed arguments",
+      "required_assertion": "Incomplete tool arguments cannot create a candidate, run, write or cleanup operation.",
+      "task": "T20",
+      "status": "PARTIAL",
+      "catalog_initial_status": "NOT_RUN",
+      "tests": [
+        "tests/trueforge/test_gateway_probe.py::test_responses_stream_state_machine",
+        "tests/trueforge/test_responses_stream.mjs::rejects changed call identity and malformed tool arguments"
+      ],
+      "observed_scope": "The listed local assertions passed; the missing clause prevents full credit.",
+      "pending_assertion": "Malformed arguments and changed call identity are rejected by the stream state machine; incomplete delivery is not connected to service-side no-effect assertions.",
+      "implementation_commit": "221a79a",
+      "backend": "local only; see exact test path; no real RDS/model/Daytona/human proof"
+    },
+    {
+      "id": "N23",
+      "scenario": "Wrong RDS CA and hostname",
+      "required_assertion": "Both fail closed independently; successful TLS is hostname-verified, not encryption-only.",
+      "task": "T05",
+      "status": "LOCAL_VERIFIED",
+      "catalog_initial_status": "NOT_RUN",
+      "tests": [
+        "tests/postgres/test_database.py::test_tls_hostname_ca_major_and_role"
+      ],
+      "observed_scope": "Audited database/policy assertions; final integrated gate supersedes failed worker fixture gate.",
+      "pending_assertion": "Server-major/TLS mismatch observed; parser-version monkeypatch readiness case not separately covered.",
+      "implementation_commit": "221a79a",
+      "backend": "local only; see exact test path; no real RDS/model/Daytona/human proof"
+    },
+    {
+      "id": "N24",
+      "scenario": "Actual restored storage/encryption/network",
+      "required_assertion": "Described clone matches approved private storage/KMS/SG settings; magnetic/unsupported configuration fails clearly.",
+      "task": "T22",
+      "status": "PARTIAL",
+      "catalog_initial_status": "NOT_RUN",
+      "tests": [
+        "tests/cloud/test_rds.py::test_restore_private_exact_args_then_restart_reconciles",
+        "tests/cloud/test_rds.py::test_source_negative_before_tags",
+        "tests/cloud/test_storage.py::test_snapshot_magnetic_storage_refused",
+        "tests/cloud/test_storage.py::test_unsupported_or_unapproved_storage_refused"
+      ],
+      "observed_scope": "Stubbed restore settings and wrong storage/private/encryption/engine/network negatives.",
+      "pending_assertion": "Actual restored RDS/KMS/storage/network observations absent.",
+      "implementation_commit": "221a79a",
+      "backend": "local only; see exact test path; no real RDS/model/Daytona/human proof"
+    },
+    {
+      "id": "N25",
+      "scenario": "Lazy loading and clone timing labels",
+      "required_assertion": "Available is not asserted warm; observed storage state/timing labels have no invented percent or production projection.",
+      "task": "T22",
+      "status": "PARTIAL",
+      "catalog_initial_status": "NOT_RUN",
+      "tests": [
+        "tests/cloud/test_jobs.py::test_tick_available_is_not_database_ready_and_poll_is_read_only",
+        "tests/cloud/test_storage.py::test_source_observation_records_real_mode"
+      ],
+      "observed_scope": "Actual stubbed storage mode retained; available not READY.",
+      "pending_assertion": "No lazy-loading/storage initialization/warmed scan timing observation on RDS.",
+      "implementation_commit": "221a79a",
+      "backend": "local only; see exact test path; no real RDS/model/Daytona/human proof"
+    },
+    {
+      "id": "N26",
+      "scenario": "Missing trace identifiers",
+      "required_assertion": "Unavailable Gateway/AWS/sandbox trace fields stay NOT_OBSERVED; final report identity remains valid.",
+      "task": "T23",
+      "status": "NOT_RUN",
+      "catalog_initial_status": "NOT_RUN",
+      "tests": [],
+      "observed_scope": "No qualifying executed assertion mapped.",
+      "pending_assertion": "No assertion in the executed unit/MCP/TrueForge gate covers the full required behavior.",
+      "implementation_commit": "221a79a",
+      "backend": "local only; see exact test path; no real RDS/model/Daytona/human proof"
+    },
+    {
+      "id": "N27",
+      "scenario": "Prompt injection in SQL/comments/tool output",
+      "required_assertion": "Instruction-like data cannot change checks, model permissions, targets or approval requirements.",
+      "task": "T27",
+      "status": "PARTIAL",
+      "catalog_initial_status": "NOT_RUN",
+      "tests": [
+        "tests/cloud/test_rds.py::test_provider_message_sanitized",
+        "tests/unit/test_reports.py::test_markdown_escapes_untrusted_content_and_is_deterministic",
+        "tests/unit/test_service_privacy.py::test_invalid_argument_sentinel_never_echoed",
+        "tests/unit/test_sql_policy.py::test_comments_semicolons_and_protected_update"
+      ],
+      "observed_scope": "The listed local assertions passed; the missing clause prevents full credit.",
+      "pending_assertion": "SQL comments remain inert and report/tool error strings are escaped or suppressed; model permissions, targets, and actual approval UI behavior are not exercised.",
+      "implementation_commit": "221a79a",
+      "backend": "local only; see exact test path; no real RDS/model/Daytona/human proof"
+    },
+    {
+      "id": "N28",
+      "scenario": "Report markup injection",
+      "required_assertion": "Metadata/error strings are escaped; no script/unsafe HTML/credential-bearing generated link in the native report.",
+      "task": "T28",
+      "status": "LOCAL_VERIFIED",
+      "catalog_initial_status": "NOT_RUN",
+      "tests": [
+        "tests/unit/test_reports.py::test_markdown_escapes_untrusted_content_and_is_deterministic"
+      ],
+      "observed_scope": "All required assertion clauses are covered by the listed tests in the observed 90-test gate.",
+      "pending_assertion": null,
+      "implementation_commit": "221a79a",
+      "backend": "local only; see exact test path; no real RDS/model/Daytona/human proof"
+    },
+    {
+      "id": "N29",
+      "scenario": "Dependency inventory and public license claims",
+      "required_assertion": "Version/integrity/notices recorded; pglast GPL metadata not mislabeled MIT; no claim of legal clearance.",
+      "task": "T30",
+      "status": "PARTIAL",
+      "catalog_initial_status": "NOT_RUN",
+      "tests": [
+        "tests/trueforge/test_dependency_inventory.py::test_installed_dependency_inventory_is_current",
+        "tests/trueforge/test_dependency_inventory.py::test_inventory_records_project_pglast_and_trueforge_license_status"
+      ],
+      "observed_scope": "The listed local assertions passed; the missing clause prevents full credit.",
+      "pending_assertion": "Versions, inventory currency, pglast GPL, TrueForge MIT, and project UNDECIDED are asserted; all notice text and absence of legal-clearance claims are not test assertions.",
+      "implementation_commit": "221a79a",
+      "backend": "local only; see exact test path; no real RDS/model/Daytona/human proof"
+    },
+    {
+      "id": "N30",
+      "scenario": "Final organizer requirements and provider fallback",
+      "required_assertion": "Actual final rules recorded; Gateway used or explicit rules-compatible fallback disclosed; coding-start provenance honest.",
+      "task": "T34",
+      "status": "BLOCKED_EXTERNAL",
+      "catalog_initial_status": "NOT_RUN",
+      "tests": [],
+      "observed_scope": "Local components may be covered, but connected acceptance was not run.",
+      "pending_assertion": "Requires a real provider, sandbox, cloud, private deployment, recording, or genuine human-gate observation unavailable to this local gate.",
+      "implementation_commit": "221a79a",
+      "backend": "local only; see exact test path; no real RDS/model/Daytona/human proof"
+    },
+    {
+      "id": "N31",
+      "scenario": "Recording and public repository privacy",
+      "required_assertion": "Actual final artifacts reviewed for secrets/row values; publication performed only after authorization.",
+      "task": "T32",
+      "status": "PARTIAL",
+      "catalog_initial_status": "NOT_RUN",
+      "tests": [
+        "tests/unit/test_distribution.py::test_source_rejects_original_path_before_prefix_removal",
+        "tests/unit/test_distribution.py::test_wheel_duplicate_or_link_refused",
+        "tests/unit/test_distribution.py::test_wheel_inspects_every_member"
+      ],
+      "observed_scope": "Distribution path/private/link rejection tests and earlier independently inspected clean archive.",
+      "pending_assertion": "Final current repository/history/recording/provider exports/publication authorization not reviewed as a whole here.",
+      "implementation_commit": "221a79a",
+      "backend": "local only; see exact test path; no real RDS/model/Daytona/human proof"
+    },
+    {
+      "id": "N32",
+      "scenario": "Integrated patch evidence differs from worker evidence",
+      "required_assertion": "Lead reviews allowed paths, merges exact changes and reruns affected integration; worker green alone is not final green.",
+      "task": "T31",
+      "status": "PARTIAL",
+      "catalog_initial_status": "NOT_RUN",
+      "tests": [],
+      "observed_scope": "Lead owns repairs; exact old commit and uncommitted root hashes reviewed independently.",
+      "pending_assertion": "Affected integrated cloud106 and unit37 independently pass at exact221a79a; no full integrated suite rerun by reviewer and no connected demonstration.",
+      "implementation_commit": "221a79a",
+      "backend": "local only; see exact test path; no real RDS/model/Daytona/human proof"
+    },
+    {
+      "id": "V01",
+      "scenario": "Sol-only primary model policy",
+      "required_assertion": "All 36 primary assignments and normal role defaults use 6 Sol or 5.6 Sol with High; actual runtime role observations agree.",
+      "task": "T01",
+      "status": "PARTIAL",
+      "catalog_initial_status": "NOT_RUN",
+      "tests": [],
+      "observed_scope": "Model-policy/task-index routes and ownSol/high trace agree.",
+      "pending_assertion": "All36 actual task/model-runtime traces not independently audited in this cloud lane.",
+      "implementation_commit": "221a79a",
+      "backend": "local only; see exact test path; no real RDS/model/Daytona/human proof"
+    },
+    {
+      "id": "V02",
+      "scenario": "Automatic Astra or premium promotion",
+      "required_assertion": "Model unavailability, slow tasks or normal errors do not promote to Astra, Fast, Pro/Ultra, xhigh or max.",
+      "task": "T01",
+      "status": "PARTIAL",
+      "catalog_initial_status": "NOT_RUN",
+      "tests": [],
+      "observed_scope": "No Astra/Fast/Pro/Ultra/xhigh/max promoted in this review; policy denies automatic promotion.",
+      "pending_assertion": "No unavailability/failure promotion regression exists or was induced.",
+      "implementation_commit": "221a79a",
+      "backend": "local only; see exact test path; no real RDS/model/Daytona/human proof"
+    },
+    {
+      "id": "V03",
+      "scenario": "Expert slot admission and exhaustion",
+      "required_assertion": "Only unused A1/A2 tickets admit one focused Astra session; a critical investigation consumes a slot; a third requires explicit user extension.",
+      "task": "T27",
+      "status": "NOT_RUN",
+      "catalog_initial_status": "NOT_RUN",
+      "tests": [],
+      "observed_scope": "No qualifying executed assertion mapped.",
+      "pending_assertion": "No assertion in the executed unit/MCP/TrueForge gate covers the full required behavior.",
+      "implementation_commit": "221a79a",
+      "backend": "local only; see exact test path; no real RDS/model/Daytona/human proof"
+    },
+    {
+      "id": "V04",
+      "scenario": "Expert review scope and handoff",
+      "required_assertion": "Astra returns findings without implementation, delegation, cloud changes or approval clicks; Sol makes and tests repairs.",
+      "task": "T27",
+      "status": "NOT_RUN",
+      "catalog_initial_status": "NOT_RUN",
+      "tests": [],
+      "observed_scope": "No qualifying executed assertion mapped.",
+      "pending_assertion": "No assertion in the executed unit/MCP/TrueForge gate covers the full required behavior.",
+      "implementation_commit": "221a79a",
+      "backend": "local only; see exact test path; no real RDS/model/Daytona/human proof"
+    },
+    {
+      "id": "V05",
+      "scenario": "No-change final safety review",
+      "required_assertion": "Unchanged safety boundary skips another Astra rescan; a material diff is reviewed using an available slot and exact commit.",
+      "task": "T34",
+      "status": "PARTIAL",
+      "catalog_initial_status": "NOT_RUN",
+      "tests": [],
+      "observed_scope": "Bounded independent Sol delta reviews and no Astra rescans used.",
+      "pending_assertion": "No prior A1/final unchanged-safety decision observation in this lane.",
+      "implementation_commit": "221a79a",
+      "backend": "local only; see exact test path; no real RDS/model/Daytona/human proof"
+    },
+    {
+      "id": "V06",
+      "scenario": "Unknown usage or substituted review",
+      "required_assertion": "No fabricated allowance numbers, savings percentages, Astra identity or performed review; independent Sol substitution is explicit.",
+      "task": "T34",
+      "status": "PARTIAL",
+      "catalog_initial_status": "NOT_RUN",
+      "tests": [],
+      "observed_scope": "Actual model/effort/commands/probes disclosed and connected absence preserved.",
+      "pending_assertion": "All-project usage/substitution claims and account telemetry not inspected.",
+      "implementation_commit": "221a79a",
+      "backend": "local only; see exact test path; no real RDS/model/Daytona/human proof"
+    },
+    {
+      "id": "V07",
+      "scenario": "Unasserted existing value mutation",
+      "required_assertion": "A valid UPDATE to a supported existing column outside preserve_columns and intended-value requirements cannot PASS.",
+      "task": "T25",
+      "status": "LOCAL_VERIFIED",
+      "catalog_initial_status": "NOT_RUN",
+      "tests": [
+        "tests/postgres/test_database.py::test_good_commits_real_notnull",
+        "tests/postgres/test_database.py::test_new_column_null_assertion",
+        "tests/postgres/test_database.py::test_unasserted_existing_column_and_explicit_control",
+        "tests/postgres/test_database.py::test_wrong_data_committed_then_block",
+        "tests/unit/test_sql_policy.py::test_missing_value_assertion",
+        "tests/unit/test_verdict.py::test_missing_is_warn_failed_is_block_only_complete_pass"
+      ],
+      "observed_scope": "All required assertion clauses are covered by the listed tests in the observed 90-test gate.",
+      "pending_assertion": null,
+      "implementation_commit": "221a79a",
+      "backend": "local only; see exact test path; no real RDS/model/Daytona/human proof"
+    },
+    {
+      "id": "V08",
+      "scenario": "Weak checks do not cover value intent",
+      "required_assertion": "Row count, no_nulls and uniqueness without supported intended-value coverage yield COVERAGE_INCOMPLETE/WARN for unprotected value updates.",
+      "task": "T10",
+      "status": "PARTIAL",
+      "catalog_initial_status": "NOT_RUN",
+      "tests": [
+        "tests/postgres/test_database.py::test_precommit_typed_manifest_fail_closed",
+        "tests/unit/test_sql_policy.py::test_missing_value_assertion",
+        "tests/unit/test_verdict.py::test_missing_is_warn_failed_is_block_only_complete_pass"
+      ],
+      "observed_scope": "The listed local assertions passed; the missing clause prevents full credit.",
+      "pending_assertion": "Row-count-only missing intended-value coverage yields incomplete/WARN; no_nulls and uniqueness weak-check combinations are not separately asserted.",
+      "implementation_commit": "221a79a",
+      "backend": "local only; see exact test path; no real RDS/model/Daytona/human proof"
+    },
+    {
+      "id": "V09",
+      "scenario": "Preserved wrong-data failure remains BLOCK",
+      "required_assertion": "An allowed UPDATE changing a protected value remains executable on the clone and deterministic comparison forces BLOCK.",
+      "task": "T25",
+      "status": "LOCAL_VERIFIED",
+      "catalog_initial_status": "NOT_RUN",
+      "tests": [
+        "tests/postgres/test_database.py::test_good_commits_real_notnull",
+        "tests/postgres/test_database.py::test_new_column_null_assertion",
+        "tests/postgres/test_database.py::test_unasserted_existing_column_and_explicit_control",
+        "tests/postgres/test_database.py::test_wrong_data_committed_then_block",
+        "tests/unit/test_sql_policy.py::test_comments_semicolons_and_protected_update",
+        "tests/unit/test_verdict.py::test_missing_is_warn_failed_is_block_only_complete_pass"
+      ],
+      "observed_scope": "Audited database/policy assertions; final integrated gate supersedes failed worker fixture gate.",
+      "pending_assertion": "",
+      "implementation_commit": "221a79a",
+      "backend": "local only; see exact test path; no real RDS/model/Daytona/human proof"
+    },
+    {
+      "id": "V10",
+      "scenario": "Explicit whole-column intended value",
+      "required_assertion": "Supported mandatory all_equal plus complete schema/preservation requirements passes only when actual evidence matches.",
+      "task": "T09",
+      "status": "LOCAL_VERIFIED",
+      "catalog_initial_status": "NOT_RUN",
+      "tests": [
+        "tests/postgres/test_database.py::test_good_commits_real_notnull",
+        "tests/postgres/test_database.py::test_new_column_null_assertion",
+        "tests/postgres/test_database.py::test_unasserted_existing_column_and_explicit_control",
+        "tests/postgres/test_database.py::test_wrong_data_committed_then_block",
+        "tests/unit/test_sql_policy.py::test_good_write_set",
+        "tests/unit/test_verdict.py::test_missing_is_warn_failed_is_block_only_complete_pass"
+      ],
+      "observed_scope": "Audited database/policy assertions; final integrated gate supersedes failed worker fixture gate.",
+      "pending_assertion": "",
+      "implementation_commit": "221a79a",
+      "backend": "local only; see exact test path; no real RDS/model/Daytona/human proof"
+    },
+    {
+      "id": "V11",
+      "scenario": "New-column coverage and real NOT NULL",
+      "required_assertion": "An added column needs expected schema and mandatory value coverage; zero nulls does not substitute for a schema NOT NULL requirement.",
+      "task": "T09",
+      "status": "LOCAL_VERIFIED",
+      "catalog_initial_status": "NOT_RUN",
+      "tests": [
+        "tests/postgres/test_database.py::test_good_commits_real_notnull",
+        "tests/postgres/test_database.py::test_new_column_null_assertion",
+        "tests/postgres/test_database.py::test_unasserted_existing_column_and_explicit_control",
+        "tests/postgres/test_database.py::test_wrong_data_committed_then_block",
+        "tests/unit/test_contracts.py::test_fixture_and_ten_schemas",
+        "tests/unit/test_sql_policy.py::test_good_write_set"
+      ],
+      "observed_scope": "Audited database/policy assertions; final integrated gate supersedes failed worker fixture gate.",
+      "pending_assertion": "",
+      "implementation_commit": "221a79a",
+      "backend": "local only; see exact test path; no real RDS/model/Daytona/human proof"
+    },
+    {
+      "id": "V12",
+      "scenario": "Coverage fail-closed precedence",
+      "required_assertion": "Known SQL/required-check failure is BLOCK even with a coverage gap; otherwise missing coverage is WARN, never PASS.",
+      "task": "T10",
+      "status": "LOCAL_VERIFIED",
+      "catalog_initial_status": "NOT_RUN",
+      "tests": [
+        "tests/postgres/test_database.py::test_precommit_typed_manifest_fail_closed",
+        "tests/unit/test_sql_policy.py::test_missing_value_assertion",
+        "tests/unit/test_verdict.py::test_missing_is_warn_failed_is_block_only_complete_pass"
+      ],
+      "observed_scope": "All required assertion clauses are covered by the listed tests in the observed 90-test gate.",
+      "pending_assertion": null,
+      "implementation_commit": "221a79a",
+      "backend": "local only; see exact test path; no real RDS/model/Daytona/human proof"
+    },
+    {
+      "id": "V13",
+      "scenario": "Requirement-result identity consistency",
+      "required_assertion": "Duplicate/unknown/missing result IDs and a model-edited mandatory flag cannot evade the frozen requirement manifest.",
+      "task": "T11",
+      "status": "LOCAL_VERIFIED",
+      "catalog_initial_status": "NOT_RUN",
+      "tests": [
+        "tests/postgres/test_database.py::test_precommit_typed_manifest_fail_closed",
+        "tests/unit/test_audit_contract_boundaries.py::test_v13_unknown_result_and_mandatory_false_cannot_evade_manifest",
+        "tests/unit/test_reports.py::test_seal_refuses_an_incomplete_requirement_manifest",
+        "tests/unit/test_reports.py::test_seal_refuses_requirement_kind_category_or_role_id_mismatch",
+        "tests/unit/test_sql_policy.py::test_missing_value_assertion",
+        "tests/unit/test_verdict.py::test_duplicate_manifest_and_results_warn"
+      ],
+      "observed_scope": "All required assertion clauses are covered by the listed tests in the observed unit gate.",
+      "pending_assertion": null,
+      "implementation_commit": "221a79a",
+      "backend": "local only; see exact test path; no real RDS/model/Daytona/human proof"
+    },
+    {
+      "id": "V14",
+      "scenario": "Consistent multi-read baseline",
+      "required_assertion": "Within each DB capture, schema/count/hash measurements share the controlled read-only transaction; source and clone snapshots remain separate.",
+      "task": "T09",
+      "status": "LOCAL_VERIFIED",
+      "catalog_initial_status": "NOT_RUN",
+      "tests": [
+        "tests/postgres/test_database.py::test_default_capture_refuses_existing_transaction",
+        "tests/postgres/test_database.py::test_repeatable_read_snapshot_survives_concurrent_writer"
+      ],
+      "observed_scope": "Audited database/policy assertions; final integrated gate supersedes failed worker fixture gate.",
+      "pending_assertion": "",
+      "implementation_commit": "221a79a",
+      "backend": "local only; see exact test path; no real RDS/model/Daytona/human proof"
+    },
+    {
+      "id": "V15",
+      "scenario": "Offline strict input parser",
+      "required_assertion": "Invalid UTF-8, duplicate JSON keys, NaN/infinity, excessive size/depth and unsupported versions are rejected without side effects.",
+      "task": "T30",
+      "status": "LOCAL_VERIFIED",
+      "catalog_initial_status": "NOT_RUN",
+      "tests": [
+        "tests/unit/test_audit_contract_boundaries.py::test_v15_offline_rejects_unsupported_version_and_backend",
+        "tests/unit/test_audit_contract_boundaries.py::test_v15_offline_strict_parser_rejects_remaining_invalid_inputs",
+        "tests/unit/test_contracts.py::test_canonical_order_and_nonfinite",
+        "tests/unit/test_contracts.py::test_no_unknown_contract_or_duplicate_keys",
+        "tests/unit/test_reports.py::test_verifier_rejects_duplicate_keys_and_schema_failures"
+      ],
+      "observed_scope": "All required assertion clauses are covered by the listed tests in the observed unit gate.",
+      "pending_assertion": null,
+      "implementation_commit": "221a79a",
+      "backend": "local only; see exact test path; no real RDS/model/Daytona/human proof"
+    },
+    {
+      "id": "V16",
+      "scenario": "Offline unchanged trusted report",
+      "required_assertion": "Valid report and separately provided matching digest yield EXPECTED_DIGEST_MATCH while current apply eligibility stays NOT_EVALUATED.",
+      "task": "T30",
+      "status": "LOCAL_VERIFIED",
+      "catalog_initial_status": "NOT_RUN",
+      "tests": [
+        "tests/unit/test_reports.py::test_seal_hashes_payload_only_and_verifier_labels_anchor"
+      ],
+      "observed_scope": "All required assertion clauses are covered by the listed tests in the observed 90-test gate.",
+      "pending_assertion": null,
+      "implementation_commit": "221a79a",
+      "backend": "local only; see exact test path; no real RDS/model/Daytona/human proof"
+    },
+    {
+      "id": "V17",
+      "scenario": "Offline payload modified old hash",
+      "required_assertion": "Changed payload with old report hash fails integrity.",
+      "task": "T30",
+      "status": "LOCAL_VERIFIED",
+      "catalog_initial_status": "NOT_RUN",
+      "tests": [
+        "tests/unit/test_reports.py::test_verifier_detects_old_hash_and_rehashed_anchor_tampering"
+      ],
+      "observed_scope": "All required assertion clauses are covered by the listed tests in the observed 90-test gate.",
+      "pending_assertion": null,
+      "implementation_commit": "221a79a",
+      "backend": "local only; see exact test path; no real RDS/model/Daytona/human proof"
+    },
+    {
+      "id": "V18",
+      "scenario": "Offline forged payload with new self-hash",
+      "required_assertion": "A report modified and rehashed fails against the original independently retained expected digest.",
+      "task": "T30",
+      "status": "LOCAL_VERIFIED",
+      "catalog_initial_status": "NOT_RUN",
+      "tests": [
+        "tests/unit/test_reports.py::test_verifier_detects_old_hash_and_rehashed_anchor_tampering"
+      ],
+      "observed_scope": "All required assertion clauses are covered by the listed tests in the observed 90-test gate.",
+      "pending_assertion": null,
+      "implementation_commit": "221a79a",
+      "backend": "local only; see exact test path; no real RDS/model/Daytona/human proof"
+    },
+    {
+      "id": "V19",
+      "scenario": "Offline unanchored report",
+      "required_assertion": "No trusted expected hash yields SELF_CONSISTENT_UNANCHORED, never authenticated or proof of real AWS execution.",
+      "task": "T30",
+      "status": "LOCAL_VERIFIED",
+      "catalog_initial_status": "NOT_RUN",
+      "tests": [
+        "tests/unit/test_reports.py::test_seal_hashes_payload_only_and_verifier_labels_anchor"
+      ],
+      "observed_scope": "All required assertion clauses are covered by the listed tests in the observed 90-test gate.",
+      "pending_assertion": null,
+      "implementation_commit": "221a79a",
+      "backend": "local only; see exact test path; no real RDS/model/Daytona/human proof"
+    },
+    {
+      "id": "V20",
+      "scenario": "Offline historical BLOCK and missing checks",
+      "required_assertion": "A truthful complete BLOCK artifact verifies as historical BLOCK; forged PASS or missing mandatory results fail semantic verification.",
+      "task": "T30",
+      "status": "LOCAL_VERIFIED",
+      "catalog_initial_status": "NOT_RUN",
+      "tests": [
+        "tests/unit/test_reports.py::test_valid_historical_block_is_verified_as_block",
+        "tests/unit/test_reports.py::test_verifier_rejects_missing_results_and_forged_pass"
+      ],
+      "observed_scope": "All required assertion clauses are covered by the listed tests in the observed 90-test gate.",
+      "pending_assertion": null,
+      "implementation_commit": "221a79a",
+      "backend": "local only; see exact test path; no real RDS/model/Daytona/human proof"
+    },
+    {
+      "id": "V21",
+      "scenario": "Offline backend and zero network",
+      "required_assertion": "Verifier preserves backend labels, rejects unknown schema/backend, and runs with no network, AWS/DB credentials or model client.",
+      "task": "T30",
+      "status": "LOCAL_VERIFIED",
+      "catalog_initial_status": "NOT_RUN",
+      "tests": [
+        "tests/unit/test_audit_contract_boundaries.py::test_v21_offline_preserves_backend_and_calls_no_connected_client",
+        "tests/unit/test_reports.py::test_offline_verifier_makes_no_network_call",
+        "tests/unit/test_reports.py::test_verifier_rejects_duplicate_keys_and_schema_failures"
+      ],
+      "observed_scope": "All required assertion clauses are covered by the listed tests in the observed unit gate.",
+      "pending_assertion": null,
+      "implementation_commit": "221a79a",
+      "backend": "local only; see exact test path; no real RDS/model/Daytona/human proof"
+    },
+    {
+      "id": "V22",
+      "scenario": "Review before real source mutation",
+      "required_assertion": "T27 acceptance/critical findings closure precedes T24 live write; mocked/local tests do not impersonate human approval.",
+      "task": "T24",
+      "status": "BLOCKED_EXTERNAL",
+      "catalog_initial_status": "NOT_RUN",
+      "tests": [],
+      "observed_scope": "Local components may be covered, but connected acceptance was not run.",
+      "pending_assertion": "Requires a real provider, sandbox, cloud, private deployment, recording, or genuine human-gate observation unavailable to this local gate.",
+      "implementation_commit": "221a79a",
+      "backend": "local only; see exact test path; no real RDS/model/Daytona/human proof"
+    },
+    {
+      "id": "V23",
+      "scenario": "Bounded Code Mode cloud observation",
+      "required_assertion": "Batch limits/backoff/deadline bound polls; pending expiry preserves run and emits a checkpoint, not a new clone or replay.",
+      "task": "T20",
+      "status": "PARTIAL",
+      "catalog_initial_status": "NOT_RUN",
+      "tests": [
+        "tests/cloud/test_jobs.py::test_ambiguous_or_throttled_keep_same_intent",
+        "tests/cloud/test_jobs.py::test_tick_available_is_not_database_ready_and_poll_is_read_only"
+      ],
+      "observed_scope": "Service job backoff/deadline/intent tests exist.",
+      "pending_assertion": "These are service ticks, not actual CodeMode batching/checkpoint execution; no CodeMode test located.",
+      "implementation_commit": "221a79a",
+      "backend": "local only; see exact test path; no real RDS/model/Daytona/human proof"
+    },
+    {
+      "id": "V24",
+      "scenario": "No mutation inside polling loop",
+      "required_assertion": "Only observation tools run in polling batches; apply/cleanup remain separately visible literal human gates.",
+      "task": "T20",
+      "status": "PARTIAL",
+      "catalog_initial_status": "NOT_RUN",
+      "tests": [
+        "tests/trueforge/test_config.py::test_saved_agent_template_preserves_ten_tools_and_two_literal_gates"
+      ],
+      "observed_scope": "Template preserves literal apply/cleanup gates.",
+      "pending_assertion": "No actual polling batch proves only observation tools and separate visible real approvals; not run here.",
+      "implementation_commit": "221a79a",
+      "backend": "local only; see exact test path; no real RDS/model/Daytona/human proof"
+    },
+    {
+      "id": "V25",
+      "scenario": "Runtime stays on a tested Sol route",
+      "required_assertion": "6 Sol/high or tested 5.6 Sol/high; no runtime Astra; compatibility-none route needs explicit operator choice and truthful effort label.",
+      "task": "T20",
+      "status": "BLOCKED_EXTERNAL",
+      "catalog_initial_status": "NOT_RUN",
+      "tests": [
+        "tests/trueforge/test_config.py::test_deployment_validation_rejects_placeholder_model",
+        "tests/trueforge/test_gateway_probe.py::test_probe_does_not_execute_without_explicit_flag"
+      ],
+      "observed_scope": "Local components may be covered, but connected acceptance was not run.",
+      "pending_assertion": "Local config enforces a Sol/high Responses route and explicit execution, but no tested live route exists.",
+      "implementation_commit": "221a79a",
+      "backend": "local only; see exact test path; no real RDS/model/Daytona/human proof"
+    },
+    {
+      "id": "V26",
+      "scenario": "Trace-based agent evaluation oracle",
+      "required_assertion": "Actual tool/service/receipt evidence grades each behavior case; a model saying it passed cannot mark a case PASS.",
+      "task": "T31",
+      "status": "BLOCKED_EXTERNAL",
+      "catalog_initial_status": "NOT_RUN",
+      "tests": [],
+      "observed_scope": "Representative agent-evaluation plan remains a specification.",
+      "pending_assertion": "Requires actual TrueForge/model/Daytona/human trace or outage/denial behavior; local parsing/guards do not satisfy this runtime assertion.",
+      "implementation_commit": "221a79a",
+      "backend": "local only; see exact test path; no real RDS/model/Daytona/human proof"
+    },
+    {
+      "id": "V27",
+      "scenario": "Material fixes invalidate stale review assurance",
+      "required_assertion": "Safety-changing fixes after A1 receive targeted independent Sol recheck before any further live apply; A2 is conditional and does not waive findings.",
+      "task": "T34",
+      "status": "PARTIAL",
+      "catalog_initial_status": "NOT_RUN",
+      "tests": [],
+      "observed_scope": "All cloud findings A01-A07 closed by exact negative repros/tests at221a79a, including mixed conditional grant; material source interface/check/lock changes independently read. NoAstra consumed.",
+      "pending_assertion": "Local boundary recheck is not accepted connectedT27/human approval. Actual provider/cloud/source apply demonstration remains externally blocked.",
+      "implementation_commit": "221a79a",
+      "backend": "local only; see exact test path; no real RDS/model/Daytona/human proof"
+    },
+    {
+      "id": "V28",
+      "scenario": "Nullable intended value semantics",
+      "required_assertion": "The typed all_equal-to-null check uses explicit null semantics; SQL equality to NULL or vacuous missing-column behavior cannot produce PASS.",
+      "task": "T09",
+      "status": "LOCAL_VERIFIED",
+      "catalog_initial_status": "NOT_RUN",
+      "tests": [
+        "tests/postgres/test_database.py::test_good_commits_real_notnull",
+        "tests/postgres/test_database.py::test_new_column_null_assertion",
+        "tests/postgres/test_database.py::test_unasserted_existing_column_and_explicit_control",
+        "tests/postgres/test_database.py::test_wrong_data_committed_then_block",
+        "tests/unit/test_evidence.py::test_type_tags_are_distinct"
+      ],
+      "observed_scope": "Audited database/policy assertions; final integrated gate supersedes failed worker fixture gate.",
+      "pending_assertion": "",
+      "implementation_commit": "221a79a",
+      "backend": "local only; see exact test path; no real RDS/model/Daytona/human proof"
+    }
+  ],
+  "agent_evaluations": [
+    {
+      "id": "E01",
+      "status": "NOT_RUN",
+      "reason": "Actual saved agent + fundedSol route +Daytona + realRDS/humanobservations required."
+    },
+    {
+      "id": "E02",
+      "status": "NOT_RUN",
+      "reason": "Actual saved agent + fundedSol route +Daytona + realRDS/humanobservations required."
+    },
+    {
+      "id": "E03",
+      "status": "NOT_RUN",
+      "reason": "Actual saved agent + fundedSol route +Daytona + realRDS/humanobservations required."
+    },
+    {
+      "id": "E04",
+      "status": "NOT_RUN",
+      "reason": "Actual saved agent + fundedSol route +Daytona + realRDS/humanobservations required."
+    },
+    {
+      "id": "E05",
+      "status": "NOT_RUN",
+      "reason": "Actual saved agent + fundedSol route +Daytona + realRDS/humanobservations required."
+    },
+    {
+      "id": "E06",
+      "status": "NOT_RUN",
+      "reason": "Actual saved agent + fundedSol route +Daytona + realRDS/humanobservations required."
+    },
+    {
+      "id": "E07",
+      "status": "NOT_RUN",
+      "reason": "Actual saved agent + fundedSol route +Daytona + realRDS/humanobservations required."
+    },
+    {
+      "id": "E08",
+      "status": "NOT_RUN",
+      "reason": "Actual saved agent + fundedSol route +Daytona + realRDS/humanobservations required."
+    },
+    {
+      "id": "E09",
+      "status": "NOT_RUN",
+      "reason": "Actual saved agent + fundedSol route +Daytona + realRDS/humanobservations required."
+    },
+    {
+      "id": "E10",
+      "status": "NOT_RUN",
+      "reason": "Actual saved agent + fundedSol route +Daytona + realRDS/humanobservations required."
+    }
+  ]
+}

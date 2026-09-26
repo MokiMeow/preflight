@@ -1,0 +1,1465 @@
+{
+  "kind": "IN_PROCESS_FUNCTION_CALL_OBSERVATIONS_NOT_BRANCH_COVERAGE",
+  "exit_code": 0,
+  "limits": [
+    "Child processes and JavaScript not profiled",
+    "A call does not prove all branches or its acceptance requirement"
+  ],
+  "calls": [
+    {
+      "file": "infra/__init__.py",
+      "function": "<module>",
+      "line": 1,
+      "calls": 1
+    },
+    {
+      "file": "infra/bootstrap.py",
+      "function": "<module>",
+      "line": 1,
+      "calls": 2
+    },
+    {
+      "file": "infra/bootstrap.py",
+      "function": "PlanError",
+      "line": 12,
+      "calls": 2
+    },
+    {
+      "file": "infra/bootstrap.py",
+      "function": "canonical",
+      "line": 37,
+      "calls": 111
+    },
+    {
+      "file": "infra/bootstrap.py",
+      "function": "make_plan",
+      "line": 41,
+      "calls": 76
+    },
+    {
+      "file": "infra/bootstrap.py",
+      "function": "make_plan.<locals>.<genexpr>",
+      "line": 61,
+      "calls": 657
+    },
+    {
+      "file": "infra/bootstrap.py",
+      "function": "make_plan.<locals>.<genexpr>",
+      "line": 76,
+      "calls": 146
+    },
+    {
+      "file": "infra/bootstrap.py",
+      "function": "read_json",
+      "line": 130,
+      "calls": 1
+    },
+    {
+      "file": "infra/bootstrap.py",
+      "function": "read_json.<locals>.unique",
+      "line": 131,
+      "calls": 1
+    },
+    {
+      "file": "infra/bootstrap.py",
+      "function": "verify_apply_scope",
+      "line": 102,
+      "calls": 39
+    },
+    {
+      "file": "infra/bootstrap.py",
+      "function": "verify_apply_scope.<locals>.<genexpr>",
+      "line": 122,
+      "calls": 183
+    },
+    {
+      "file": "infra/cloud_bootstrap.py",
+      "function": "<module>",
+      "line": 1,
+      "calls": 1
+    },
+    {
+      "file": "infra/cloud_bootstrap.py",
+      "function": "BootstrapDriver",
+      "line": 61,
+      "calls": 1
+    },
+    {
+      "file": "infra/cloud_bootstrap.py",
+      "function": "BootstrapDriver.__init__",
+      "line": 62,
+      "calls": 35
+    },
+    {
+      "file": "infra/cloud_bootstrap.py",
+      "function": "BootstrapDriver.__init__.<locals>.<genexpr>",
+      "line": 69,
+      "calls": 420
+    },
+    {
+      "file": "infra/cloud_bootstrap.py",
+      "function": "BootstrapDriver._db",
+      "line": 92,
+      "calls": 70
+    },
+    {
+      "file": "infra/cloud_bootstrap.py",
+      "function": "BootstrapDriver.call",
+      "line": 101,
+      "calls": 69
+    },
+    {
+      "file": "infra/cloud_bootstrap.py",
+      "function": "BootstrapDriver.host",
+      "line": 323,
+      "calls": 11
+    },
+    {
+      "file": "infra/cloud_bootstrap.py",
+      "function": "BootstrapDriver.host.<locals>.<genexpr>",
+      "line": 398,
+      "calls": 14
+    },
+    {
+      "file": "infra/cloud_bootstrap.py",
+      "function": "BootstrapDriver.host.<locals>.<genexpr>",
+      "line": 401,
+      "calls": 14
+    },
+    {
+      "file": "infra/cloud_bootstrap.py",
+      "function": "BootstrapDriver.host.<locals>.<genexpr>",
+      "line": 408,
+      "calls": 12
+    },
+    {
+      "file": "infra/cloud_bootstrap.py",
+      "function": "BootstrapDriver.host.<locals>.<genexpr>.<genexpr>",
+      "line": 411,
+      "calls": 7
+    },
+    {
+      "file": "infra/cloud_bootstrap.py",
+      "function": "BootstrapDriver.identity",
+      "line": 112,
+      "calls": 3
+    },
+    {
+      "file": "infra/cloud_bootstrap.py",
+      "function": "BootstrapDriver.identity.<locals>.<genexpr>",
+      "line": 115,
+      "calls": 10
+    },
+    {
+      "file": "infra/cloud_bootstrap.py",
+      "function": "BootstrapDriver.run",
+      "line": 418,
+      "calls": 1
+    },
+    {
+      "file": "infra/cloud_bootstrap.py",
+      "function": "BootstrapDriver.source",
+      "line": 231,
+      "calls": 5
+    },
+    {
+      "file": "infra/cloud_bootstrap.py",
+      "function": "BootstrapDriver.source.<locals>.<genexpr>",
+      "line": 243,
+      "calls": 2
+    },
+    {
+      "file": "infra/cloud_bootstrap.py",
+      "function": "BootstrapDriver.source.<locals>.<genexpr>",
+      "line": 258,
+      "calls": 2
+    },
+    {
+      "file": "infra/cloud_bootstrap.py",
+      "function": "BootstrapDriver.tags",
+      "line": 221,
+      "calls": 21
+    },
+    {
+      "file": "infra/cloud_bootstrap.py",
+      "function": "BootstrapDriver.validate_prerequisites",
+      "line": 122,
+      "calls": 4
+    },
+    {
+      "file": "infra/cloud_bootstrap.py",
+      "function": "BootstrapDriver.validate_prerequisites.<locals>.<lambda>",
+      "line": 165,
+      "calls": 3
+    },
+    {
+      "file": "infra/cloud_bootstrap.py",
+      "function": "execute_bootstrap",
+      "line": 451,
+      "calls": 1
+    },
+    {
+      "file": "infra/prerequisites.py",
+      "function": "<module>",
+      "line": 1,
+      "calls": 2
+    },
+    {
+      "file": "infra/prerequisites.py",
+      "function": "validate_role_trust",
+      "line": 106,
+      "calls": 4
+    },
+    {
+      "file": "infra/prerequisites.py",
+      "function": "validate_runtime_documents",
+      "line": 14,
+      "calls": 16
+    },
+    {
+      "file": "infra/prerequisites.py",
+      "function": "validate_runtime_documents.<locals>.<genexpr>",
+      "line": 66,
+      "calls": 266
+    },
+    {
+      "file": "infra/prerequisites.py",
+      "function": "validate_runtime_documents.<locals>.<genexpr>",
+      "line": 67,
+      "calls": 316
+    },
+    {
+      "file": "infra/prerequisites.py",
+      "function": "validate_runtime_documents.<locals>.<genexpr>",
+      "line": 74,
+      "calls": 28
+    },
+    {
+      "file": "infra/prerequisites.py",
+      "function": "validate_runtime_documents.<locals>.<genexpr>",
+      "line": 99,
+      "calls": 35
+    },
+    {
+      "file": "infra/prerequisites.py",
+      "function": "validate_security_groups",
+      "line": 125,
+      "calls": 7
+    },
+    {
+      "file": "infra/prerequisites.py",
+      "function": "validate_security_groups.<locals>.<genexpr>",
+      "line": 132,
+      "calls": 20
+    },
+    {
+      "file": "infra/prerequisites.py",
+      "function": "validate_security_groups.<locals>.<genexpr>",
+      "line": 156,
+      "calls": 8
+    },
+    {
+      "file": "infra/prerequisites.py",
+      "function": "validate_security_groups.<locals>.<genexpr>",
+      "line": 172,
+      "calls": 6
+    },
+    {
+      "file": "scripts/verify_distribution.py",
+      "function": "<module>",
+      "line": 1,
+      "calls": 1
+    },
+    {
+      "file": "scripts/verify_distribution.py",
+      "function": "inspect_source_members",
+      "line": 44,
+      "calls": 1
+    },
+    {
+      "file": "scripts/verify_distribution.py",
+      "function": "inspect_wheel_members",
+      "line": 53,
+      "calls": 6
+    },
+    {
+      "file": "scripts/verify_distribution.py",
+      "function": "member_path",
+      "line": 14,
+      "calls": 84
+    },
+    {
+      "file": "scripts/verify_distribution.py",
+      "function": "member_path.<locals>.<genexpr>",
+      "line": 27,
+      "calls": 154
+    },
+    {
+      "file": "src/preflight/__init__.py",
+      "function": "<module>",
+      "line": 1,
+      "calls": 1
+    },
+    {
+      "file": "src/preflight/artifacts.py",
+      "function": "<module>",
+      "line": 1,
+      "calls": 1
+    },
+    {
+      "file": "src/preflight/artifacts.py",
+      "function": "ArtifactStore",
+      "line": 59,
+      "calls": 1
+    },
+    {
+      "file": "src/preflight/artifacts.py",
+      "function": "ArtifactStore.__init__",
+      "line": 60,
+      "calls": 3
+    },
+    {
+      "file": "src/preflight/artifacts.py",
+      "function": "ArtifactStore.path",
+      "line": 64,
+      "calls": 4
+    },
+    {
+      "file": "src/preflight/artifacts.py",
+      "function": "ArtifactStore.read",
+      "line": 95,
+      "calls": 1
+    },
+    {
+      "file": "src/preflight/artifacts.py",
+      "function": "ArtifactStore.write_once",
+      "line": 70,
+      "calls": 3
+    },
+    {
+      "file": "src/preflight/artifacts.py",
+      "function": "canonical_json",
+      "line": 17,
+      "calls": 70
+    },
+    {
+      "file": "src/preflight/artifacts.py",
+      "function": "sha256",
+      "line": 13,
+      "calls": 35
+    },
+    {
+      "file": "src/preflight/artifacts.py",
+      "function": "strict_json",
+      "line": 23,
+      "calls": 38
+    },
+    {
+      "file": "src/preflight/artifacts.py",
+      "function": "strict_json.<locals>.depth",
+      "line": 43,
+      "calls": 3008
+    },
+    {
+      "file": "src/preflight/artifacts.py",
+      "function": "strict_json.<locals>.invalid_constant",
+      "line": 35,
+      "calls": 1
+    },
+    {
+      "file": "src/preflight/artifacts.py",
+      "function": "strict_json.<locals>.pairs",
+      "line": 27,
+      "calls": 420
+    },
+    {
+      "file": "src/preflight/aws_rds.py",
+      "function": "<module>",
+      "line": 1,
+      "calls": 1
+    },
+    {
+      "file": "src/preflight/aws_rds.py",
+      "function": "CleanupPolicy",
+      "line": 79,
+      "calls": 1
+    },
+    {
+      "file": "src/preflight/aws_rds.py",
+      "function": "CloudPolicy",
+      "line": 24,
+      "calls": 1
+    },
+    {
+      "file": "src/preflight/aws_rds.py",
+      "function": "CloudPolicy.__post_init__",
+      "line": 40,
+      "calls": 50
+    },
+    {
+      "file": "src/preflight/aws_rds.py",
+      "function": "CloudPolicy.__post_init__.<locals>.<genexpr>",
+      "line": 49,
+      "calls": 100
+    },
+    {
+      "file": "src/preflight/aws_rds.py",
+      "function": "RdsAdapter",
+      "line": 100,
+      "calls": 1
+    },
+    {
+      "file": "src/preflight/aws_rds.py",
+      "function": "RdsAdapter.__init__",
+      "line": 103,
+      "calls": 49
+    },
+    {
+      "file": "src/preflight/aws_rds.py",
+      "function": "RdsAdapter._arn",
+      "line": 309,
+      "calls": 65
+    },
+    {
+      "file": "src/preflight/aws_rds.py",
+      "function": "RdsAdapter._call",
+      "line": 275,
+      "calls": 227
+    },
+    {
+      "file": "src/preflight/aws_rds.py",
+      "function": "RdsAdapter._creation",
+      "line": 490,
+      "calls": 13
+    },
+    {
+      "file": "src/preflight/aws_rds.py",
+      "function": "RdsAdapter._enforce_live_inventory",
+      "line": 250,
+      "calls": 8
+    },
+    {
+      "file": "src/preflight/aws_rds.py",
+      "function": "RdsAdapter._enforce_live_inventory.<locals>.<genexpr>",
+      "line": 270,
+      "calls": 5
+    },
+    {
+      "file": "src/preflight/aws_rds.py",
+      "function": "RdsAdapter._engine_encryption",
+      "line": 350,
+      "calls": 56
+    },
+    {
+      "file": "src/preflight/aws_rds.py",
+      "function": "RdsAdapter._identity",
+      "line": 304,
+      "calls": 84
+    },
+    {
+      "file": "src/preflight/aws_rds.py",
+      "function": "RdsAdapter._instance",
+      "line": 367,
+      "calls": 48
+    },
+    {
+      "file": "src/preflight/aws_rds.py",
+      "function": "RdsAdapter._intent",
+      "line": 330,
+      "calls": 79
+    },
+    {
+      "file": "src/preflight/aws_rds.py",
+      "function": "RdsAdapter._observation",
+      "line": 385,
+      "calls": 40
+    },
+    {
+      "file": "src/preflight/aws_rds.py",
+      "function": "RdsAdapter._owned",
+      "line": 325,
+      "calls": 15
+    },
+    {
+      "file": "src/preflight/aws_rds.py",
+      "function": "RdsAdapter._owned.<locals>.<genexpr>",
+      "line": 327,
+      "calls": 73
+    },
+    {
+      "file": "src/preflight/aws_rds.py",
+      "function": "RdsAdapter._resource_registry",
+      "line": 121,
+      "calls": 15
+    },
+    {
+      "file": "src/preflight/aws_rds.py",
+      "function": "RdsAdapter._snapshot",
+      "line": 440,
+      "calls": 26
+    },
+    {
+      "file": "src/preflight/aws_rds.py",
+      "function": "RdsAdapter._tags",
+      "line": 317,
+      "calls": 51
+    },
+    {
+      "file": "src/preflight/aws_rds.py",
+      "function": "RdsAdapter.cleanup",
+      "line": 595,
+      "calls": 15
+    },
+    {
+      "file": "src/preflight/aws_rds.py",
+      "function": "RdsAdapter.cleanup.<locals>.<genexpr>",
+      "line": 656,
+      "calls": 9
+    },
+    {
+      "file": "src/preflight/aws_rds.py",
+      "function": "RdsAdapter.ensure_clone",
+      "line": 525,
+      "calls": 4
+    },
+    {
+      "file": "src/preflight/aws_rds.py",
+      "function": "RdsAdapter.ensure_snapshot",
+      "line": 497,
+      "calls": 9
+    },
+    {
+      "file": "src/preflight/aws_rds.py",
+      "function": "RdsAdapter.inspect_clone",
+      "line": 461,
+      "calls": 12
+    },
+    {
+      "file": "src/preflight/aws_rds.py",
+      "function": "RdsAdapter.inspect_snapshot",
+      "line": 454,
+      "calls": 19
+    },
+    {
+      "file": "src/preflight/aws_rds.py",
+      "function": "RdsAdapter.inspect_source",
+      "line": 423,
+      "calls": 36
+    },
+    {
+      "file": "src/preflight/aws_rds.py",
+      "function": "RdsAdapter.observe_cleanup",
+      "line": 684,
+      "calls": 4
+    },
+    {
+      "file": "src/preflight/aws_rds.py",
+      "function": "RdsAdapter.owned_resource_inventory",
+      "line": 138,
+      "calls": 12
+    },
+    {
+      "file": "src/preflight/aws_rds.py",
+      "function": "RdsAdapter.owned_resource_inventory.<locals>.<genexpr>",
+      "line": 219,
+      "calls": 15
+    },
+    {
+      "file": "src/preflight/aws_rds.py",
+      "function": "RdsAdapter.owned_resource_inventory.<locals>.<genexpr>",
+      "line": 238,
+      "calls": 30
+    },
+    {
+      "file": "src/preflight/aws_rds.py",
+      "function": "RdsAdapter.owned_resource_inventory.<locals>.<lambda>",
+      "line": 237,
+      "calls": 6
+    },
+    {
+      "file": "src/preflight/aws_rds.py",
+      "function": "RdsAdapter.verify_recovery_snapshot",
+      "line": 567,
+      "calls": 2
+    },
+    {
+      "file": "src/preflight/aws_rds.py",
+      "function": "ResourceObservation",
+      "line": 67,
+      "calls": 1
+    },
+    {
+      "file": "src/preflight/aws_rds.py",
+      "function": "valid_id",
+      "line": 59,
+      "calls": 218
+    },
+    {
+      "file": "src/preflight/config.py",
+      "function": "<module>",
+      "line": 1,
+      "calls": 1
+    },
+    {
+      "file": "src/preflight/config.py",
+      "function": "Settings",
+      "line": 13,
+      "calls": 1
+    },
+    {
+      "file": "src/preflight/config.py",
+      "function": "Settings.<lambda>",
+      "line": 22,
+      "calls": 4
+    },
+    {
+      "file": "src/preflight/config.py",
+      "function": "Settings.authorization_dependencies",
+      "line": 39,
+      "calls": 4
+    },
+    {
+      "file": "src/preflight/db.py",
+      "function": "<module>",
+      "line": 1,
+      "calls": 1
+    },
+    {
+      "file": "src/preflight/evidence.py",
+      "function": "<module>",
+      "line": 1,
+      "calls": 1
+    },
+    {
+      "file": "src/preflight/evidence.py",
+      "function": "EvidenceBundle",
+      "line": 57,
+      "calls": 1
+    },
+    {
+      "file": "src/preflight/evidence.py",
+      "function": "EvidenceBundle.__init__",
+      "line": 62,
+      "calls": 1
+    },
+    {
+      "file": "src/preflight/evidence.py",
+      "function": "EvidenceBundle.__repr__",
+      "line": 67,
+      "calls": 1
+    },
+    {
+      "file": "src/preflight/evidence.py",
+      "function": "_digest",
+      "line": 42,
+      "calls": 6
+    },
+    {
+      "file": "src/preflight/evidence.py",
+      "function": "_root",
+      "line": 51,
+      "calls": 2
+    },
+    {
+      "file": "src/preflight/evidence.py",
+      "function": "_root.<locals>.<genexpr>",
+      "line": 53,
+      "calls": 10
+    },
+    {
+      "file": "src/preflight/evidence.py",
+      "function": "canonical",
+      "line": 24,
+      "calls": 9
+    },
+    {
+      "file": "src/preflight/evidence.py",
+      "function": "typed_value",
+      "line": 30,
+      "calls": 18
+    },
+    {
+      "file": "src/preflight/jobs.py",
+      "function": "<module>",
+      "line": 1,
+      "calls": 1
+    },
+    {
+      "file": "src/preflight/jobs.py",
+      "function": "JobStore",
+      "line": 50,
+      "calls": 1
+    },
+    {
+      "file": "src/preflight/jobs.py",
+      "function": "JobStore.__init__",
+      "line": 57,
+      "calls": 94
+    },
+    {
+      "file": "src/preflight/jobs.py",
+      "function": "JobStore._db",
+      "line": 79,
+      "calls": 1032
+    },
+    {
+      "file": "src/preflight/jobs.py",
+      "function": "JobStore.enqueue",
+      "line": 90,
+      "calls": 60
+    },
+    {
+      "file": "src/preflight/jobs.py",
+      "function": "JobStore.get",
+      "line": 138,
+      "calls": 188
+    },
+    {
+      "file": "src/preflight/jobs.py",
+      "function": "JobStore.mutation_lease",
+      "line": 186,
+      "calls": 65
+    },
+    {
+      "file": "src/preflight/jobs.py",
+      "function": "JobStore.release_reservation",
+      "line": 168,
+      "calls": 4
+    },
+    {
+      "file": "src/preflight/jobs.py",
+      "function": "JobStore.require_reservation",
+      "line": 155,
+      "calls": 79
+    },
+    {
+      "file": "src/preflight/jobs.py",
+      "function": "JobStore.resource_registry",
+      "line": 145,
+      "calls": 16
+    },
+    {
+      "file": "src/preflight/jobs.py",
+      "function": "JobStore.update",
+      "line": 204,
+      "calls": 11
+    },
+    {
+      "file": "src/preflight/jobs.py",
+      "function": "ResourceIntent",
+      "line": 27,
+      "calls": 1
+    },
+    {
+      "file": "src/preflight/jobs.py",
+      "function": "ResourceIntent.for_run",
+      "line": 35,
+      "calls": 136
+    },
+    {
+      "file": "src/preflight/jobs.py",
+      "function": "ResourceIntent.tags",
+      "line": 41,
+      "calls": 48
+    },
+    {
+      "file": "src/preflight/jobs.py",
+      "function": "_tick_job",
+      "line": 246,
+      "calls": 9
+    },
+    {
+      "file": "src/preflight/jobs.py",
+      "function": "tick_job",
+      "line": 234,
+      "calls": 9
+    },
+    {
+      "file": "src/preflight/models.py",
+      "function": "<module>",
+      "line": 1,
+      "calls": 1
+    },
+    {
+      "file": "src/preflight/models.py",
+      "function": "AddedColumn",
+      "line": 64,
+      "calls": 1
+    },
+    {
+      "file": "src/preflight/models.py",
+      "function": "ApplyClone",
+      "line": 177,
+      "calls": 1
+    },
+    {
+      "file": "src/preflight/models.py",
+      "function": "ApplyReceipt",
+      "line": 437,
+      "calls": 1
+    },
+    {
+      "file": "src/preflight/models.py",
+      "function": "ApplySource",
+      "line": 185,
+      "calls": 1
+    },
+    {
+      "file": "src/preflight/models.py",
+      "function": "BaselineResult",
+      "line": 412,
+      "calls": 1
+    },
+    {
+      "file": "src/preflight/models.py",
+      "function": "Candidate",
+      "line": 236,
+      "calls": 1
+    },
+    {
+      "file": "src/preflight/models.py",
+      "function": "CheckResult",
+      "line": 282,
+      "calls": 1
+    },
+    {
+      "file": "src/preflight/models.py",
+      "function": "CheckSet",
+      "line": 292,
+      "calls": 1
+    },
+    {
+      "file": "src/preflight/models.py",
+      "function": "CleanupActions",
+      "line": 450,
+      "calls": 1
+    },
+    {
+      "file": "src/preflight/models.py",
+      "function": "CleanupReceipt",
+      "line": 455,
+      "calls": 1
+    },
+    {
+      "file": "src/preflight/models.py",
+      "function": "CleanupRun",
+      "line": 191,
+      "calls": 1
+    },
+    {
+      "file": "src/preflight/models.py",
+      "function": "CloneResult",
+      "line": 418,
+      "calls": 1
+    },
+    {
+      "file": "src/preflight/models.py",
+      "function": "ColumnCheck",
+      "line": 80,
+      "calls": 1
+    },
+    {
+      "file": "src/preflight/models.py",
+      "function": "Contract",
+      "line": 123,
+      "calls": 1
+    },
+    {
+      "file": "src/preflight/models.py",
+      "function": "Contract.unique_tables",
+      "line": 131,
+      "calls": 31
+    },
+    {
+      "file": "src/preflight/models.py",
+      "function": "CoverageEntry",
+      "line": 263,
+      "calls": 1
+    },
+    {
+      "file": "src/preflight/models.py",
+      "function": "EqualCheck",
+      "line": 85,
+      "calls": 1
+    },
+    {
+      "file": "src/preflight/models.py",
+      "function": "ExpectedSchema",
+      "line": 70,
+      "calls": 1
+    },
+    {
+      "file": "src/preflight/models.py",
+      "function": "GetReport",
+      "line": 181,
+      "calls": 1
+    },
+    {
+      "file": "src/preflight/models.py",
+      "function": "GetSourceStatus",
+      "line": 170,
+      "calls": 1
+    },
+    {
+      "file": "src/preflight/models.py",
+      "function": "Phase",
+      "line": 19,
+      "calls": 1
+    },
+    {
+      "file": "src/preflight/models.py",
+      "function": "PreflightError",
+      "line": 352,
+      "calls": 1
+    },
+    {
+      "file": "src/preflight/models.py",
+      "function": "PreflightError.__init__",
+      "line": 355,
+      "calls": 120
+    },
+    {
+      "file": "src/preflight/models.py",
+      "function": "PublicEvidence",
+      "line": 314,
+      "calls": 1
+    },
+    {
+      "file": "src/preflight/models.py",
+      "function": "PublicTableEvidence",
+      "line": 305,
+      "calls": 1
+    },
+    {
+      "file": "src/preflight/models.py",
+      "function": "RegisterCandidate",
+      "line": 142,
+      "calls": 1
+    },
+    {
+      "file": "src/preflight/models.py",
+      "function": "RegistrationResult",
+      "line": 360,
+      "calls": 1
+    },
+    {
+      "file": "src/preflight/models.py",
+      "function": "ReportPayload",
+      "line": 319,
+      "calls": 1
+    },
+    {
+      "file": "src/preflight/models.py",
+      "function": "ReportResult",
+      "line": 432,
+      "calls": 1
+    },
+    {
+      "file": "src/preflight/models.py",
+      "function": "Request",
+      "line": 138,
+      "calls": 1
+    },
+    {
+      "file": "src/preflight/models.py",
+      "function": "Requirement",
+      "line": 272,
+      "calls": 1
+    },
+    {
+      "file": "src/preflight/models.py",
+      "function": "RowCountCheck",
+      "line": 76,
+      "calls": 1
+    },
+    {
+      "file": "src/preflight/models.py",
+      "function": "RunRequest",
+      "line": 166,
+      "calls": 1
+    },
+    {
+      "file": "src/preflight/models.py",
+      "function": "RunStatus",
+      "line": 381,
+      "calls": 1
+    },
+    {
+      "file": "src/preflight/models.py",
+      "function": "SealedReport",
+      "line": 347,
+      "calls": 1
+    },
+    {
+      "file": "src/preflight/models.py",
+      "function": "SourceStatusResult",
+      "line": 407,
+      "calls": 1
+    },
+    {
+      "file": "src/preflight/models.py",
+      "function": "SqlPlan",
+      "line": 255,
+      "calls": 1
+    },
+    {
+      "file": "src/preflight/models.py",
+      "function": "StartRehearsal",
+      "line": 160,
+      "calls": 1
+    },
+    {
+      "file": "src/preflight/models.py",
+      "function": "StartResult",
+      "line": 372,
+      "calls": 1
+    },
+    {
+      "file": "src/preflight/models.py",
+      "function": "StrictModel",
+      "line": 15,
+      "calls": 1
+    },
+    {
+      "file": "src/preflight/models.py",
+      "function": "TableContract",
+      "line": 102,
+      "calls": 1
+    },
+    {
+      "file": "src/preflight/models.py",
+      "function": "TableContract.valid_keys",
+      "line": 109,
+      "calls": 32
+    },
+    {
+      "file": "src/preflight/models.py",
+      "function": "ToolEnvelope",
+      "line": 226,
+      "calls": 1
+    },
+    {
+      "file": "src/preflight/models.py",
+      "function": "ToolErrorData",
+      "line": 219,
+      "calls": 1
+    },
+    {
+      "file": "src/preflight/models.py",
+      "function": "TxOutcome",
+      "line": 298,
+      "calls": 1
+    },
+    {
+      "file": "src/preflight/models.py",
+      "function": "TypeCheck",
+      "line": 91,
+      "calls": 1
+    },
+    {
+      "file": "src/preflight/models.py",
+      "function": "ValidationResult",
+      "line": 424,
+      "calls": 1
+    },
+    {
+      "file": "src/preflight/models.py",
+      "function": "WriteEntry",
+      "line": 248,
+      "calls": 1
+    },
+    {
+      "file": "src/preflight/offline.py",
+      "function": "<module>",
+      "line": 1,
+      "calls": 1
+    },
+    {
+      "file": "src/preflight/offline.py",
+      "function": "ReportVerificationError",
+      "line": 22,
+      "calls": 1
+    },
+    {
+      "file": "src/preflight/offline.py",
+      "function": "ReportVerificationError.__init__",
+      "line": 25,
+      "calls": 9
+    },
+    {
+      "file": "src/preflight/offline.py",
+      "function": "_fail",
+      "line": 30,
+      "calls": 8
+    },
+    {
+      "file": "src/preflight/offline.py",
+      "function": "_schema_versions",
+      "line": 34,
+      "calls": 12
+    },
+    {
+      "file": "src/preflight/offline.py",
+      "function": "_schema_versions.<locals>.<genexpr>",
+      "line": 42,
+      "calls": 46
+    },
+    {
+      "file": "src/preflight/offline.py",
+      "function": "_validate_manifest",
+      "line": 46,
+      "calls": 7
+    },
+    {
+      "file": "src/preflight/offline.py",
+      "function": "verify_report",
+      "line": 81,
+      "calls": 13
+    },
+    {
+      "file": "src/preflight/report.py",
+      "function": "<module>",
+      "line": 1,
+      "calls": 1
+    },
+    {
+      "file": "src/preflight/report.py",
+      "function": "_cell",
+      "line": 109,
+      "calls": 236
+    },
+    {
+      "file": "src/preflight/report.py",
+      "function": "_evidence_rows",
+      "line": 123,
+      "calls": 2
+    },
+    {
+      "file": "src/preflight/report.py",
+      "function": "_has_complete_evidence",
+      "line": 21,
+      "calls": 13
+    },
+    {
+      "file": "src/preflight/report.py",
+      "function": "_has_observable_evidence_failure",
+      "line": 31,
+      "calls": 18
+    },
+    {
+      "file": "src/preflight/report.py",
+      "function": "_has_observable_evidence_failure.<locals>.<genexpr>",
+      "line": 39,
+      "calls": 34
+    },
+    {
+      "file": "src/preflight/report.py",
+      "function": "_payload_bytes",
+      "line": 17,
+      "calls": 11
+    },
+    {
+      "file": "src/preflight/report.py",
+      "function": "_redact_credential_url",
+      "line": 100,
+      "calls": 2
+    },
+    {
+      "file": "src/preflight/report.py",
+      "function": "_redact_credential_url.<locals>.<genexpr>",
+      "line": 103,
+      "calls": 2
+    },
+    {
+      "file": "src/preflight/report.py",
+      "function": "_requirements_consistent",
+      "line": 46,
+      "calls": 22
+    },
+    {
+      "file": "src/preflight/report.py",
+      "function": "_requirements_consistent.<locals>.<genexpr>",
+      "line": 71,
+      "calls": 218
+    },
+    {
+      "file": "src/preflight/report.py",
+      "function": "recompute_report_verdict",
+      "line": 74,
+      "calls": 18
+    },
+    {
+      "file": "src/preflight/report.py",
+      "function": "render_report",
+      "line": 152,
+      "calls": 2
+    },
+    {
+      "file": "src/preflight/report.py",
+      "function": "seal_report",
+      "line": 89,
+      "calls": 15
+    },
+    {
+      "file": "src/preflight/runtime.py",
+      "function": "<module>",
+      "line": 1,
+      "calls": 1
+    },
+    {
+      "file": "src/preflight/runtime.py",
+      "function": "AwsRuntime",
+      "line": 12,
+      "calls": 1
+    },
+    {
+      "file": "src/preflight/runtime.py",
+      "function": "AwsRuntime.__init__",
+      "line": 13,
+      "calls": 1
+    },
+    {
+      "file": "src/preflight/runtime.py",
+      "function": "build_runtime",
+      "line": 207,
+      "calls": 1
+    },
+    {
+      "file": "src/preflight/service.py",
+      "function": "<module>",
+      "line": 1,
+      "calls": 1
+    },
+    {
+      "file": "src/preflight/service.py",
+      "function": "RehearsalService",
+      "line": 36,
+      "calls": 1
+    },
+    {
+      "file": "src/preflight/service.py",
+      "function": "RehearsalService.__init__",
+      "line": 37,
+      "calls": 3
+    },
+    {
+      "file": "src/preflight/service.py",
+      "function": "RehearsalService._source_guard",
+      "line": 241,
+      "calls": 1
+    },
+    {
+      "file": "src/preflight/service.py",
+      "function": "RehearsalService.call",
+      "line": 67,
+      "calls": 3
+    },
+    {
+      "file": "src/preflight/service.py",
+      "function": "RehearsalService.lock",
+      "line": 63,
+      "calls": 1
+    },
+    {
+      "file": "src/preflight/service.py",
+      "function": "RehearsalService.start_rehearsal",
+      "line": 217,
+      "calls": 1
+    },
+    {
+      "file": "src/preflight/service.py",
+      "function": "UnconfiguredRuntime",
+      "line": 29,
+      "calls": 1
+    },
+    {
+      "file": "src/preflight/sql_policy.py",
+      "function": "<module>",
+      "line": 1,
+      "calls": 1
+    },
+    {
+      "file": "src/preflight/sql_policy.py",
+      "function": "_deny",
+      "line": 12,
+      "calls": 26
+    },
+    {
+      "file": "src/preflight/sql_policy.py",
+      "function": "_expr",
+      "line": 28,
+      "calls": 16
+    },
+    {
+      "file": "src/preflight/sql_policy.py",
+      "function": "_expr.<locals>.<genexpr>",
+      "line": 50,
+      "calls": 3
+    },
+    {
+      "file": "src/preflight/sql_policy.py",
+      "function": "_fields",
+      "line": 16,
+      "calls": 77
+    },
+    {
+      "file": "src/preflight/sql_policy.py",
+      "function": "_name",
+      "line": 22,
+      "calls": 58
+    },
+    {
+      "file": "src/preflight/sql_policy.py",
+      "function": "inspect_sql",
+      "line": 70,
+      "calls": 30
+    },
+    {
+      "file": "src/preflight/sql_policy.py",
+      "function": "inspect_sql.<locals>.<genexpr>",
+      "line": 177,
+      "calls": 59
+    },
+    {
+      "file": "src/preflight/sql_policy.py",
+      "function": "resolve_coverage",
+      "line": 227,
+      "calls": 4
+    },
+    {
+      "file": "src/preflight/sql_policy.py",
+      "function": "resolve_coverage.<locals>.<genexpr>",
+      "line": 251,
+      "calls": 3
+    },
+    {
+      "file": "src/preflight/sql_policy.py",
+      "function": "resolve_coverage.<locals>.<genexpr>",
+      "line": 257,
+      "calls": 13
+    },
+    {
+      "file": "src/preflight/sql_policy.py",
+      "function": "resolve_coverage.<locals>.<genexpr>.<genexpr>",
+      "line": 252,
+      "calls": 8
+    },
+    {
+      "file": "src/preflight/storage.py",
+      "function": "<module>",
+      "line": 1,
+      "calls": 1
+    },
+    {
+      "file": "src/preflight/storage.py",
+      "function": "StateStore",
+      "line": 17,
+      "calls": 1
+    },
+    {
+      "file": "src/preflight/storage.py",
+      "function": "StateStore.__init__",
+      "line": 18,
+      "calls": 5
+    },
+    {
+      "file": "src/preflight/storage.py",
+      "function": "StateStore.begin_apply",
+      "line": 243,
+      "calls": 2
+    },
+    {
+      "file": "src/preflight/storage.py",
+      "function": "StateStore.claim_request",
+      "line": 222,
+      "calls": 5
+    },
+    {
+      "file": "src/preflight/storage.py",
+      "function": "StateStore.create_run",
+      "line": 117,
+      "calls": 4
+    },
+    {
+      "file": "src/preflight/storage.py",
+      "function": "StateStore.finish_request",
+      "line": 236,
+      "calls": 2
+    },
+    {
+      "file": "src/preflight/storage.py",
+      "function": "StateStore.get_run",
+      "line": 132,
+      "calls": 12
+    },
+    {
+      "file": "src/preflight/storage.py",
+      "function": "StateStore.list_runs",
+      "line": 143,
+      "calls": 4
+    },
+    {
+      "file": "src/preflight/storage.py",
+      "function": "StateStore.reconcile_restart",
+      "line": 307,
+      "calls": 3
+    },
+    {
+      "file": "src/preflight/storage.py",
+      "function": "StateStore.transaction",
+      "line": 39,
+      "calls": 90
+    },
+    {
+      "file": "src/preflight/storage.py",
+      "function": "StateStore.transition",
+      "line": 148,
+      "calls": 12
+    },
+    {
+      "file": "src/preflight/storage.py",
+      "function": "utc_now",
+      "line": 13,
+      "calls": 24
+    },
+    {
+      "file": "src/preflight/verdict.py",
+      "function": "<module>",
+      "line": 1,
+      "calls": 1
+    },
+    {
+      "file": "src/preflight/verdict.py",
+      "function": "evaluate",
+      "line": 27,
+      "calls": 24
+    },
+    {
+      "file": "src/preflight/verdict.py",
+      "function": "evaluate.<locals>.<genexpr>",
+      "line": 33,
+      "calls": 236
+    },
+    {
+      "file": "src/preflight/verdict.py",
+      "function": "evaluate.<locals>.<genexpr>",
+      "line": 44,
+      "calls": 180
+    },
+    {
+      "file": "src/preflight/verdict.py",
+      "function": "evaluate.<locals>.<genexpr>",
+      "line": 45,
+      "calls": 29
+    },
+    {
+      "file": "src/preflight/verdict.py",
+      "function": "invariant_requirements",
+      "line": 20,
+      "calls": 15
+    }
+  ],
+  "implementation_commit": "73780b4",
+  "command": "uv run --locked python -m pytest tests/unit tests/cloud -q -p audit_profile",
+  "actual_result": "172 passed in20.63s; profiling is limited to in-process selected Python calls; module/class bodies may appear."
+}

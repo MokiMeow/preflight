@@ -1,0 +1,4166 @@
+{
+  "kind": "STATIC_SCOPED_REVIEW_NOTES",
+  "symbols": [
+    {
+      "file": "src/preflight/db.py",
+      "name": "_validate_role",
+      "purpose": "Reject dangerous direct role flags and inherited server/RDS admin memberships; scope gap F03.",
+      "test_references": [
+        "Indirect integration coverage through parent API; standalone boundary proof absent"
+      ],
+      "audit_base": "dbc4c1a",
+      "reviewer_role": "db_engineer / gpt-6-sol high",
+      "limits": "Static audit notes; repairs and integrated test results supersede initial finding states."
+    },
+    {
+      "file": "src/preflight/db.py",
+      "name": "connect_database",
+      "purpose": "Verified TLS PG18 UTF8 fresh runtime connection with sanitized failures.",
+      "test_references": [
+        "tests/postgres/test_database.py::test_tls_hostname_ca_major_and_role"
+      ],
+      "audit_base": "dbc4c1a",
+      "reviewer_role": "db_engineer / gpt-6-sol high",
+      "limits": "Static audit notes; repairs and integrated test results supersede initial finding states."
+    },
+    {
+      "file": "src/preflight/db.py",
+      "name": "_validate_catalog",
+      "purpose": "Whitelist catalog execution capabilities and normalize schema; index semantic gap F01.",
+      "test_references": [
+        "Indirect integration coverage through parent API; standalone boundary proof absent"
+      ],
+      "audit_base": "dbc4c1a",
+      "reviewer_role": "db_engineer / gpt-6-sol high",
+      "limits": "Static audit notes; repairs and integrated test results supersede initial finding states."
+    },
+    {
+      "file": "src/preflight/db.py",
+      "name": "validate_catalog",
+      "purpose": "Sanitize unexpected inspection exceptions.",
+      "test_references": [
+        "tests/postgres/test_database.py::test_inherited_privilege_refused_without_superuser",
+        "tests/postgres/test_database.py::test_semantic_unsafe_objects",
+        "tests/postgres/test_database.py::test_trigger_and_inheritance_rejected"
+      ],
+      "audit_base": "dbc4c1a",
+      "reviewer_role": "db_engineer / gpt-6-sol high",
+      "limits": "Static audit notes; repairs and integrated test results supersede initial finding states."
+    },
+    {
+      "file": "src/preflight/db.py",
+      "name": "execute_migration",
+      "purpose": "Reparse exact bytes, transact exact script, bound deadlines and preserve unknown outcomes.",
+      "test_references": [
+        "tests/postgres/test_database.py::test_bad_rolls_back_complete_baseline",
+        "tests/postgres/test_database.py::test_good_commits_real_notnull",
+        "tests/postgres/test_database.py::test_wrong_data_committed_then_block",
+        "tests/postgres/test_database.py::test_source_precommit_wrong_data_rolls_back",
+        "tests/postgres/test_database.py::test_multiple_statement_failure_rolls_back_first",
+        "tests/postgres/test_database.py::test_unasserted_existing_column_and_explicit_control",
+        "tests/postgres/test_database.py::test_new_column_null_assertion",
+        "tests/postgres/test_database.py::test_zero_nulls_is_not_notnull",
+        "tests/postgres/test_database.py::test_lock_timeout_and_no_leak",
+        "tests/postgres/test_database.py::test_whole_deadline_precommit",
+        "tests/postgres/test_database.py::test_commit_response_loss_is_unknown_not_rollback",
+        "tests/postgres/test_database.py::test_connection_loss_before_commit_is_unknown",
+        "tests/postgres/test_database.py::test_legacy_missing_schema_is_incomplete",
+        "tests/postgres/test_database.py::test_whole_script_deadline_across_quick_updates",
+        "tests/postgres/test_database.py::test_separate_readonly_role_cannot_migrate",
+        "tests/postgres/test_database.py::test_exact_utf8_bytes_and_string_semantics",
+        "tests/postgres/test_database.py::test_non_utf8_session_rejected_before_execution"
+      ],
+      "audit_base": "dbc4c1a",
+      "reviewer_role": "db_engineer / gpt-6-sol high",
+      "limits": "Static audit notes; repairs and integrated test results supersede initial finding states."
+    },
+    {
+      "file": "src/preflight/db.py",
+      "name": "execute_migration.cancel",
+      "purpose": "Monotonic timer cancellation without claiming rollback.",
+      "test_references": [
+        "Indirect integration coverage through parent API; standalone boundary proof absent"
+      ],
+      "audit_base": "dbc4c1a",
+      "reviewer_role": "db_engineer / gpt-6-sol high",
+      "limits": "Static audit notes; repairs and integrated test results supersede initial finding states."
+    },
+    {
+      "file": "src/preflight/sql_policy.py",
+      "name": "_deny",
+      "purpose": "Stable grammar rejection.",
+      "test_references": [
+        "Indirect integration coverage through parent API; standalone boundary proof absent"
+      ],
+      "audit_base": "dbc4c1a",
+      "reviewer_role": "db_engineer / gpt-6-sol high",
+      "limits": "Static audit notes; repairs and integrated test results supersede initial finding states."
+    },
+    {
+      "file": "src/preflight/sql_policy.py",
+      "name": "_fields",
+      "purpose": "Reject populated AST fields not explicitly supported.",
+      "test_references": [
+        "Indirect integration coverage through parent API; standalone boundary proof absent"
+      ],
+      "audit_base": "dbc4c1a",
+      "reviewer_role": "db_engineer / gpt-6-sol high",
+      "limits": "Static audit notes; repairs and integrated test results supersede initial finding states."
+    },
+    {
+      "file": "src/preflight/sql_policy.py",
+      "name": "_name",
+      "purpose": "Validate AST identifiers.",
+      "test_references": [
+        "Indirect integration coverage through parent API; standalone boundary proof absent"
+      ],
+      "audit_base": "dbc4c1a",
+      "reviewer_role": "db_engineer / gpt-6-sol high",
+      "limits": "Static audit notes; repairs and integrated test results supersede initial finding states."
+    },
+    {
+      "file": "src/preflight/sql_policy.py",
+      "name": "_expr",
+      "purpose": "Recursive positive literal/reference/boolean/null-test/equality expression grammar.",
+      "test_references": [
+        "Indirect integration coverage through parent API; standalone boundary proof absent"
+      ],
+      "audit_base": "dbc4c1a",
+      "reviewer_role": "db_engineer / gpt-6-sol high",
+      "limits": "Static audit notes; repairs and integrated test results supersede initial finding states."
+    },
+    {
+      "file": "src/preflight/sql_policy.py",
+      "name": "inspect_sql",
+      "purpose": "Parse matched-major bounded bytes and derive deterministic read/write manifest.",
+      "test_references": [
+        "tests/postgres/test_database.py::test_bad_rolls_back_complete_baseline",
+        "tests/postgres/test_database.py::test_good_commits_real_notnull",
+        "tests/postgres/test_database.py::test_wrong_data_committed_then_block",
+        "tests/postgres/test_database.py::test_source_precommit_wrong_data_rolls_back",
+        "tests/postgres/test_database.py::test_multiple_statement_failure_rolls_back_first",
+        "tests/postgres/test_database.py::test_unasserted_existing_column_and_explicit_control",
+        "tests/postgres/test_database.py::test_new_column_null_assertion",
+        "tests/postgres/test_database.py::test_zero_nulls_is_not_notnull",
+        "tests/postgres/test_database.py::test_changed_keys_and_order_and_full_drift",
+        "tests/postgres/test_database.py::test_lock_timeout_and_no_leak",
+        "tests/postgres/test_database.py::test_whole_deadline_precommit",
+        "tests/postgres/test_database.py::test_commit_response_loss_is_unknown_not_rollback",
+        "tests/postgres/test_database.py::test_connection_loss_before_commit_is_unknown",
+        "tests/postgres/test_database.py::test_legacy_missing_schema_is_incomplete",
+        "tests/postgres/test_database.py::test_whole_script_deadline_across_quick_updates",
+        "tests/postgres/test_database.py::test_separate_readonly_role_cannot_migrate",
+        "tests/postgres/test_database.py::test_exact_utf8_bytes_and_string_semantics",
+        "tests/postgres/test_database.py::test_non_utf8_session_rejected_before_execution",
+        "tests/unit/test_sql_policy.py::test_recursive_rejection",
+        "tests/unit/test_sql_policy.py::test_comments_semicolons_and_protected_update",
+        "tests/unit/test_sql_policy.py::test_missing_value_assertion",
+        "tests/unit/test_sql_policy.py::test_unknown_metadata_column",
+        "tests/unit/test_sql_policy.py::test_good_write_set"
+      ],
+      "audit_base": "dbc4c1a",
+      "reviewer_role": "db_engineer / gpt-6-sol high",
+      "limits": "Static audit notes; repairs and integrated test results supersede initial finding states."
+    },
+    {
+      "file": "src/preflight/sql_policy.py",
+      "name": "resolve_coverage",
+      "purpose": "Resolve existing/new writes against preservation, intended value and schema expectations.",
+      "test_references": [
+        "tests/unit/test_sql_policy.py::test_comments_semicolons_and_protected_update",
+        "tests/unit/test_sql_policy.py::test_missing_value_assertion",
+        "tests/unit/test_sql_policy.py::test_unknown_metadata_column",
+        "tests/unit/test_sql_policy.py::test_good_write_set"
+      ],
+      "audit_base": "dbc4c1a",
+      "reviewer_role": "db_engineer / gpt-6-sol high",
+      "limits": "Static audit notes; repairs and integrated test results supersede initial finding states."
+    },
+    {
+      "file": "src/preflight/evidence.py",
+      "name": "canonical",
+      "purpose": "Stable compact typed JSON bytes.",
+      "test_references": [
+        "tests/unit/test_evidence.py::test_type_tags_are_distinct"
+      ],
+      "audit_base": "dbc4c1a",
+      "reviewer_role": "db_engineer / gpt-6-sol high",
+      "limits": "Static audit notes; repairs and integrated test results supersede initial finding states."
+    },
+    {
+      "file": "src/preflight/evidence.py",
+      "name": "typed_value",
+      "purpose": "Encode only NULL/integer/text/aware UTC timestamptz.",
+      "test_references": [
+        "tests/unit/test_evidence.py::test_type_tags_are_distinct",
+        "tests/unit/test_evidence.py::test_utc_microseconds",
+        "tests/unit/test_evidence.py::test_unsupported_no_stringification"
+      ],
+      "audit_base": "dbc4c1a",
+      "reviewer_role": "db_engineer / gpt-6-sol high",
+      "limits": "Static audit notes; repairs and integrated test results supersede initial finding states."
+    },
+    {
+      "file": "src/preflight/evidence.py",
+      "name": "_digest",
+      "purpose": "Versioned domain/length-separated SHA256.",
+      "test_references": [
+        "tests/unit/test_evidence.py::test_domain_length_and_order"
+      ],
+      "audit_base": "dbc4c1a",
+      "reviewer_role": "db_engineer / gpt-6-sol high",
+      "limits": "Static audit notes; repairs and integrated test results supersede initial finding states."
+    },
+    {
+      "file": "src/preflight/evidence.py",
+      "name": "_root",
+      "purpose": "Sort canonical PK bytes and hash ordered row roots.",
+      "test_references": [
+        "tests/unit/test_evidence.py::test_domain_length_and_order"
+      ],
+      "audit_base": "dbc4c1a",
+      "reviewer_role": "db_engineer / gpt-6-sol high",
+      "limits": "Static audit notes; repairs and integrated test results supersede initial finding states."
+    },
+    {
+      "file": "src/preflight/evidence.py",
+      "name": "EvidenceBundle",
+      "purpose": "Hold public summaries separately from deliberately nonserializable private maps.",
+      "test_references": [
+        "tests/unit/test_evidence.py::test_private_bundle_not_serializable"
+      ],
+      "audit_base": "dbc4c1a",
+      "reviewer_role": "db_engineer / gpt-6-sol high",
+      "limits": "Static audit notes; repairs and integrated test results supersede initial finding states."
+    },
+    {
+      "file": "src/preflight/evidence.py",
+      "name": "EvidenceBundle.__init__",
+      "purpose": "Initialize/represent EvidenceBundle",
+      "test_references": [
+        "Indirect integration coverage through parent API; standalone boundary proof absent"
+      ],
+      "audit_base": "dbc4c1a",
+      "reviewer_role": "db_engineer / gpt-6-sol high",
+      "limits": "Static audit notes; repairs and integrated test results supersede initial finding states."
+    },
+    {
+      "file": "src/preflight/evidence.py",
+      "name": "EvidenceBundle.__repr__",
+      "purpose": "Initialize/represent EvidenceBundle",
+      "test_references": [
+        "Indirect integration coverage through parent API; standalone boundary proof absent"
+      ],
+      "audit_base": "dbc4c1a",
+      "reviewer_role": "db_engineer / gpt-6-sol high",
+      "limits": "Static audit notes; repairs and integrated test results supersede initial finding states."
+    },
+    {
+      "file": "src/preflight/evidence.py",
+      "name": "_capture",
+      "purpose": "Validate catalog, enforce row/byte budgets and scan private full/protected/value maps.",
+      "test_references": [
+        "Indirect integration coverage through parent API; standalone boundary proof absent"
+      ],
+      "audit_base": "dbc4c1a",
+      "reviewer_role": "db_engineer / gpt-6-sol high",
+      "limits": "Static audit notes; repairs and integrated test results supersede initial finding states."
+    },
+    {
+      "file": "src/preflight/evidence.py",
+      "name": "capture_evidence",
+      "purpose": "Fresh RR read-only capture or explicit locked transaction reuse; active implicit transaction gap F02.",
+      "test_references": [
+        "tests/postgres/test_database.py::test_bad_rolls_back_complete_baseline",
+        "tests/postgres/test_database.py::test_good_commits_real_notnull",
+        "tests/postgres/test_database.py::test_wrong_data_committed_then_block",
+        "tests/postgres/test_database.py::test_source_precommit_wrong_data_rolls_back",
+        "tests/postgres/test_database.py::test_multiple_statement_failure_rolls_back_first",
+        "tests/postgres/test_database.py::test_unasserted_existing_column_and_explicit_control",
+        "tests/postgres/test_database.py::test_new_column_null_assertion",
+        "tests/postgres/test_database.py::test_zero_nulls_is_not_notnull",
+        "tests/postgres/test_database.py::test_changed_keys_and_order_and_full_drift",
+        "tests/postgres/test_database.py::test_scan_budget_and_huge_cell",
+        "tests/postgres/test_database.py::test_whole_deadline_precommit",
+        "tests/postgres/test_database.py::test_repeatable_read_snapshot_survives_concurrent_writer",
+        "tests/postgres/test_database.py::test_commit_response_loss_is_unknown_not_rollback",
+        "tests/postgres/test_database.py::test_connection_loss_before_commit_is_unknown",
+        "tests/postgres/test_database.py::test_legacy_missing_schema_is_incomplete",
+        "tests/postgres/test_database.py::test_whole_script_deadline_across_quick_updates",
+        "tests/postgres/test_database.py::test_separate_readonly_role_cannot_migrate",
+        "tests/postgres/test_seed_demo.py::test_fresh_fixture_roles_and_runtime_evidence"
+      ],
+      "audit_base": "dbc4c1a",
+      "reviewer_role": "db_engineer / gpt-6-sol high",
+      "limits": "Static audit notes; repairs and integrated test results supersede initial finding states."
+    },
+    {
+      "file": "src/preflight/evidence.py",
+      "name": "baseline_matches",
+      "purpose": "Compare full baseline roots/schema/count/column set.",
+      "test_references": [
+        "tests/postgres/test_database.py::test_bad_rolls_back_complete_baseline",
+        "tests/postgres/test_database.py::test_source_precommit_wrong_data_rolls_back",
+        "tests/postgres/test_database.py::test_multiple_statement_failure_rolls_back_first",
+        "tests/postgres/test_database.py::test_unasserted_existing_column_and_explicit_control",
+        "tests/postgres/test_database.py::test_changed_keys_and_order_and_full_drift",
+        "tests/postgres/test_database.py::test_whole_deadline_precommit",
+        "tests/postgres/test_database.py::test_repeatable_read_snapshot_survives_concurrent_writer",
+        "tests/postgres/test_database.py::test_connection_loss_before_commit_is_unknown",
+        "tests/postgres/test_database.py::test_whole_script_deadline_across_quick_updates",
+        "tests/postgres/test_database.py::test_separate_readonly_role_cannot_migrate"
+      ],
+      "audit_base": "dbc4c1a",
+      "reviewer_role": "db_engineer / gpt-6-sol high",
+      "limits": "Static audit notes; repairs and integrated test results supersede initial finding states."
+    },
+    {
+      "file": "src/preflight/evidence.py",
+      "name": "compare_evidence",
+      "purpose": "Compute required invariants and typed checks against private maps; missing row counts F04.",
+      "test_references": [
+        "tests/postgres/test_database.py::test_good_commits_real_notnull",
+        "tests/postgres/test_database.py::test_wrong_data_committed_then_block",
+        "tests/postgres/test_database.py::test_source_precommit_wrong_data_rolls_back",
+        "tests/postgres/test_database.py::test_unasserted_existing_column_and_explicit_control",
+        "tests/postgres/test_database.py::test_new_column_null_assertion",
+        "tests/postgres/test_database.py::test_zero_nulls_is_not_notnull",
+        "tests/postgres/test_database.py::test_changed_keys_and_order_and_full_drift",
+        "tests/postgres/test_database.py::test_legacy_missing_schema_is_incomplete"
+      ],
+      "audit_base": "dbc4c1a",
+      "reviewer_role": "db_engineer / gpt-6-sol high",
+      "limits": "Static audit notes; repairs and integrated test results supersede initial finding states."
+    },
+    {
+      "file": "src/preflight/evidence.py",
+      "name": "compare_evidence.record",
+      "purpose": "Create paired frozen requirement and safe result IDs.",
+      "test_references": [
+        "Indirect integration coverage through parent API; standalone boundary proof absent"
+      ],
+      "audit_base": "dbc4c1a",
+      "reviewer_role": "db_engineer / gpt-6-sol high",
+      "limits": "Static audit notes; repairs and integrated test results supersede initial finding states."
+    },
+    {
+      "file": "fixtures/local_pg.py",
+      "name": "main",
+      "purpose": "Explicit executable setup CLI; offline planning and guarded apply or disposable loopback PG bootstrap.",
+      "test_references": [
+        "tests/postgres/test_seed_demo.py::test_offline_cli_never_connects_or_fetches",
+        "tests/postgres/test_seed_demo.py::test_attempt_intent_blocks_cli_replay"
+      ],
+      "audit_base": "dbc4c1a",
+      "reviewer_role": "db_engineer / gpt-6-sol high",
+      "limits": "Static audit notes; repairs and integrated test results supersede initial finding states."
+    },
+    {
+      "file": "fixtures/seed_demo.py",
+      "name": "SeedPlan",
+      "purpose": "Strict metadata-only fixed fresh-seed plan.",
+      "test_references": [
+        "Indirect integration coverage through parent API; standalone boundary proof absent"
+      ],
+      "audit_base": "dbc4c1a",
+      "reviewer_role": "db_engineer / gpt-6-sol high",
+      "limits": "Static audit notes; repairs and integrated test results supersede initial finding states."
+    },
+    {
+      "file": "fixtures/seed_demo.py",
+      "name": "SeedApproval",
+      "purpose": "Strict independently bound explicit source seed approval.",
+      "test_references": [
+        "Indirect integration coverage through parent API; standalone boundary proof absent"
+      ],
+      "audit_base": "dbc4c1a",
+      "reviewer_role": "db_engineer / gpt-6-sol high",
+      "limits": "Static audit notes; repairs and integrated test results supersede initial finding states."
+    },
+    {
+      "file": "fixtures/seed_demo.py",
+      "name": "_check_refs",
+      "purpose": "Scope distinct secret references to planned account/region.",
+      "test_references": [
+        "Indirect integration coverage through parent API; standalone boundary proof absent"
+      ],
+      "audit_base": "dbc4c1a",
+      "reviewer_role": "db_engineer / gpt-6-sol high",
+      "limits": "Static audit notes; repairs and integrated test results supersede initial finding states."
+    },
+    {
+      "file": "fixtures/seed_demo.py",
+      "name": "build_plan",
+      "purpose": "Offline allowlist-bound plan with seed authorization independent of creation.",
+      "test_references": [
+        "tests/postgres/test_seed_demo.py::test_planning_and_approval_separate_from_cloud_creation",
+        "tests/postgres/test_seed_demo.py::test_changed_approval_and_unallowlisted_secret_block",
+        "tests/postgres/test_seed_demo.py::test_connected_unauthorized_stops_before_aws"
+      ],
+      "audit_base": "dbc4c1a",
+      "reviewer_role": "db_engineer / gpt-6-sol high",
+      "limits": "Static audit notes; repairs and integrated test results supersede initial finding states."
+    },
+    {
+      "file": "fixtures/seed_demo.py",
+      "name": "plan_envelope",
+      "purpose": "Canonical plan digest.",
+      "test_references": [
+        "Indirect integration coverage through parent API; standalone boundary proof absent"
+      ],
+      "audit_base": "dbc4c1a",
+      "reviewer_role": "db_engineer / gpt-6-sol high",
+      "limits": "Static audit notes; repairs and integrated test results supersede initial finding states."
+    },
+    {
+      "file": "fixtures/seed_demo.py",
+      "name": "approve_plan",
+      "purpose": "Validate exact approval/hash/current operator inputs.",
+      "test_references": [
+        "tests/postgres/test_seed_demo.py::test_planning_and_approval_separate_from_cloud_creation",
+        "tests/postgres/test_seed_demo.py::test_changed_approval_and_unallowlisted_secret_block"
+      ],
+      "audit_base": "dbc4c1a",
+      "reviewer_role": "db_engineer / gpt-6-sol high",
+      "limits": "Static audit notes; repairs and integrated test results supersede initial finding states."
+    },
+    {
+      "file": "fixtures/seed_demo.py",
+      "name": "_narrow_role",
+      "purpose": "Reject broad bootstrap-adopted roles including ownership/CREATE/memberships/default ACLs.",
+      "test_references": [
+        "Indirect integration coverage through parent API; standalone boundary proof absent"
+      ],
+      "audit_base": "dbc4c1a",
+      "reviewer_role": "db_engineer / gpt-6-sol high",
+      "limits": "Static audit notes; repairs and integrated test results supersede initial finding states."
+    },
+    {
+      "file": "fixtures/seed_demo.py",
+      "name": "seed_fresh",
+      "purpose": "Transactional fresh-only synthetic initialization and narrow table owner/read roles.",
+      "test_references": [
+        "tests/postgres/test_seed_demo.py::test_ordinary_bootstrap_admin_provisions_narrow_roles",
+        "tests/postgres/test_seed_demo.py::test_precommit_error_rolls_back_table_and_new_roles",
+        "tests/postgres/test_seed_demo.py::test_commit_response_loss_is_honest_unknown"
+      ],
+      "audit_base": "dbc4c1a",
+      "reviewer_role": "db_engineer / gpt-6-sol high",
+      "limits": "Static audit notes; repairs and integrated test results supersede initial finding states."
+    },
+    {
+      "file": "fixtures/seed_demo.py",
+      "name": "apply_connected",
+      "purpose": "Owned private RDS/secret identity checks then separate admin bootstrap connection.",
+      "test_references": [
+        "tests/postgres/test_seed_demo.py::test_connected_unauthorized_stops_before_aws",
+        "tests/postgres/test_seed_demo.py::test_connected_identity_guards_before_secret_fetch"
+      ],
+      "audit_base": "dbc4c1a",
+      "reviewer_role": "db_engineer / gpt-6-sol high",
+      "limits": "Static audit notes; repairs and integrated test results supersede initial finding states."
+    },
+    {
+      "file": "fixtures/seed_demo.py",
+      "name": "apply_connected.probe_role",
+      "purpose": "Verify actual runtime login without exposing secret.",
+      "test_references": [
+        "Indirect integration coverage through parent API; standalone boundary proof absent"
+      ],
+      "audit_base": "dbc4c1a",
+      "reviewer_role": "db_engineer / gpt-6-sol high",
+      "limits": "Static audit notes; repairs and integrated test results supersede initial finding states."
+    },
+    {
+      "file": "fixtures/seed_demo.py",
+      "name": "_write_once",
+      "purpose": "Exclusive/fsynced intent/receipt publication.",
+      "test_references": [
+        "tests/postgres/test_seed_demo.py::test_intent_is_fsynced_and_never_replaced"
+      ],
+      "audit_base": "dbc4c1a",
+      "reviewer_role": "db_engineer / gpt-6-sol high",
+      "limits": "Static audit notes; repairs and integrated test results supersede initial finding states."
+    },
+    {
+      "file": "fixtures/seed_demo.py",
+      "name": "_intent_path",
+      "purpose": "Stable one-source bootstrap intent preventing automatic retry.",
+      "test_references": [
+        "Indirect integration coverage through parent API; standalone boundary proof absent"
+      ],
+      "audit_base": "dbc4c1a",
+      "reviewer_role": "db_engineer / gpt-6-sol high",
+      "limits": "Static audit notes; repairs and integrated test results supersede initial finding states."
+    },
+    {
+      "file": "fixtures/seed_demo.py",
+      "name": "main",
+      "purpose": "Explicit executable setup CLI; offline planning and guarded apply or disposable loopback PG bootstrap.",
+      "test_references": [
+        "tests/postgres/test_seed_demo.py::test_offline_cli_never_connects_or_fetches",
+        "tests/postgres/test_seed_demo.py::test_attempt_intent_blocks_cli_replay"
+      ],
+      "audit_base": "dbc4c1a",
+      "reviewer_role": "db_engineer / gpt-6-sol high",
+      "limits": "Static audit notes; repairs and integrated test results supersede initial finding states."
+    },
+    {
+      "file": "tests/postgres/conftest.py",
+      "name": "contract",
+      "purpose": "Supporting fixture/proxy/helper for contract",
+      "test_references": [
+        "Consumed by tests in same file; no standalone execution claim"
+      ],
+      "audit_base": "dbc4c1a",
+      "reviewer_role": "db_engineer / gpt-6-sol high",
+      "limits": "Static audit notes; repairs and integrated test results supersede initial finding states."
+    },
+    {
+      "file": "tests/postgres/conftest.py",
+      "name": "db",
+      "purpose": "Supporting fixture/proxy/helper for db",
+      "test_references": [
+        "Consumed by tests in same file; no standalone execution claim"
+      ],
+      "audit_base": "dbc4c1a",
+      "reviewer_role": "db_engineer / gpt-6-sol high",
+      "limits": "Static audit notes; repairs and integrated test results supersede initial finding states."
+    },
+    {
+      "file": "tests/postgres/test_database.py",
+      "name": "test_inherited_privilege_refused_without_superuser",
+      "purpose": "Assert inherited privilege refused without superuser",
+      "test_references": [
+        "tests/postgres/test_database.py::test_inherited_privilege_refused_without_superuser"
+      ],
+      "audit_base": "dbc4c1a",
+      "reviewer_role": "db_engineer / gpt-6-sol high",
+      "limits": "Static audit notes; repairs and integrated test results supersede initial finding states."
+    },
+    {
+      "file": "tests/postgres/test_database.py",
+      "name": "statuses",
+      "purpose": "Supporting fixture/proxy/helper for statuses",
+      "test_references": [
+        "Consumed by tests in same file; no standalone execution claim"
+      ],
+      "audit_base": "dbc4c1a",
+      "reviewer_role": "db_engineer / gpt-6-sol high",
+      "limits": "Static audit notes; repairs and integrated test results supersede initial finding states."
+    },
+    {
+      "file": "tests/postgres/test_database.py",
+      "name": "script",
+      "purpose": "Supporting fixture/proxy/helper for script",
+      "test_references": [
+        "Consumed by tests in same file; no standalone execution claim"
+      ],
+      "audit_base": "dbc4c1a",
+      "reviewer_role": "db_engineer / gpt-6-sol high",
+      "limits": "Static audit notes; repairs and integrated test results supersede initial finding states."
+    },
+    {
+      "file": "tests/postgres/test_database.py",
+      "name": "test_bad_rolls_back_complete_baseline",
+      "purpose": "Assert bad rolls back complete baseline",
+      "test_references": [
+        "tests/postgres/test_database.py::test_bad_rolls_back_complete_baseline"
+      ],
+      "audit_base": "dbc4c1a",
+      "reviewer_role": "db_engineer / gpt-6-sol high",
+      "limits": "Static audit notes; repairs and integrated test results supersede initial finding states."
+    },
+    {
+      "file": "tests/postgres/test_database.py",
+      "name": "test_good_commits_real_notnull",
+      "purpose": "Assert good commits real notnull",
+      "test_references": [
+        "tests/postgres/test_database.py::test_good_commits_real_notnull"
+      ],
+      "audit_base": "dbc4c1a",
+      "reviewer_role": "db_engineer / gpt-6-sol high",
+      "limits": "Static audit notes; repairs and integrated test results supersede initial finding states."
+    },
+    {
+      "file": "tests/postgres/test_database.py",
+      "name": "test_wrong_data_committed_then_block",
+      "purpose": "Assert wrong data committed then block",
+      "test_references": [
+        "tests/postgres/test_database.py::test_wrong_data_committed_then_block"
+      ],
+      "audit_base": "dbc4c1a",
+      "reviewer_role": "db_engineer / gpt-6-sol high",
+      "limits": "Static audit notes; repairs and integrated test results supersede initial finding states."
+    },
+    {
+      "file": "tests/postgres/test_database.py",
+      "name": "test_source_precommit_wrong_data_rolls_back",
+      "purpose": "Assert source precommit wrong data rolls back",
+      "test_references": [
+        "tests/postgres/test_database.py::test_source_precommit_wrong_data_rolls_back"
+      ],
+      "audit_base": "dbc4c1a",
+      "reviewer_role": "db_engineer / gpt-6-sol high",
+      "limits": "Static audit notes; repairs and integrated test results supersede initial finding states."
+    },
+    {
+      "file": "tests/postgres/test_database.py",
+      "name": "test_source_precommit_wrong_data_rolls_back.check",
+      "purpose": "Supporting fixture/proxy/helper for test source precommit wrong data rolls back",
+      "test_references": [
+        "tests/postgres/test_database.py::test_source_precommit_wrong_data_rolls_back"
+      ],
+      "audit_base": "dbc4c1a",
+      "reviewer_role": "db_engineer / gpt-6-sol high",
+      "limits": "Static audit notes; repairs and integrated test results supersede initial finding states."
+    },
+    {
+      "file": "tests/postgres/test_database.py",
+      "name": "test_multiple_statement_failure_rolls_back_first",
+      "purpose": "Assert multiple statement failure rolls back first",
+      "test_references": [
+        "tests/postgres/test_database.py::test_multiple_statement_failure_rolls_back_first"
+      ],
+      "audit_base": "dbc4c1a",
+      "reviewer_role": "db_engineer / gpt-6-sol high",
+      "limits": "Static audit notes; repairs and integrated test results supersede initial finding states."
+    },
+    {
+      "file": "tests/postgres/test_database.py",
+      "name": "test_unasserted_existing_column_and_explicit_control",
+      "purpose": "Assert unasserted existing column and explicit control",
+      "test_references": [
+        "tests/postgres/test_database.py::test_unasserted_existing_column_and_explicit_control"
+      ],
+      "audit_base": "dbc4c1a",
+      "reviewer_role": "db_engineer / gpt-6-sol high",
+      "limits": "Static audit notes; repairs and integrated test results supersede initial finding states."
+    },
+    {
+      "file": "tests/postgres/test_database.py",
+      "name": "test_new_column_null_assertion",
+      "purpose": "Assert new column null assertion",
+      "test_references": [
+        "tests/postgres/test_database.py::test_new_column_null_assertion"
+      ],
+      "audit_base": "dbc4c1a",
+      "reviewer_role": "db_engineer / gpt-6-sol high",
+      "limits": "Static audit notes; repairs and integrated test results supersede initial finding states."
+    },
+    {
+      "file": "tests/postgres/test_database.py",
+      "name": "test_zero_nulls_is_not_notnull",
+      "purpose": "Assert zero nulls is not notnull",
+      "test_references": [
+        "tests/postgres/test_database.py::test_zero_nulls_is_not_notnull"
+      ],
+      "audit_base": "dbc4c1a",
+      "reviewer_role": "db_engineer / gpt-6-sol high",
+      "limits": "Static audit notes; repairs and integrated test results supersede initial finding states."
+    },
+    {
+      "file": "tests/postgres/test_database.py",
+      "name": "test_semantic_unsafe_objects",
+      "purpose": "Assert semantic unsafe objects",
+      "test_references": [
+        "tests/postgres/test_database.py::test_semantic_unsafe_objects"
+      ],
+      "audit_base": "dbc4c1a",
+      "reviewer_role": "db_engineer / gpt-6-sol high",
+      "limits": "Static audit notes; repairs and integrated test results supersede initial finding states."
+    },
+    {
+      "file": "tests/postgres/test_database.py",
+      "name": "test_changed_keys_and_order_and_full_drift",
+      "purpose": "Assert changed keys and order and full drift",
+      "test_references": [
+        "tests/postgres/test_database.py::test_changed_keys_and_order_and_full_drift"
+      ],
+      "audit_base": "dbc4c1a",
+      "reviewer_role": "db_engineer / gpt-6-sol high",
+      "limits": "Static audit notes; repairs and integrated test results supersede initial finding states."
+    },
+    {
+      "file": "tests/postgres/test_database.py",
+      "name": "test_scan_budget_and_huge_cell",
+      "purpose": "Assert scan budget and huge cell",
+      "test_references": [
+        "tests/postgres/test_database.py::test_scan_budget_and_huge_cell"
+      ],
+      "audit_base": "dbc4c1a",
+      "reviewer_role": "db_engineer / gpt-6-sol high",
+      "limits": "Static audit notes; repairs and integrated test results supersede initial finding states."
+    },
+    {
+      "file": "tests/postgres/test_database.py",
+      "name": "test_lock_timeout_and_no_leak",
+      "purpose": "Assert lock timeout and no leak",
+      "test_references": [
+        "tests/postgres/test_database.py::test_lock_timeout_and_no_leak"
+      ],
+      "audit_base": "dbc4c1a",
+      "reviewer_role": "db_engineer / gpt-6-sol high",
+      "limits": "Static audit notes; repairs and integrated test results supersede initial finding states."
+    },
+    {
+      "file": "tests/postgres/test_database.py",
+      "name": "test_whole_deadline_precommit",
+      "purpose": "Assert whole deadline precommit",
+      "test_references": [
+        "tests/postgres/test_database.py::test_whole_deadline_precommit"
+      ],
+      "audit_base": "dbc4c1a",
+      "reviewer_role": "db_engineer / gpt-6-sol high",
+      "limits": "Static audit notes; repairs and integrated test results supersede initial finding states."
+    },
+    {
+      "file": "tests/postgres/test_database.py",
+      "name": "test_whole_deadline_precommit.slow",
+      "purpose": "Supporting fixture/proxy/helper for test whole deadline precommit",
+      "test_references": [
+        "tests/postgres/test_database.py::test_whole_deadline_precommit"
+      ],
+      "audit_base": "dbc4c1a",
+      "reviewer_role": "db_engineer / gpt-6-sol high",
+      "limits": "Static audit notes; repairs and integrated test results supersede initial finding states."
+    },
+    {
+      "file": "tests/postgres/test_database.py",
+      "name": "test_tls_hostname_ca_major_and_role",
+      "purpose": "Assert tls hostname ca major and role",
+      "test_references": [
+        "tests/postgres/test_database.py::test_tls_hostname_ca_major_and_role"
+      ],
+      "audit_base": "dbc4c1a",
+      "reviewer_role": "db_engineer / gpt-6-sol high",
+      "limits": "Static audit notes; repairs and integrated test results supersede initial finding states."
+    },
+    {
+      "file": "tests/postgres/test_database.py",
+      "name": "test_tls_hostname_ca_major_and_role.connect",
+      "purpose": "Supporting fixture/proxy/helper for test tls hostname ca major and role",
+      "test_references": [
+        "tests/postgres/test_database.py::test_tls_hostname_ca_major_and_role"
+      ],
+      "audit_base": "dbc4c1a",
+      "reviewer_role": "db_engineer / gpt-6-sol high",
+      "limits": "Static audit notes; repairs and integrated test results supersede initial finding states."
+    },
+    {
+      "file": "tests/postgres/test_database.py",
+      "name": "test_repeatable_read_snapshot_survives_concurrent_writer",
+      "purpose": "Assert repeatable read snapshot survives concurrent writer",
+      "test_references": [
+        "tests/postgres/test_database.py::test_repeatable_read_snapshot_survives_concurrent_writer"
+      ],
+      "audit_base": "dbc4c1a",
+      "reviewer_role": "db_engineer / gpt-6-sol high",
+      "limits": "Static audit notes; repairs and integrated test results supersede initial finding states."
+    },
+    {
+      "file": "tests/postgres/test_database.py",
+      "name": "test_repeatable_read_snapshot_survives_concurrent_writer.metadata_then_write",
+      "purpose": "Supporting fixture/proxy/helper for test repeatable read snapshot survives concurrent writer",
+      "test_references": [
+        "tests/postgres/test_database.py::test_repeatable_read_snapshot_survives_concurrent_writer"
+      ],
+      "audit_base": "dbc4c1a",
+      "reviewer_role": "db_engineer / gpt-6-sol high",
+      "limits": "Static audit notes; repairs and integrated test results supersede initial finding states."
+    },
+    {
+      "file": "tests/postgres/test_database.py",
+      "name": "test_commit_response_loss_is_unknown_not_rollback",
+      "purpose": "Assert commit response loss is unknown not rollback",
+      "test_references": [
+        "tests/postgres/test_database.py::test_commit_response_loss_is_unknown_not_rollback"
+      ],
+      "audit_base": "dbc4c1a",
+      "reviewer_role": "db_engineer / gpt-6-sol high",
+      "limits": "Static audit notes; repairs and integrated test results supersede initial finding states."
+    },
+    {
+      "file": "tests/postgres/test_database.py",
+      "name": "test_commit_response_loss_is_unknown_not_rollback.LostCommitCursor",
+      "purpose": "Supporting fixture/proxy/helper for test commit response loss is unknown not rollback",
+      "test_references": [
+        "tests/postgres/test_database.py::test_commit_response_loss_is_unknown_not_rollback"
+      ],
+      "audit_base": "dbc4c1a",
+      "reviewer_role": "db_engineer / gpt-6-sol high",
+      "limits": "Static audit notes; repairs and integrated test results supersede initial finding states."
+    },
+    {
+      "file": "tests/postgres/test_database.py",
+      "name": "test_commit_response_loss_is_unknown_not_rollback.LostCommitCursor.__init__",
+      "purpose": "Supporting fixture/proxy/helper for test commit response loss is unknown not rollback",
+      "test_references": [
+        "tests/postgres/test_database.py::test_commit_response_loss_is_unknown_not_rollback"
+      ],
+      "audit_base": "dbc4c1a",
+      "reviewer_role": "db_engineer / gpt-6-sol high",
+      "limits": "Static audit notes; repairs and integrated test results supersede initial finding states."
+    },
+    {
+      "file": "tests/postgres/test_database.py",
+      "name": "test_commit_response_loss_is_unknown_not_rollback.LostCommitCursor.__enter__",
+      "purpose": "Supporting fixture/proxy/helper for test commit response loss is unknown not rollback",
+      "test_references": [
+        "tests/postgres/test_database.py::test_commit_response_loss_is_unknown_not_rollback"
+      ],
+      "audit_base": "dbc4c1a",
+      "reviewer_role": "db_engineer / gpt-6-sol high",
+      "limits": "Static audit notes; repairs and integrated test results supersede initial finding states."
+    },
+    {
+      "file": "tests/postgres/test_database.py",
+      "name": "test_commit_response_loss_is_unknown_not_rollback.LostCommitCursor.__exit__",
+      "purpose": "Supporting fixture/proxy/helper for test commit response loss is unknown not rollback",
+      "test_references": [
+        "tests/postgres/test_database.py::test_commit_response_loss_is_unknown_not_rollback"
+      ],
+      "audit_base": "dbc4c1a",
+      "reviewer_role": "db_engineer / gpt-6-sol high",
+      "limits": "Static audit notes; repairs and integrated test results supersede initial finding states."
+    },
+    {
+      "file": "tests/postgres/test_database.py",
+      "name": "test_commit_response_loss_is_unknown_not_rollback.LostCommitCursor.__getattr__",
+      "purpose": "Supporting fixture/proxy/helper for test commit response loss is unknown not rollback",
+      "test_references": [
+        "tests/postgres/test_database.py::test_commit_response_loss_is_unknown_not_rollback"
+      ],
+      "audit_base": "dbc4c1a",
+      "reviewer_role": "db_engineer / gpt-6-sol high",
+      "limits": "Static audit notes; repairs and integrated test results supersede initial finding states."
+    },
+    {
+      "file": "tests/postgres/test_database.py",
+      "name": "test_commit_response_loss_is_unknown_not_rollback.LostCommitCursor.execute",
+      "purpose": "Supporting fixture/proxy/helper for test commit response loss is unknown not rollback",
+      "test_references": [
+        "tests/postgres/test_database.py::test_commit_response_loss_is_unknown_not_rollback"
+      ],
+      "audit_base": "dbc4c1a",
+      "reviewer_role": "db_engineer / gpt-6-sol high",
+      "limits": "Static audit notes; repairs and integrated test results supersede initial finding states."
+    },
+    {
+      "file": "tests/postgres/test_database.py",
+      "name": "test_commit_response_loss_is_unknown_not_rollback.LostCommitConnection",
+      "purpose": "Supporting fixture/proxy/helper for test commit response loss is unknown not rollback",
+      "test_references": [
+        "tests/postgres/test_database.py::test_commit_response_loss_is_unknown_not_rollback"
+      ],
+      "audit_base": "dbc4c1a",
+      "reviewer_role": "db_engineer / gpt-6-sol high",
+      "limits": "Static audit notes; repairs and integrated test results supersede initial finding states."
+    },
+    {
+      "file": "tests/postgres/test_database.py",
+      "name": "test_commit_response_loss_is_unknown_not_rollback.LostCommitConnection.__getattr__",
+      "purpose": "Supporting fixture/proxy/helper for test commit response loss is unknown not rollback",
+      "test_references": [
+        "tests/postgres/test_database.py::test_commit_response_loss_is_unknown_not_rollback"
+      ],
+      "audit_base": "dbc4c1a",
+      "reviewer_role": "db_engineer / gpt-6-sol high",
+      "limits": "Static audit notes; repairs and integrated test results supersede initial finding states."
+    },
+    {
+      "file": "tests/postgres/test_database.py",
+      "name": "test_commit_response_loss_is_unknown_not_rollback.LostCommitConnection.cursor",
+      "purpose": "Supporting fixture/proxy/helper for test commit response loss is unknown not rollback",
+      "test_references": [
+        "tests/postgres/test_database.py::test_commit_response_loss_is_unknown_not_rollback"
+      ],
+      "audit_base": "dbc4c1a",
+      "reviewer_role": "db_engineer / gpt-6-sol high",
+      "limits": "Static audit notes; repairs and integrated test results supersede initial finding states."
+    },
+    {
+      "file": "tests/postgres/test_database.py",
+      "name": "test_commit_response_loss_is_unknown_not_rollback.LostCommitConnection.execute",
+      "purpose": "Supporting fixture/proxy/helper for test commit response loss is unknown not rollback",
+      "test_references": [
+        "tests/postgres/test_database.py::test_commit_response_loss_is_unknown_not_rollback"
+      ],
+      "audit_base": "dbc4c1a",
+      "reviewer_role": "db_engineer / gpt-6-sol high",
+      "limits": "Static audit notes; repairs and integrated test results supersede initial finding states."
+    },
+    {
+      "file": "tests/postgres/test_database.py",
+      "name": "test_connection_loss_before_commit_is_unknown",
+      "purpose": "Assert connection loss before commit is unknown",
+      "test_references": [
+        "tests/postgres/test_database.py::test_connection_loss_before_commit_is_unknown"
+      ],
+      "audit_base": "dbc4c1a",
+      "reviewer_role": "db_engineer / gpt-6-sol high",
+      "limits": "Static audit notes; repairs and integrated test results supersede initial finding states."
+    },
+    {
+      "file": "tests/postgres/test_database.py",
+      "name": "test_connection_loss_before_commit_is_unknown.disconnect",
+      "purpose": "Supporting fixture/proxy/helper for test connection loss before commit is unknown",
+      "test_references": [
+        "tests/postgres/test_database.py::test_connection_loss_before_commit_is_unknown"
+      ],
+      "audit_base": "dbc4c1a",
+      "reviewer_role": "db_engineer / gpt-6-sol high",
+      "limits": "Static audit notes; repairs and integrated test results supersede initial finding states."
+    },
+    {
+      "file": "tests/postgres/test_database.py",
+      "name": "test_legacy_missing_schema_is_incomplete",
+      "purpose": "Assert legacy missing schema is incomplete",
+      "test_references": [
+        "tests/postgres/test_database.py::test_legacy_missing_schema_is_incomplete"
+      ],
+      "audit_base": "dbc4c1a",
+      "reviewer_role": "db_engineer / gpt-6-sol high",
+      "limits": "Static audit notes; repairs and integrated test results supersede initial finding states."
+    },
+    {
+      "file": "tests/postgres/test_database.py",
+      "name": "test_whole_script_deadline_across_quick_updates",
+      "purpose": "Assert whole script deadline across quick updates",
+      "test_references": [
+        "tests/postgres/test_database.py::test_whole_script_deadline_across_quick_updates"
+      ],
+      "audit_base": "dbc4c1a",
+      "reviewer_role": "db_engineer / gpt-6-sol high",
+      "limits": "Static audit notes; repairs and integrated test results supersede initial finding states."
+    },
+    {
+      "file": "tests/postgres/test_database.py",
+      "name": "test_separate_readonly_role_cannot_migrate",
+      "purpose": "Assert separate readonly role cannot migrate",
+      "test_references": [
+        "tests/postgres/test_database.py::test_separate_readonly_role_cannot_migrate"
+      ],
+      "audit_base": "dbc4c1a",
+      "reviewer_role": "db_engineer / gpt-6-sol high",
+      "limits": "Static audit notes; repairs and integrated test results supersede initial finding states."
+    },
+    {
+      "file": "tests/postgres/test_database.py",
+      "name": "test_trigger_and_inheritance_rejected",
+      "purpose": "Assert trigger and inheritance rejected",
+      "test_references": [
+        "tests/postgres/test_database.py::test_trigger_and_inheritance_rejected"
+      ],
+      "audit_base": "dbc4c1a",
+      "reviewer_role": "db_engineer / gpt-6-sol high",
+      "limits": "Static audit notes; repairs and integrated test results supersede initial finding states."
+    },
+    {
+      "file": "tests/postgres/test_database.py",
+      "name": "test_exact_utf8_bytes_and_string_semantics",
+      "purpose": "Assert exact utf8 bytes and string semantics",
+      "test_references": [
+        "tests/postgres/test_database.py::test_exact_utf8_bytes_and_string_semantics"
+      ],
+      "audit_base": "dbc4c1a",
+      "reviewer_role": "db_engineer / gpt-6-sol high",
+      "limits": "Static audit notes; repairs and integrated test results supersede initial finding states."
+    },
+    {
+      "file": "tests/postgres/test_database.py",
+      "name": "test_exact_utf8_bytes_and_string_semantics.RecordingCursor",
+      "purpose": "Supporting fixture/proxy/helper for test exact utf8 bytes and string semantics",
+      "test_references": [
+        "tests/postgres/test_database.py::test_exact_utf8_bytes_and_string_semantics"
+      ],
+      "audit_base": "dbc4c1a",
+      "reviewer_role": "db_engineer / gpt-6-sol high",
+      "limits": "Static audit notes; repairs and integrated test results supersede initial finding states."
+    },
+    {
+      "file": "tests/postgres/test_database.py",
+      "name": "test_exact_utf8_bytes_and_string_semantics.RecordingCursor.__init__",
+      "purpose": "Supporting fixture/proxy/helper for test exact utf8 bytes and string semantics",
+      "test_references": [
+        "tests/postgres/test_database.py::test_exact_utf8_bytes_and_string_semantics"
+      ],
+      "audit_base": "dbc4c1a",
+      "reviewer_role": "db_engineer / gpt-6-sol high",
+      "limits": "Static audit notes; repairs and integrated test results supersede initial finding states."
+    },
+    {
+      "file": "tests/postgres/test_database.py",
+      "name": "test_exact_utf8_bytes_and_string_semantics.RecordingCursor.__enter__",
+      "purpose": "Supporting fixture/proxy/helper for test exact utf8 bytes and string semantics",
+      "test_references": [
+        "tests/postgres/test_database.py::test_exact_utf8_bytes_and_string_semantics"
+      ],
+      "audit_base": "dbc4c1a",
+      "reviewer_role": "db_engineer / gpt-6-sol high",
+      "limits": "Static audit notes; repairs and integrated test results supersede initial finding states."
+    },
+    {
+      "file": "tests/postgres/test_database.py",
+      "name": "test_exact_utf8_bytes_and_string_semantics.RecordingCursor.__exit__",
+      "purpose": "Supporting fixture/proxy/helper for test exact utf8 bytes and string semantics",
+      "test_references": [
+        "tests/postgres/test_database.py::test_exact_utf8_bytes_and_string_semantics"
+      ],
+      "audit_base": "dbc4c1a",
+      "reviewer_role": "db_engineer / gpt-6-sol high",
+      "limits": "Static audit notes; repairs and integrated test results supersede initial finding states."
+    },
+    {
+      "file": "tests/postgres/test_database.py",
+      "name": "test_exact_utf8_bytes_and_string_semantics.RecordingCursor.__getattr__",
+      "purpose": "Supporting fixture/proxy/helper for test exact utf8 bytes and string semantics",
+      "test_references": [
+        "tests/postgres/test_database.py::test_exact_utf8_bytes_and_string_semantics"
+      ],
+      "audit_base": "dbc4c1a",
+      "reviewer_role": "db_engineer / gpt-6-sol high",
+      "limits": "Static audit notes; repairs and integrated test results supersede initial finding states."
+    },
+    {
+      "file": "tests/postgres/test_database.py",
+      "name": "test_exact_utf8_bytes_and_string_semantics.RecordingCursor.execute",
+      "purpose": "Supporting fixture/proxy/helper for test exact utf8 bytes and string semantics",
+      "test_references": [
+        "tests/postgres/test_database.py::test_exact_utf8_bytes_and_string_semantics"
+      ],
+      "audit_base": "dbc4c1a",
+      "reviewer_role": "db_engineer / gpt-6-sol high",
+      "limits": "Static audit notes; repairs and integrated test results supersede initial finding states."
+    },
+    {
+      "file": "tests/postgres/test_database.py",
+      "name": "test_exact_utf8_bytes_and_string_semantics.RecordingConnection",
+      "purpose": "Supporting fixture/proxy/helper for test exact utf8 bytes and string semantics",
+      "test_references": [
+        "tests/postgres/test_database.py::test_exact_utf8_bytes_and_string_semantics"
+      ],
+      "audit_base": "dbc4c1a",
+      "reviewer_role": "db_engineer / gpt-6-sol high",
+      "limits": "Static audit notes; repairs and integrated test results supersede initial finding states."
+    },
+    {
+      "file": "tests/postgres/test_database.py",
+      "name": "test_exact_utf8_bytes_and_string_semantics.RecordingConnection.__getattr__",
+      "purpose": "Supporting fixture/proxy/helper for test exact utf8 bytes and string semantics",
+      "test_references": [
+        "tests/postgres/test_database.py::test_exact_utf8_bytes_and_string_semantics"
+      ],
+      "audit_base": "dbc4c1a",
+      "reviewer_role": "db_engineer / gpt-6-sol high",
+      "limits": "Static audit notes; repairs and integrated test results supersede initial finding states."
+    },
+    {
+      "file": "tests/postgres/test_database.py",
+      "name": "test_exact_utf8_bytes_and_string_semantics.RecordingConnection.cursor",
+      "purpose": "Supporting fixture/proxy/helper for test exact utf8 bytes and string semantics",
+      "test_references": [
+        "tests/postgres/test_database.py::test_exact_utf8_bytes_and_string_semantics"
+      ],
+      "audit_base": "dbc4c1a",
+      "reviewer_role": "db_engineer / gpt-6-sol high",
+      "limits": "Static audit notes; repairs and integrated test results supersede initial finding states."
+    },
+    {
+      "file": "tests/postgres/test_database.py",
+      "name": "test_non_utf8_session_rejected_before_execution",
+      "purpose": "Assert non utf8 session rejected before execution",
+      "test_references": [
+        "tests/postgres/test_database.py::test_non_utf8_session_rejected_before_execution"
+      ],
+      "audit_base": "dbc4c1a",
+      "reviewer_role": "db_engineer / gpt-6-sol high",
+      "limits": "Static audit notes; repairs and integrated test results supersede initial finding states."
+    },
+    {
+      "file": "tests/postgres/test_seed_demo.py",
+      "name": "test_intent_is_fsynced_and_never_replaced",
+      "purpose": "Assert intent is fsynced and never replaced",
+      "test_references": [
+        "tests/postgres/test_seed_demo.py::test_intent_is_fsynced_and_never_replaced"
+      ],
+      "audit_base": "dbc4c1a",
+      "reviewer_role": "db_engineer / gpt-6-sol high",
+      "limits": "Static audit notes; repairs and integrated test results supersede initial finding states."
+    },
+    {
+      "file": "tests/postgres/test_seed_demo.py",
+      "name": "test_intent_is_fsynced_and_never_replaced.sync",
+      "purpose": "Supporting fixture/proxy/helper for test intent is fsynced and never replaced",
+      "test_references": [
+        "tests/postgres/test_seed_demo.py::test_intent_is_fsynced_and_never_replaced"
+      ],
+      "audit_base": "dbc4c1a",
+      "reviewer_role": "db_engineer / gpt-6-sol high",
+      "limits": "Static audit notes; repairs and integrated test results supersede initial finding states."
+    },
+    {
+      "file": "tests/postgres/test_seed_demo.py",
+      "name": "fresh",
+      "purpose": "Supporting fixture/proxy/helper for fresh",
+      "test_references": [
+        "Consumed by tests in same file; no standalone execution claim"
+      ],
+      "audit_base": "dbc4c1a",
+      "reviewer_role": "db_engineer / gpt-6-sol high",
+      "limits": "Static audit notes; repairs and integrated test results supersede initial finding states."
+    },
+    {
+      "file": "tests/postgres/test_seed_demo.py",
+      "name": "execute",
+      "purpose": "Supporting fixture/proxy/helper for execute",
+      "test_references": [
+        "Consumed by tests in same file; no standalone execution claim"
+      ],
+      "audit_base": "dbc4c1a",
+      "reviewer_role": "db_engineer / gpt-6-sol high",
+      "limits": "Static audit notes; repairs and integrated test results supersede initial finding states."
+    },
+    {
+      "file": "tests/postgres/test_seed_demo.py",
+      "name": "test_fresh_fixture_roles_and_runtime_evidence",
+      "purpose": "Assert fresh fixture roles and runtime evidence",
+      "test_references": [
+        "tests/postgres/test_seed_demo.py::test_fresh_fixture_roles_and_runtime_evidence"
+      ],
+      "audit_base": "dbc4c1a",
+      "reviewer_role": "db_engineer / gpt-6-sol high",
+      "limits": "Static audit notes; repairs and integrated test results supersede initial finding states."
+    },
+    {
+      "file": "tests/postgres/test_seed_demo.py",
+      "name": "test_second_seed_refused_unchanged",
+      "purpose": "Assert second seed refused unchanged",
+      "test_references": [
+        "tests/postgres/test_seed_demo.py::test_second_seed_refused_unchanged"
+      ],
+      "audit_base": "dbc4c1a",
+      "reviewer_role": "db_engineer / gpt-6-sol high",
+      "limits": "Static audit notes; repairs and integrated test results supersede initial finding states."
+    },
+    {
+      "file": "tests/postgres/test_seed_demo.py",
+      "name": "test_existing_nonfixture_table_refused_without_roles",
+      "purpose": "Assert existing nonfixture table refused without roles",
+      "test_references": [
+        "tests/postgres/test_seed_demo.py::test_existing_nonfixture_table_refused_without_roles"
+      ],
+      "audit_base": "dbc4c1a",
+      "reviewer_role": "db_engineer / gpt-6-sol high",
+      "limits": "Static audit notes; repairs and integrated test results supersede initial finding states."
+    },
+    {
+      "file": "tests/postgres/test_seed_demo.py",
+      "name": "test_preprovisioned_narrow_roles_adopted_no_password_change",
+      "purpose": "Assert preprovisioned narrow roles adopted no password change",
+      "test_references": [
+        "tests/postgres/test_seed_demo.py::test_preprovisioned_narrow_roles_adopted_no_password_change"
+      ],
+      "audit_base": "dbc4c1a",
+      "reviewer_role": "db_engineer / gpt-6-sol high",
+      "limits": "Static audit notes; repairs and integrated test results supersede initial finding states."
+    },
+    {
+      "file": "tests/postgres/test_seed_demo.py",
+      "name": "test_existing_privileged_role_refused",
+      "purpose": "Assert existing privileged role refused",
+      "test_references": [
+        "tests/postgres/test_seed_demo.py::test_existing_privileged_role_refused"
+      ],
+      "audit_base": "dbc4c1a",
+      "reviewer_role": "db_engineer / gpt-6-sol high",
+      "limits": "Static audit notes; repairs and integrated test results supersede initial finding states."
+    },
+    {
+      "file": "tests/postgres/test_seed_demo.py",
+      "name": "test_inherited_privilege_refused",
+      "purpose": "Assert inherited privilege refused",
+      "test_references": [
+        "tests/postgres/test_seed_demo.py::test_inherited_privilege_refused"
+      ],
+      "audit_base": "dbc4c1a",
+      "reviewer_role": "db_engineer / gpt-6-sol high",
+      "limits": "Static audit notes; repairs and integrated test results supersede initial finding states."
+    },
+    {
+      "file": "tests/postgres/test_seed_demo.py",
+      "name": "operator",
+      "purpose": "Supporting fixture/proxy/helper for operator",
+      "test_references": [
+        "Consumed by tests in same file; no standalone execution claim"
+      ],
+      "audit_base": "dbc4c1a",
+      "reviewer_role": "db_engineer / gpt-6-sol high",
+      "limits": "Static audit notes; repairs and integrated test results supersede initial finding states."
+    },
+    {
+      "file": "tests/postgres/test_seed_demo.py",
+      "name": "approved",
+      "purpose": "Supporting fixture/proxy/helper for approved",
+      "test_references": [
+        "Consumed by tests in same file; no standalone execution claim"
+      ],
+      "audit_base": "dbc4c1a",
+      "reviewer_role": "db_engineer / gpt-6-sol high",
+      "limits": "Static audit notes; repairs and integrated test results supersede initial finding states."
+    },
+    {
+      "file": "tests/postgres/test_seed_demo.py",
+      "name": "test_planning_and_approval_separate_from_cloud_creation",
+      "purpose": "Assert planning and approval separate from cloud creation",
+      "test_references": [
+        "tests/postgres/test_seed_demo.py::test_planning_and_approval_separate_from_cloud_creation"
+      ],
+      "audit_base": "dbc4c1a",
+      "reviewer_role": "db_engineer / gpt-6-sol high",
+      "limits": "Static audit notes; repairs and integrated test results supersede initial finding states."
+    },
+    {
+      "file": "tests/postgres/test_seed_demo.py",
+      "name": "test_changed_approval_and_unallowlisted_secret_block",
+      "purpose": "Assert changed approval and unallowlisted secret block",
+      "test_references": [
+        "tests/postgres/test_seed_demo.py::test_changed_approval_and_unallowlisted_secret_block"
+      ],
+      "audit_base": "dbc4c1a",
+      "reviewer_role": "db_engineer / gpt-6-sol high",
+      "limits": "Static audit notes; repairs and integrated test results supersede initial finding states."
+    },
+    {
+      "file": "tests/postgres/test_seed_demo.py",
+      "name": "test_offline_cli_never_connects_or_fetches",
+      "purpose": "Assert offline cli never connects or fetches",
+      "test_references": [
+        "tests/postgres/test_seed_demo.py::test_offline_cli_never_connects_or_fetches"
+      ],
+      "audit_base": "dbc4c1a",
+      "reviewer_role": "db_engineer / gpt-6-sol high",
+      "limits": "Static audit notes; repairs and integrated test results supersede initial finding states."
+    },
+    {
+      "file": "tests/postgres/test_seed_demo.py",
+      "name": "test_connected_unauthorized_stops_before_aws",
+      "purpose": "Assert connected unauthorized stops before aws",
+      "test_references": [
+        "tests/postgres/test_seed_demo.py::test_connected_unauthorized_stops_before_aws"
+      ],
+      "audit_base": "dbc4c1a",
+      "reviewer_role": "db_engineer / gpt-6-sol high",
+      "limits": "Static audit notes; repairs and integrated test results supersede initial finding states."
+    },
+    {
+      "file": "tests/postgres/test_seed_demo.py",
+      "name": "test_connected_unauthorized_stops_before_aws.Forbidden",
+      "purpose": "Supporting fixture/proxy/helper for test connected unauthorized stops before aws",
+      "test_references": [
+        "tests/postgres/test_seed_demo.py::test_connected_unauthorized_stops_before_aws"
+      ],
+      "audit_base": "dbc4c1a",
+      "reviewer_role": "db_engineer / gpt-6-sol high",
+      "limits": "Static audit notes; repairs and integrated test results supersede initial finding states."
+    },
+    {
+      "file": "tests/postgres/test_seed_demo.py",
+      "name": "test_connected_unauthorized_stops_before_aws.Forbidden.__getattr__",
+      "purpose": "Supporting fixture/proxy/helper for test connected unauthorized stops before aws",
+      "test_references": [
+        "tests/postgres/test_seed_demo.py::test_connected_unauthorized_stops_before_aws"
+      ],
+      "audit_base": "dbc4c1a",
+      "reviewer_role": "db_engineer / gpt-6-sol high",
+      "limits": "Static audit notes; repairs and integrated test results supersede initial finding states."
+    },
+    {
+      "file": "tests/postgres/test_seed_demo.py",
+      "name": "test_ordinary_bootstrap_admin_provisions_narrow_roles",
+      "purpose": "Assert ordinary bootstrap admin provisions narrow roles",
+      "test_references": [
+        "tests/postgres/test_seed_demo.py::test_ordinary_bootstrap_admin_provisions_narrow_roles"
+      ],
+      "audit_base": "dbc4c1a",
+      "reviewer_role": "db_engineer / gpt-6-sol high",
+      "limits": "Static audit notes; repairs and integrated test results supersede initial finding states."
+    },
+    {
+      "file": "tests/postgres/test_seed_demo.py",
+      "name": "test_precommit_error_rolls_back_table_and_new_roles",
+      "purpose": "Assert precommit error rolls back table and new roles",
+      "test_references": [
+        "tests/postgres/test_seed_demo.py::test_precommit_error_rolls_back_table_and_new_roles"
+      ],
+      "audit_base": "dbc4c1a",
+      "reviewer_role": "db_engineer / gpt-6-sol high",
+      "limits": "Static audit notes; repairs and integrated test results supersede initial finding states."
+    },
+    {
+      "file": "tests/postgres/test_seed_demo.py",
+      "name": "test_precommit_error_rolls_back_table_and_new_roles.WrongCount",
+      "purpose": "Supporting fixture/proxy/helper for test precommit error rolls back table and new roles",
+      "test_references": [
+        "tests/postgres/test_seed_demo.py::test_precommit_error_rolls_back_table_and_new_roles"
+      ],
+      "audit_base": "dbc4c1a",
+      "reviewer_role": "db_engineer / gpt-6-sol high",
+      "limits": "Static audit notes; repairs and integrated test results supersede initial finding states."
+    },
+    {
+      "file": "tests/postgres/test_seed_demo.py",
+      "name": "test_precommit_error_rolls_back_table_and_new_roles.WrongCount.fetchone",
+      "purpose": "Supporting fixture/proxy/helper for test precommit error rolls back table and new roles",
+      "test_references": [
+        "tests/postgres/test_seed_demo.py::test_precommit_error_rolls_back_table_and_new_roles"
+      ],
+      "audit_base": "dbc4c1a",
+      "reviewer_role": "db_engineer / gpt-6-sol high",
+      "limits": "Static audit notes; repairs and integrated test results supersede initial finding states."
+    },
+    {
+      "file": "tests/postgres/test_seed_demo.py",
+      "name": "test_precommit_error_rolls_back_table_and_new_roles.FailingSetup",
+      "purpose": "Supporting fixture/proxy/helper for test precommit error rolls back table and new roles",
+      "test_references": [
+        "tests/postgres/test_seed_demo.py::test_precommit_error_rolls_back_table_and_new_roles"
+      ],
+      "audit_base": "dbc4c1a",
+      "reviewer_role": "db_engineer / gpt-6-sol high",
+      "limits": "Static audit notes; repairs and integrated test results supersede initial finding states."
+    },
+    {
+      "file": "tests/postgres/test_seed_demo.py",
+      "name": "test_precommit_error_rolls_back_table_and_new_roles.FailingSetup.__getattr__",
+      "purpose": "Supporting fixture/proxy/helper for test precommit error rolls back table and new roles",
+      "test_references": [
+        "tests/postgres/test_seed_demo.py::test_precommit_error_rolls_back_table_and_new_roles"
+      ],
+      "audit_base": "dbc4c1a",
+      "reviewer_role": "db_engineer / gpt-6-sol high",
+      "limits": "Static audit notes; repairs and integrated test results supersede initial finding states."
+    },
+    {
+      "file": "tests/postgres/test_seed_demo.py",
+      "name": "test_precommit_error_rolls_back_table_and_new_roles.FailingSetup.execute",
+      "purpose": "Supporting fixture/proxy/helper for test precommit error rolls back table and new roles",
+      "test_references": [
+        "tests/postgres/test_seed_demo.py::test_precommit_error_rolls_back_table_and_new_roles"
+      ],
+      "audit_base": "dbc4c1a",
+      "reviewer_role": "db_engineer / gpt-6-sol high",
+      "limits": "Static audit notes; repairs and integrated test results supersede initial finding states."
+    },
+    {
+      "file": "tests/postgres/test_seed_demo.py",
+      "name": "test_commit_response_loss_is_honest_unknown",
+      "purpose": "Assert commit response loss is honest unknown",
+      "test_references": [
+        "tests/postgres/test_seed_demo.py::test_commit_response_loss_is_honest_unknown"
+      ],
+      "audit_base": "dbc4c1a",
+      "reviewer_role": "db_engineer / gpt-6-sol high",
+      "limits": "Static audit notes; repairs and integrated test results supersede initial finding states."
+    },
+    {
+      "file": "tests/postgres/test_seed_demo.py",
+      "name": "test_commit_response_loss_is_honest_unknown.LostCommit",
+      "purpose": "Supporting fixture/proxy/helper for test commit response loss is honest unknown",
+      "test_references": [
+        "tests/postgres/test_seed_demo.py::test_commit_response_loss_is_honest_unknown"
+      ],
+      "audit_base": "dbc4c1a",
+      "reviewer_role": "db_engineer / gpt-6-sol high",
+      "limits": "Static audit notes; repairs and integrated test results supersede initial finding states."
+    },
+    {
+      "file": "tests/postgres/test_seed_demo.py",
+      "name": "test_commit_response_loss_is_honest_unknown.LostCommit.__getattr__",
+      "purpose": "Supporting fixture/proxy/helper for test commit response loss is honest unknown",
+      "test_references": [
+        "tests/postgres/test_seed_demo.py::test_commit_response_loss_is_honest_unknown"
+      ],
+      "audit_base": "dbc4c1a",
+      "reviewer_role": "db_engineer / gpt-6-sol high",
+      "limits": "Static audit notes; repairs and integrated test results supersede initial finding states."
+    },
+    {
+      "file": "tests/postgres/test_seed_demo.py",
+      "name": "test_commit_response_loss_is_honest_unknown.LostCommit.execute",
+      "purpose": "Supporting fixture/proxy/helper for test commit response loss is honest unknown",
+      "test_references": [
+        "tests/postgres/test_seed_demo.py::test_commit_response_loss_is_honest_unknown"
+      ],
+      "audit_base": "dbc4c1a",
+      "reviewer_role": "db_engineer / gpt-6-sol high",
+      "limits": "Static audit notes; repairs and integrated test results supersede initial finding states."
+    },
+    {
+      "file": "tests/postgres/test_seed_demo.py",
+      "name": "test_connected_identity_guards_before_secret_fetch",
+      "purpose": "Assert connected identity guards before secret fetch",
+      "test_references": [
+        "tests/postgres/test_seed_demo.py::test_connected_identity_guards_before_secret_fetch"
+      ],
+      "audit_base": "dbc4c1a",
+      "reviewer_role": "db_engineer / gpt-6-sol high",
+      "limits": "Static audit notes; repairs and integrated test results supersede initial finding states."
+    },
+    {
+      "file": "tests/postgres/test_seed_demo.py",
+      "name": "test_connected_identity_guards_before_secret_fetch.STS",
+      "purpose": "Supporting fixture/proxy/helper for test connected identity guards before secret fetch",
+      "test_references": [
+        "tests/postgres/test_seed_demo.py::test_connected_identity_guards_before_secret_fetch"
+      ],
+      "audit_base": "dbc4c1a",
+      "reviewer_role": "db_engineer / gpt-6-sol high",
+      "limits": "Static audit notes; repairs and integrated test results supersede initial finding states."
+    },
+    {
+      "file": "tests/postgres/test_seed_demo.py",
+      "name": "test_connected_identity_guards_before_secret_fetch.STS.get_caller_identity",
+      "purpose": "Supporting fixture/proxy/helper for test connected identity guards before secret fetch",
+      "test_references": [
+        "tests/postgres/test_seed_demo.py::test_connected_identity_guards_before_secret_fetch"
+      ],
+      "audit_base": "dbc4c1a",
+      "reviewer_role": "db_engineer / gpt-6-sol high",
+      "limits": "Static audit notes; repairs and integrated test results supersede initial finding states."
+    },
+    {
+      "file": "tests/postgres/test_seed_demo.py",
+      "name": "test_connected_identity_guards_before_secret_fetch.RDS",
+      "purpose": "Supporting fixture/proxy/helper for test connected identity guards before secret fetch",
+      "test_references": [
+        "tests/postgres/test_seed_demo.py::test_connected_identity_guards_before_secret_fetch"
+      ],
+      "audit_base": "dbc4c1a",
+      "reviewer_role": "db_engineer / gpt-6-sol high",
+      "limits": "Static audit notes; repairs and integrated test results supersede initial finding states."
+    },
+    {
+      "file": "tests/postgres/test_seed_demo.py",
+      "name": "test_connected_identity_guards_before_secret_fetch.RDS.describe_db_instances",
+      "purpose": "Supporting fixture/proxy/helper for test connected identity guards before secret fetch",
+      "test_references": [
+        "tests/postgres/test_seed_demo.py::test_connected_identity_guards_before_secret_fetch"
+      ],
+      "audit_base": "dbc4c1a",
+      "reviewer_role": "db_engineer / gpt-6-sol high",
+      "limits": "Static audit notes; repairs and integrated test results supersede initial finding states."
+    },
+    {
+      "file": "tests/postgres/test_seed_demo.py",
+      "name": "test_connected_identity_guards_before_secret_fetch.RDS.list_tags_for_resource",
+      "purpose": "Supporting fixture/proxy/helper for test connected identity guards before secret fetch",
+      "test_references": [
+        "tests/postgres/test_seed_demo.py::test_connected_identity_guards_before_secret_fetch"
+      ],
+      "audit_base": "dbc4c1a",
+      "reviewer_role": "db_engineer / gpt-6-sol high",
+      "limits": "Static audit notes; repairs and integrated test results supersede initial finding states."
+    },
+    {
+      "file": "tests/postgres/test_seed_demo.py",
+      "name": "test_connected_identity_guards_before_secret_fetch.Forbidden",
+      "purpose": "Supporting fixture/proxy/helper for test connected identity guards before secret fetch",
+      "test_references": [
+        "tests/postgres/test_seed_demo.py::test_connected_identity_guards_before_secret_fetch"
+      ],
+      "audit_base": "dbc4c1a",
+      "reviewer_role": "db_engineer / gpt-6-sol high",
+      "limits": "Static audit notes; repairs and integrated test results supersede initial finding states."
+    },
+    {
+      "file": "tests/postgres/test_seed_demo.py",
+      "name": "test_connected_identity_guards_before_secret_fetch.Forbidden.__getattr__",
+      "purpose": "Supporting fixture/proxy/helper for test connected identity guards before secret fetch",
+      "test_references": [
+        "tests/postgres/test_seed_demo.py::test_connected_identity_guards_before_secret_fetch"
+      ],
+      "audit_base": "dbc4c1a",
+      "reviewer_role": "db_engineer / gpt-6-sol high",
+      "limits": "Static audit notes; repairs and integrated test results supersede initial finding states."
+    },
+    {
+      "file": "tests/postgres/test_seed_demo.py",
+      "name": "test_attempt_intent_blocks_cli_replay",
+      "purpose": "Assert attempt intent blocks cli replay",
+      "test_references": [
+        "tests/postgres/test_seed_demo.py::test_attempt_intent_blocks_cli_replay"
+      ],
+      "audit_base": "dbc4c1a",
+      "reviewer_role": "db_engineer / gpt-6-sol high",
+      "limits": "Static audit notes; repairs and integrated test results supersede initial finding states."
+    },
+    {
+      "file": "tests/postgres/test_service.py",
+      "name": "test_real_http_mcp_bad_revision_good_report",
+      "purpose": "Assert real http mcp bad revision good report",
+      "test_references": [
+        "tests/postgres/test_service.py::test_real_http_mcp_bad_revision_good_report"
+      ],
+      "audit_base": "dbc4c1a",
+      "reviewer_role": "db_engineer / gpt-6-sol high",
+      "limits": "Static audit notes; repairs and integrated test results supersede initial finding states."
+    },
+    {
+      "file": "tests/postgres/test_service.py",
+      "name": "test_real_http_mcp_bad_revision_good_report.scenario",
+      "purpose": "Supporting fixture/proxy/helper for test real http mcp bad revision good report",
+      "test_references": [
+        "tests/postgres/test_service.py::test_real_http_mcp_bad_revision_good_report"
+      ],
+      "audit_base": "dbc4c1a",
+      "reviewer_role": "db_engineer / gpt-6-sol high",
+      "limits": "Static audit notes; repairs and integrated test results supersede initial finding states."
+    },
+    {
+      "file": "tests/postgres/test_service.py",
+      "name": "test_real_http_mcp_bad_revision_good_report.scenario.tool",
+      "purpose": "Supporting fixture/proxy/helper for test real http mcp bad revision good report",
+      "test_references": [
+        "tests/postgres/test_service.py::test_real_http_mcp_bad_revision_good_report"
+      ],
+      "audit_base": "dbc4c1a",
+      "reviewer_role": "db_engineer / gpt-6-sol high",
+      "limits": "Static audit notes; repairs and integrated test results supersede initial finding states."
+    },
+    {
+      "file": "tests/postgres/test_service.py",
+      "name": "test_real_http_mcp_bad_revision_good_report.scenario.candidate",
+      "purpose": "Supporting fixture/proxy/helper for test real http mcp bad revision good report",
+      "test_references": [
+        "tests/postgres/test_service.py::test_real_http_mcp_bad_revision_good_report"
+      ],
+      "audit_base": "dbc4c1a",
+      "reviewer_role": "db_engineer / gpt-6-sol high",
+      "limits": "Static audit notes; repairs and integrated test results supersede initial finding states."
+    },
+    {
+      "file": "tests/postgres/test_service.py",
+      "name": "LocalRuntime",
+      "purpose": "Supporting fixture/proxy/helper for LocalRuntime",
+      "test_references": [
+        "Consumed by tests in same file; no standalone execution claim"
+      ],
+      "audit_base": "dbc4c1a",
+      "reviewer_role": "db_engineer / gpt-6-sol high",
+      "limits": "Static audit notes; repairs and integrated test results supersede initial finding states."
+    },
+    {
+      "file": "tests/postgres/test_service.py",
+      "name": "LocalRuntime.__init__",
+      "purpose": "Supporting fixture/proxy/helper for   init  ",
+      "test_references": [
+        "Consumed by tests in same file; no standalone execution claim"
+      ],
+      "audit_base": "dbc4c1a",
+      "reviewer_role": "db_engineer / gpt-6-sol high",
+      "limits": "Static audit notes; repairs and integrated test results supersede initial finding states."
+    },
+    {
+      "file": "tests/postgres/test_service.py",
+      "name": "LocalRuntime.verify_resources",
+      "purpose": "Supporting fixture/proxy/helper for verify resources",
+      "test_references": [
+        "Consumed by tests in same file; no standalone execution claim"
+      ],
+      "audit_base": "dbc4c1a",
+      "reviewer_role": "db_engineer / gpt-6-sol high",
+      "limits": "Static audit notes; repairs and integrated test results supersede initial finding states."
+    },
+    {
+      "file": "tests/postgres/test_service.py",
+      "name": "LocalRuntime.connection",
+      "purpose": "Supporting fixture/proxy/helper for connection",
+      "test_references": [
+        "Consumed by tests in same file; no standalone execution claim"
+      ],
+      "audit_base": "dbc4c1a",
+      "reviewer_role": "db_engineer / gpt-6-sol high",
+      "limits": "Static audit notes; repairs and integrated test results supersede initial finding states."
+    },
+    {
+      "file": "tests/postgres/test_service.py",
+      "name": "service_pair",
+      "purpose": "Supporting fixture/proxy/helper for service pair",
+      "test_references": [
+        "Consumed by tests in same file; no standalone execution claim"
+      ],
+      "audit_base": "dbc4c1a",
+      "reviewer_role": "db_engineer / gpt-6-sol high",
+      "limits": "Static audit notes; repairs and integrated test results supersede initial finding states."
+    },
+    {
+      "file": "tests/postgres/test_service.py",
+      "name": "call",
+      "purpose": "Supporting fixture/proxy/helper for call",
+      "test_references": [
+        "Consumed by tests in same file; no standalone execution claim"
+      ],
+      "audit_base": "dbc4c1a",
+      "reviewer_role": "db_engineer / gpt-6-sol high",
+      "limits": "Static audit notes; repairs and integrated test results supersede initial finding states."
+    },
+    {
+      "file": "tests/postgres/test_service.py",
+      "name": "register",
+      "purpose": "Supporting fixture/proxy/helper for register",
+      "test_references": [
+        "Consumed by tests in same file; no standalone execution claim"
+      ],
+      "audit_base": "dbc4c1a",
+      "reviewer_role": "db_engineer / gpt-6-sol high",
+      "limits": "Static audit notes; repairs and integrated test results supersede initial finding states."
+    },
+    {
+      "file": "tests/postgres/test_service.py",
+      "name": "ready_run",
+      "purpose": "Supporting fixture/proxy/helper for ready run",
+      "test_references": [
+        "Consumed by tests in same file; no standalone execution claim"
+      ],
+      "audit_base": "dbc4c1a",
+      "reviewer_role": "db_engineer / gpt-6-sol high",
+      "limits": "Static audit notes; repairs and integrated test results supersede initial finding states."
+    },
+    {
+      "file": "tests/postgres/test_service.py",
+      "name": "pass_rehearsal",
+      "purpose": "Supporting fixture/proxy/helper for pass rehearsal",
+      "test_references": [
+        "Consumed by tests in same file; no standalone execution claim"
+      ],
+      "audit_base": "dbc4c1a",
+      "reviewer_role": "db_engineer / gpt-6-sol high",
+      "limits": "Static audit notes; repairs and integrated test results supersede initial finding states."
+    },
+    {
+      "file": "tests/postgres/test_service.py",
+      "name": "test_bad_rollback_revision_good_pass_exact_report_and_disabled_source",
+      "purpose": "Assert bad rollback revision good pass exact report and disabled source",
+      "test_references": [
+        "tests/postgres/test_service.py::test_bad_rollback_revision_good_pass_exact_report_and_disabled_source"
+      ],
+      "audit_base": "dbc4c1a",
+      "reviewer_role": "db_engineer / gpt-6-sol high",
+      "limits": "Static audit notes; repairs and integrated test results supersede initial finding states."
+    },
+    {
+      "file": "tests/postgres/test_service.py",
+      "name": "test_committed_wrong_data_blocks_and_revision_refused",
+      "purpose": "Assert committed wrong data blocks and revision refused",
+      "test_references": [
+        "tests/postgres/test_service.py::test_committed_wrong_data_blocks_and_revision_refused"
+      ],
+      "audit_base": "dbc4c1a",
+      "reviewer_role": "db_engineer / gpt-6-sol high",
+      "limits": "Static audit notes; repairs and integrated test results supersede initial finding states."
+    },
+    {
+      "file": "tests/postgres/test_service.py",
+      "name": "source_request",
+      "purpose": "Supporting fixture/proxy/helper for source request",
+      "test_references": [
+        "Consumed by tests in same file; no standalone execution claim"
+      ],
+      "audit_base": "dbc4c1a",
+      "reviewer_role": "db_engineer / gpt-6-sol high",
+      "limits": "Static audit notes; repairs and integrated test results supersede initial finding states."
+    },
+    {
+      "file": "tests/postgres/test_service.py",
+      "name": "test_source_service_guarded_apply_and_replay_receipt_local_only",
+      "purpose": "Assert source service guarded apply and replay receipt local only",
+      "test_references": [
+        "tests/postgres/test_service.py::test_source_service_guarded_apply_and_replay_receipt_local_only"
+      ],
+      "audit_base": "dbc4c1a",
+      "reviewer_role": "db_engineer / gpt-6-sol high",
+      "limits": "Static audit notes; repairs and integrated test results supersede initial finding states."
+    },
+    {
+      "file": "tests/postgres/test_service.py",
+      "name": "test_source_locked_drift_refused_and_backup_before_writer",
+      "purpose": "Assert source locked drift refused and backup before writer",
+      "test_references": [
+        "tests/postgres/test_service.py::test_source_locked_drift_refused_and_backup_before_writer"
+      ],
+      "audit_base": "dbc4c1a",
+      "reviewer_role": "db_engineer / gpt-6-sol high",
+      "limits": "Static audit notes; repairs and integrated test results supersede initial finding states."
+    },
+    {
+      "file": "tests/postgres/test_service.py",
+      "name": "test_report_publication_fault_retry_reuses_sealed_payload",
+      "purpose": "Assert report publication fault retry reuses sealed payload",
+      "test_references": [
+        "tests/postgres/test_service.py::test_report_publication_fault_retry_reuses_sealed_payload"
+      ],
+      "audit_base": "dbc4c1a",
+      "reviewer_role": "db_engineer / gpt-6-sol high",
+      "limits": "Static audit notes; repairs and integrated test results supersede initial finding states."
+    },
+    {
+      "file": "tests/postgres/test_service.py",
+      "name": "test_report_publication_fault_retry_reuses_sealed_payload.broken",
+      "purpose": "Supporting fixture/proxy/helper for test report publication fault retry reuses sealed payload",
+      "test_references": [
+        "tests/postgres/test_service.py::test_report_publication_fault_retry_reuses_sealed_payload"
+      ],
+      "audit_base": "dbc4c1a",
+      "reviewer_role": "db_engineer / gpt-6-sol high",
+      "limits": "Static audit notes; repairs and integrated test results supersede initial finding states."
+    },
+    {
+      "file": "tests/postgres/test_service.py",
+      "name": "test_report_restart_publication_retains_history_without_reenabling_source",
+      "purpose": "Assert report restart publication retains history without reenabling source",
+      "test_references": [
+        "tests/postgres/test_service.py::test_report_restart_publication_retains_history_without_reenabling_source"
+      ],
+      "audit_base": "dbc4c1a",
+      "reviewer_role": "db_engineer / gpt-6-sol high",
+      "limits": "Static audit notes; repairs and integrated test results supersede initial finding states."
+    },
+    {
+      "file": "tests/postgres/test_service.py",
+      "name": "test_report_restart_publication_retains_history_without_reenabling_source.broken",
+      "purpose": "Supporting fixture/proxy/helper for test report restart publication retains history without reenabling source",
+      "test_references": [
+        "tests/postgres/test_service.py::test_report_restart_publication_retains_history_without_reenabling_source"
+      ],
+      "audit_base": "dbc4c1a",
+      "reviewer_role": "db_engineer / gpt-6-sol high",
+      "limits": "Static audit notes; repairs and integrated test results supersede initial finding states."
+    },
+    {
+      "file": "tests/unit/test_sql_policy.py",
+      "name": "contract",
+      "purpose": "Supporting fixture/proxy/helper for contract",
+      "test_references": [
+        "Consumed by tests in same file; no standalone execution claim"
+      ],
+      "audit_base": "dbc4c1a",
+      "reviewer_role": "db_engineer / gpt-6-sol high",
+      "limits": "Static audit notes; repairs and integrated test results supersede initial finding states."
+    },
+    {
+      "file": "tests/unit/test_sql_policy.py",
+      "name": "test_recursive_rejection",
+      "purpose": "Assert recursive rejection",
+      "test_references": [
+        "tests/unit/test_sql_policy.py::test_recursive_rejection"
+      ],
+      "audit_base": "dbc4c1a",
+      "reviewer_role": "db_engineer / gpt-6-sol high",
+      "limits": "Static audit notes; repairs and integrated test results supersede initial finding states."
+    },
+    {
+      "file": "tests/unit/test_sql_policy.py",
+      "name": "test_comments_semicolons_and_protected_update",
+      "purpose": "Assert comments semicolons and protected update",
+      "test_references": [
+        "tests/unit/test_sql_policy.py::test_comments_semicolons_and_protected_update"
+      ],
+      "audit_base": "dbc4c1a",
+      "reviewer_role": "db_engineer / gpt-6-sol high",
+      "limits": "Static audit notes; repairs and integrated test results supersede initial finding states."
+    },
+    {
+      "file": "tests/unit/test_sql_policy.py",
+      "name": "test_missing_value_assertion",
+      "purpose": "Assert missing value assertion",
+      "test_references": [
+        "tests/unit/test_sql_policy.py::test_missing_value_assertion"
+      ],
+      "audit_base": "dbc4c1a",
+      "reviewer_role": "db_engineer / gpt-6-sol high",
+      "limits": "Static audit notes; repairs and integrated test results supersede initial finding states."
+    },
+    {
+      "file": "tests/unit/test_sql_policy.py",
+      "name": "test_unknown_metadata_column",
+      "purpose": "Assert unknown metadata column",
+      "test_references": [
+        "tests/unit/test_sql_policy.py::test_unknown_metadata_column"
+      ],
+      "audit_base": "dbc4c1a",
+      "reviewer_role": "db_engineer / gpt-6-sol high",
+      "limits": "Static audit notes; repairs and integrated test results supersede initial finding states."
+    },
+    {
+      "file": "tests/unit/test_sql_policy.py",
+      "name": "test_good_write_set",
+      "purpose": "Assert good write set",
+      "test_references": [
+        "tests/unit/test_sql_policy.py::test_good_write_set"
+      ],
+      "audit_base": "dbc4c1a",
+      "reviewer_role": "db_engineer / gpt-6-sol high",
+      "limits": "Static audit notes; repairs and integrated test results supersede initial finding states."
+    },
+    {
+      "file": "tests/unit/test_evidence.py",
+      "name": "test_type_tags_are_distinct",
+      "purpose": "Assert type tags are distinct",
+      "test_references": [
+        "tests/unit/test_evidence.py::test_type_tags_are_distinct"
+      ],
+      "audit_base": "dbc4c1a",
+      "reviewer_role": "db_engineer / gpt-6-sol high",
+      "limits": "Static audit notes; repairs and integrated test results supersede initial finding states."
+    },
+    {
+      "file": "tests/unit/test_evidence.py",
+      "name": "test_utc_microseconds",
+      "purpose": "Assert utc microseconds",
+      "test_references": [
+        "tests/unit/test_evidence.py::test_utc_microseconds"
+      ],
+      "audit_base": "dbc4c1a",
+      "reviewer_role": "db_engineer / gpt-6-sol high",
+      "limits": "Static audit notes; repairs and integrated test results supersede initial finding states."
+    },
+    {
+      "file": "tests/unit/test_evidence.py",
+      "name": "test_unsupported_no_stringification",
+      "purpose": "Assert unsupported no stringification",
+      "test_references": [
+        "tests/unit/test_evidence.py::test_unsupported_no_stringification"
+      ],
+      "audit_base": "dbc4c1a",
+      "reviewer_role": "db_engineer / gpt-6-sol high",
+      "limits": "Static audit notes; repairs and integrated test results supersede initial finding states."
+    },
+    {
+      "file": "tests/unit/test_evidence.py",
+      "name": "test_domain_length_and_order",
+      "purpose": "Assert domain length and order",
+      "test_references": [
+        "tests/unit/test_evidence.py::test_domain_length_and_order"
+      ],
+      "audit_base": "dbc4c1a",
+      "reviewer_role": "db_engineer / gpt-6-sol high",
+      "limits": "Static audit notes; repairs and integrated test results supersede initial finding states."
+    },
+    {
+      "file": "tests/unit/test_evidence.py",
+      "name": "test_private_bundle_not_serializable",
+      "purpose": "Assert private bundle not serializable",
+      "test_references": [
+        "tests/unit/test_evidence.py::test_private_bundle_not_serializable"
+      ],
+      "audit_base": "dbc4c1a",
+      "reviewer_role": "db_engineer / gpt-6-sol high",
+      "limits": "Static audit notes; repairs and integrated test results supersede initial finding states."
+    },
+    {
+      "file": "src/preflight/report.py",
+      "name": "_payload_bytes",
+      "purpose": " payload bytes",
+      "test_references": [],
+      "audit_base": "dbc4c1a",
+      "reviewer_role": "integration_engineer / gpt-5.6-sol high",
+      "limits": "Test reference presence is not function/branch execution proof."
+    },
+    {
+      "file": "src/preflight/report.py",
+      "name": "_has_complete_evidence",
+      "purpose": " has complete evidence",
+      "test_references": [],
+      "audit_base": "dbc4c1a",
+      "reviewer_role": "integration_engineer / gpt-5.6-sol high",
+      "limits": "Test reference presence is not function/branch execution proof."
+    },
+    {
+      "file": "src/preflight/report.py",
+      "name": "_has_observable_evidence_failure",
+      "purpose": "Detect contradictions that cannot coexist with unchanged keys/protected values.",
+      "test_references": [],
+      "audit_base": "dbc4c1a",
+      "reviewer_role": "integration_engineer / gpt-5.6-sol high",
+      "limits": "Test reference presence is not function/branch execution proof."
+    },
+    {
+      "file": "src/preflight/report.py",
+      "name": "_requirements_consistent",
+      "purpose": " requirements consistent",
+      "test_references": [],
+      "audit_base": "dbc4c1a",
+      "reviewer_role": "integration_engineer / gpt-5.6-sol high",
+      "limits": "Test reference presence is not function/branch execution proof."
+    },
+    {
+      "file": "src/preflight/report.py",
+      "name": "recompute_report_verdict",
+      "purpose": "Apply the shared oracle plus report-only evidence completeness rules.",
+      "test_references": [],
+      "audit_base": "dbc4c1a",
+      "reviewer_role": "integration_engineer / gpt-5.6-sol high",
+      "limits": "Test reference presence is not function/branch execution proof."
+    },
+    {
+      "file": "src/preflight/report.py",
+      "name": "seal_report",
+      "purpose": "Seal a validated payload; never bless a model-supplied verdict.",
+      "test_references": [],
+      "audit_base": "dbc4c1a",
+      "reviewer_role": "integration_engineer / gpt-5.6-sol high",
+      "limits": "Test reference presence is not function/branch execution proof."
+    },
+    {
+      "file": "src/preflight/report.py",
+      "name": "_redact_credential_url",
+      "purpose": " redact credential url",
+      "test_references": [],
+      "audit_base": "dbc4c1a",
+      "reviewer_role": "integration_engineer / gpt-5.6-sol high",
+      "limits": "Test reference presence is not function/branch execution proof."
+    },
+    {
+      "file": "src/preflight/report.py",
+      "name": "_cell",
+      "purpose": "Render untrusted data as one inert inline-code Markdown cell.",
+      "test_references": [],
+      "audit_base": "dbc4c1a",
+      "reviewer_role": "integration_engineer / gpt-5.6-sol high",
+      "limits": "Test reference presence is not function/branch execution proof."
+    },
+    {
+      "file": "src/preflight/report.py",
+      "name": "_evidence_rows",
+      "purpose": " evidence rows",
+      "test_references": [],
+      "audit_base": "dbc4c1a",
+      "reviewer_role": "integration_engineer / gpt-5.6-sol high",
+      "limits": "Test reference presence is not function/branch execution proof."
+    },
+    {
+      "file": "src/preflight/report.py",
+      "name": "render_report",
+      "purpose": "Return the deterministic native Markdown view of a sealed payload.",
+      "test_references": [],
+      "audit_base": "dbc4c1a",
+      "reviewer_role": "integration_engineer / gpt-5.6-sol high",
+      "limits": "Test reference presence is not function/branch execution proof."
+    },
+    {
+      "file": "src/preflight/offline.py",
+      "name": "ReportVerificationError",
+      "purpose": "A sanitized verifier failure with a stable process exit code.",
+      "test_references": [],
+      "audit_base": "dbc4c1a",
+      "reviewer_role": "integration_engineer / gpt-5.6-sol high",
+      "limits": "Test reference presence is not function/branch execution proof."
+    },
+    {
+      "file": "src/preflight/offline.py",
+      "name": "__init__",
+      "purpose": "  init  ",
+      "test_references": [],
+      "audit_base": "dbc4c1a",
+      "reviewer_role": "integration_engineer / gpt-5.6-sol high",
+      "limits": "Test reference presence is not function/branch execution proof."
+    },
+    {
+      "file": "src/preflight/offline.py",
+      "name": "_fail",
+      "purpose": " fail",
+      "test_references": [],
+      "audit_base": "dbc4c1a",
+      "reviewer_role": "integration_engineer / gpt-5.6-sol high",
+      "limits": "Test reference presence is not function/branch execution proof."
+    },
+    {
+      "file": "src/preflight/offline.py",
+      "name": "_schema_versions",
+      "purpose": " schema versions",
+      "test_references": [],
+      "audit_base": "dbc4c1a",
+      "reviewer_role": "integration_engineer / gpt-5.6-sol high",
+      "limits": "Test reference presence is not function/branch execution proof."
+    },
+    {
+      "file": "src/preflight/offline.py",
+      "name": "_validate_manifest",
+      "purpose": " validate manifest",
+      "test_references": [],
+      "audit_base": "dbc4c1a",
+      "reviewer_role": "integration_engineer / gpt-5.6-sol high",
+      "limits": "Test reference presence is not function/branch execution proof."
+    },
+    {
+      "file": "src/preflight/offline.py",
+      "name": "verify_report",
+      "purpose": "Verify one bounded report without network, database, provider, or model access.",
+      "test_references": [],
+      "audit_base": "dbc4c1a",
+      "reviewer_role": "integration_engineer / gpt-5.6-sol high",
+      "limits": "Test reference presence is not function/branch execution proof."
+    },
+    {
+      "file": "src/preflight/offline.py",
+      "name": "main",
+      "purpose": "main",
+      "test_references": [],
+      "audit_base": "dbc4c1a",
+      "reviewer_role": "integration_engineer / gpt-5.6-sol high",
+      "limits": "Test reference presence is not function/branch execution proof."
+    },
+    {
+      "file": "src/preflight/cli.py",
+      "name": "doctor",
+      "purpose": "doctor",
+      "test_references": [],
+      "audit_base": "dbc4c1a",
+      "reviewer_role": "integration_engineer / gpt-5.6-sol high",
+      "limits": "Test reference presence is not function/branch execution proof."
+    },
+    {
+      "file": "src/preflight/cli.py",
+      "name": "intake",
+      "purpose": "intake",
+      "test_references": [],
+      "audit_base": "dbc4c1a",
+      "reviewer_role": "integration_engineer / gpt-5.6-sol high",
+      "limits": "Test reference presence is not function/branch execution proof."
+    },
+    {
+      "file": "src/preflight/cli.py",
+      "name": "serve",
+      "purpose": "serve",
+      "test_references": [],
+      "audit_base": "dbc4c1a",
+      "reviewer_role": "integration_engineer / gpt-5.6-sol high",
+      "limits": "Test reference presence is not function/branch execution proof."
+    },
+    {
+      "file": "src/preflight/cli.py",
+      "name": "verify_evidence",
+      "purpose": "verify evidence",
+      "test_references": [],
+      "audit_base": "dbc4c1a",
+      "reviewer_role": "integration_engineer / gpt-5.6-sol high",
+      "limits": "Test reference presence is not function/branch execution proof."
+    },
+    {
+      "file": "src/preflight/cli.py",
+      "name": "export_evidence",
+      "purpose": "export evidence",
+      "test_references": [],
+      "audit_base": "dbc4c1a",
+      "reviewer_role": "integration_engineer / gpt-5.6-sol high",
+      "limits": "Test reference presence is not function/branch execution proof."
+    },
+    {
+      "file": "src/preflight/cli.py",
+      "name": "verify_local",
+      "purpose": "verify local",
+      "test_references": [],
+      "audit_base": "dbc4c1a",
+      "reviewer_role": "integration_engineer / gpt-5.6-sol high",
+      "limits": "Test reference presence is not function/branch execution proof."
+    },
+    {
+      "file": "src/preflight/cli.py",
+      "name": "list_resources",
+      "purpose": "list resources",
+      "test_references": [],
+      "audit_base": "dbc4c1a",
+      "reviewer_role": "integration_engineer / gpt-5.6-sol high",
+      "limits": "Test reference presence is not function/branch execution proof."
+    },
+    {
+      "file": "scripts/generate_dependency_inventory.py",
+      "name": "file_sha256",
+      "purpose": "file sha256",
+      "test_references": [],
+      "audit_base": "dbc4c1a",
+      "reviewer_role": "integration_engineer / gpt-5.6-sol high",
+      "limits": "Test reference presence is not function/branch execution proof."
+    },
+    {
+      "file": "scripts/generate_dependency_inventory.py",
+      "name": "python_direct_names",
+      "purpose": "python direct names",
+      "test_references": [],
+      "audit_base": "dbc4c1a",
+      "reviewer_role": "integration_engineer / gpt-5.6-sol high",
+      "limits": "Test reference presence is not function/branch execution proof."
+    },
+    {
+      "file": "scripts/generate_dependency_inventory.py",
+      "name": "python_components",
+      "purpose": "python components",
+      "test_references": [],
+      "audit_base": "dbc4c1a",
+      "reviewer_role": "integration_engineer / gpt-5.6-sol high",
+      "limits": "Test reference presence is not function/branch execution proof."
+    },
+    {
+      "file": "scripts/generate_dependency_inventory.py",
+      "name": "npm_components",
+      "purpose": "npm components",
+      "test_references": [],
+      "audit_base": "dbc4c1a",
+      "reviewer_role": "integration_engineer / gpt-5.6-sol high",
+      "limits": "Test reference presence is not function/branch execution proof."
+    },
+    {
+      "file": "scripts/generate_dependency_inventory.py",
+      "name": "inventory",
+      "purpose": "inventory",
+      "test_references": [],
+      "audit_base": "dbc4c1a",
+      "reviewer_role": "integration_engineer / gpt-5.6-sol high",
+      "limits": "Test reference presence is not function/branch execution proof."
+    },
+    {
+      "file": "scripts/generate_dependency_inventory.py",
+      "name": "main",
+      "purpose": "main",
+      "test_references": [],
+      "audit_base": "dbc4c1a",
+      "reviewer_role": "integration_engineer / gpt-5.6-sol high",
+      "limits": "Test reference presence is not function/branch execution proof."
+    },
+    {
+      "file": "scripts/probe_gateway_responses.mjs",
+      "name": "SafeProbeError",
+      "purpose": "named JS probe/state/test behavior",
+      "test_references": [],
+      "audit_base": "dbc4c1a",
+      "reviewer_role": "integration_engineer / gpt-5.6-sol high",
+      "limits": "Test reference presence is not function/branch execution proof."
+    },
+    {
+      "file": "scripts/probe_gateway_responses.mjs",
+      "name": "fail",
+      "purpose": "named JS probe/state/test behavior",
+      "test_references": [],
+      "audit_base": "dbc4c1a",
+      "reviewer_role": "integration_engineer / gpt-5.6-sol high",
+      "limits": "Test reference presence is not function/branch execution proof."
+    },
+    {
+      "file": "scripts/probe_gateway_responses.mjs",
+      "name": "validateConfig",
+      "purpose": "named JS probe/state/test behavior",
+      "test_references": [],
+      "audit_base": "dbc4c1a",
+      "reviewer_role": "integration_engineer / gpt-5.6-sol high",
+      "limits": "Test reference presence is not function/branch execution proof."
+    },
+    {
+      "file": "scripts/probe_gateway_responses.mjs",
+      "name": "loadConfig",
+      "purpose": "named JS probe/state/test behavior",
+      "test_references": [],
+      "audit_base": "dbc4c1a",
+      "reviewer_role": "integration_engineer / gpt-5.6-sol high",
+      "limits": "Test reference presence is not function/branch execution proof."
+    },
+    {
+      "file": "scripts/probe_gateway_responses.mjs",
+      "name": "consume",
+      "purpose": "named JS probe/state/test behavior",
+      "test_references": [],
+      "audit_base": "dbc4c1a",
+      "reviewer_role": "integration_engineer / gpt-5.6-sol high",
+      "limits": "Test reference presence is not function/branch execution proof."
+    },
+    {
+      "file": "scripts/probe_gateway_responses.mjs",
+      "name": "providerFailure",
+      "purpose": "named JS probe/state/test behavior",
+      "test_references": [],
+      "audit_base": "dbc4c1a",
+      "reviewer_role": "integration_engineer / gpt-5.6-sol high",
+      "limits": "Test reference presence is not function/branch execution proof."
+    },
+    {
+      "file": "scripts/probe_gateway_responses.mjs",
+      "name": "execute",
+      "purpose": "named JS probe/state/test behavior",
+      "test_references": [],
+      "audit_base": "dbc4c1a",
+      "reviewer_role": "integration_engineer / gpt-5.6-sol high",
+      "limits": "Test reference presence is not function/branch execution proof."
+    },
+    {
+      "file": "scripts/probe_gateway_responses.mjs",
+      "name": "main",
+      "purpose": "named JS probe/state/test behavior",
+      "test_references": [],
+      "audit_base": "dbc4c1a",
+      "reviewer_role": "integration_engineer / gpt-5.6-sol high",
+      "limits": "Test reference presence is not function/branch execution proof."
+    },
+    {
+      "file": "scripts/probe_mcp.py",
+      "name": "serve",
+      "purpose": "serve",
+      "test_references": [],
+      "audit_base": "dbc4c1a",
+      "reviewer_role": "integration_engineer / gpt-5.6-sol high",
+      "limits": "Test reference presence is not function/branch execution proof."
+    },
+    {
+      "file": "scripts/probe_mcp.py",
+      "name": "status",
+      "purpose": "status",
+      "test_references": [],
+      "audit_base": "dbc4c1a",
+      "reviewer_role": "integration_engineer / gpt-5.6-sol high",
+      "limits": "Test reference presence is not function/branch execution proof."
+    },
+    {
+      "file": "scripts/probe_mcp.py",
+      "name": "probe",
+      "purpose": "probe",
+      "test_references": [],
+      "audit_base": "dbc4c1a",
+      "reviewer_role": "integration_engineer / gpt-5.6-sol high",
+      "limits": "Test reference presence is not function/branch execution proof."
+    },
+    {
+      "file": "scripts/probe_trueforge_config.py",
+      "name": "ConfigProbeError",
+      "purpose": "ConfigProbeError",
+      "test_references": [],
+      "audit_base": "dbc4c1a",
+      "reviewer_role": "integration_engineer / gpt-5.6-sol high",
+      "limits": "Test reference presence is not function/branch execution proof."
+    },
+    {
+      "file": "scripts/probe_trueforge_config.py",
+      "name": "_keys",
+      "purpose": " keys",
+      "test_references": [],
+      "audit_base": "dbc4c1a",
+      "reviewer_role": "integration_engineer / gpt-5.6-sol high",
+      "limits": "Test reference presence is not function/branch execution proof."
+    },
+    {
+      "file": "scripts/probe_trueforge_config.py",
+      "name": "validate_agent_config",
+      "purpose": "validate agent config",
+      "test_references": [],
+      "audit_base": "dbc4c1a",
+      "reviewer_role": "integration_engineer / gpt-5.6-sol high",
+      "limits": "Test reference presence is not function/branch execution proof."
+    },
+    {
+      "file": "scripts/probe_trueforge_config.py",
+      "name": "main",
+      "purpose": "main",
+      "test_references": [],
+      "audit_base": "dbc4c1a",
+      "reviewer_role": "integration_engineer / gpt-5.6-sol high",
+      "limits": "Test reference presence is not function/branch execution proof."
+    },
+    {
+      "file": "scripts/probe_trueforge_mcp_server.py",
+      "name": "main",
+      "purpose": "main",
+      "test_references": [],
+      "audit_base": "dbc4c1a",
+      "reviewer_role": "integration_engineer / gpt-5.6-sol high",
+      "limits": "Test reference presence is not function/branch execution proof."
+    },
+    {
+      "file": "scripts/probe_trueforge_mcp_server.py",
+      "name": "status",
+      "purpose": "status",
+      "test_references": [],
+      "audit_base": "dbc4c1a",
+      "reviewer_role": "integration_engineer / gpt-5.6-sol high",
+      "limits": "Test reference presence is not function/branch execution proof."
+    },
+    {
+      "file": "scripts/responses_stream_state.mjs",
+      "name": "requireEqual",
+      "purpose": "named JS probe/state/test behavior",
+      "test_references": [],
+      "audit_base": "dbc4c1a",
+      "reviewer_role": "integration_engineer / gpt-5.6-sol high",
+      "limits": "Test reference presence is not function/branch execution proof."
+    },
+    {
+      "file": "scripts/verify_distribution.py",
+      "name": "member_path",
+      "purpose": "member path",
+      "test_references": [],
+      "audit_base": "dbc4c1a",
+      "reviewer_role": "integration_engineer / gpt-5.6-sol high",
+      "limits": "Test reference presence is not function/branch execution proof."
+    },
+    {
+      "file": "scripts/verify_distribution.py",
+      "name": "inspect_source_members",
+      "purpose": "inspect source members",
+      "test_references": [],
+      "audit_base": "dbc4c1a",
+      "reviewer_role": "integration_engineer / gpt-5.6-sol high",
+      "limits": "Test reference presence is not function/branch execution proof."
+    },
+    {
+      "file": "scripts/verify_distribution.py",
+      "name": "inspect_wheel_members",
+      "purpose": "inspect wheel members",
+      "test_references": [],
+      "audit_base": "dbc4c1a",
+      "reviewer_role": "integration_engineer / gpt-5.6-sol high",
+      "limits": "Test reference presence is not function/branch execution proof."
+    },
+    {
+      "file": "scripts/verify_distribution.py",
+      "name": "main",
+      "purpose": "main",
+      "test_references": [],
+      "audit_base": "dbc4c1a",
+      "reviewer_role": "integration_engineer / gpt-5.6-sol high",
+      "limits": "Test reference presence is not function/branch execution proof."
+    },
+    {
+      "file": "tests/trueforge/conftest.py",
+      "name": "require_installed_trueforge_dependencies",
+      "purpose": "require installed trueforge dependencies",
+      "test_references": [],
+      "audit_base": "dbc4c1a",
+      "reviewer_role": "integration_engineer / gpt-5.6-sol high",
+      "limits": "Test reference presence is not function/branch execution proof."
+    },
+    {
+      "file": "tests/trueforge/test_config.py",
+      "name": "run_probe",
+      "purpose": "run probe",
+      "test_references": [],
+      "audit_base": "dbc4c1a",
+      "reviewer_role": "integration_engineer / gpt-5.6-sol high",
+      "limits": "Test reference presence is not function/branch execution proof."
+    },
+    {
+      "file": "tests/trueforge/test_config.py",
+      "name": "test_saved_agent_template_preserves_ten_tools_and_two_literal_gates",
+      "purpose": "test saved agent template preserves ten tools and two literal gates",
+      "test_references": [],
+      "audit_base": "dbc4c1a",
+      "reviewer_role": "integration_engineer / gpt-5.6-sol high",
+      "limits": "Test reference presence is not function/branch execution proof."
+    },
+    {
+      "file": "tests/trueforge/test_config.py",
+      "name": "test_deployment_validation_rejects_placeholder_model",
+      "purpose": "test deployment validation rejects placeholder model",
+      "test_references": [],
+      "audit_base": "dbc4c1a",
+      "reviewer_role": "integration_engineer / gpt-5.6-sol high",
+      "limits": "Test reference presence is not function/branch execution proof."
+    },
+    {
+      "file": "tests/trueforge/test_config.py",
+      "name": "test_config_probe_rejects_removed_literal_gate",
+      "purpose": "test config probe rejects removed literal gate",
+      "test_references": [],
+      "audit_base": "dbc4c1a",
+      "reviewer_role": "integration_engineer / gpt-5.6-sol high",
+      "limits": "Test reference presence is not function/branch execution proof."
+    },
+    {
+      "file": "tests/trueforge/test_dependency_inventory.py",
+      "name": "components",
+      "purpose": "components",
+      "test_references": [],
+      "audit_base": "dbc4c1a",
+      "reviewer_role": "integration_engineer / gpt-5.6-sol high",
+      "limits": "Test reference presence is not function/branch execution proof."
+    },
+    {
+      "file": "tests/trueforge/test_dependency_inventory.py",
+      "name": "test_inventory_records_project_pglast_and_trueforge_license_status",
+      "purpose": "test inventory records project pglast and trueforge license status",
+      "test_references": [],
+      "audit_base": "dbc4c1a",
+      "reviewer_role": "integration_engineer / gpt-5.6-sol high",
+      "limits": "Test reference presence is not function/branch execution proof."
+    },
+    {
+      "file": "tests/trueforge/test_dependency_inventory.py",
+      "name": "test_installed_dependency_inventory_is_current",
+      "purpose": "test installed dependency inventory is current",
+      "test_references": [],
+      "audit_base": "dbc4c1a",
+      "reviewer_role": "integration_engineer / gpt-5.6-sol high",
+      "limits": "Test reference presence is not function/branch execution proof."
+    },
+    {
+      "file": "tests/trueforge/test_gateway_probe.py",
+      "name": "test_responses_stream_state_machine",
+      "purpose": "test responses stream state machine",
+      "test_references": [],
+      "audit_base": "dbc4c1a",
+      "reviewer_role": "integration_engineer / gpt-5.6-sol high",
+      "limits": "Test reference presence is not function/branch execution proof."
+    },
+    {
+      "file": "tests/trueforge/test_gateway_probe.py",
+      "name": "test_probe_blocks_without_ignored_route_config",
+      "purpose": "test probe blocks without ignored route config",
+      "test_references": [],
+      "audit_base": "dbc4c1a",
+      "reviewer_role": "integration_engineer / gpt-5.6-sol high",
+      "limits": "Test reference presence is not function/branch execution proof."
+    },
+    {
+      "file": "tests/trueforge/test_gateway_probe.py",
+      "name": "test_probe_does_not_execute_without_explicit_flag",
+      "purpose": "test probe does not execute without explicit flag",
+      "test_references": [],
+      "audit_base": "dbc4c1a",
+      "reviewer_role": "integration_engineer / gpt-5.6-sol high",
+      "limits": "Test reference presence is not function/branch execution proof."
+    },
+    {
+      "file": "tests/trueforge/test_mcp_interop.py",
+      "name": "unused_port",
+      "purpose": "unused port",
+      "test_references": [],
+      "audit_base": "dbc4c1a",
+      "reviewer_role": "integration_engineer / gpt-5.6-sol high",
+      "limits": "Test reference presence is not function/branch execution proof."
+    },
+    {
+      "file": "tests/trueforge/test_mcp_interop.py",
+      "name": "wait_for_listener",
+      "purpose": "wait for listener",
+      "test_references": [],
+      "audit_base": "dbc4c1a",
+      "reviewer_role": "integration_engineer / gpt-5.6-sol high",
+      "limits": "Test reference presence is not function/branch execution proof."
+    },
+    {
+      "file": "tests/trueforge/test_mcp_interop.py",
+      "name": "test_trueforge_bundled_js_client_calls_python_mcp_2_2_0",
+      "purpose": "test trueforge bundled js client calls python mcp 2 2 0",
+      "test_references": [],
+      "audit_base": "dbc4c1a",
+      "reviewer_role": "integration_engineer / gpt-5.6-sol high",
+      "limits": "Test reference presence is not function/branch execution proof."
+    },
+    {
+      "file": "tests/trueforge/test_package.py",
+      "name": "test_trueforge_lock_is_exact_and_integrity_pinned",
+      "purpose": "test trueforge lock is exact and integrity pinned",
+      "test_references": [],
+      "audit_base": "dbc4c1a",
+      "reviewer_role": "integration_engineer / gpt-5.6-sol high",
+      "limits": "Test reference presence is not function/branch execution proof."
+    },
+    {
+      "file": "tests/trueforge/test_package.py",
+      "name": "test_local_package_probe_reports_resolved_versions",
+      "purpose": "test local package probe reports resolved versions",
+      "test_references": [],
+      "audit_base": "dbc4c1a",
+      "reviewer_role": "integration_engineer / gpt-5.6-sol high",
+      "limits": "Test reference presence is not function/branch execution proof."
+    },
+    {
+      "file": "tests/trueforge/test_responses_stream.mjs",
+      "name": "decodes one linked streamed status tool call",
+      "purpose": "named JS probe/state/test behavior",
+      "test_references": [],
+      "audit_base": "dbc4c1a",
+      "reviewer_role": "integration_engineer / gpt-5.6-sol high",
+      "limits": "Test reference presence is not function/branch execution proof."
+    },
+    {
+      "file": "tests/trueforge/test_responses_stream.mjs",
+      "name": "rejects changed call identity and malformed tool arguments",
+      "purpose": "named JS probe/state/test behavior",
+      "test_references": [],
+      "audit_base": "dbc4c1a",
+      "reviewer_role": "integration_engineer / gpt-5.6-sol high",
+      "limits": "Test reference presence is not function/branch execution proof."
+    },
+    {
+      "file": "tests/trueforge/test_responses_stream.mjs",
+      "name": "requires a completed continued final text response",
+      "purpose": "named JS probe/state/test behavior",
+      "test_references": [],
+      "audit_base": "dbc4c1a",
+      "reviewer_role": "integration_engineer / gpt-5.6-sol high",
+      "limits": "Test reference presence is not function/branch execution proof."
+    },
+    {
+      "file": "tests/unit/test_reports.py",
+      "name": "evidence",
+      "purpose": "evidence",
+      "test_references": [],
+      "audit_base": "dbc4c1a",
+      "reviewer_role": "integration_engineer / gpt-5.6-sol high",
+      "limits": "Test reference presence is not function/branch execution proof."
+    },
+    {
+      "file": "tests/unit/test_reports.py",
+      "name": "passing_payload",
+      "purpose": "passing payload",
+      "test_references": [],
+      "audit_base": "dbc4c1a",
+      "reviewer_role": "integration_engineer / gpt-5.6-sol high",
+      "limits": "Test reference presence is not function/branch execution proof."
+    },
+    {
+      "file": "tests/unit/test_reports.py",
+      "name": "report_bytes",
+      "purpose": "report bytes",
+      "test_references": [],
+      "audit_base": "dbc4c1a",
+      "reviewer_role": "integration_engineer / gpt-5.6-sol high",
+      "limits": "Test reference presence is not function/branch execution proof."
+    },
+    {
+      "file": "tests/unit/test_reports.py",
+      "name": "mutate_and_rehash",
+      "purpose": "mutate and rehash",
+      "test_references": [],
+      "audit_base": "dbc4c1a",
+      "reviewer_role": "integration_engineer / gpt-5.6-sol high",
+      "limits": "Test reference presence is not function/branch execution proof."
+    },
+    {
+      "file": "tests/unit/test_reports.py",
+      "name": "assert_error",
+      "purpose": "assert error",
+      "test_references": [],
+      "audit_base": "dbc4c1a",
+      "reviewer_role": "integration_engineer / gpt-5.6-sol high",
+      "limits": "Test reference presence is not function/branch execution proof."
+    },
+    {
+      "file": "tests/unit/test_reports.py",
+      "name": "test_seal_hashes_payload_only_and_verifier_labels_anchor",
+      "purpose": "test seal hashes payload only and verifier labels anchor",
+      "test_references": [],
+      "audit_base": "dbc4c1a",
+      "reviewer_role": "integration_engineer / gpt-5.6-sol high",
+      "limits": "Test reference presence is not function/branch execution proof."
+    },
+    {
+      "file": "tests/unit/test_reports.py",
+      "name": "test_seal_refuses_forged_pass_and_eligibility",
+      "purpose": "test seal refuses forged pass and eligibility",
+      "test_references": [],
+      "audit_base": "dbc4c1a",
+      "reviewer_role": "integration_engineer / gpt-5.6-sol high",
+      "limits": "Test reference presence is not function/branch execution proof."
+    },
+    {
+      "file": "tests/unit/test_reports.py",
+      "name": "test_seal_refuses_an_incomplete_requirement_manifest",
+      "purpose": "test seal refuses an incomplete requirement manifest",
+      "test_references": [],
+      "audit_base": "dbc4c1a",
+      "reviewer_role": "integration_engineer / gpt-5.6-sol high",
+      "limits": "Test reference presence is not function/branch execution proof."
+    },
+    {
+      "file": "tests/unit/test_reports.py",
+      "name": "test_seal_refuses_requirement_kind_category_or_role_id_mismatch",
+      "purpose": "test seal refuses requirement kind category or role id mismatch",
+      "test_references": [],
+      "audit_base": "dbc4c1a",
+      "reviewer_role": "integration_engineer / gpt-5.6-sol high",
+      "limits": "Test reference presence is not function/branch execution proof."
+    },
+    {
+      "file": "tests/unit/test_reports.py",
+      "name": "test_verifier_detects_old_hash_and_rehashed_anchor_tampering",
+      "purpose": "test verifier detects old hash and rehashed anchor tampering",
+      "test_references": [],
+      "audit_base": "dbc4c1a",
+      "reviewer_role": "integration_engineer / gpt-5.6-sol high",
+      "limits": "Test reference presence is not function/branch execution proof."
+    },
+    {
+      "file": "tests/unit/test_reports.py",
+      "name": "test_contradictory_aggregate_pass_is_block_and_rehash_cannot_retain_anchor",
+      "purpose": "test contradictory aggregate pass is block and rehash cannot retain anchor",
+      "test_references": [],
+      "audit_base": "dbc4c1a",
+      "reviewer_role": "integration_engineer / gpt-5.6-sol high",
+      "limits": "Test reference presence is not function/branch execution proof."
+    },
+    {
+      "file": "tests/unit/test_reports.py",
+      "name": "contradict",
+      "purpose": "contradict",
+      "test_references": [],
+      "audit_base": "dbc4c1a",
+      "reviewer_role": "integration_engineer / gpt-5.6-sol high",
+      "limits": "Test reference presence is not function/branch execution proof."
+    },
+    {
+      "file": "tests/unit/test_reports.py",
+      "name": "test_verifier_rejects_duplicate_keys_and_schema_failures",
+      "purpose": "test verifier rejects duplicate keys and schema failures",
+      "test_references": [],
+      "audit_base": "dbc4c1a",
+      "reviewer_role": "integration_engineer / gpt-5.6-sol high",
+      "limits": "Test reference presence is not function/branch execution proof."
+    },
+    {
+      "file": "tests/unit/test_reports.py",
+      "name": "test_verifier_rejects_missing_results_and_forged_pass",
+      "purpose": "test verifier rejects missing results and forged pass",
+      "test_references": [],
+      "audit_base": "dbc4c1a",
+      "reviewer_role": "integration_engineer / gpt-5.6-sol high",
+      "limits": "Test reference presence is not function/branch execution proof."
+    },
+    {
+      "file": "tests/unit/test_reports.py",
+      "name": "fail_check",
+      "purpose": "fail check",
+      "test_references": [],
+      "audit_base": "dbc4c1a",
+      "reviewer_role": "integration_engineer / gpt-5.6-sol high",
+      "limits": "Test reference presence is not function/branch execution proof."
+    },
+    {
+      "file": "tests/unit/test_reports.py",
+      "name": "test_valid_historical_block_is_verified_as_block",
+      "purpose": "test valid historical block is verified as block",
+      "test_references": [],
+      "audit_base": "dbc4c1a",
+      "reviewer_role": "integration_engineer / gpt-5.6-sol high",
+      "limits": "Test reference presence is not function/branch execution proof."
+    },
+    {
+      "file": "tests/unit/test_reports.py",
+      "name": "test_markdown_escapes_untrusted_content_and_is_deterministic",
+      "purpose": "test markdown escapes untrusted content and is deterministic",
+      "test_references": [],
+      "audit_base": "dbc4c1a",
+      "reviewer_role": "integration_engineer / gpt-5.6-sol high",
+      "limits": "Test reference presence is not function/branch execution proof."
+    },
+    {
+      "file": "tests/unit/test_reports.py",
+      "name": "test_offline_verifier_makes_no_network_call",
+      "purpose": "test offline verifier makes no network call",
+      "test_references": [],
+      "audit_base": "dbc4c1a",
+      "reviewer_role": "integration_engineer / gpt-5.6-sol high",
+      "limits": "Test reference presence is not function/branch execution proof."
+    },
+    {
+      "file": "tests/unit/test_reports.py",
+      "name": "forbidden",
+      "purpose": "forbidden",
+      "test_references": [],
+      "audit_base": "dbc4c1a",
+      "reviewer_role": "integration_engineer / gpt-5.6-sol high",
+      "limits": "Test reference presence is not function/branch execution proof."
+    },
+    {
+      "file": "tests/unit/test_distribution.py",
+      "name": "test_source_rejects_original_path_before_prefix_removal",
+      "purpose": "test source rejects original path before prefix removal",
+      "test_references": [],
+      "audit_base": "dbc4c1a",
+      "reviewer_role": "integration_engineer / gpt-5.6-sol high",
+      "limits": "Test reference presence is not function/branch execution proof."
+    },
+    {
+      "file": "tests/unit/test_distribution.py",
+      "name": "test_wheel_inspects_every_member",
+      "purpose": "test wheel inspects every member",
+      "test_references": [],
+      "audit_base": "dbc4c1a",
+      "reviewer_role": "integration_engineer / gpt-5.6-sol high",
+      "limits": "Test reference presence is not function/branch execution proof."
+    },
+    {
+      "file": "tests/unit/test_distribution.py",
+      "name": "test_wheel_duplicate_or_link_refused",
+      "purpose": "test wheel duplicate or link refused",
+      "test_references": [],
+      "audit_base": "dbc4c1a",
+      "reviewer_role": "integration_engineer / gpt-5.6-sol high",
+      "limits": "Test reference presence is not function/branch execution proof."
+    },
+    {
+      "file": "tests/unit/test_distribution.py",
+      "name": "test_source_duplicate_refused_and_root_example_supported",
+      "purpose": "test source duplicate refused and root example supported",
+      "test_references": [],
+      "audit_base": "dbc4c1a",
+      "reviewer_role": "integration_engineer / gpt-5.6-sol high",
+      "limits": "Test reference presence is not function/branch execution proof."
+    },
+    {
+      "file": "src/preflight/aws_rds.py",
+      "name": "CloudPolicy.__post_init__",
+      "purpose": "Validate account, region, owner, IDs, engine18, storage mode and hard count caps.",
+      "test_references": [
+        "test_rds.py",
+        "test_rds_reconciliation.py",
+        "test_inventory.py",
+        "test_storage.py"
+      ],
+      "audit_base": "dbc4c1a",
+      "reviewer_role": "adversarial_reviewer / gpt-6-sol high",
+      "limits": "Test reference presence is not function/branch execution proof."
+    },
+    {
+      "file": "src/preflight/aws_rds.py",
+      "name": "valid_id",
+      "purpose": "Validate RDS identifier grammar.",
+      "test_references": [
+        "test_rds.py",
+        "test_rds_reconciliation.py",
+        "test_inventory.py",
+        "test_storage.py"
+      ],
+      "audit_base": "dbc4c1a",
+      "reviewer_role": "adversarial_reviewer / gpt-6-sol high",
+      "limits": "Test reference presence is not function/branch execution proof."
+    },
+    {
+      "file": "src/preflight/aws_rds.py",
+      "name": "RdsAdapter.__init__",
+      "purpose": "Inject approved real clients; reject region mismatch; construct no clients at import.",
+      "test_references": [
+        "test_rds.py",
+        "test_rds_reconciliation.py",
+        "test_inventory.py",
+        "test_storage.py"
+      ],
+      "audit_base": "dbc4c1a",
+      "reviewer_role": "adversarial_reviewer / gpt-6-sol high",
+      "limits": "Test reference presence is not function/branch execution proof."
+    },
+    {
+      "file": "src/preflight/aws_rds.py",
+      "name": "RdsAdapter._resource_registry",
+      "purpose": "Parse all persisted intents and validate exact names/reservations.",
+      "test_references": [
+        "test_rds.py",
+        "test_rds_reconciliation.py",
+        "test_inventory.py",
+        "test_storage.py"
+      ],
+      "audit_base": "dbc4c1a",
+      "reviewer_role": "adversarial_reviewer / gpt-6-sol high",
+      "limits": "Test reference presence is not function/branch execution proof."
+    },
+    {
+      "file": "src/preflight/aws_rds.py",
+      "name": "RdsAdapter.owned_resource_inventory",
+      "purpose": "Bounded paginated Project/Owner inventory with fresh exact reads; safe metadata only; no adoption.",
+      "test_references": [
+        "test_rds.py",
+        "test_rds_reconciliation.py",
+        "test_inventory.py",
+        "test_storage.py"
+      ],
+      "audit_base": "dbc4c1a",
+      "reviewer_role": "adversarial_reviewer / gpt-6-sol high",
+      "limits": "Test reference presence is not function/branch execution proof."
+    },
+    {
+      "file": "src/preflight/aws_rds.py",
+      "name": "RdsAdapter._enforce_live_inventory",
+      "purpose": "Refuse unknown/released-present resources and union live/reserved counts before creation.",
+      "test_references": [
+        "test_rds.py",
+        "test_rds_reconciliation.py",
+        "test_inventory.py",
+        "test_storage.py"
+      ],
+      "audit_base": "dbc4c1a",
+      "reviewer_role": "adversarial_reviewer / gpt-6-sol high",
+      "limits": "Test reference presence is not function/branch execution proof."
+    },
+    {
+      "file": "src/preflight/aws_rds.py",
+      "name": "RdsAdapter._call",
+      "purpose": "Map AWS provider errors to fixed sanitized absence/retryable/uncertain/denial codes.",
+      "test_references": [
+        "test_rds.py",
+        "test_rds_reconciliation.py",
+        "test_inventory.py",
+        "test_storage.py"
+      ],
+      "audit_base": "dbc4c1a",
+      "reviewer_role": "adversarial_reviewer / gpt-6-sol high",
+      "limits": "Test reference presence is not function/branch execution proof."
+    },
+    {
+      "file": "src/preflight/aws_rds.py",
+      "name": "RdsAdapter._identity",
+      "purpose": "Require STS caller account equals approved account.",
+      "test_references": [
+        "test_rds.py",
+        "test_rds_reconciliation.py",
+        "test_inventory.py",
+        "test_storage.py"
+      ],
+      "audit_base": "dbc4c1a",
+      "reviewer_role": "adversarial_reviewer / gpt-6-sol high",
+      "limits": "Test reference presence is not function/branch execution proof."
+    },
+    {
+      "file": "src/preflight/aws_rds.py",
+      "name": "RdsAdapter._arn",
+      "purpose": "Require exact partition/account/region/type/identifier ARN.",
+      "test_references": [
+        "test_rds.py",
+        "test_rds_reconciliation.py",
+        "test_inventory.py",
+        "test_storage.py"
+      ],
+      "audit_base": "dbc4c1a",
+      "reviewer_role": "adversarial_reviewer / gpt-6-sol high",
+      "limits": "Test reference presence is not function/branch execution proof."
+    },
+    {
+      "file": "src/preflight/aws_rds.py",
+      "name": "RdsAdapter._tags",
+      "purpose": "Read exact ARN tags and reject duplicate keys.",
+      "test_references": [
+        "test_rds.py",
+        "test_rds_reconciliation.py",
+        "test_inventory.py",
+        "test_storage.py"
+      ],
+      "audit_base": "dbc4c1a",
+      "reviewer_role": "adversarial_reviewer / gpt-6-sol high",
+      "limits": "Test reference presence is not function/branch execution proof."
+    },
+    {
+      "file": "src/preflight/aws_rds.py",
+      "name": "RdsAdapter._owned",
+      "purpose": "Require all persisted run/owner/project/expiry tags.",
+      "test_references": [
+        "test_rds.py",
+        "test_rds_reconciliation.py",
+        "test_inventory.py",
+        "test_storage.py"
+      ],
+      "audit_base": "dbc4c1a",
+      "reviewer_role": "adversarial_reviewer / gpt-6-sol high",
+      "limits": "Test reference presence is not function/branch execution proof."
+    },
+    {
+      "file": "src/preflight/aws_rds.py",
+      "name": "RdsAdapter._intent",
+      "purpose": "Recompute full UUID resource names and validate aware expiry and reservation.",
+      "test_references": [
+        "test_rds.py",
+        "test_rds_reconciliation.py",
+        "test_inventory.py",
+        "test_storage.py"
+      ],
+      "audit_base": "dbc4c1a",
+      "reviewer_role": "adversarial_reviewer / gpt-6-sol high",
+      "limits": "Test reference presence is not function/branch execution proof."
+    },
+    {
+      "file": "src/preflight/aws_rds.py",
+      "name": "RdsAdapter._engine_encryption",
+      "purpose": "Require PostgreSQL18, encryption, approved KMS/storage mode.",
+      "test_references": [
+        "test_rds.py",
+        "test_rds_reconciliation.py",
+        "test_inventory.py",
+        "test_storage.py"
+      ],
+      "audit_base": "dbc4c1a",
+      "reviewer_role": "adversarial_reviewer / gpt-6-sol high",
+      "limits": "Test reference presence is not function/branch execution proof."
+    },
+    {
+      "file": "src/preflight/aws_rds.py",
+      "name": "RdsAdapter._instance",
+      "purpose": "Exact instance identity, private flag and exact configured subnet/SG set.",
+      "test_references": [
+        "test_rds.py",
+        "test_rds_reconciliation.py",
+        "test_inventory.py",
+        "test_storage.py"
+      ],
+      "audit_base": "dbc4c1a",
+      "reviewer_role": "adversarial_reviewer / gpt-6-sol high",
+      "limits": "Test reference presence is not function/branch execution proof."
+    },
+    {
+      "file": "src/preflight/aws_rds.py",
+      "name": "RdsAdapter._observation",
+      "purpose": "Allowlisted provider status and RDS endpoint suffix; retain safe observation fields.",
+      "test_references": [
+        "test_rds.py",
+        "test_rds_reconciliation.py",
+        "test_inventory.py",
+        "test_storage.py"
+      ],
+      "audit_base": "dbc4c1a",
+      "reviewer_role": "adversarial_reviewer / gpt-6-sol high",
+      "limits": "Test reference presence is not function/branch execution proof."
+    },
+    {
+      "file": "src/preflight/aws_rds.py",
+      "name": "RdsAdapter.inspect_source",
+      "purpose": "Exact source plus owned synthetic-purpose tags; source absence is distinct.",
+      "test_references": [
+        "test_rds.py",
+        "test_rds_reconciliation.py",
+        "test_inventory.py",
+        "test_storage.py"
+      ],
+      "audit_base": "dbc4c1a",
+      "reviewer_role": "adversarial_reviewer / gpt-6-sol high",
+      "limits": "Test reference presence is not function/branch execution proof."
+    },
+    {
+      "file": "src/preflight/aws_rds.py",
+      "name": "RdsAdapter._snapshot",
+      "purpose": "Exact manual snapshot, same account and source, approved engine/encryption/storage.",
+      "test_references": [
+        "test_rds.py",
+        "test_rds_reconciliation.py",
+        "test_inventory.py",
+        "test_storage.py"
+      ],
+      "audit_base": "dbc4c1a",
+      "reviewer_role": "adversarial_reviewer / gpt-6-sol high",
+      "limits": "Test reference presence is not function/branch execution proof."
+    },
+    {
+      "file": "src/preflight/aws_rds.py",
+      "name": "RdsAdapter.inspect_snapshot",
+      "purpose": "Exact run snapshot, account and complete ownership.",
+      "test_references": [
+        "test_rds.py",
+        "test_rds_reconciliation.py",
+        "test_inventory.py",
+        "test_storage.py"
+      ],
+      "audit_base": "dbc4c1a",
+      "reviewer_role": "adversarial_reviewer / gpt-6-sol high",
+      "limits": "Test reference presence is not function/branch execution proof."
+    },
+    {
+      "file": "src/preflight/aws_rds.py",
+      "name": "RdsAdapter.inspect_clone",
+      "purpose": "Exact clone, source-unequal endpoint and matching engine/KMS/storage/class; snapshot tag binds provenance.",
+      "test_references": [
+        "test_rds.py",
+        "test_rds_reconciliation.py",
+        "test_inventory.py",
+        "test_storage.py"
+      ],
+      "audit_base": "dbc4c1a",
+      "reviewer_role": "adversarial_reviewer / gpt-6-sol high",
+      "limits": "Test reference presence is not function/branch execution proof."
+    },
+    {
+      "file": "src/preflight/aws_rds.py",
+      "name": "RdsAdapter._creation",
+      "purpose": "Require explicit creation authorization and unreleased kind reservation.",
+      "test_references": [
+        "test_rds.py",
+        "test_rds_reconciliation.py",
+        "test_inventory.py",
+        "test_storage.py"
+      ],
+      "audit_base": "dbc4c1a",
+      "reviewer_role": "adversarial_reviewer / gpt-6-sol high",
+      "limits": "Test reference presence is not function/branch execution proof."
+    },
+    {
+      "file": "src/preflight/aws_rds.py",
+      "name": "RdsAdapter.ensure_snapshot",
+      "purpose": "Persisted intent/lease, reconcile same ID, inventory cap then create; fresh ownership reread.",
+      "test_references": [
+        "test_rds.py",
+        "test_rds_reconciliation.py",
+        "test_inventory.py",
+        "test_storage.py"
+      ],
+      "audit_base": "dbc4c1a",
+      "reviewer_role": "adversarial_reviewer / gpt-6-sol high",
+      "limits": "Test reference presence is not function/branch execution proof."
+    },
+    {
+      "file": "src/preflight/aws_rds.py",
+      "name": "RdsAdapter.ensure_clone",
+      "purpose": "Require available run snapshot, reconcile same clone, explicit private restore settings, fresh verification.",
+      "test_references": [
+        "test_rds.py",
+        "test_rds_reconciliation.py",
+        "test_inventory.py",
+        "test_storage.py"
+      ],
+      "audit_base": "dbc4c1a",
+      "reviewer_role": "adversarial_reviewer / gpt-6-sol high",
+      "limits": "Test reference presence is not function/branch execution proof."
+    },
+    {
+      "file": "src/preflight/aws_rds.py",
+      "name": "RdsAdapter.verify_recovery_snapshot",
+      "purpose": "Require independent equivalence callback plus same-source available backup older than apply boundary.",
+      "test_references": [
+        "test_rds.py",
+        "test_rds_reconciliation.py",
+        "test_inventory.py",
+        "test_storage.py"
+      ],
+      "audit_base": "dbc4c1a",
+      "reviewer_role": "adversarial_reviewer / gpt-6-sol high",
+      "limits": "Test reference presence is not function/branch execution proof."
+    },
+    {
+      "file": "src/preflight/aws_rds.py",
+      "name": "RdsAdapter.cleanup",
+      "purpose": "Literal server-derived gate, exact selections/state/reports/recovery, preflight all targets, lease then exact deletes.",
+      "test_references": [
+        "test_rds.py",
+        "test_rds_reconciliation.py",
+        "test_inventory.py",
+        "test_storage.py"
+      ],
+      "audit_base": "dbc4c1a",
+      "reviewer_role": "adversarial_reviewer / gpt-6-sol high",
+      "limits": "Test reference presence is not function/branch execution proof."
+    },
+    {
+      "file": "src/preflight/aws_rds.py",
+      "name": "RdsAdapter.observe_cleanup",
+      "purpose": "Read-only exact absence reconciliation; release only absent resource reservations.",
+      "test_references": [
+        "test_rds.py",
+        "test_rds_reconciliation.py",
+        "test_inventory.py",
+        "test_storage.py"
+      ],
+      "audit_base": "dbc4c1a",
+      "reviewer_role": "adversarial_reviewer / gpt-6-sol high",
+      "limits": "Test reference presence is not function/branch execution proof."
+    },
+    {
+      "file": "src/preflight/jobs.py",
+      "name": "ResourceIntent.for_run",
+      "purpose": "Generate stable full-UUID snapshot/clone names.",
+      "test_references": [
+        "test_jobs.py",
+        "test_inventory.py",
+        "test_rds_reconciliation.py"
+      ],
+      "audit_base": "dbc4c1a",
+      "reviewer_role": "adversarial_reviewer / gpt-6-sol high",
+      "limits": "Test reference presence is not function/branch execution proof."
+    },
+    {
+      "file": "src/preflight/jobs.py",
+      "name": "ResourceIntent.tags",
+      "purpose": "Generate explicit ownership/provenance metadata; values are not authorization.",
+      "test_references": [
+        "test_jobs.py",
+        "test_inventory.py",
+        "test_rds_reconciliation.py"
+      ],
+      "audit_base": "dbc4c1a",
+      "reviewer_role": "adversarial_reviewer / gpt-6-sol high",
+      "limits": "Test reference presence is not function/branch execution proof."
+    },
+    {
+      "file": "src/preflight/jobs.py",
+      "name": "JobStore.__init__",
+      "purpose": "Create persistent private-path SQLite job journal and shared file mutation lock.",
+      "test_references": [
+        "test_jobs.py",
+        "test_inventory.py",
+        "test_rds_reconciliation.py"
+      ],
+      "audit_base": "dbc4c1a",
+      "reviewer_role": "adversarial_reviewer / gpt-6-sol high",
+      "limits": "Test reference presence is not function/branch execution proof."
+    },
+    {
+      "file": "src/preflight/jobs.py",
+      "name": "JobStore._db",
+      "purpose": "SQLite WAL context with commit/rollback/close.",
+      "test_references": [
+        "test_jobs.py",
+        "test_inventory.py",
+        "test_rds_reconciliation.py"
+      ],
+      "audit_base": "dbc4c1a",
+      "reviewer_role": "adversarial_reviewer / gpt-6-sol high",
+      "limits": "Test reference presence is not function/branch execution proof."
+    },
+    {
+      "file": "src/preflight/jobs.py",
+      "name": "JobStore.enqueue",
+      "purpose": "Transactionally persist request/intent/deadline and reserve counts; conflicts and active/cap checks.",
+      "test_references": [
+        "test_jobs.py",
+        "test_inventory.py",
+        "test_rds_reconciliation.py"
+      ],
+      "audit_base": "dbc4c1a",
+      "reviewer_role": "adversarial_reviewer / gpt-6-sol high",
+      "limits": "Test reference presence is not function/branch execution proof."
+    },
+    {
+      "file": "src/preflight/jobs.py",
+      "name": "JobStore.get",
+      "purpose": "Fetch exact persisted job or fail JOB_NOT_FOUND.",
+      "test_references": [
+        "test_jobs.py",
+        "test_inventory.py",
+        "test_rds_reconciliation.py"
+      ],
+      "audit_base": "dbc4c1a",
+      "reviewer_role": "adversarial_reviewer / gpt-6-sol high",
+      "limits": "Test reference presence is not function/branch execution proof."
+    },
+    {
+      "file": "src/preflight/jobs.py",
+      "name": "JobStore.resource_registry",
+      "purpose": "Read all intents including retained/released resources.",
+      "test_references": [
+        "test_jobs.py",
+        "test_inventory.py",
+        "test_rds_reconciliation.py"
+      ],
+      "audit_base": "dbc4c1a",
+      "reviewer_role": "adversarial_reviewer / gpt-6-sol high",
+      "limits": "Test reference presence is not function/branch execution proof."
+    },
+    {
+      "file": "src/preflight/jobs.py",
+      "name": "JobStore.require_reservation",
+      "purpose": "Verify immutable intent and total configured reservation cap.",
+      "test_references": [
+        "test_jobs.py",
+        "test_inventory.py",
+        "test_rds_reconciliation.py"
+      ],
+      "audit_base": "dbc4c1a",
+      "reviewer_role": "adversarial_reviewer / gpt-6-sol high",
+      "limits": "Test reference presence is not function/branch execution proof."
+    },
+    {
+      "file": "src/preflight/jobs.py",
+      "name": "JobStore.release_reservation",
+      "purpose": "Reduce each count only from adapter-provided exact absence evidence.",
+      "test_references": [
+        "test_jobs.py",
+        "test_inventory.py",
+        "test_rds_reconciliation.py"
+      ],
+      "audit_base": "dbc4c1a",
+      "reviewer_role": "adversarial_reviewer / gpt-6-sol high",
+      "limits": "Test reference presence is not function/branch execution proof."
+    },
+    {
+      "file": "src/preflight/jobs.py",
+      "name": "JobStore.mutation_lease",
+      "purpose": "File-lock single cloud mutation owner and record lease metadata; no SQL.",
+      "test_references": [
+        "test_jobs.py",
+        "test_inventory.py",
+        "test_rds_reconciliation.py"
+      ],
+      "audit_base": "dbc4c1a",
+      "reviewer_role": "adversarial_reviewer / gpt-6-sol high",
+      "limits": "Test reference presence is not function/branch execution proof."
+    },
+    {
+      "file": "src/preflight/jobs.py",
+      "name": "JobStore.update",
+      "purpose": "Persist phase/status/error/poll count and bounded exponential next-poll timestamp.",
+      "test_references": [
+        "test_jobs.py",
+        "test_inventory.py",
+        "test_rds_reconciliation.py"
+      ],
+      "audit_base": "dbc4c1a",
+      "reviewer_role": "adversarial_reviewer / gpt-6-sol high",
+      "limits": "Test reference presence is not function/branch execution proof."
+    },
+    {
+      "file": "src/preflight/jobs.py",
+      "name": "tick_job",
+      "purpose": "One bounded job tick under shared mutation lease; no SQL.",
+      "test_references": [
+        "test_jobs.py",
+        "test_inventory.py",
+        "test_rds_reconciliation.py"
+      ],
+      "audit_base": "dbc4c1a",
+      "reviewer_role": "adversarial_reviewer / gpt-6-sol high",
+      "limits": "Test reference presence is not function/branch execution proof."
+    },
+    {
+      "file": "src/preflight/jobs.py",
+      "name": "_tick_job",
+      "purpose": "Honor terminal phase/backoff/deadline; snapshot/restore same IDs; retain uncertain/error reservations.",
+      "test_references": [
+        "test_jobs.py",
+        "test_inventory.py",
+        "test_rds_reconciliation.py"
+      ],
+      "audit_base": "dbc4c1a",
+      "reviewer_role": "adversarial_reviewer / gpt-6-sol high",
+      "limits": "Test reference presence is not function/branch execution proof."
+    },
+    {
+      "file": "infra/bootstrap.py",
+      "name": "canonical",
+      "purpose": "Sorted finite canonical JSON bytes for digest.",
+      "test_references": [
+        "test_bootstrap.py",
+        "test_bootstrap_driver.py"
+      ],
+      "audit_base": "dbc4c1a",
+      "reviewer_role": "adversarial_reviewer / gpt-6-sol high",
+      "limits": "Test reference presence is not function/branch execution proof."
+    },
+    {
+      "file": "infra/bootstrap.py",
+      "name": "make_plan",
+      "purpose": "Build digest-bound resource/count/spend policy; retain NOT_OBSERVED pricing and NOT_RUN identity.",
+      "test_references": [
+        "test_bootstrap.py",
+        "test_bootstrap_driver.py"
+      ],
+      "audit_base": "dbc4c1a",
+      "reviewer_role": "adversarial_reviewer / gpt-6-sol high",
+      "limits": "Test reference presence is not function/branch execution proof."
+    },
+    {
+      "file": "infra/bootstrap.py",
+      "name": "verify_apply_scope",
+      "purpose": "Rebuild exact canonical plan and require separately digest/account/region/operator/spend-bound approval.",
+      "test_references": [
+        "test_bootstrap.py",
+        "test_bootstrap_driver.py"
+      ],
+      "audit_base": "dbc4c1a",
+      "reviewer_role": "adversarial_reviewer / gpt-6-sol high",
+      "limits": "Test reference presence is not function/branch execution proof."
+    },
+    {
+      "file": "infra/bootstrap.py",
+      "name": "read_json",
+      "purpose": "Parse dictionary with duplicate-key/nonfinite rejection; no secret output.",
+      "test_references": [
+        "test_bootstrap.py",
+        "test_bootstrap_driver.py"
+      ],
+      "audit_base": "dbc4c1a",
+      "reviewer_role": "adversarial_reviewer / gpt-6-sol high",
+      "limits": "Test reference presence is not function/branch execution proof."
+    },
+    {
+      "file": "infra/bootstrap.py",
+      "name": "read_json.unique",
+      "purpose": "Nested parser helper; reviewed in containing function.",
+      "test_references": [
+        "test_bootstrap.py",
+        "test_bootstrap_driver.py"
+      ],
+      "audit_base": "dbc4c1a",
+      "reviewer_role": "adversarial_reviewer / gpt-6-sol high",
+      "limits": "Test reference presence is not function/branch execution proof."
+    },
+    {
+      "file": "infra/bootstrap.py",
+      "name": "main",
+      "purpose": "CLI plan file or approved bootstrap; sanitize expected input errors.",
+      "test_references": [
+        "test_bootstrap.py",
+        "test_bootstrap_driver.py"
+      ],
+      "audit_base": "dbc4c1a",
+      "reviewer_role": "adversarial_reviewer / gpt-6-sol high",
+      "limits": "Test reference presence is not function/branch execution proof."
+    },
+    {
+      "file": "infra/cloud_bootstrap.py",
+      "name": "BootstrapDriver.__init__",
+      "purpose": "Verify approval/deployment shape and initialize bootstrap/cloud journals.",
+      "test_references": [
+        "test_bootstrap_driver.py",
+        "test_prerequisites.py"
+      ],
+      "audit_base": "dbc4c1a",
+      "reviewer_role": "adversarial_reviewer / gpt-6-sol high",
+      "limits": "Test reference presence is not function/branch execution proof."
+    },
+    {
+      "file": "infra/cloud_bootstrap.py",
+      "name": "BootstrapDriver._db",
+      "purpose": "Transactional persistent bootstrap SQLite journal.",
+      "test_references": [
+        "test_bootstrap_driver.py",
+        "test_prerequisites.py"
+      ],
+      "audit_base": "dbc4c1a",
+      "reviewer_role": "adversarial_reviewer / gpt-6-sol high",
+      "limits": "Test reference presence is not function/branch execution proof."
+    },
+    {
+      "file": "infra/cloud_bootstrap.py",
+      "name": "BootstrapDriver.call",
+      "purpose": "Sanitize provider denial/absence/uncertain bootstrap outcomes.",
+      "test_references": [
+        "test_bootstrap_driver.py",
+        "test_prerequisites.py"
+      ],
+      "audit_base": "dbc4c1a",
+      "reviewer_role": "adversarial_reviewer / gpt-6-sol high",
+      "limits": "Test reference presence is not function/branch execution proof."
+    },
+    {
+      "file": "infra/cloud_bootstrap.py",
+      "name": "BootstrapDriver.identity",
+      "purpose": "Check account and all regional client regions before bootstrap effects.",
+      "test_references": [
+        "test_bootstrap_driver.py",
+        "test_prerequisites.py"
+      ],
+      "audit_base": "dbc4c1a",
+      "reviewer_role": "adversarial_reviewer / gpt-6-sol high",
+      "limits": "Test reference presence is not function/branch execution proof."
+    },
+    {
+      "file": "infra/cloud_bootstrap.py",
+      "name": "BootstrapDriver.validate_prerequisites",
+      "purpose": "Read existing IAM/trust/policy digest, named secret metadata, VPC/subnet/SG and AMI; no mutations.",
+      "test_references": [
+        "test_bootstrap_driver.py",
+        "test_prerequisites.py"
+      ],
+      "audit_base": "dbc4c1a",
+      "reviewer_role": "adversarial_reviewer / gpt-6-sol high",
+      "limits": "Test reference presence is not function/branch execution proof."
+    },
+    {
+      "file": "infra/cloud_bootstrap.py",
+      "name": "BootstrapDriver.tags",
+      "purpose": "Generate explicit ownership/provenance metadata; values are not authorization.",
+      "test_references": [
+        "test_bootstrap_driver.py",
+        "test_prerequisites.py"
+      ],
+      "audit_base": "dbc4c1a",
+      "reviewer_role": "adversarial_reviewer / gpt-6-sol high",
+      "limits": "Test reference presence is not function/branch execution proof."
+    },
+    {
+      "file": "infra/cloud_bootstrap.py",
+      "name": "BootstrapDriver.source",
+      "purpose": "Reconcile exact approved source or create explicit private/encrypted managed-master RDS; verify returned scope.",
+      "test_references": [
+        "test_bootstrap_driver.py",
+        "test_prerequisites.py"
+      ],
+      "audit_base": "dbc4c1a",
+      "reviewer_role": "adversarial_reviewer / gpt-6-sol high",
+      "limits": "Test reference presence is not function/branch execution proof."
+    },
+    {
+      "file": "infra/cloud_bootstrap.py",
+      "name": "BootstrapDriver.host",
+      "purpose": "Reconcile selected host/client token or create one EC2 with IMDSv2 and requested encrypted retained EBS.",
+      "test_references": [
+        "test_bootstrap_driver.py",
+        "test_prerequisites.py"
+      ],
+      "audit_base": "dbc4c1a",
+      "reviewer_role": "adversarial_reviewer / gpt-6-sol high",
+      "limits": "Test reference presence is not function/branch execution proof."
+    },
+    {
+      "file": "infra/cloud_bootstrap.py",
+      "name": "BootstrapDriver.run",
+      "purpose": "Single lease, prerequisite check, durable plan intent and source/host cap; return observed status, DB readiness NOT_RUN.",
+      "test_references": [
+        "test_bootstrap_driver.py",
+        "test_prerequisites.py"
+      ],
+      "audit_base": "dbc4c1a",
+      "reviewer_role": "adversarial_reviewer / gpt-6-sol high",
+      "limits": "Test reference presence is not function/branch execution proof."
+    },
+    {
+      "file": "infra/cloud_bootstrap.py",
+      "name": "execute_bootstrap",
+      "purpose": "Verify scope before constructing real Boto clients; execute approved driver.",
+      "test_references": [
+        "test_bootstrap_driver.py",
+        "test_prerequisites.py"
+      ],
+      "audit_base": "dbc4c1a",
+      "reviewer_role": "adversarial_reviewer / gpt-6-sol high",
+      "limits": "Test reference presence is not function/branch execution proof."
+    },
+    {
+      "file": "infra/prerequisites.py",
+      "name": "validate_runtime_documents",
+      "purpose": "Reject actions/resource scopes outside narrow allowlist and unsafe KMS grants; does not assert completeness/tag conditions.",
+      "test_references": [
+        "test_prerequisites.py",
+        "test_bootstrap_driver.py"
+      ],
+      "audit_base": "dbc4c1a",
+      "reviewer_role": "adversarial_reviewer / gpt-6-sol high",
+      "limits": "Test reference presence is not function/branch execution proof."
+    },
+    {
+      "file": "infra/prerequisites.py",
+      "name": "validate_role_trust",
+      "purpose": "Require same-account role ARN and only EC2 AssumeRole principal.",
+      "test_references": [
+        "test_prerequisites.py",
+        "test_bootstrap_driver.py"
+      ],
+      "audit_base": "dbc4c1a",
+      "reviewer_role": "adversarial_reviewer / gpt-6-sol high",
+      "limits": "Test reference presence is not function/branch execution proof."
+    },
+    {
+      "file": "infra/prerequisites.py",
+      "name": "validate_security_groups",
+      "purpose": "Separate host/DB SGs in exact VPC; DB only5432 from host/no egress; host only narrow SSH ingress.",
+      "test_references": [
+        "test_prerequisites.py",
+        "test_bootstrap_driver.py"
+      ],
+      "audit_base": "dbc4c1a",
+      "reviewer_role": "adversarial_reviewer / gpt-6-sol high",
+      "limits": "Test reference presence is not function/branch execution proof."
+    },
+    {
+      "file": "tests/cloud/test_bootstrap.py",
+      "name": "inputs",
+      "purpose": "Local test fixture/stub/helper; never connected AWS evidence.",
+      "test_references": [],
+      "audit_base": "dbc4c1a",
+      "reviewer_role": "adversarial_reviewer / gpt-6-sol high",
+      "limits": "Test reference presence is not function/branch execution proof."
+    },
+    {
+      "file": "tests/cloud/test_bootstrap.py",
+      "name": "approval",
+      "purpose": "Local test fixture/stub/helper; never connected AWS evidence.",
+      "test_references": [],
+      "audit_base": "dbc4c1a",
+      "reviewer_role": "adversarial_reviewer / gpt-6-sol high",
+      "limits": "Test reference presence is not function/branch execution proof."
+    },
+    {
+      "file": "tests/cloud/test_bootstrap.py",
+      "name": "test_saved_plan_is_exact_and_does_not_infer_observations",
+      "purpose": "Executable local assertion: test_saved_plan_is_exact_and_does_not_infer_observations",
+      "test_references": [],
+      "audit_base": "dbc4c1a",
+      "reviewer_role": "adversarial_reviewer / gpt-6-sol high",
+      "limits": "Test reference presence is not function/branch execution proof."
+    },
+    {
+      "file": "tests/cloud/test_bootstrap.py",
+      "name": "test_unknown_or_unsafe_plan_fields_rejected",
+      "purpose": "Executable local assertion: test_unknown_or_unsafe_plan_fields_rejected",
+      "test_references": [],
+      "audit_base": "dbc4c1a",
+      "reviewer_role": "adversarial_reviewer / gpt-6-sol high",
+      "limits": "Test reference presence is not function/branch execution proof."
+    },
+    {
+      "file": "tests/cloud/test_bootstrap.py",
+      "name": "test_duplicate_input_keys_rejected",
+      "purpose": "Executable local assertion: test_duplicate_input_keys_rejected",
+      "test_references": [],
+      "audit_base": "dbc4c1a",
+      "reviewer_role": "adversarial_reviewer / gpt-6-sol high",
+      "limits": "Test reference presence is not function/branch execution proof."
+    },
+    {
+      "file": "tests/cloud/test_bootstrap_driver.py",
+      "name": "driver",
+      "purpose": "Local test fixture/stub/helper; never connected AWS evidence.",
+      "test_references": [],
+      "audit_base": "dbc4c1a",
+      "reviewer_role": "adversarial_reviewer / gpt-6-sol high",
+      "limits": "Test reference presence is not function/branch execution proof."
+    },
+    {
+      "file": "tests/cloud/test_bootstrap_driver.py",
+      "name": "identity",
+      "purpose": "Local test fixture/stub/helper; never connected AWS evidence.",
+      "test_references": [],
+      "audit_base": "dbc4c1a",
+      "reviewer_role": "adversarial_reviewer / gpt-6-sol high",
+      "limits": "Test reference presence is not function/branch execution proof."
+    },
+    {
+      "file": "tests/cloud/test_bootstrap_driver.py",
+      "name": "test_source_create_explicit_encrypted_private_managed_master_no_reset",
+      "purpose": "Executable local assertion: test_source_create_explicit_encrypted_private_managed_master_no_reset",
+      "test_references": [],
+      "audit_base": "dbc4c1a",
+      "reviewer_role": "adversarial_reviewer / gpt-6-sol high",
+      "limits": "Test reference presence is not function/branch execution proof."
+    },
+    {
+      "file": "tests/cloud/test_bootstrap_driver.py",
+      "name": "test_host_create_single_token_imds_and_encrypted_persistent_disk",
+      "purpose": "Executable local assertion: test_host_create_single_token_imds_and_encrypted_persistent_disk",
+      "test_references": [],
+      "audit_base": "dbc4c1a",
+      "reviewer_role": "adversarial_reviewer / gpt-6-sol high",
+      "limits": "Test reference presence is not function/branch execution proof."
+    },
+    {
+      "file": "tests/cloud/test_bootstrap_driver.py",
+      "name": "test_missing_scope_does_not_construct_clients",
+      "purpose": "Executable local assertion: test_missing_scope_does_not_construct_clients",
+      "test_references": [],
+      "audit_base": "dbc4c1a",
+      "reviewer_role": "adversarial_reviewer / gpt-6-sol high",
+      "limits": "Test reference presence is not function/branch execution proof."
+    },
+    {
+      "file": "tests/cloud/test_bootstrap_driver.py",
+      "name": "test_wrong_account_no_mutations",
+      "purpose": "Executable local assertion: test_wrong_account_no_mutations",
+      "test_references": [],
+      "audit_base": "dbc4c1a",
+      "reviewer_role": "adversarial_reviewer / gpt-6-sol high",
+      "limits": "Test reference presence is not function/branch execution proof."
+    },
+    {
+      "file": "tests/cloud/test_bootstrap_driver.py",
+      "name": "test_runtime_admin_policy_refused",
+      "purpose": "Executable local assertion: test_runtime_admin_policy_refused",
+      "test_references": [],
+      "audit_base": "dbc4c1a",
+      "reviewer_role": "adversarial_reviewer / gpt-6-sol high",
+      "limits": "Test reference presence is not function/branch execution proof."
+    },
+    {
+      "file": "tests/cloud/test_inventory.py",
+      "name": "mapping",
+      "purpose": "Local test fixture/stub/helper; never connected AWS evidence.",
+      "test_references": [],
+      "audit_base": "dbc4c1a",
+      "reviewer_role": "adversarial_reviewer / gpt-6-sol high",
+      "limits": "Test reference presence is not function/branch execution proof."
+    },
+    {
+      "file": "tests/cloud/test_inventory.py",
+      "name": "snapshot_read",
+      "purpose": "Local test fixture/stub/helper; never connected AWS evidence.",
+      "test_references": [],
+      "audit_base": "dbc4c1a",
+      "reviewer_role": "adversarial_reviewer / gpt-6-sol high",
+      "limits": "Test reference presence is not function/branch execution proof."
+    },
+    {
+      "file": "tests/cloud/test_inventory.py",
+      "name": "test_inventory_pages_fresh_safe_ids_and_unknown_doctor",
+      "purpose": "Executable local assertion: test_inventory_pages_fresh_safe_ids_and_unknown_doctor",
+      "test_references": [],
+      "audit_base": "dbc4c1a",
+      "reviewer_role": "adversarial_reviewer / gpt-6-sol high",
+      "limits": "Test reference presence is not function/branch execution proof."
+    },
+    {
+      "file": "tests/cloud/test_inventory.py",
+      "name": "test_new_database_cannot_create_with_unknown_owned_snapshot_below_cap",
+      "purpose": "Executable local assertion: test_new_database_cannot_create_with_unknown_owned_snapshot_below_cap",
+      "test_references": [],
+      "audit_base": "dbc4c1a",
+      "reviewer_role": "adversarial_reviewer / gpt-6-sol high",
+      "limits": "Test reference presence is not function/branch execution proof."
+    },
+    {
+      "file": "tests/cloud/test_inventory.py",
+      "name": "test_unknown_owned_clone_refuses_restore",
+      "purpose": "Executable local assertion: test_unknown_owned_clone_refuses_restore",
+      "test_references": [],
+      "audit_base": "dbc4c1a",
+      "reviewer_role": "adversarial_reviewer / gpt-6-sol high",
+      "limits": "Test reference presence is not function/branch execution proof."
+    },
+    {
+      "file": "tests/cloud/test_inventory.py",
+      "name": "test_snapshot_notfound_but_inventory_present_reconcile_no_create",
+      "purpose": "Executable local assertion: test_snapshot_notfound_but_inventory_present_reconcile_no_create",
+      "test_references": [],
+      "audit_base": "dbc4c1a",
+      "reviewer_role": "adversarial_reviewer / gpt-6-sol high",
+      "limits": "Test reference presence is not function/branch execution proof."
+    },
+    {
+      "file": "tests/cloud/test_inventory.py",
+      "name": "test_stale_tag_index_absence_not_counted_or_adopted",
+      "purpose": "Executable local assertion: test_stale_tag_index_absence_not_counted_or_adopted",
+      "test_references": [],
+      "audit_base": "dbc4c1a",
+      "reviewer_role": "adversarial_reviewer / gpt-6-sol high",
+      "limits": "Test reference presence is not function/branch execution proof."
+    },
+    {
+      "file": "tests/cloud/test_inventory.py",
+      "name": "test_incomplete_or_cyclic_pagination_refuses",
+      "purpose": "Executable local assertion: test_incomplete_or_cyclic_pagination_refuses",
+      "test_references": [],
+      "audit_base": "dbc4c1a",
+      "reviewer_role": "adversarial_reviewer / gpt-6-sol high",
+      "limits": "Test reference presence is not function/branch execution proof."
+    },
+    {
+      "file": "tests/cloud/test_inventory.py",
+      "name": "test_cross_account_mapping_never_described",
+      "purpose": "Executable local assertion: test_cross_account_mapping_never_described",
+      "test_references": [],
+      "audit_base": "dbc4c1a",
+      "reviewer_role": "adversarial_reviewer / gpt-6-sol high",
+      "limits": "Test reference presence is not function/branch execution proof."
+    },
+    {
+      "file": "tests/cloud/test_inventory.py",
+      "name": "test_released_reservation_live_resource_refuses_creation",
+      "purpose": "Executable local assertion: test_released_reservation_live_resource_refuses_creation",
+      "test_references": [],
+      "audit_base": "dbc4c1a",
+      "reviewer_role": "adversarial_reviewer / gpt-6-sol high",
+      "limits": "Test reference presence is not function/branch execution proof."
+    },
+    {
+      "file": "tests/cloud/test_inventory.py",
+      "name": "test_missing_tagging_client_refuses_creation",
+      "purpose": "Executable local assertion: test_missing_tagging_client_refuses_creation",
+      "test_references": [],
+      "audit_base": "dbc4c1a",
+      "reviewer_role": "adversarial_reviewer / gpt-6-sol high",
+      "limits": "Test reference presence is not function/branch execution proof."
+    },
+    {
+      "file": "tests/cloud/test_inventory.py",
+      "name": "test_read_only_cleanup_keeps_retained_snapshot_reservation_for_new_run",
+      "purpose": "Executable local assertion: test_read_only_cleanup_keeps_retained_snapshot_reservation_for_new_run",
+      "test_references": [],
+      "audit_base": "dbc4c1a",
+      "reviewer_role": "adversarial_reviewer / gpt-6-sol high",
+      "limits": "Test reference presence is not function/branch execution proof."
+    },
+    {
+      "file": "tests/cloud/test_inventory.py",
+      "name": "test_expired_job_retains_counts_does_not_delete",
+      "purpose": "Executable local assertion: test_expired_job_retains_counts_does_not_delete",
+      "test_references": [],
+      "audit_base": "dbc4c1a",
+      "reviewer_role": "adversarial_reviewer / gpt-6-sol high",
+      "limits": "Test reference presence is not function/branch execution proof."
+    },
+    {
+      "file": "tests/cloud/test_jobs.py",
+      "name": "enqueue",
+      "purpose": "Local test fixture/stub/helper; never connected AWS evidence.",
+      "test_references": [],
+      "audit_base": "dbc4c1a",
+      "reviewer_role": "adversarial_reviewer / gpt-6-sol high",
+      "limits": "Test reference presence is not function/branch execution proof."
+    },
+    {
+      "file": "tests/cloud/test_jobs.py",
+      "name": "test_restart_durable_request_and_caps",
+      "purpose": "Executable local assertion: test_restart_durable_request_and_caps",
+      "test_references": [],
+      "audit_base": "dbc4c1a",
+      "reviewer_role": "adversarial_reviewer / gpt-6-sol high",
+      "limits": "Test reference presence is not function/branch execution proof."
+    },
+    {
+      "file": "tests/cloud/test_jobs.py",
+      "name": "test_single_mutation_lease",
+      "purpose": "Executable local assertion: test_single_mutation_lease",
+      "test_references": [],
+      "audit_base": "dbc4c1a",
+      "reviewer_role": "adversarial_reviewer / gpt-6-sol high",
+      "limits": "Test reference presence is not function/branch execution proof."
+    },
+    {
+      "file": "tests/cloud/test_jobs.py",
+      "name": "UnitAdapter.__init__",
+      "purpose": "Local test fixture/stub/helper; never connected AWS evidence.",
+      "test_references": [],
+      "audit_base": "dbc4c1a",
+      "reviewer_role": "adversarial_reviewer / gpt-6-sol high",
+      "limits": "Test reference presence is not function/branch execution proof."
+    },
+    {
+      "file": "tests/cloud/test_jobs.py",
+      "name": "UnitAdapter.ensure_snapshot",
+      "purpose": "Local test fixture/stub/helper; never connected AWS evidence.",
+      "test_references": [],
+      "audit_base": "dbc4c1a",
+      "reviewer_role": "adversarial_reviewer / gpt-6-sol high",
+      "limits": "Test reference presence is not function/branch execution proof."
+    },
+    {
+      "file": "tests/cloud/test_jobs.py",
+      "name": "UnitAdapter.ensure_clone",
+      "purpose": "Local test fixture/stub/helper; never connected AWS evidence.",
+      "test_references": [],
+      "audit_base": "dbc4c1a",
+      "reviewer_role": "adversarial_reviewer / gpt-6-sol high",
+      "limits": "Test reference presence is not function/branch execution proof."
+    },
+    {
+      "file": "tests/cloud/test_jobs.py",
+      "name": "test_tick_available_is_not_database_ready_and_poll_is_read_only",
+      "purpose": "Executable local assertion: test_tick_available_is_not_database_ready_and_poll_is_read_only",
+      "test_references": [],
+      "audit_base": "dbc4c1a",
+      "reviewer_role": "adversarial_reviewer / gpt-6-sol high",
+      "limits": "Test reference presence is not function/branch execution proof."
+    },
+    {
+      "file": "tests/cloud/test_jobs.py",
+      "name": "test_ambiguous_or_throttled_keep_same_intent",
+      "purpose": "Executable local assertion: test_ambiguous_or_throttled_keep_same_intent",
+      "test_references": [],
+      "audit_base": "dbc4c1a",
+      "reviewer_role": "adversarial_reviewer / gpt-6-sol high",
+      "limits": "Test reference presence is not function/branch execution proof."
+    },
+    {
+      "file": "tests/cloud/test_jobs.py",
+      "name": "Denied.ensure_snapshot",
+      "purpose": "Local test fixture/stub/helper; never connected AWS evidence.",
+      "test_references": [],
+      "audit_base": "dbc4c1a",
+      "reviewer_role": "adversarial_reviewer / gpt-6-sol high",
+      "limits": "Test reference presence is not function/branch execution proof."
+    },
+    {
+      "file": "tests/cloud/test_jobs.py",
+      "name": "test_job_failure_retains_exact_cleanup_names",
+      "purpose": "Executable local assertion: test_job_failure_retains_exact_cleanup_names",
+      "test_references": [],
+      "audit_base": "dbc4c1a",
+      "reviewer_role": "adversarial_reviewer / gpt-6-sol high",
+      "limits": "Test reference presence is not function/branch execution proof."
+    },
+    {
+      "file": "tests/cloud/test_jobs.py",
+      "name": "Denied.ensure_snapshot",
+      "purpose": "Local test fixture/stub/helper; never connected AWS evidence.",
+      "test_references": [],
+      "audit_base": "dbc4c1a",
+      "reviewer_role": "adversarial_reviewer / gpt-6-sol high",
+      "limits": "Test reference presence is not function/branch execution proof."
+    },
+    {
+      "file": "tests/cloud/test_prerequisites.py",
+      "name": "groups",
+      "purpose": "Local test fixture/stub/helper; never connected AWS evidence.",
+      "test_references": [],
+      "audit_base": "dbc4c1a",
+      "reviewer_role": "adversarial_reviewer / gpt-6-sol high",
+      "limits": "Test reference presence is not function/branch execution proof."
+    },
+    {
+      "file": "tests/cloud/test_prerequisites.py",
+      "name": "document",
+      "purpose": "Local test fixture/stub/helper; never connected AWS evidence.",
+      "test_references": [],
+      "audit_base": "dbc4c1a",
+      "reviewer_role": "adversarial_reviewer / gpt-6-sol high",
+      "limits": "Test reference presence is not function/branch execution proof."
+    },
+    {
+      "file": "tests/cloud/test_prerequisites.py",
+      "name": "stub_prerequisites",
+      "purpose": "Local test fixture/stub/helper; never connected AWS evidence.",
+      "test_references": [],
+      "audit_base": "dbc4c1a",
+      "reviewer_role": "adversarial_reviewer / gpt-6-sol high",
+      "limits": "Test reference presence is not function/branch execution proof."
+    },
+    {
+      "file": "tests/cloud/test_prerequisites.py",
+      "name": "test_private_host_public_service_rule_refused_before_mutation",
+      "purpose": "Executable local assertion: test_private_host_public_service_rule_refused_before_mutation",
+      "test_references": [],
+      "audit_base": "dbc4c1a",
+      "reviewer_role": "adversarial_reviewer / gpt-6-sol high",
+      "limits": "Test reference presence is not function/branch execution proof."
+    },
+    {
+      "file": "tests/cloud/test_prerequisites.py",
+      "name": "test_private_host_and_db_prerequisite_reads_pass",
+      "purpose": "Executable local assertion: test_private_host_and_db_prerequisite_reads_pass",
+      "test_references": [],
+      "audit_base": "dbc4c1a",
+      "reviewer_role": "adversarial_reviewer / gpt-6-sol high",
+      "limits": "Test reference presence is not function/branch execution proof."
+    },
+    {
+      "file": "tests/cloud/test_prerequisites.py",
+      "name": "test_network_exact_prerequisite_guards",
+      "purpose": "Executable local assertion: test_network_exact_prerequisite_guards",
+      "test_references": [],
+      "audit_base": "dbc4c1a",
+      "reviewer_role": "adversarial_reviewer / gpt-6-sol high",
+      "limits": "Test reference presence is not function/branch execution proof."
+    },
+    {
+      "file": "tests/cloud/test_prerequisites.py",
+      "name": "test_runtime_role_cannot_have_bootstrap_or_unrelated_targets",
+      "purpose": "Executable local assertion: test_runtime_role_cannot_have_bootstrap_or_unrelated_targets",
+      "test_references": [],
+      "audit_base": "dbc4c1a",
+      "reviewer_role": "adversarial_reviewer / gpt-6-sol high",
+      "limits": "Test reference presence is not function/branch execution proof."
+    },
+    {
+      "file": "tests/cloud/test_prerequisites.py",
+      "name": "test_runtime_role_trust_cannot_admit_external_principal",
+      "purpose": "Executable local assertion: test_runtime_role_trust_cannot_admit_external_principal",
+      "test_references": [],
+      "audit_base": "dbc4c1a",
+      "reviewer_role": "adversarial_reviewer / gpt-6-sol high",
+      "limits": "Test reference presence is not function/branch execution proof."
+    },
+    {
+      "file": "tests/cloud/test_rds.py",
+      "name": "cloud",
+      "purpose": "Local test fixture/stub/helper; never connected AWS evidence.",
+      "test_references": [],
+      "audit_base": "dbc4c1a",
+      "reviewer_role": "adversarial_reviewer / gpt-6-sol high",
+      "limits": "Test reference presence is not function/branch execution proof."
+    },
+    {
+      "file": "tests/cloud/test_rds.py",
+      "name": "Harness.__init__",
+      "purpose": "Local test fixture/stub/helper; never connected AWS evidence.",
+      "test_references": [],
+      "audit_base": "dbc4c1a",
+      "reviewer_role": "adversarial_reviewer / gpt-6-sol high",
+      "limits": "Test reference presence is not function/branch execution proof."
+    },
+    {
+      "file": "tests/cloud/test_rds.py",
+      "name": "Harness.inventory",
+      "purpose": "Local test fixture/stub/helper; never connected AWS evidence.",
+      "test_references": [],
+      "audit_base": "dbc4c1a",
+      "reviewer_role": "adversarial_reviewer / gpt-6-sol high",
+      "limits": "Test reference presence is not function/branch execution proof."
+    },
+    {
+      "file": "tests/cloud/test_rds.py",
+      "name": "Harness.identity",
+      "purpose": "Local test fixture/stub/helper; never connected AWS evidence.",
+      "test_references": [],
+      "audit_base": "dbc4c1a",
+      "reviewer_role": "adversarial_reviewer / gpt-6-sol high",
+      "limits": "Test reference presence is not function/branch execution proof."
+    },
+    {
+      "file": "tests/cloud/test_rds.py",
+      "name": "Harness.instance",
+      "purpose": "Local test fixture/stub/helper; never connected AWS evidence.",
+      "test_references": [],
+      "audit_base": "dbc4c1a",
+      "reviewer_role": "adversarial_reviewer / gpt-6-sol high",
+      "limits": "Test reference presence is not function/branch execution proof."
+    },
+    {
+      "file": "tests/cloud/test_rds.py",
+      "name": "Harness.snapshot",
+      "purpose": "Local test fixture/stub/helper; never connected AWS evidence.",
+      "test_references": [],
+      "audit_base": "dbc4c1a",
+      "reviewer_role": "adversarial_reviewer / gpt-6-sol high",
+      "limits": "Test reference presence is not function/branch execution proof."
+    },
+    {
+      "file": "tests/cloud/test_rds.py",
+      "name": "Harness.tags",
+      "purpose": "Local test fixture/stub/helper; never connected AWS evidence.",
+      "test_references": [],
+      "audit_base": "dbc4c1a",
+      "reviewer_role": "adversarial_reviewer / gpt-6-sol high",
+      "limits": "Test reference presence is not function/branch execution proof."
+    },
+    {
+      "file": "tests/cloud/test_rds.py",
+      "name": "Harness.source",
+      "purpose": "Local test fixture/stub/helper; never connected AWS evidence.",
+      "test_references": [],
+      "audit_base": "dbc4c1a",
+      "reviewer_role": "adversarial_reviewer / gpt-6-sol high",
+      "limits": "Test reference presence is not function/branch execution proof."
+    },
+    {
+      "file": "tests/cloud/test_rds.py",
+      "name": "Harness.snap_read",
+      "purpose": "Local test fixture/stub/helper; never connected AWS evidence.",
+      "test_references": [],
+      "audit_base": "dbc4c1a",
+      "reviewer_role": "adversarial_reviewer / gpt-6-sol high",
+      "limits": "Test reference presence is not function/branch execution proof."
+    },
+    {
+      "file": "tests/cloud/test_rds.py",
+      "name": "Harness.clone_read",
+      "purpose": "Local test fixture/stub/helper; never connected AWS evidence.",
+      "test_references": [],
+      "audit_base": "dbc4c1a",
+      "reviewer_role": "adversarial_reviewer / gpt-6-sol high",
+      "limits": "Test reference presence is not function/branch execution proof."
+    },
+    {
+      "file": "tests/cloud/test_rds.py",
+      "name": "Harness.absent_snapshot",
+      "purpose": "Local test fixture/stub/helper; never connected AWS evidence.",
+      "test_references": [],
+      "audit_base": "dbc4c1a",
+      "reviewer_role": "adversarial_reviewer / gpt-6-sol high",
+      "limits": "Test reference presence is not function/branch execution proof."
+    },
+    {
+      "file": "tests/cloud/test_rds.py",
+      "name": "Harness.absent_clone",
+      "purpose": "Local test fixture/stub/helper; never connected AWS evidence.",
+      "test_references": [],
+      "audit_base": "dbc4c1a",
+      "reviewer_role": "adversarial_reviewer / gpt-6-sol high",
+      "limits": "Test reference presence is not function/branch execution proof."
+    },
+    {
+      "file": "tests/cloud/test_rds.py",
+      "name": "cleanup",
+      "purpose": "Local test fixture/stub/helper; never connected AWS evidence.",
+      "test_references": [],
+      "audit_base": "dbc4c1a",
+      "reviewer_role": "adversarial_reviewer / gpt-6-sol high",
+      "limits": "Test reference presence is not function/branch execution proof."
+    },
+    {
+      "file": "tests/cloud/test_rds.py",
+      "name": "test_source_exact_owned_private_identity",
+      "purpose": "Executable local assertion: test_source_exact_owned_private_identity",
+      "test_references": [],
+      "audit_base": "dbc4c1a",
+      "reviewer_role": "adversarial_reviewer / gpt-6-sol high",
+      "limits": "Test reference presence is not function/branch execution proof."
+    },
+    {
+      "file": "tests/cloud/test_rds.py",
+      "name": "test_wrong_account_before_resource_call",
+      "purpose": "Executable local assertion: test_wrong_account_before_resource_call",
+      "test_references": [],
+      "audit_base": "dbc4c1a",
+      "reviewer_role": "adversarial_reviewer / gpt-6-sol high",
+      "limits": "Test reference presence is not function/branch execution proof."
+    },
+    {
+      "file": "tests/cloud/test_rds.py",
+      "name": "test_source_negative_before_tags",
+      "purpose": "Executable local assertion: test_source_negative_before_tags",
+      "test_references": [],
+      "audit_base": "dbc4c1a",
+      "reviewer_role": "adversarial_reviewer / gpt-6-sol high",
+      "limits": "Test reference presence is not function/branch execution proof."
+    },
+    {
+      "file": "tests/cloud/test_rds.py",
+      "name": "test_creation_not_authorized_no_calls",
+      "purpose": "Executable local assertion: test_creation_not_authorized_no_calls",
+      "test_references": [],
+      "audit_base": "dbc4c1a",
+      "reviewer_role": "adversarial_reviewer / gpt-6-sol high",
+      "limits": "Test reference presence is not function/branch execution proof."
+    },
+    {
+      "file": "tests/cloud/test_rds.py",
+      "name": "test_snapshot_create_exact_reconciled_once",
+      "purpose": "Executable local assertion: test_snapshot_create_exact_reconciled_once",
+      "test_references": [],
+      "audit_base": "dbc4c1a",
+      "reviewer_role": "adversarial_reviewer / gpt-6-sol high",
+      "limits": "Test reference presence is not function/branch execution proof."
+    },
+    {
+      "file": "tests/cloud/test_rds.py",
+      "name": "test_restore_private_exact_args_then_restart_reconciles",
+      "purpose": "Executable local assertion: test_restore_private_exact_args_then_restart_reconciles",
+      "test_references": [],
+      "audit_base": "dbc4c1a",
+      "reviewer_role": "adversarial_reviewer / gpt-6-sol high",
+      "limits": "Test reference presence is not function/branch execution proof."
+    },
+    {
+      "file": "tests/cloud/test_rds.py",
+      "name": "test_provider_message_sanitized",
+      "purpose": "Executable local assertion: test_provider_message_sanitized",
+      "test_references": [],
+      "audit_base": "dbc4c1a",
+      "reviewer_role": "adversarial_reviewer / gpt-6-sol high",
+      "limits": "Test reference presence is not function/branch execution proof."
+    },
+    {
+      "file": "tests/cloud/test_rds.py",
+      "name": "test_snapshot_collision_wrong_owner_blocks",
+      "purpose": "Executable local assertion: test_snapshot_collision_wrong_owner_blocks",
+      "test_references": [],
+      "audit_base": "dbc4c1a",
+      "reviewer_role": "adversarial_reviewer / gpt-6-sol high",
+      "limits": "Test reference presence is not function/branch execution proof."
+    },
+    {
+      "file": "tests/cloud/test_rds.py",
+      "name": "test_cleanup_static_refusals_no_aws",
+      "purpose": "Executable local assertion: test_cleanup_static_refusals_no_aws",
+      "test_references": [],
+      "audit_base": "dbc4c1a",
+      "reviewer_role": "adversarial_reviewer / gpt-6-sol high",
+      "limits": "Test reference presence is not function/branch execution proof."
+    },
+    {
+      "file": "tests/cloud/test_rds.py",
+      "name": "test_delete_exact_clone_then_observe_absence",
+      "purpose": "Executable local assertion: test_delete_exact_clone_then_observe_absence",
+      "test_references": [],
+      "audit_base": "dbc4c1a",
+      "reviewer_role": "adversarial_reviewer / gpt-6-sol high",
+      "limits": "Test reference presence is not function/branch execution proof."
+    },
+    {
+      "file": "tests/cloud/test_rds.py",
+      "name": "test_preflight_all_selections_before_any_delete",
+      "purpose": "Executable local assertion: test_preflight_all_selections_before_any_delete",
+      "test_references": [],
+      "audit_base": "dbc4c1a",
+      "reviewer_role": "adversarial_reviewer / gpt-6-sol high",
+      "limits": "Test reference presence is not function/branch execution proof."
+    },
+    {
+      "file": "tests/cloud/test_rds.py",
+      "name": "test_source_apply_attempt_retains_backup_without_independent_attestation",
+      "purpose": "Executable local assertion: test_source_apply_attempt_retains_backup_without_independent_attestation",
+      "test_references": [],
+      "audit_base": "dbc4c1a",
+      "reviewer_role": "adversarial_reviewer / gpt-6-sol high",
+      "limits": "Test reference presence is not function/branch execution proof."
+    },
+    {
+      "file": "tests/cloud/test_rds.py",
+      "name": "test_verified_preapply_independent_backup",
+      "purpose": "Executable local assertion: test_verified_preapply_independent_backup",
+      "test_references": [],
+      "audit_base": "dbc4c1a",
+      "reviewer_role": "adversarial_reviewer / gpt-6-sol high",
+      "limits": "Test reference presence is not function/branch execution proof."
+    },
+    {
+      "file": "tests/cloud/test_rds_reconciliation.py",
+      "name": "test_snapshot_deletion_exact_owned_resource",
+      "purpose": "Executable local assertion: test_snapshot_deletion_exact_owned_resource",
+      "test_references": [],
+      "audit_base": "dbc4c1a",
+      "reviewer_role": "adversarial_reviewer / gpt-6-sol high",
+      "limits": "Test reference presence is not function/branch execution proof."
+    },
+    {
+      "file": "tests/cloud/test_rds_reconciliation.py",
+      "name": "test_lost_snapshot_response_reconciles_no_duplicate",
+      "purpose": "Executable local assertion: test_lost_snapshot_response_reconciles_no_duplicate",
+      "test_references": [],
+      "audit_base": "dbc4c1a",
+      "reviewer_role": "adversarial_reviewer / gpt-6-sol high",
+      "limits": "Test reference presence is not function/branch execution proof."
+    },
+    {
+      "file": "tests/cloud/test_rds_reconciliation.py",
+      "name": "test_lost_snapshot_response_reconciles_no_duplicate.uncertain",
+      "purpose": "Local test fixture/stub/helper; never connected AWS evidence.",
+      "test_references": [],
+      "audit_base": "dbc4c1a",
+      "reviewer_role": "adversarial_reviewer / gpt-6-sol high",
+      "limits": "Test reference presence is not function/branch execution proof."
+    },
+    {
+      "file": "tests/cloud/test_rds_reconciliation.py",
+      "name": "test_throttle_is_sanitized_retryable",
+      "purpose": "Executable local assertion: test_throttle_is_sanitized_retryable",
+      "test_references": [],
+      "audit_base": "dbc4c1a",
+      "reviewer_role": "adversarial_reviewer / gpt-6-sol high",
+      "limits": "Test reference presence is not function/branch execution proof."
+    },
+    {
+      "file": "tests/cloud/test_rds_reconciliation.py",
+      "name": "test_cleanup_observation_frees_only_proven_absence",
+      "purpose": "Executable local assertion: test_cleanup_observation_frees_only_proven_absence",
+      "test_references": [],
+      "audit_base": "dbc4c1a",
+      "reviewer_role": "adversarial_reviewer / gpt-6-sol high",
+      "limits": "Test reference presence is not function/branch execution proof."
+    },
+    {
+      "file": "tests/cloud/test_rds_reconciliation.py",
+      "name": "test_missing_source_is_not_absent_clone",
+      "purpose": "Executable local assertion: test_missing_source_is_not_absent_clone",
+      "test_references": [],
+      "audit_base": "dbc4c1a",
+      "reviewer_role": "adversarial_reviewer / gpt-6-sol high",
+      "limits": "Test reference presence is not function/branch execution proof."
+    },
+    {
+      "file": "tests/cloud/test_storage.py",
+      "name": "test_unsupported_or_unapproved_storage_refused",
+      "purpose": "Executable local assertion: test_unsupported_or_unapproved_storage_refused",
+      "test_references": [],
+      "audit_base": "dbc4c1a",
+      "reviewer_role": "adversarial_reviewer / gpt-6-sol high",
+      "limits": "Test reference presence is not function/branch execution proof."
+    },
+    {
+      "file": "tests/cloud/test_storage.py",
+      "name": "test_snapshot_magnetic_storage_refused",
+      "purpose": "Executable local assertion: test_snapshot_magnetic_storage_refused",
+      "test_references": [],
+      "audit_base": "dbc4c1a",
+      "reviewer_role": "adversarial_reviewer / gpt-6-sol high",
+      "limits": "Test reference presence is not function/branch execution proof."
+    },
+    {
+      "file": "tests/cloud/test_storage.py",
+      "name": "test_source_observation_records_real_mode",
+      "purpose": "Executable local assertion: test_source_observation_records_real_mode",
+      "test_references": [],
+      "audit_base": "dbc4c1a",
+      "reviewer_role": "adversarial_reviewer / gpt-6-sol high",
+      "limits": "Test reference presence is not function/branch execution proof."
+    }
+  ]
+}
