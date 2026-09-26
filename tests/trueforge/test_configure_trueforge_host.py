@@ -44,15 +44,30 @@ class _TrueForgeHandler(BaseHTTPRequestHandler):
     def do_PUT(self) -> None:
         body = self._body()
         self.requests.append(("PUT", self.path, body))
+        if self.path not in {
+            "/api/v1/settings/sandbox-providers",
+            "/api/v1/settings/model-providers",
+            "/api/v1/settings/mcp-servers",
+        } and not self.path.startswith("/api/v1/agents/"):
+            self._reply(404, {"error": {"message": "not found"}})
+            return
         self._reply(200, {"data": {}})
 
     def do_GET(self) -> None:
         self.requests.append(("GET", self.path, None))
         if self.path == "/api/v1/mcp-servers/preflight/tools":
             module = _load_module()
-            self._reply(200, {"data": [{"name": name} for name in module.EXPECTED_TOOLS]})
+            self._reply(
+                200,
+                {
+                    "data": [
+                        {"name": name, "inputSchema": {"description": "x" * 2_000}}
+                        for name in module.EXPECTED_TOOLS
+                    ]
+                },
+            )
             return
-        if self.path.startswith("/api/v1/agents/?"):
+        if self.path.startswith("/api/v1/agents?"):
             self._reply(200, {"data": [], "pagination": {"next_page_token": None}})
             return
         self._reply(404, {"error": {"message": "not found"}})
@@ -60,6 +75,9 @@ class _TrueForgeHandler(BaseHTTPRequestHandler):
     def do_POST(self) -> None:
         body = self._body()
         self.requests.append(("POST", self.path, body))
+        if self.path != "/api/v1/agents":
+            self._reply(404, {"error": {"message": "not found"}})
+            return
         self._reply(201, {"data": {"id": "agent-local-test"}})
 
 
@@ -147,8 +165,8 @@ def test_provider_mcp_stage_continues_without_daytona_and_stops_before_agent(
     assert output["sandbox"] == "NOT_RUN"
     assert output["agent"] == "NOT_RUN"
     assert [item[:2] for item in requests] == [
-        ("PUT", "/api/v1/settings/model-providers/"),
-        ("PUT", "/api/v1/settings/mcp-servers/"),
+        ("PUT", "/api/v1/settings/model-providers"),
+        ("PUT", "/api/v1/settings/mcp-servers"),
         ("GET", "/api/v1/mcp-servers/preflight/tools"),
     ]
 
@@ -186,12 +204,12 @@ def test_execute_sends_exact_safe_manifests_without_running_tools(
     assert output["model_turns"] == 0
 
     assert [item[:2] for item in requests] == [
-        ("PUT", "/api/v1/settings/sandbox-providers/"),
-        ("PUT", "/api/v1/settings/model-providers/"),
-        ("PUT", "/api/v1/settings/mcp-servers/"),
+        ("PUT", "/api/v1/settings/sandbox-providers"),
+        ("PUT", "/api/v1/settings/model-providers"),
+        ("PUT", "/api/v1/settings/mcp-servers"),
         ("GET", "/api/v1/mcp-servers/preflight/tools"),
-        ("GET", "/api/v1/agents/?agent_name=preflight&limit=100"),
-        ("POST", "/api/v1/agents/"),
+        ("GET", "/api/v1/agents?agent_name=preflight&limit=100"),
+        ("POST", "/api/v1/agents"),
     ]
     provider = requests[1][2]
     assert provider is not None

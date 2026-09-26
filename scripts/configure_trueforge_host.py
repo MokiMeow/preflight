@@ -39,7 +39,8 @@ EXPECTED_TOOLS = (
     "cleanup_run",
 )
 APPROVAL_TOOLS = ("apply_to_demo_source", "cleanup_run")
-MAX_JSON_BYTES = 16_384
+MAX_SECRET_JSON_BYTES = 16_384
+MAX_RESPONSE_BYTES = 1_048_576
 
 
 class BootstrapError(Exception):
@@ -67,7 +68,7 @@ def _load_json(path: Path, error_prefix: str) -> dict[str, Any]:
         raise BootstrapError(f"{error_prefix}_MISSING", 4) from error
     except OSError as error:
         raise BootstrapError(f"{error_prefix}_UNAVAILABLE", 4) from error
-    if len(raw) > MAX_JSON_BYTES:
+    if len(raw) > MAX_SECRET_JSON_BYTES:
         raise BootstrapError(f"{error_prefix}_TOO_LARGE")
     try:
         text = raw.decode("utf-8", errors="strict")
@@ -177,12 +178,12 @@ class TrueForgeClient:
             with urlopen(request, timeout=self.timeout_seconds) as response:
                 if response.status != expected_status:
                     raise BootstrapError(f"TRUEFORGE_HTTP_{response.status}", 5)
-                raw = response.read(MAX_JSON_BYTES + 1)
+                raw = response.read(MAX_RESPONSE_BYTES + 1)
         except HTTPError as error:
             raise BootstrapError(f"TRUEFORGE_HTTP_{error.code}", 5) from error
         except (URLError, TimeoutError, OSError) as error:
             raise BootstrapError("TRUEFORGE_UNAVAILABLE", 5) from error
-        if len(raw) > MAX_JSON_BYTES:
+        if len(raw) > MAX_RESPONSE_BYTES:
             raise BootstrapError("TRUEFORGE_RESPONSE_TOO_LARGE", 5)
         try:
             value = json.loads(raw.decode("utf-8", errors="strict"))
@@ -249,7 +250,7 @@ def _verify_tools(response: dict[str, Any]) -> None:
 
 def _save_agent(client: TrueForgeClient, payload: dict[str, Any]) -> tuple[str, str]:
     query = urlencode({"agent_name": "preflight", "limit": 100})
-    listed = client.request("GET", f"/api/v1/agents/?{query}")
+    listed = client.request("GET", f"/api/v1/agents?{query}")
     data = listed.get("data")
     if not isinstance(data, list):
         raise BootstrapError("AGENT_LIST_INVALID", 5)
@@ -257,7 +258,7 @@ def _save_agent(client: TrueForgeClient, payload: dict[str, Any]) -> tuple[str, 
     if len(exact) > 1:
         raise BootstrapError("AGENT_NAME_AMBIGUOUS", 5)
     if not exact:
-        saved = client.request("POST", "/api/v1/agents/", body=payload, expected_status=201)
+        saved = client.request("POST", "/api/v1/agents", body=payload, expected_status=201)
         action = "created"
     else:
         agent_id = exact[0].get("id")
@@ -319,12 +320,12 @@ def execute(args: argparse.Namespace) -> dict[str, Any]:
     completed: list[str] = []
     if daytona_key is not None:
         client.request(
-            "PUT", "/api/v1/settings/sandbox-providers/", body=_sandbox_body(daytona_key)
+            "PUT", "/api/v1/settings/sandbox-providers", body=_sandbox_body(daytona_key)
         )
         completed.append("daytona")
-    client.request("PUT", "/api/v1/settings/model-providers/", body=_provider_body(gateway_key))
+    client.request("PUT", "/api/v1/settings/model-providers", body=_provider_body(gateway_key))
     completed.append("model_provider")
-    client.request("PUT", "/api/v1/settings/mcp-servers/", body=_mcp_body())
+    client.request("PUT", "/api/v1/settings/mcp-servers", body=_mcp_body())
     completed.append("mcp_connector")
     tools = client.request("GET", "/api/v1/mcp-servers/preflight/tools")
     _verify_tools(tools)
