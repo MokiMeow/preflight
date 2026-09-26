@@ -102,8 +102,8 @@ class RehearsalService:
                 claimed = True
             with self.lock(run_id or tool):
                 data = getattr(self, tool)(model)
-            state = self.store.get_run(run_id)["phase"] if run_id else None
             result_id = run_id or data.get("run_id")
+            state = self.store.get_run(result_id)["phase"] if result_id else None
             result = ToolEnvelope(
                 ok=True,
                 request_id=model.request_id,

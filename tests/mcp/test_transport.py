@@ -50,6 +50,12 @@ def test_ten_flat_strict_schemas_structured_error_and_no_source_write(tmp_path):
                 assert data["ok"] is False
                 assert data["error_code"] == "RUN_NOT_FOUND"
                 assert by_name["apply_to_demo_source"].annotations.destructive_hint is True
+                sentinel = "privacy-sentinel-secret-value"
+                invalid = await client.call_tool(
+                    "get_run", {"request_id": sentinel, "run_id": str(uuid4()), "unknown": sentinel}
+                )
+                assert invalid.structured_content["error_code"] == "INVALID_INPUT"
+                assert sentinel not in str(invalid)
 
         asyncio.run(check())
     finally:

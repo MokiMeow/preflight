@@ -1,7 +1,11 @@
 """Full service causal chain on real disposable PG; never AWS/human-gate proof."""
 
+import asyncio
 import base64
 import os
+import socket
+import threading
+import time
 from contextlib import contextmanager
 from pathlib import Path
 from uuid import uuid4
@@ -14,6 +18,84 @@ from preflight.artifacts import sha256
 from preflight.config import Settings
 from preflight.models import PreflightError
 from preflight.service import RehearsalService
+
+
+def test_real_http_mcp_bad_revision_good_report(service_pair, contract):
+    """Real HTTP/SDK/SQL vertical flow; locally provisioned DBs, no RDS claim."""
+    import uvicorn
+    from mcp import Client
+
+    from preflight.server import make_server
+
+    service, runtime = service_pair
+    with socket.socket() as sock:
+        sock.bind(("127.0.0.1", 0))
+        port = sock.getsockname()[1]
+    http = uvicorn.Server(
+        uvicorn.Config(
+            make_server(service).streamable_http_app(),
+            host="127.0.0.1",
+            port=port,
+            log_level="critical",
+            access_log=False,
+        )
+    )
+    thread = threading.Thread(target=http.run, daemon=True)
+    thread.start()
+    try:
+        deadline = time.monotonic() + 10
+        while not http.started:
+            assert thread.is_alive() and time.monotonic() < deadline
+            time.sleep(0.02)
+
+        async def scenario():
+            async with Client(f"http://127.0.0.1:{port}/mcp") as client:
+
+                async def tool(name, **args):
+                    result = await client.call_tool(name, {"request_id": str(uuid4()), **args})
+                    assert result.structured_content["ok"], result.structured_content
+                    return result.structured_content["data"]
+
+                async def candidate(filename, **extra):
+                    raw = Path(filename).read_bytes()
+                    return await tool(
+                        "register_candidate",
+                        sql_utf8_b64=base64.b64encode(raw).decode(),
+                        expected_migration_sha256=sha256(raw),
+                        contract=contract.model_dump(mode="json"),
+                        operator_id="test-operator",
+                        **extra,
+                    )
+
+                bad = await candidate("fixtures/bad.sql")
+                run_id = ready_run(service, bad)
+                await tool("capture_baseline", run_id=run_id)
+                migrated = await tool(
+                    "apply_to_clone", run_id=run_id, candidate_id=bad["candidate_id"]
+                )
+                assert migrated["transaction"]["outcome"] == "rolled_back"
+                failed = await tool("validate_rehearsal", run_id=run_id)
+                assert failed["verdict"] == "BLOCK"
+                good = await candidate(
+                    "fixtures/good.sql", parent_candidate_id=bad["candidate_id"], run_id=run_id
+                )
+                migrated = await tool(
+                    "apply_to_clone", run_id=run_id, candidate_id=good["candidate_id"]
+                )
+                assert migrated["transaction"]["outcome"] == "committed"
+                passed = await tool("validate_rehearsal", run_id=run_id)
+                assert passed["verdict"] == "PASS"
+                stored = await tool("get_report", run_id=run_id, candidate_id=good["candidate_id"])
+                assert stored["report_sha256"] == passed["report_sha256"]
+                status = await tool("get_run", run_id=run_id)
+                assert status["phase"] == "AWAITING_APPROVAL"
+                assert runtime.writer_count == 0
+
+        asyncio.run(scenario())
+    finally:
+        http.should_exit = True
+        thread.join(timeout=10)
+        assert not thread.is_alive()
 
 
 class LocalRuntime:

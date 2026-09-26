@@ -83,7 +83,7 @@ class ArtifactStore:
                 if target.read_bytes() != data:
                     raise PreflightError("ARTIFACT_IMMUTABLE") from None
             if os.name != "nt":
-                directory = os.open(target.parent, os.O_RDONLY | os.O_DIRECTORY)
+                directory = os.open(target.parent, os.O_RDONLY | getattr(os, "O_DIRECTORY", 0))
                 try:
                     os.fsync(directory)
                 finally:

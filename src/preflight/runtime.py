@@ -233,6 +233,10 @@ def build_runtime(settings):
     session = boto3.Session(region_name=settings.region)
     config = Config(connect_timeout=5, read_timeout=10, retries={"max_attempts": 0})
     adapter = RdsAdapter(
-        session.client("rds", config=config), session.client("sts", config=config), policy, jobs
+        session.client("rds", config=config),
+        session.client("sts", config=config),
+        policy,
+        jobs,
+        tagging=session.client("resourcegroupstaggingapi", config=config),
     )
     return AwsRuntime(settings, adapter, jobs, session.client("secretsmanager", config=config))

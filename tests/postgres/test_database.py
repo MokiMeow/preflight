@@ -1,5 +1,6 @@
 import os
 from pathlib import Path
+from uuid import uuid4
 
 import psycopg
 import pytest
@@ -11,6 +12,46 @@ from preflight.models import Contract, PreflightError
 from preflight.sql_policy import inspect_sql
 
 pytestmark = pytest.mark.postgres
+
+
+@pytest.mark.parametrize("privileged_role", ["rds_superuser", "pg_read_server_files"])
+def test_inherited_privilege_refused_without_superuser(db, contract, privileged_role):
+    admin = psycopg.connect(
+        host="127.0.0.1",
+        port=db.info.port,
+        dbname=db.info.dbname,
+        user="postgres",
+        autocommit=True,
+    )
+    role = "preflight_privilege_test_" + uuid4().hex
+    created = not admin.execute(
+        "SELECT 1 FROM pg_catalog.pg_roles WHERE rolname=%s", (privileged_role,)
+    ).fetchone()
+    if created:
+        admin.execute(sql.SQL("CREATE ROLE {} NOLOGIN").format(sql.Identifier(privileged_role)))
+    admin.execute(sql.SQL("CREATE ROLE {} LOGIN NOSUPERUSER").format(sql.Identifier(role)))
+    admin.execute(
+        sql.SQL("GRANT {} TO {}").format(sql.Identifier(privileged_role), sql.Identifier(role))
+    )
+    connection = psycopg.connect(
+        host="127.0.0.1",
+        port=db.info.port,
+        dbname=db.info.dbname,
+        user=role,
+        autocommit=True,
+    )
+    try:
+        assert connection.execute(
+            "SELECT rolsuper FROM pg_catalog.pg_roles WHERE rolname=current_user"
+        ).fetchone() == (False,)
+        with pytest.raises(PreflightError, match="DATABASE_SESSION_UNSAFE"):
+            validate_catalog(connection, contract)
+    finally:
+        connection.close()
+        admin.execute(sql.SQL("DROP ROLE {}").format(sql.Identifier(role)))
+        if created:
+            admin.execute(sql.SQL("DROP ROLE {}").format(sql.Identifier(privileged_role)))
+        admin.close()
 
 
 def statuses(checks):

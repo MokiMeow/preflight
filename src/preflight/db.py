@@ -19,6 +19,26 @@ SUPPORTED_TYPES = {
 }
 
 
+def _validate_role(connection):
+    """Refuse privilege flags and inherited server/RDS administrative capabilities."""
+    with connection.cursor() as cur:
+        cur.execute(
+            "SELECT rolsuper,rolcreaterole,rolcreatedb,rolreplication,rolbypassrls "
+            "FROM pg_catalog.pg_roles WHERE rolname=current_user"
+        )
+        role = cur.fetchone()
+        if not role or any(role):
+            raise PreflightError("DATABASE_SESSION_UNSAFE")
+        cur.execute(
+            "SELECT EXISTS(SELECT 1 FROM pg_catalog.pg_roles "
+            "WHERE rolname IN ('rds_superuser','rdsadmin','pg_execute_server_program',"
+            "'pg_read_server_files','pg_write_server_files') "
+            "AND pg_catalog.pg_has_role(current_user,oid,'MEMBER'))"
+        )
+        if cur.fetchone()[0]:
+            raise PreflightError("DATABASE_SESSION_UNSAFE")
+
+
 def connect_database(host, port, database, user, password, sslrootcert, postgres_major=18):
     try:
         conn = psycopg.connect(
@@ -37,11 +57,13 @@ def connect_database(host, port, database, user, password, sslrootcert, postgres
         if conn.info.server_version // 10000 != postgres_major or postgres_major != 18:
             conn.close()
             raise PreflightError("DATABASE_MAJOR_MISMATCH")
-        with conn.cursor() as cur:
-            cur.execute("SELECT rolsuper FROM pg_catalog.pg_roles WHERE rolname=current_user")
-            if cur.fetchone()[0] or not conn.pgconn.ssl_in_use:
-                conn.close()
+        try:
+            _validate_role(conn)
+            if not conn.pgconn.ssl_in_use:
                 raise PreflightError("DATABASE_SESSION_UNSAFE")
+        except Exception:
+            conn.close()
+            raise
         return conn
     except PreflightError:
         raise
@@ -54,11 +76,8 @@ def _validate_catalog(connection, contract: Contract, plan: SqlPlan | None = Non
     if connection.info.server_version // 10000 != 18:
         raise PreflightError("DATABASE_MAJOR_MISMATCH")
     result = {}
+    _validate_role(connection)
     with connection.cursor() as cur:
-        cur.execute("SELECT rolsuper FROM pg_catalog.pg_roles WHERE rolname=current_user")
-        role = cur.fetchone()
-        if not role or role[0]:
-            raise PreflightError("DATABASE_SESSION_UNSAFE")
         cur.execute(
             "SELECT EXISTS(SELECT 1 FROM pg_catalog.pg_event_trigger WHERE evtenabled <> 'D')"
         )
