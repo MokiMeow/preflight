@@ -35,7 +35,8 @@
     "creation_authorized": true,
     "source_apply_enabled": true,
     "operational_guidance_delta": "0e39cf7",
-    "publisher_delta": "79050b4"
+    "publisher_delta": "79050b4",
+    "runtime_overlay_revision": "d3715ca"
   },
   "budget": {
     "ceiling_usd": "100",
@@ -55,10 +56,11 @@
       "passed": 46,
       "elapsed_seconds": 3.75,
       "exit_code": 0
-    }
+    },
+    "scope": "HISTORICAL_D27_ONLY; superseded by explicit D28 unlimited financial authorization"
   },
   "prd_sha256": "5f607b53bd7c439c94e3f97d3826e24e441cb5d007863eca023313347533b6bf",
-  "expert_sessions_used": 0,
+  "expert_sessions_used": 1,
   "distribution": {
     "source_archive_members": 183,
     "private_artifacts": 0,
@@ -126,5 +128,15 @@
     "passed": 13,
     "elapsed_seconds": 5.44,
     "exit_code": 0
+  },
+  "current_connected_checkpoint": {
+    "run_id": "7f1a627e-a6d0-4c9f-a5ce-58984b38d41e",
+    "phase": "READY",
+    "clone_private_tls": "VERIFIED",
+    "source_rows": 1000,
+    "source_columns": 3,
+    "migration_result": "NOT_RUN",
+    "source_apply_called": false,
+    "scope": "Actual official MCP and clone metadata observations; no migration outcome inferred"
   }
 }
