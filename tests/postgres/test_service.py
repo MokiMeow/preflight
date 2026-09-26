@@ -255,3 +255,61 @@ def test_source_locked_drift_refused_and_backup_before_writer(service_pair, cont
     assert result["ok"], result
     assert result["data"]["state"] == "STALE", result
     assert result["data"]["transaction"]["outcome"] == "rolled_back"
+
+
+def test_report_publication_fault_retry_reuses_sealed_payload(service_pair, contract, monkeypatch):
+    service, _ = service_pair
+    candidate = register(service, "fixtures/good.sql", contract)
+    run_id = ready_run(service, candidate)
+    call(service, "capture_baseline", run_id=run_id)
+    call(service, "apply_to_clone", run_id=run_id, candidate_id=candidate["candidate_id"])
+    write = service.artifacts.write_once
+
+    def broken(relative, data):
+        if relative.endswith(".md"):
+            raise OSError("private-failure-sentinel")
+        return write(relative, data)
+
+    monkeypatch.setattr(service.artifacts, "write_once", broken)
+    first = service.call("validate_rehearsal", {"request_id": str(uuid4()), "run_id": run_id})
+    assert first["error_code"] == "INTERNAL_ERROR"
+    assert "private-failure-sentinel" not in str(first)
+    pending = service.store.get("report_pending", f"{run_id}:{candidate['candidate_id']}")
+    json_path = f"reports/{run_id}/{candidate['candidate_id']}.json"
+    original = service.artifacts.read(json_path)
+    monkeypatch.setattr(service.artifacts, "write_once", write)
+    result = call(service, "validate_rehearsal", run_id=run_id)
+    assert result["verdict"] == "PASS"
+    assert service.artifacts.read(json_path) == original
+    report = call(service, "get_report", run_id=run_id)
+    assert report["payload"]["created_at"] == pending["created_at"]
+    assert service.store.get_run(run_id)["phase"] == "AWAITING_APPROVAL"
+
+
+def test_report_restart_publication_retains_history_without_reenabling_source(
+    service_pair, contract, monkeypatch
+):
+    service, runtime = service_pair
+    candidate = register(service, "fixtures/good.sql", contract)
+    run_id = ready_run(service, candidate)
+    call(service, "capture_baseline", run_id=run_id)
+    call(service, "apply_to_clone", run_id=run_id, candidate_id=candidate["candidate_id"])
+    write = service.artifacts.write_once
+
+    def broken(relative, data):
+        if relative.endswith(".md"):
+            raise OSError("interrupted")
+        return write(relative, data)
+
+    monkeypatch.setattr(service.artifacts, "write_once", broken)
+    result = service.call("validate_rehearsal", {"request_id": str(uuid4()), "run_id": run_id})
+    assert result["error_code"] == "INTERNAL_ERROR"
+    restarted = RehearsalService(service.settings, runtime)
+    assert restarted.store.get_run(run_id)["phase"] == "ERROR"
+    report = call(restarted, "validate_rehearsal", run_id=run_id)
+    assert report["verdict"] == "PASS"  # historical completed evidence from before restart
+    assert restarted.store.get_run(run_id)["phase"] == "ERROR"
+    assert (
+        call(restarted, "get_report", run_id=run_id)["current_state"]["apply_eligible_now"] is False
+    )
+    assert runtime.writer_count == 0

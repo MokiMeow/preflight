@@ -5,6 +5,7 @@ import json
 import os
 from pathlib import Path
 from typing import Any
+from uuid import uuid4
 
 from .models import PreflightError
 
@@ -69,14 +70,26 @@ class ArtifactStore:
     def write_once(self, relative: str, data: bytes) -> str:
         target = self.path(relative)
         target.parent.mkdir(parents=True, exist_ok=True, mode=0o700)
+        temporary = target.parent / f".preflight-{uuid4().hex}.tmp"
         try:
-            with target.open("xb") as handle:
+            with temporary.open("xb") as handle:
                 handle.write(data)
                 handle.flush()
                 os.fsync(handle.fileno())
-        except FileExistsError:
-            if target.read_bytes() != data:
-                raise PreflightError("ARTIFACT_IMMUTABLE") from None
+            try:
+                # A hard link publishes a complete file exclusively; it never replaces a target.
+                os.link(temporary, target)
+            except FileExistsError:
+                if target.read_bytes() != data:
+                    raise PreflightError("ARTIFACT_IMMUTABLE") from None
+            if os.name != "nt":
+                directory = os.open(target.parent, os.O_RDONLY | os.O_DIRECTORY)
+                try:
+                    os.fsync(directory)
+                finally:
+                    os.close(directory)
+        finally:
+            temporary.unlink(missing_ok=True)
         return sha256(data)
 
     def read(

@@ -184,6 +184,33 @@ class StateStore:
                 (canonical_json(value), run_id),
             )
 
+    def complete_validation(self, run_id: str, verdict: str, report_digest: str):
+        final = {"PASS": "AWAITING_APPROVAL", "BLOCK": "BLOCKED", "WARN": "WARN"}[verdict]
+        with self.transaction() as con:
+            row = con.execute("SELECT * FROM runs WHERE id=?", (run_id,)).fetchone()
+            if not row or row["phase"] != "VALIDATING":
+                raise PreflightError("STATE_CONFLICT")
+            value = strict_json(bytes(row["value"]))
+            value.update(verdict=verdict, report_sha256=report_digest, updated_at=utc_now())
+            con.execute(
+                "UPDATE runs SET phase=?,revision=revision+1,value=? WHERE id=?",
+                (final, canonical_json(value), run_id),
+            )
+            if verdict == "PASS":
+                con.execute(
+                    "INSERT INTO events(run_id,timestamp,before_phase,after_phase,code) VALUES(?,?,?,?,?)",
+                    (run_id, utc_now(), "VALIDATING", "PASS", "REPORT_SEALED"),
+                )
+                con.execute(
+                    "INSERT INTO events(run_id,timestamp,before_phase,after_phase,code) VALUES(?,?,?,?,?)",
+                    (run_id, utc_now(), "PASS", final, "AWAITING_HUMAN"),
+                )
+            else:
+                con.execute(
+                    "INSERT INTO events(run_id,timestamp,before_phase,after_phase,code) VALUES(?,?,?,?,?)",
+                    (run_id, utc_now(), "VALIDATING", final, "REPORT_SEALED"),
+                )
+
     def set_cleanup(self, run_id: str, state: str):
         with self.transaction() as con:
             if not con.execute("SELECT 1 FROM runs WHERE id=?", (run_id,)).fetchone():
@@ -215,7 +242,9 @@ class StateStore:
 
     def begin_apply(self, run_id: str, intent: dict):
         with self.transaction() as con:
-            row = con.execute("SELECT phase,cleanup_state FROM runs WHERE id=?", (run_id,)).fetchone()
+            row = con.execute(
+                "SELECT phase,cleanup_state FROM runs WHERE id=?", (run_id,)
+            ).fetchone()
             if con.execute("SELECT 1 FROM apply_attempts WHERE run_id=?", (run_id,)).fetchone():
                 raise PreflightError("SOURCE_APPLY_REPLAY_REJECTED")
             if not row or row[0] != "AWAITING_APPROVAL" or row[1] != "NOT_REQUESTED":
@@ -239,16 +268,34 @@ class StateStore:
 
     def begin_cleanup(self, run_id: str, request: dict):
         """Durably exclude source apply before requesting any external deletion."""
-        unsafe = {"MIGRATING", "APPLYING", "APPLY_OUTCOME_UNKNOWN", "CLONE_OUTCOME_UNKNOWN",
-                  "REGISTERED", "SNAPSHOTTING", "RESTORING", "VALIDATING"}
+        unsafe = {
+            "MIGRATING",
+            "APPLYING",
+            "APPLY_OUTCOME_UNKNOWN",
+            "CLONE_OUTCOME_UNKNOWN",
+            "REGISTERED",
+            "SNAPSHOTTING",
+            "RESTORING",
+            "VALIDATING",
+        }
         with self.transaction() as con:
-            row = con.execute("SELECT phase FROM runs WHERE id=?", (run_id,)).fetchone()
+            row = con.execute("SELECT phase,value FROM runs WHERE id=?", (run_id,)).fetchone()
             if not row or row[0] in unsafe:
                 raise PreflightError("CLEANUP_UNSAFE_STATE")
             state = "DELETING_CLONE" if request["delete_clone"] else "DELETING_SNAPSHOT"
-            con.execute("UPDATE runs SET cleanup_state=?,revision=revision+1 WHERE id=?", (state, run_id))
-            con.execute("INSERT INTO events(run_id,timestamp,code) VALUES(?,?,?)",
-                        (run_id, utc_now(), "CLEANUP_INTENT"))
+            value = strict_json(bytes(row[1]))
+            value["cleanup_selection"] = {
+                "delete_clone": request["delete_clone"],
+                "delete_snapshot": request["delete_snapshot"],
+            }
+            con.execute(
+                "UPDATE runs SET cleanup_state=?,revision=revision+1,value=? WHERE id=?",
+                (state, canonical_json(value), run_id),
+            )
+            con.execute(
+                "INSERT INTO events(run_id,timestamp,code) VALUES(?,?,?)",
+                (run_id, utc_now(), "CLEANUP_INTENT"),
+            )
 
     def finish_apply(self, run_id: str, result: dict):
         with self.transaction() as con:
@@ -268,5 +315,5 @@ class StateStore:
                 self.transition(
                     run["run_id"], phase, "CLONE_OUTCOME_UNKNOWN", code="RESTART_UNKNOWN"
                 )
-            elif phase in ("BASELINED", "VALIDATING"):
+            elif phase in ("BASELINED", "VALIDATING", "AWAITING_APPROVAL"):
                 self.transition(run["run_id"], phase, "ERROR", code="BASELINE_MEMORY_LOST")

@@ -248,6 +248,15 @@ class RehearsalService:
 
     def get_run(self, request):
         run = self.store.get_run(str(request.run_id))
+        if run["cleanup_state"] in {"DELETING_CLONE", "DELETING_SNAPSHOT"}:
+            try:
+                observation = self.runtime.observe_cleanup(run)
+                state = observation["cleanup_state"]
+                if state != run["cleanup_state"]:
+                    self.store.set_cleanup(run["run_id"], state)
+                    run = self.store.get_run(run["run_id"])
+            except PreflightError:
+                pass  # A failed read is not evidence of absence.
         result = {
             key: value
             for key, value in run.items()
@@ -273,6 +282,7 @@ class RehearsalService:
         result["apply_eligible_now"] = (
             run["phase"] == "AWAITING_APPROVAL"
             and run["cleanup_state"] == "NOT_REQUESTED"
+            and str(request.run_id) in self.baselines
             and self.settings.enable_demo_source_apply
             and not self.store.has_apply(str(request.run_id))
         )
@@ -427,7 +437,7 @@ class RehearsalService:
                 checks.append(
                     CheckResult(
                         id=req.id,
-                        category="invariant",
+                        category=req.kind,
                         status=status,
                         reason_code=None if status == "pass" else "MIGRATION_FAILED",
                     )
@@ -437,7 +447,7 @@ class RehearsalService:
     def validate_rehearsal(self, request):
         from .evidence import capture_evidence, compare_evidence
         from .models import CheckSet
-        from .report import render_report, seal_report
+        from .report import seal_report
         from .sql_policy import inspect_sql
 
         run_id = str(request.run_id)
@@ -445,11 +455,8 @@ class RehearsalService:
         candidate, raw = self.candidate(run["candidate_id"])
         key = f"{run_id}:{run['candidate_id']}"
         try:
-            existing = self.store.get("report", key)
-            return {
-                "report_sha256": existing["report_sha256"],
-                "verdict": existing["payload"]["verdict"],
-            }
+            existing = self.store.get("report_pending", key)
+            return self._publish_report(run, ReportPayload.model_validate(existing))
         except PreflightError as exc:
             if exc.code != "NOT_FOUND":
                 raise
@@ -524,6 +531,18 @@ class RehearsalService:
             ],
         )
         report = seal_report(payload)
+        self.store.put_once("report_pending", key, report.payload.model_dump(mode="json"))
+        return self._publish_report(run, report.payload)
+
+    def _publish_report(self, run, payload):
+        """Resume a durable sealed publication without remeasuring or changing timestamps."""
+        from .report import render_report, seal_report
+
+        run_id = run["run_id"]
+        key = f"{run_id}:{run['candidate_id']}"
+        report = seal_report(payload)
+        if str(payload.run_id) != run_id or str(payload.candidate_id) != run["candidate_id"]:
+            raise PreflightError("REPORT_CANDIDATE_MISMATCH")
         relative = f"reports/{run_id}/{run['candidate_id']}"
         self.artifacts.write_once(
             relative + ".json", canonical_json(report.model_dump(mode="json"))
@@ -535,19 +554,11 @@ class RehearsalService:
             "report_artifact", key, {"path": relative, "markdown_sha256": markdown_digest}
         )
         if run["phase"] == "VALIDATING":
-            state = {"PASS": "PASS", "WARN": "WARN", "BLOCK": "BLOCKED"}[verdict]
-            self.store.transition(
-                run_id,
-                "VALIDATING",
-                state,
-                {"report_sha256": report.report_sha256, "verdict": verdict},
-            )
-            if state == "PASS":
-                self.store.transition(run_id, "PASS", "AWAITING_APPROVAL")
+            self.store.complete_validation(run_id, payload.verdict, report.report_sha256)
         return {
-            "verdict": verdict,
+            "verdict": payload.verdict,
             "report_sha256": report.report_sha256,
-            "checks": [check.model_dump(mode="json") for check in checks],
+            "checks": [check.model_dump(mode="json") for check in payload.checks],
         }
 
     def get_report(self, request):

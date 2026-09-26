@@ -182,6 +182,27 @@ class AwsRuntime:
             state = "RETAINED_RECOVERY" if source_apply_attempted else "CLONE_DELETED"
         return {"actions": actions, "cleanup_state": state}
 
+    def observe_cleanup(self, run):
+        observed = self.adapter.observe_cleanup(self.intent(run))
+        selected = run.get("cleanup_selection", {})
+        clone_absent = observed.get("clone") == "ABSENT"
+        snapshot_absent = observed.get("snapshot") == "ABSENT"
+        if clone_absent and snapshot_absent:
+            state = "COMPLETE"
+        elif selected.get("delete_clone") and not clone_absent:
+            state = "DELETING_CLONE"
+        elif selected.get("delete_snapshot") and not snapshot_absent:
+            state = "DELETING_SNAPSHOT"
+        elif clone_absent:
+            state = (
+                "RETAINED_RECOVERY"
+                if run.get("phase") in {"APPLIED", "APPLY_FAILED", "APPLIED_NEEDS_ATTENTION"}
+                else "CLONE_DELETED"
+            )
+        else:
+            state = "NOT_REQUESTED"
+        return {"cleanup_state": state, "observed_resources": observed}
+
 
 def build_runtime(settings):
     from .service import UnconfiguredRuntime
