@@ -69,7 +69,13 @@ def document():
             {
                 "Effect": "Allow",
                 "Action": "rds:RestoreDBInstanceFromDBSnapshot",
-                "Resource": [clone, snapshot],
+                "Resource": [
+                    clone,
+                    snapshot,
+                    prefix + "subgrp:private-subnets",
+                    prefix + "og:default:postgres-18",
+                    prefix + "pg:default.postgres18",
+                ],
             },
             {
                 "Effect": "Allow",
@@ -150,6 +156,111 @@ def test_runtime_policy_missing_restore_permissions_refused(driver):
     ]
     with pytest.raises(bootstrap.PlanError, match="BOOTSTRAP_RUNTIME_REQUIRED_PERMISSIONS_MISSING"):
         guards.validate_runtime_documents([policy], value.inputs, value.deployment)
+
+
+@pytest.mark.parametrize("resource_type", ["subgrp", "og", "pg"])
+def test_runtime_restore_requires_all_approved_dependency_resources(driver, resource_type):
+    value, _ = driver
+    policy = document()
+    statement = next(
+        s for s in policy["Statement"] if s["Action"] == "rds:RestoreDBInstanceFromDBSnapshot"
+    )
+    statement["Resource"] = [
+        resource for resource in statement["Resource"] if f":{resource_type}:" not in resource
+    ]
+    with pytest.raises(bootstrap.PlanError, match="BOOTSTRAP_RUNTIME_REQUIRED_PERMISSIONS_MISSING"):
+        guards.validate_runtime_documents([policy], value.inputs, value.deployment)
+
+
+def test_runtime_restore_accepts_exact_approved_subnet_and_builtin_pg18_groups(driver):
+    value, _ = driver
+    guards.validate_runtime_documents([document()], value.inputs, value.deployment)
+
+
+@pytest.mark.parametrize(
+    "resource",
+    [
+        f"arn:aws:rds:{REGION}:{ACCOUNT}:subgrp:*",
+        f"arn:aws:rds:{REGION}:{ACCOUNT}:subgrp:other-private-subnets",
+        f"arn:aws:rds:{REGION}:{ACCOUNT}:og:*",
+        f"arn:aws:rds:{REGION}:{ACCOUNT}:pg:*",
+        f"arn:aws:rds:{REGION}:{ACCOUNT}:pg:default.postgres17",
+        f"arn:aws:rds:{REGION}:{ACCOUNT}:og:custom-group",
+        f"arn:aws:rds:{REGION}:999999999999:subgrp:private-subnets",
+        f"arn:aws:rds:us-west-2:{ACCOUNT}:pg:default.postgres18",
+    ],
+)
+def test_runtime_restore_cannot_admit_other_or_wildcard_group_resources(driver, resource):
+    value, _ = driver
+    policy = document()
+    statement = next(
+        s for s in policy["Statement"] if s["Action"] == "rds:RestoreDBInstanceFromDBSnapshot"
+    )
+    statement["Resource"].append(resource)
+    with pytest.raises(bootstrap.PlanError, match="BOOTSTRAP_RUNTIME_POLICY_TARGET_TOO_BROAD"):
+        guards.validate_runtime_documents([policy], value.inputs, value.deployment)
+
+
+@pytest.mark.parametrize(
+    "action", ["rds:AddTagsToResource", "rds:ListTagsForResource", "rds:DeleteDBInstance"]
+)
+def test_restore_group_scopes_do_not_expand_other_actions(driver, action):
+    value, _ = driver
+    policy = document()
+    policy["Statement"].append(
+        {
+            "Effect": "Allow",
+            "Action": action,
+            "Resource": f"arn:aws:rds:{REGION}:{ACCOUNT}:subgrp:private-subnets",
+        }
+    )
+    with pytest.raises(bootstrap.PlanError):
+        guards.validate_runtime_documents([policy], value.inputs, value.deployment)
+
+
+@pytest.mark.parametrize(
+    "field,value",
+    [
+        ("subnet_group", "*"),
+        ("subnet_group", "private-*"),
+        ("engine_version", "17.6"),
+        ("engine_version", "18*"),
+    ],
+)
+def test_runtime_restore_group_inputs_cannot_invent_scope(driver, field, value):
+    harness, _ = driver
+    target = harness.inputs if field == "subnet_group" else harness.deployment
+    target[field] = value
+    with pytest.raises(bootstrap.PlanError, match="BOOTSTRAP_RUNTIME_RESTORE_GROUP_SCOPE_INVALID"):
+        guards.validate_runtime_documents([document()], harness.inputs, harness.deployment)
+
+
+def test_production_restore_template_supplies_only_exact_restore_dependencies(driver):
+    from string import Template
+
+    value, _ = driver
+    raw = (Path(__file__).parents[2] / "infra/runtime-policy.template.json").read_text()
+    rendered = json.loads(
+        Template(raw).substitute(
+            REGION=value.inputs["region"],
+            ACCOUNT_ID=value.inputs["account_id"],
+            DB_SUBNET_GROUP=value.inputs["subnet_group"],
+        )
+    )
+    # This is the restore-only addendum, combined with the existing scoped
+    # runtime permissions. It grants no source modification or new action.
+    assert len(rendered["Statement"]) == 1
+    statement = rendered["Statement"][0]
+    assert statement["Action"] == "rds:RestoreDBInstanceFromDBSnapshot"
+    assert len(statement["Resource"]) == 5
+    assert all(":db:synthetic-source" not in resource for resource in statement["Resource"])
+    existing = document()
+    existing["Statement"] = [
+        s for s in existing["Statement"] if s["Action"] != "rds:RestoreDBInstanceFromDBSnapshot"
+    ]
+    guards.validate_runtime_documents([existing, rendered], value.inputs, value.deployment)
+    with pytest.raises(bootstrap.PlanError, match="BOOTSTRAP_RUNTIME_REQUIRED_PERMISSIONS_MISSING"):
+        guards.validate_runtime_documents([rendered], value.inputs, value.deployment)
 
 
 def stub_prerequisites(value, stubs, selected_groups):

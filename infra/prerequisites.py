@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+import re
 from fnmatch import fnmatchcase
 from ipaddress import ip_network
 
@@ -16,11 +17,26 @@ def validate_runtime_documents(documents: list[dict], inputs: dict, deployment: 
     source = prefix + "db:" + inputs["source_instance_id"]
     clone = prefix + "db:preflight-*-clone"
     snapshot = prefix + "snapshot:preflight-*-snap"
+    # Restore authorizes all five required resource types, including the
+    # approved subnet and built-in groups selected by the supported PG18 engine.
+    # Custom groups are not silently adopted or granted wildcard permissions.
+    if (
+        not isinstance(inputs.get("subnet_group"), str)
+        or not re.fullmatch(r"[a-z][a-z0-9-]{0,254}", inputs["subnet_group"])
+        or not isinstance(deployment.get("engine_version"), str)
+        or not re.fullmatch(r"18(?:\.\d+)?", deployment["engine_version"])
+    ):
+        raise PlanError("BOOTSTRAP_RUNTIME_RESTORE_GROUP_SCOPE_INVALID")
+    restore_groups = {
+        prefix + "subgrp:" + inputs["subnet_group"],
+        prefix + "og:default:postgres-18",
+        prefix + "pg:default.postgres18",
+    }
     scopes = {
         "rds:DescribeDBInstances": {"*", source, clone},
         "rds:DescribeDBSnapshots": {"*", snapshot},
         "rds:CreateDBSnapshot": {source, snapshot},
-        "rds:RestoreDBInstanceFromDBSnapshot": {clone, snapshot},
+        "rds:RestoreDBInstanceFromDBSnapshot": {clone, snapshot} | restore_groups,
         "rds:ListTagsForResource": {source, clone, snapshot},
         "rds:AddTagsToResource": {clone, snapshot},
         "rds:DeleteDBInstance": {clone},

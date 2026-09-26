@@ -1,0 +1,17 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "RestoreOwnedCloneWithApprovedPG18Groups",
+      "Effect": "Allow",
+      "Action": "rds:RestoreDBInstanceFromDBSnapshot",
+      "Resource": [
+        "arn:aws:rds:${REGION}:${ACCOUNT_ID}:db:preflight-*-clone",
+        "arn:aws:rds:${REGION}:${ACCOUNT_ID}:snapshot:preflight-*-snap",
+        "arn:aws:rds:${REGION}:${ACCOUNT_ID}:subgrp:${DB_SUBNET_GROUP}",
+        "arn:aws:rds:${REGION}:${ACCOUNT_ID}:og:default:postgres-18",
+        "arn:aws:rds:${REGION}:${ACCOUNT_ID}:pg:default.postgres18"
+      ]
+    }
+  ]
+}
