@@ -107,7 +107,7 @@ def admit(
 ) -> BudgetDecision:
     """Refuse unknown/stale/incomplete/unbounded costs or projected overspend.
 
-    The default maximum is this operator's100 USD continuation authorization.
+    The default maximum is a conservative100 USD bounded-workflow allowance.
     A different explicit maximum is a caller-provided authorization, never inferred
     from a configured ceiling, remaining credits or free-tier account status.
     reserved_usd must include bounded future costs of existing retained resources;
@@ -192,7 +192,7 @@ class BudgetLedger:
     """
 
     def __init__(self, path: str | Path, ceiling: Decimal = Decimal("100")):
-        if not _known_amount(ceiling) or ceiling == 0 or ceiling > Decimal("100"):
+        if not _known_amount(ceiling) or ceiling == 0:
             raise PreflightError("BUDGET_AUTHORIZATION_INVALID")
         self.path = Path(path).resolve()
         self._ceiling = ceiling

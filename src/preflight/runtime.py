@@ -250,12 +250,21 @@ def build_runtime(settings):
         max_snapshots=settings.max_run_owned_snapshots,
     )
     jobs = JobStore(settings.state_dir / "cloud.sqlite")
-    budget = BudgetLedger(
-        settings.state_dir / "budget.sqlite",
-        Decimal(str(settings.approved_budget_ceiling or 100)),
+    budget = (
+        None
+        if settings.unlimited_budget_authorized
+        else BudgetLedger(
+            settings.state_dir / "budget.sqlite",
+            Decimal(str(settings.approved_budget_ceiling or 100)),
+        )
     )
 
     def reserve_budget(intent, kind):
+        if budget is None:
+            # Only explicit operator authorization selected this mode. Resource
+            # ownership, private scope, creation reservations and human gates
+            # remain enforced by their existing independent guards.
+            return
         decision = budget.authorize(f"{intent.run_id}:{kind}", kind, datetime.now(UTC))
         if not decision.admitted:
             raise PreflightError(decision.reason_code)

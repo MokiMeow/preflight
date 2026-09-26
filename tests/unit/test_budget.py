@@ -269,13 +269,13 @@ def test_ledger_quote_changes_cannot_reuse_or_silently_expand_old_reservation(tm
     assert ledger.total_reserved_usd() == Decimal(5)
 
 
-def test_ledger_persisted_ceiling_cannot_be_changed_or_exceed_authorization(tmp_path):
+def test_ledger_persisted_ceiling_cannot_be_changed(tmp_path):
     path = tmp_path / "budget.sqlite"
     ledger = funded_ledger(path)
     assert ledger.authorize("snapshot", "snapshot", NOW).admitted
     with pytest.raises(PreflightError, match="BUDGET_CEILING_MISMATCH"):
         BudgetLedger(path, Decimal(90))
-    with pytest.raises(PreflightError, match="BUDGET_AUTHORIZATION_INVALID"):
+    with pytest.raises(PreflightError, match="BUDGET_CEILING_MISMATCH"):
         BudgetLedger(path, Decimal("100.01"))
     with pytest.raises(PreflightError, match="BUDGET_CEILING_MISMATCH"):
         ledger.record_observation(
@@ -284,6 +284,20 @@ def test_ledger_persisted_ceiling_cannot_be_changed_or_exceed_authorization(tmp_
             "synthetic mismatched ceiling",
         )
     assert BudgetLedger(path).total_reserved_usd() == Decimal(5)
+
+
+def test_new_ledger_can_use_explicit_larger_authorized_ceiling(tmp_path):
+    ledger = BudgetLedger(tmp_path / "larger.sqlite", Decimal("1000"))
+    ledger.record_observation(
+        replace(known(), ceiling_usd=Decimal("1000")),
+        {"clone": Decimal("200")},
+        "synthetic explicit larger operator ceiling; no real cost facts",
+    )
+    decision = ledger.authorize("clone", "clone", NOW)
+    assert decision.admitted
+    assert decision.max_authorized_ceiling_usd == Decimal("1000")
+    assert ledger.total_reserved_usd() == Decimal("200")
+    assert BudgetLedger(ledger.path, Decimal("1000")).total_reserved_usd() == Decimal("200")
 
 
 def test_ledger_live_handle_refuses_changed_persisted_ceiling(tmp_path):

@@ -4,7 +4,7 @@ import os
 from pathlib import Path
 from typing import Literal
 
-from pydantic import Field, model_validator
+from pydantic import Field, StrictBool, model_validator
 
 from .artifacts import strict_json
 from .models import Identifier, ResourceId, StrictModel, TableName
@@ -21,7 +21,10 @@ class Settings(StrictModel):
     source_allowlist: list[ResourceId] = Field(default_factory=list)
     table_allowlist: list[TableName] = Field(default_factory=lambda: ["public.customers"])
     creation_authorized: bool = False
-    approved_budget_ceiling: float | None = Field(default=None, gt=0, le=100)
+    approved_budget_ceiling: float | None = Field(default=None, gt=0, allow_inf_nan=False)
+    # Explicit operator revocation of cost admission; never inferred from missing
+    # billing data, credits, a configured ceiling or creation authorization.
+    unlimited_budget_authorized: StrictBool = False
     enable_demo_source_apply: bool = False
     max_active_runs: Literal[1] = 1
     max_run_owned_clones: Literal[1] = 1
@@ -41,12 +44,14 @@ class Settings(StrictModel):
         if self.evidence_backend != "aws_rds" and self.enable_demo_source_apply:
             raise ValueError("deployed source apply requires aws_rds")
         if self.creation_authorized and not (
-            self.approved_budget_ceiling
+            (self.approved_budget_ceiling or self.unlimited_budget_authorized)
             and self.account_id
             and self.region
             and self.source_instance_id
         ):
-            raise ValueError("creation authorization requires bounded account scope")
+            raise ValueError(
+                "creation authorization requires budget authorization and account scope"
+            )
         if self.source_instance_id and self.source_instance_id not in self.source_allowlist:
             raise ValueError("configured source must be allowlisted")
         return self
