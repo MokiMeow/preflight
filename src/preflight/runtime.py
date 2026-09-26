@@ -227,10 +227,13 @@ def build_runtime(settings):
             return UnconfiguredRuntime()
     if settings.evidence_backend != "aws_rds":
         raise PreflightError("DEPLOYED_TEST_BACKEND_REFUSED")
+    from decimal import Decimal
+
     import boto3
     from botocore.config import Config
 
     from .aws_rds import CloudPolicy, RdsAdapter
+    from .budget import BudgetLedger
     from .jobs import JobStore
 
     policy = CloudPolicy(
@@ -247,6 +250,16 @@ def build_runtime(settings):
         max_snapshots=settings.max_run_owned_snapshots,
     )
     jobs = JobStore(settings.state_dir / "cloud.sqlite")
+    budget = BudgetLedger(
+        settings.state_dir / "budget.sqlite",
+        Decimal(str(settings.approved_budget_ceiling or 100)),
+    )
+
+    def reserve_budget(intent, kind):
+        decision = budget.authorize(f"{intent.run_id}:{kind}", kind, datetime.now(UTC))
+        if not decision.admitted:
+            raise PreflightError(decision.reason_code)
+
     session = boto3.Session(region_name=settings.region)
     config = Config(connect_timeout=5, read_timeout=10, retries={"max_attempts": 0})
     adapter = RdsAdapter(
@@ -255,5 +268,6 @@ def build_runtime(settings):
         policy,
         jobs,
         tagging=session.client("resourcegroupstaggingapi", config=config),
+        budget_guard=reserve_budget,
     )
     return AwsRuntime(settings, adapter, jobs, session.client("secretsmanager", config=config))
