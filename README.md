@@ -127,53 +127,6 @@ uv build --no-sources
 uv run python scripts/verify_distribution.py
 ```
 
-## Full walkthrough script — 2:58
-
-The video uses burned-in captions rather than spoken narration. This complete presenter script follows its timed sections. Historical approvals are shown as receipts; no gate is clicked or migration reapplied during filming.
-
-### 0:00–0:15
-
-**On screen:** Title, one-line architecture, then the saved `preflight` TrueForge agent
-
-“A database migration can execute successfully and still change the wrong data. Preflight rehearses the exact SQL artifact on a private snapshot-restored RDS clone, verifies the result deterministically, and keeps the owned synthetic source behind explicit approval.”
-
-### 0:15–0:55
-
-**On screen:** **Live native TrueForge UI.** The edited excerpt sends one read-only `get_run` request for run `7f1a627e-a6d0-4c9f-a5ce-58984b38d41e`, request `30366339-0a39-4a74-9c81-a4a1cd9eb380`. It shows `APPLIED`, cleanup `RETAINED_RECOVERY`, and another source apply ineligible. No `get_report` or Code Mode execution occurs in this excerpt.
-
-“This is the saved TrueForge product agent on the verified Gateway route. The edited live excerpt makes one read-only run-status request. Bounded isolation canaries passed during prior connected verification. Here the service reports source APPLIED, recovery retained, and another apply ineligible. The service owns those facts; the model explains them, but it cannot redefine PASS, BLOCK or approval.”
-
-### 0:55–1:25
-
-**On screen:** Evidence card summarizing the recorded bad transaction/BLOCK report and corrected transaction/PASS report.
-
-“Here is the completed connected rehearsal on the disposable clone. The 68-byte bad candidate rolled back with SQLSTATE 23502; the baseline stayed unchanged and the sealed verdict was BLOCK. A separately registered 183-byte corrected artifact committed. All 18 mandatory checks passed, including complete preservation and intended-change coverage. Its trusted report digest begins 6e0690.”
-
-### 1:25–1:55
-
-**On screen:** Recorded TrueForge source gate: Deny event and no-change verification, then the later fresh Allow request and APPLIED receipt
-
-“These are historical human decisions captured in TrueForge. The first source request was denied, and the read-only check confirmed 1,000 rows and three columns: no source change. A later fresh request targeted the same reviewed candidate and report. After Allow, fresh server guards matched and the transaction committed once in 130 milliseconds. The source then had 1,000 rows, four columns, and zero intended-value violations.”
-
-### 1:55–2:20
-
-**On screen:** Recorded fresh replay request and its refusal
-
-“Approval is not a reusable token. A new approved request tried to repeat the same source apply. Before SQL ran, the service returned SOURCE_APPLY_REPLAY_REJECTED, marked it non-retryable, and preserved the already applied state. Unknown outcomes are also never retried automatically.”
-
-### 2:20–2:43
-
-**On screen:** Recorded cleanup gate and final AWS observation
-
-“Cleanup has its own human gate. The approved action deleted only the run-owned clone and explicitly retained the pre-apply recovery snapshot. The final AWS observation found the clone absent and the encrypted, run-tagged snapshot available. The source and host remain active; this is deliberate clone-only cleanup, not broad teardown.”
-
-### 2:43–2:58
-
-**On screen:** Final proof card: source APPLIED, replay refused, clone ABSENT, snapshot AVAILABLE, local regression result
-
-“The source is APPLIED, replay is refused, the clone is absent, and recovery evidence is retained. The local gate also passed 668 tests with no failures, errors or skips. This proves the recorded owned-synthetic run; it does not claim every environment or every remaining adversarial scenario.”
-
-
 ## Repository guide
 
 | Path | Purpose |
