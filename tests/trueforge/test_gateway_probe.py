@@ -2,13 +2,9 @@ import json
 import subprocess
 from pathlib import Path
 
-import pytest
-
 ROOT = Path(__file__).parents[2]
-OPENAI_PACKAGE = ROOT / "integration/node_modules/openai/package.json"
 
 
-@pytest.mark.skipif(not OPENAI_PACKAGE.exists(), reason="run npm ci in integration first")
 def test_responses_stream_state_machine():
     result = subprocess.run(
         ["node", "--test", str(ROOT / "tests/trueforge/test_responses_stream.mjs")],
@@ -22,7 +18,6 @@ def test_responses_stream_state_machine():
     assert "pass 3" in result.stdout
 
 
-@pytest.mark.skipif(not OPENAI_PACKAGE.exists(), reason="run npm ci in integration first")
 def test_probe_blocks_without_ignored_route_config():
     result = subprocess.run(
         ["node", str(ROOT / "scripts/probe_gateway_responses.mjs")],
@@ -39,7 +34,6 @@ def test_probe_blocks_without_ignored_route_config():
     }
 
 
-@pytest.mark.skipif(not OPENAI_PACKAGE.exists(), reason="run npm ci in integration first")
 def test_probe_does_not_execute_without_explicit_flag(tmp_path):
     route = {
         "adapter": "openai",

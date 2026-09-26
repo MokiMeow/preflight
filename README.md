@@ -114,6 +114,7 @@ Run local verification:
 uv run pytest tests/unit tests/mcp tests/trueforge -q
 uv run pytest tests/cloud -q
 uv run ruff check src scripts tests infra
+uv run mypy src/preflight
 node scripts/probe_trueforge_package.mjs
 uv run python scripts/probe_trueforge_config.py config/trueforge-agent.example.json --template
 ```
@@ -126,8 +127,11 @@ uv run python fixtures/local_pg.py --bin C:/path/to/pgsql/bin --port 55438
 $env:PREFLIGHT_TEST_PG_PORT='55438'
 $env:PREFLIGHT_TEST_PG_CA=(Join-Path (Get-Location) 'var/local-postgres/data/server.crt')
 uv run preflight verify local
-uv run pytest tests/unit tests/postgres tests/mcp tests/trueforge -q
 ```
+
+`preflight verify local` runs every test folder, including the PostgreSQL, cloud, MCP, and TrueForge
+suites. The TrueForge suite fails explicitly when its locked npm dependencies have not been
+installed; it does not turn a missing SDK into a skipped acceptance check.
 
 Stop it explicitly with
 `C:/path/to/pgsql/bin/pg_ctl -D var/local-postgres/data stop`. The fixture is

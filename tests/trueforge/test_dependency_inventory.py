@@ -7,7 +7,6 @@ import pytest
 
 ROOT = Path(__file__).parents[2]
 INVENTORY = ROOT / "integration/dependency-inventory.json"
-TRUEFORGE = ROOT / "integration/node_modules/@truefoundry/trueforge/package.json"
 
 
 def components():
@@ -28,11 +27,9 @@ def test_inventory_records_project_pglast_and_trueforge_license_status():
     assert indexed[("npm", "@truefoundry/trueforge")]["license_declared"] == "MIT"
 
 
-@pytest.mark.skipif(
-    platform.system() != "Windows" or not TRUEFORGE.exists(),
-    reason="committed inventory captures the verified Windows install",
-)
 def test_installed_dependency_inventory_is_current():
+    if platform.system() != "Windows":
+        pytest.fail("committed dependency inventory must be verified on its recorded Windows host")
     result = subprocess.run(
         [
             str(ROOT / ".venv/Scripts/python.exe"),

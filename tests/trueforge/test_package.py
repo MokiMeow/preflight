@@ -2,11 +2,8 @@ import json
 import subprocess
 from pathlib import Path
 
-import pytest
-
 ROOT = Path(__file__).parents[2]
 LOCK = ROOT / "integration/package-lock.json"
-INSTALLED = ROOT / "integration/node_modules/@truefoundry/trueforge/package.json"
 INTEGRITY = (
     "sha512-yrCLD0QOKB/iHcHA6/WHVHEpVZfrSasYjIkZLZ4hiIbi4TXEZFFwVCueYVxzVWNq2OcusG4+"
     "BdjZg1mA/1I0iA=="
@@ -21,7 +18,6 @@ def test_trueforge_lock_is_exact_and_integrity_pinned():
     assert lock["packages"][""]["dependencies"] == {"@truefoundry/trueforge": "0.2.1"}
 
 
-@pytest.mark.skipif(not INSTALLED.exists(), reason="run npm ci in integration first")
 def test_local_package_probe_reports_resolved_versions():
     result = subprocess.run(
         ["node", str(ROOT / "scripts/probe_trueforge_package.mjs")],

@@ -5,10 +5,7 @@ import sys
 import time
 from pathlib import Path
 
-import pytest
-
 ROOT = Path(__file__).parents[2]
-CLIENT_SDK = ROOT / "integration/node_modules/@modelcontextprotocol/sdk/package.json"
 
 
 def unused_port() -> int:
@@ -28,7 +25,6 @@ def wait_for_listener(port: int) -> None:
     raise AssertionError("Python MCP probe did not start")
 
 
-@pytest.mark.skipif(not CLIENT_SDK.exists(), reason="run npm ci in integration first")
 def test_trueforge_bundled_js_client_calls_python_mcp_2_2_0():
     port = unused_port()
     server = subprocess.Popen(
