@@ -3,10 +3,15 @@
 from __future__ import annotations
 
 import html
+import re
+from urllib.parse import parse_qsl, urlsplit
 
 from .artifacts import canonical_json, sha256
 from .models import PreflightError, ReportPayload, SealedReport
 from .verdict import evaluate
+
+_URL = re.compile(r"\b(?:https?|postgres(?:ql)?|mysql)://[^\s<>\])]+", re.IGNORECASE)
+_SECRET_QUERY_KEYS = {"access_token", "api_key", "key", "password", "secret", "token"}
 
 
 def _payload_bytes(payload: ReportPayload) -> bytes:
@@ -38,11 +43,29 @@ def recompute_report_verdict(payload: ReportPayload) -> str:
 
 def seal_report(payload: ReportPayload) -> SealedReport:
     """Seal a validated payload; never bless a model-supplied verdict."""
+    requirement_ids = [item.id for item in payload.validation_requirements]
+    check_ids = [item.id for item in payload.checks]
+    if (
+        not requirement_ids
+        or len(requirement_ids) != len(set(requirement_ids))
+        or len(check_ids) != len(set(check_ids))
+        or set(requirement_ids) != set(check_ids)
+    ):
+        raise PreflightError("REPORT_REQUIREMENTS_INCONSISTENT")
     if recompute_report_verdict(payload) != payload.verdict:
         raise PreflightError("REPORT_VERDICT_MISMATCH")
     if payload.apply_eligible_at_report_time != (payload.verdict == "PASS"):
         raise PreflightError("REPORT_ELIGIBILITY_MISMATCH")
     return SealedReport(payload=payload, report_sha256=sha256(_payload_bytes(payload)))
+
+
+def _redact_credential_url(match: re.Match[str]) -> str:
+    value = match.group(0)
+    parsed = urlsplit(value)
+    secret_query = any(key.casefold() in _SECRET_QUERY_KEYS for key, _ in parse_qsl(parsed.query))
+    if parsed.username is not None or parsed.password is not None or secret_query:
+        return "[REDACTED_CREDENTIAL_URL]"
+    return value
 
 
 def _cell(value: object) -> str:
@@ -54,6 +77,7 @@ def _cell(value: object) -> str:
     else:
         text = str(value)
     text = " ".join(text.splitlines())
+    text = _URL.sub(_redact_credential_url, text)
     text = html.escape(text, quote=True).replace("|", "&#124;").replace("`", "&#96;")
     return f"`{text}`"
 
@@ -90,7 +114,9 @@ def _evidence_rows(payload: ReportPayload) -> list[str]:
 def render_report(payload: ReportPayload) -> str:
     """Return the deterministic native Markdown view of a sealed payload."""
     report_digest = sha256(_payload_bytes(payload))
-    requirement_by_id = {requirement.id: requirement for requirement in payload.validation_requirements}
+    requirement_by_id = {
+        requirement.id: requirement for requirement in payload.validation_requirements
+    }
     lines = [
         f"# PREFLIGHT — REHEARSAL {payload.verdict}",
         "",

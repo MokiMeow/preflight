@@ -124,6 +124,20 @@ def test_seal_refuses_forged_pass_and_eligibility():
         seal_report(passing_payload(apply_eligible_at_report_time=False))
 
 
+def test_seal_refuses_an_incomplete_requirement_manifest():
+    payload = passing_payload()
+    with pytest.raises(PreflightError, match="REPORT_REQUIREMENTS_INCONSISTENT"):
+        seal_report(
+            payload.model_copy(
+                update={
+                    "checks": payload.checks[:-1],
+                    "verdict": "WARN",
+                    "apply_eligible_at_report_time": False,
+                }
+            )
+        )
+
+
 def test_verifier_detects_old_hash_and_rehashed_anchor_tampering():
     original = report_bytes(passing_payload())
     trusted = json.loads(original)["report_sha256"]
@@ -136,8 +150,11 @@ def test_verifier_detects_old_hash_and_rehashed_anchor_tampering():
 
 
 def test_verifier_rejects_duplicate_keys_and_schema_failures():
-    assert_error(b'{"payload":{"schema_version":"1.1","x":1,"x":2},"report_sha256":"' +
-                 b"a" * 64 + b'"}', "DUPLICATE_JSON_KEY", 2)
+    assert_error(
+        b'{"payload":{"schema_version":"1.1","x":1,"x":2},"report_sha256":"' + b"a" * 64 + b'"}',
+        "DUPLICATE_JSON_KEY",
+        2,
+    )
 
     valid = report_bytes(passing_payload())
     unknown_backend = mutate_and_rehash(
@@ -183,6 +200,8 @@ def test_markdown_escapes_untrusted_content_and_is_deterministic():
     assert "<img" not in first
     assert "&lt;script&gt;" in first
     assert "&#124;" in first
+    assert "password" not in first
+    assert "REDACTED_CREDENTIAL_URL" in first
     assert "Historical sealed rehearsal evidence" in first
     assert "Current apply eligibility: `NOT_EVALUATED`" in first
 
