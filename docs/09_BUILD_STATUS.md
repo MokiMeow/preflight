@@ -15,6 +15,7 @@
 - Current irreversible action awaiting a human: NONE.
 - Local handoff: native TrueForge UI remains on loopback port 18790 with `preflight-local-probe` Connected to empty/fail-closed MCP port 18000; zero agent/model/tool/gate calls in that native probe. Disposable PG18 cluster was stopped after all tests; its unexported test log was removed. No AWS cleanup occurred.
 - Distribution gate: explicit source-archive directory exclusion and five individually selected reviewed evidence files; `uv build --no-sources` and `python scripts/verify_distribution.py` passed (131 source members, zero private/worktree artifacts, 17 wheel modules, unchanged PRD). Initial nested worktree `.env.example` inclusion was detected and repaired before handoff.
+- Installed-wheel gate: created a separate `var/wheel-smoke` Python 3.12 environment, exported locked runtime requirements with `uv export --locked --no-dev --no-emit-project`, installed all 49 dependencies offline with `uv pip sync`, then installed the wheel offline with `--no-deps`. From that environment's directory, `Scripts/python.exe -I` imported service/runtime modules from its own site-packages; `Scripts/preflight.exe doctor --json` passed with all connected/apply flags false, and `evidence verify ../../evidence/local/pass-mcp-report.json --expected-report-sha256 710e9f667906b85bf953b2656f88cd61ab639f77423036e391b2f464f805d376` returned EXPECTED_DIGEST_MATCH, historical only/current eligibility NOT_EVALUATED. No source checkout import, network call or provider action was used.
 
 ## Task ledger
 
