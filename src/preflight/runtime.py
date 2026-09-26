@@ -208,7 +208,23 @@ def build_runtime(settings):
     from .service import UnconfiguredRuntime
 
     if not settings.creation_authorized:
-        return UnconfiguredRuntime()
+        # Source inspection needs complete private/read scope, not permission to
+        # create resources. Incomplete/default settings must remain offline.
+        secret_prefix = f"arn:aws:secretsmanager:{settings.region}:{settings.account_id}:secret:"
+        if not (
+            settings.evidence_backend == "aws_rds"
+            and settings.account_id
+            and settings.region
+            and settings.source_instance_id
+            and settings.source_instance_id in settings.source_allowlist
+            and settings.db_subnet_group_name
+            and settings.clone_security_group_ids
+            and settings.sslrootcert
+            and settings.source_read_secret_arn
+            and settings.source_read_secret_arn.startswith(secret_prefix)
+            and len(settings.source_read_secret_arn) > len(secret_prefix)
+        ):
+            return UnconfiguredRuntime()
     if settings.evidence_backend != "aws_rds":
         raise PreflightError("DEPLOYED_TEST_BACKEND_REFUSED")
     import boto3
@@ -217,7 +233,6 @@ def build_runtime(settings):
     from .aws_rds import CloudPolicy, RdsAdapter
     from .jobs import JobStore
 
-    jobs = JobStore(settings.state_dir / "cloud.sqlite")
     policy = CloudPolicy(
         account_id=settings.account_id,
         region=settings.region,
@@ -226,10 +241,12 @@ def build_runtime(settings):
         subnet_group=settings.db_subnet_group_name,
         security_group_ids=tuple(settings.clone_security_group_ids),
         instance_class=settings.instance_class,
-        creation_authorized=True,
+        engine_major=settings.postgres_major,
+        creation_authorized=settings.creation_authorized,
         max_clones=settings.max_run_owned_clones,
         max_snapshots=settings.max_run_owned_snapshots,
     )
+    jobs = JobStore(settings.state_dir / "cloud.sqlite")
     session = boto3.Session(region_name=settings.region)
     config = Config(connect_timeout=5, read_timeout=10, retries={"max_attempts": 0})
     adapter = RdsAdapter(
