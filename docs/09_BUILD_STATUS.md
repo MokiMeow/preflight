@@ -2,7 +2,7 @@
 
 **Current state:** private AWS host/source are running; supplied Gateway Responses and native TrueForge/MCP read-only model sessions are connected and verified. Implementation/review and remaining scenario repairs continue. Full RDS clone rehearsal, Daytona Code Mode, product-agent evaluations and real human demonstrations are not complete. Source apply remains disabled.
 
-**Current continuation:** [Detailed implementation and pending-work report](audit/CONTINUATION_REPORT.md). Frozen revision `46a9eac` passed **423 tests, zero failures/errors/skips, 185.89s**. Later bootstrap transport repair `e200a8a` passed six affected tests and independent ten-test review. New work requires its own integration gate; these counts do not assert every scenario or connected product acceptance.
+**Current continuation:** [Detailed implementation and pending-work report](audit/CONTINUATION_REPORT.md). Frozen application revision `9f75cc1` passed **485 tests, zero failures/errors/skips, 236.95s** and is deployed on the private host. Later bootstrap transport repair `e200a8a` passed six affected tests and independent ten-test review. New work requires its own integration gate; these counts do not assert every scenario or connected product acceptance.
 
 - Actual Gateway alias `vm-polaris/openai` resolves to `gpt-4o-mini-2024-07-18`; explicit operator override D25. Runtime Responses reasoning parameter omitted; coding/review models remain assigned Sol/high.
 - Native compatibility session and actual read-only AWS source status have linked model/tool/result traces in `evidence/connected/`; source table count 1,000 and intended new column absent. These inline compatibility sessions did not use Daytona or the saved product agent.

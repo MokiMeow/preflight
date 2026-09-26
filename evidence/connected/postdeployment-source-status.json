@@ -1,0 +1,53 @@
+{
+  "state": "CONNECTED_VERIFIED",
+  "scope": "Native TrueForge/Gateway/MCP read-only AWS RDS source status; no clone/Daytona/product approval proof",
+  "implementation_commit": "9f75cc1",
+  "session_id": "01m3ehcrgg5hayhcspfw8v4vyk",
+  "turn_id": "01m3ehcrgnkw552xxyfrxcaytk",
+  "tool_call_id": "call_zBQkwiekfKaOAazVt384DtK1",
+  "tool_response_linked": true,
+  "tool": "get_source_status",
+  "data": {
+    "evidence": {
+      "algorithm_version": "preflight-evidence-1",
+      "tables": [
+        {
+          "name": "public.customers",
+          "row_count": 1000,
+          "schema_sha256": "115c481c32ee7b021e9898e6012e0341e4926c5267b5f473d0a9a0fca1686384",
+          "preserved_sha256": "adb3ddb070ec6968e1ec28143a38f50875bf39d965095af070e0653e83df6c17",
+          "full_sha256": "dc1744787b061fc7a96efdcc3b3b9e0dc4b2899a8d09c18bf962e4666a2bd9aa",
+          "schema_summary": [
+            {
+              "name": "id",
+              "type": "integer",
+              "nullable": false,
+              "position": 1,
+              "default": false
+            },
+            {
+              "name": "email",
+              "type": "text",
+              "nullable": false,
+              "position": 2,
+              "default": false
+            },
+            {
+              "name": "created_at",
+              "type": "timestamp with time zone",
+              "nullable": false,
+              "position": 3,
+              "default": false
+            }
+          ]
+        }
+      ]
+    },
+    "comparison_status": "NOT_REQUESTED"
+  },
+  "turn_status": "done",
+  "approval_calls": 0,
+  "source_sql_mutations": 0,
+  "sandbox_enabled": false,
+  "final_text_sha256": "0b39186533ee71d506a4616ff7c380b4085668f7abb51b3e2f374f64a5a1b369"
+}

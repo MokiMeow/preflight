@@ -1,0 +1,40 @@
+{
+  "kind": "ACTUAL_CONTINUATION_GATE_NOT_FULL_CONNECTED_ACCEPTANCE",
+  "observed_at": "2026-09-26T09:41:33.031461+00:00",
+  "application_commit": "9f75cc1",
+  "command": "UV_PROJECT_ENVIRONMENT=.venv-clean PREFLIGHT_TEST_PG_PORT=55438 PREFLIGHT_TEST_PG_CA=<local CA> uv run --locked preflight verify local",
+  "backend": "Disposable local PostgreSQL18, unit, local MCP/native SDK, injected AWS clients; no real clone or Daytona",
+  "result": {
+    "passed": 485,
+    "failed": 0,
+    "errors": 0,
+    "skipped": 0,
+    "seconds": 236.95,
+    "exit_code": 0
+  },
+  "additional_checks": {
+    "ruff": "PASSED",
+    "mypy_17_source_files": "PASSED",
+    "independent_bounded_review": "29 focused tests passed; no critical/high/medium findings in final delta",
+    "installed_offline_wheel": "PASSED; imports from site-packages, doctor fail-closed, anchored historical report EXPECTED_DIGEST_MATCH"
+  },
+  "deployment": {
+    "application_commit": "9f75cc1",
+    "services": [
+      "preflight:active",
+      "preflight-trueforge:active"
+    ],
+    "persistent_state": "STATE_RECORDS_PRESENT",
+    "cloud_absence_verified": false,
+    "source_apply_enabled": false,
+    "postdeployment_source_receipt": "evidence/connected/postdeployment-source-status.json"
+  },
+  "connected_product_acceptance": "BLOCKED_EXTERNAL",
+  "pending": [
+    "AWS numeric continuation budget",
+    "Daytona credential/target",
+    "operator failed-intent cleanup gate",
+    "real clone and product-agent evaluation",
+    "T27 acceptance then genuine T24 operator source-apply gate"
+  ]
+}
