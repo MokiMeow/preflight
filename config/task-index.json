@@ -1032,11 +1032,11 @@
       "skill": "preflight-verification",
       "independent_review_required": false,
       "review_model": null,
-      "status": "NOT_STARTED",
+      "status": "IN_PROGRESS",
       "max_child_agents": 0,
       "execution_note": "Use the matching Sol High role and verify effective settings. No automatic Astra promotion. Exceptional review only through an admitted A1/A2 ticket in config/model-policy.json; Sol implements and repairs.",
       "review_reasoning_effort": null,
-      "current_execution_note": "Truthful three-minute script exists; no actual recording artifact yet. Record after observedconnecteddemo."
+      "current_execution_note": "Requested recording artifact LOCAL_VERIFIED: demo/Preflight-Demo.mp4,178s,1920x1080,H264,captions,40s actual TrueForge use. Recorded approval receipts are historical. Full stage-format and organizer submission acceptance remain separate; no claim all T33 subtasks executed."
     },
     {
       "id": "T34",
@@ -1052,7 +1052,7 @@
         "07"
       ],
       "subtasks": [
-        "Inspect current resources, source schema, backup status, saved-agent configuration and evidence hashes. Do not replay an applied migration to \u201ccheck readiness.\u201d",
+        "Inspect current resources, source schema, backup status, saved-agent configuration and evidence hashes. Do not replay an applied migration to “check readiness.”",
         "Confirm which session/run is staged for live judging versus recorded evidence and whether the source has already been mutated. A fresh live re-run requires an explicitly reset synthetic fixture/new rehearsal, not hidden state changes.",
         "Provide a clear completion report naming passed gates, exact run/candidate/hashes and any remaining external action.",
         "Verify final organizer submission details, actual model route, all effective gates, report/receipt hashes, model degradation status and retained resource owner. Do not start another source migration to make the screen look fresh.",
@@ -1115,5 +1115,5 @@
     "live_apply_requires_accepted_review_task": "T27",
     "v3_specification_checked_date": "2026-09-25"
   },
-  "checkpoint": "e20a1ea connected sourceAPPLIED/replayrefused/cloneABSENT/recoveryretained; fullnativeevals/video notcomplete"
+  "checkpoint": "Connected source APPLIED/replay refused/clone ABSENT/recovery retained; requested 178-second video verified; full native adversarial evaluations and organizer submission remain incomplete."
 }

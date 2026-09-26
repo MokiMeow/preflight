@@ -1,0 +1,68 @@
+{
+  "duration_seconds": 178,
+  "width": 1920,
+  "height": 1080,
+  "codec": "h264",
+  "pixel_format": "yuv420p",
+  "captions": "burned-in ASS; no audio narration",
+  "native_trueforge_continuous_seconds": 40,
+  "native_segment_output_seconds": [
+    15,
+    55
+  ],
+  "live_capture_action": "read-only get_run through saved preflight agent",
+  "historical_actions": "source Deny, source Allow, replay refusal and cleanup receipts; no gates clicked during recording",
+  "edits": "title/evidence cards, actual screen excerpts, labeled historical evidence, readability holds",
+  "segments": [
+    [
+      "intro",
+      null,
+      15
+    ],
+    [
+      "native",
+      190,
+      40
+    ],
+    [
+      "bad-good",
+      null,
+      30
+    ],
+    [
+      "deny",
+      120,
+      15
+    ],
+    [
+      "allow",
+      137,
+      15
+    ],
+    [
+      "replay",
+      14,
+      25
+    ],
+    [
+      "cleanup",
+      168,
+      10
+    ],
+    [
+      "recovery",
+      null,
+      13
+    ],
+    [
+      "closing",
+      null,
+      15
+    ]
+  ],
+  "sha256": "8968dd856f2b8ec651727c277abf3eb23db283fe97108bc53aca966879f6b901",
+  "bytes": 3512073,
+  "full_decode_check": "PASSED: ffmpeg -v error -i Preflight-Hackathon-1080p.mp4 -f null -",
+  "visual_review": "Nine representative contact-sheet frames and a full-resolution native UI frame inspected; no credentials or raw database rows observed in selected footage",
+  "artifact_path": "demo/Preflight-Demo.mp4"
+}

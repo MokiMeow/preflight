@@ -41,3 +41,16 @@ Thumbs.db
 .codex/worktrees/
 *.auth-state.json
 playwright/.auth/
+
+# Local kit inventories and draft notes are not submission documentation.
+/KIT_VALIDATION.json
+/MANIFEST.json
+*.local.md
+*.scratch.md
+*.draft.md
+/notes/
+/scratch/
+*.har.zip
+
+# Recording sources and intermediates stay under ignored var/.
+# Only reviewed final assets are copied into demo/ for publication.
