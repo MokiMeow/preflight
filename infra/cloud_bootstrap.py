@@ -207,16 +207,22 @@ class BootstrapDriver:
         )
         validate_security_groups(groups, i, d, vpc)
         if self.inputs["host_mode"] == "create":
-            image = self.call("ec2", "describe_images", ImageIds=[d["host_image_id"]]).get(
-                "Images", []
-            )
-            if (
-                len(image) != 1
-                or image[0].get("OwnerId") != d["host_image_owner"]
-                or image[0].get("State") != "available"
-                or image[0].get("Architecture") != "x86_64"
-            ):
-                raise PlanError("BOOTSTRAP_HOST_IMAGE_INVALID")
+            self.approved_root_device = self.inspect_host_image()
+
+    def inspect_host_image(self):
+        d = self.deployment
+        images = self.call("ec2", "describe_images", ImageIds=[d["host_image_id"]]).get("Images", [])
+        if (
+            len(images) != 1
+            or images[0].get("ImageId") != d["host_image_id"]
+            or images[0].get("OwnerId") != d["host_image_owner"]
+            or images[0].get("State") != "available"
+            or images[0].get("Architecture") != "x86_64"
+            or images[0].get("RootDeviceType") != "ebs"
+            or not images[0].get("RootDeviceName")
+        ):
+            raise PlanError("BOOTSTRAP_HOST_IMAGE_INVALID")
+        return images[0]["RootDeviceName"]
 
     def tags(self, source=False):
         values = {
@@ -332,6 +338,7 @@ class BootstrapDriver:
             )
         hosts = [v for r in response.get("Reservations", []) for v in r.get("Instances", [])]
         if not hosts and i["host_mode"] == "create":
+            root_device = getattr(self, "approved_root_device", None) or self.inspect_host_image()
             self.identity()
             self.call(
                 "ec2",
@@ -348,7 +355,7 @@ class BootstrapDriver:
                 MetadataOptions={"HttpTokens": "required", "HttpEndpoint": "enabled"},
                 BlockDeviceMappings=[
                     {
-                        "DeviceName": "/dev/sda1",
+                        "DeviceName": root_device,
                         "Ebs": {
                             "Encrypted": True,
                             "VolumeType": "gp3",

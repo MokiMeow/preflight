@@ -175,6 +175,11 @@ def test_host_create_single_token_imds_and_encrypted_persistent_disk(driver):
     ec2 = stubs["ec2"]
     filters = {"Filters": [{"Name": "client-token", "Values": [value.digest]}]}
     ec2.add_response("describe_instances", {"Reservations": []}, filters)
+    ec2.add_response("describe_images", {"Images": [{
+        "ImageId": value.deployment["host_image_id"], "OwnerId": ACCOUNT,
+        "State": "available", "Architecture": "x86_64",
+        "RootDeviceType": "ebs", "RootDeviceName": "/dev/sda1",
+    }]}, {"ImageIds": [value.deployment["host_image_id"]]})
     identity(stubs)
     d = value.deployment
     expected = {

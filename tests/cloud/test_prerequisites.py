@@ -269,6 +269,8 @@ def test_private_host_and_db_prerequisite_reads_pass(driver):
                     "OwnerId": ACCOUNT,
                     "State": "available",
                     "Architecture": "x86_64",
+                    "RootDeviceType": "ebs",
+                    "RootDeviceName": "/dev/sda1",
                 }
             ]
         },
