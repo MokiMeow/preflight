@@ -11,7 +11,7 @@
     "public.customers"
   ],
   "creation_authorized": false,
-  "approved_budget_ceiling": 100,
+  "approved_budget_ceiling": null,
   "enable_demo_source_apply": false,
   "max_active_runs": 1,
   "max_run_owned_clones": 1,

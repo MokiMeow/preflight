@@ -36,7 +36,7 @@ Prefer reusing existing safe demo infrastructure. For new infrastructure, the ag
 | Named Secrets Manager entries | Source-read and migration-role secrets | Only named ARNs are exposed to the runtime IAM policy |
 | Persistent host storage | Separate TrueForge and Preflight state/report directories | Not an ephemeral container filesystem |
 
-Record selected class/storage/region, observed current pricing source or estimate status, approved spend ceiling, count caps and resource owner. Budget alarms are useful but are **not** an immediate hard stop on cloud charges. The service's count limits and explicit cleanup decisions prevent uncontrolled provisioning. Do not promise sponsor credits, a free tier or a fixed total bill.
+Record selected class/storage/region, observed current pricing source or estimate status, the operator's current spending authorization, count caps and resource owner. D28 removes the prior numeric ceiling for this continuation; record the authorization as uncapped rather than inventing a replacement number. Budget alarms are useful observations but are **not** an immediate hard stop on cloud charges. The service's singleton count limits, exact intent reconciliation and explicit cleanup decisions still prevent uncontrolled provisioning. Do not promise sponsor credits, a free tier or a fixed total bill.
 
 ## 3. Network layout
 
@@ -166,7 +166,7 @@ TLS negative tests must cover wrong CA and wrong hostname, not only `sslmode=dis
 
 ## 12. Provider access, secrets and resource economics
 
-The build uses the operator's coding subscription; the running product uses a separate Gateway/OpenAI route; AWS and TrueForge local sandbox have their own account permissions/limits. Do not treat generous Codex usage as unlimited API/cloud spend. Discover the authorized account and inspect quotas before creating resources; obtain a bounded resource/budget decision once rather than asking on every permitted poll.
+The build uses the operator's coding subscription; the running product uses a separate Gateway/OpenAI route; AWS and TrueForge local sandbox have their own account permissions/limits. Do not treat generous Codex usage as evidence about API/cloud spend. Discover the authorized account and inspect quotas before creating resources. D28 authorizes the planned live AWS result without a numeric dollar ceiling; it does not remove singleton resource caps, exact-account checks, reconciliation, cost observation or deliberate cleanup.
 
 Use a team/application-scoped Gateway credential where supported, copied into the approved provider settings, and confirm the model is enabled for that credential. Copy the exact base URL and model identifier from the actual Playground example. Never put a guessed provider prefix or secret in the model instruction. Do not change organization-wide access policies to work around a denied request.
 
@@ -187,4 +187,4 @@ A short **agent Code Mode polling-batch deadline** returns the existing job as s
 
 Coding-model admission is governed by `config/model-policy.json`: Sol High for ordinary cloud work, no Astra escalation for a normal pending restore or known IAM/quota error. Provider usage and AWS resource costs are separate observations. Apply the same private network, TLS, identity, lifecycle and recovery requirements regardless of which Sol model wrote a module.
 
-Operator amendment D26 replaces the original Daytona runtime with the installed native local Linux sandbox; historical upstream research and the immutable PRD retain their original scope. D27 authorizes a USD100 continuation ceiling, not a fabricated instantaneous provider spending stop.
+Operator amendment D26 replaces the original Daytona runtime with the installed native local Linux sandbox; historical upstream research and the immutable PRD retain their original scope. D28 supersedes D27's USD100 ceiling and authorizes the planned live AWS result without a numeric maximum. It does not alter either literal human gate or authorize unrelated resources.

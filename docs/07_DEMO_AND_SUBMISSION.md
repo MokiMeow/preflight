@@ -171,7 +171,7 @@ The indexed official organizer page publishes the weights below; final instructi
 
 **4:10–5:00:** Show the evidence-chain/report, verified final state, explicit retained recovery resource and why production concurrency/identity would need further work. Close on the engineer's informed decision, not a fabricated “zero risk” or “exactly once under every failure” claim.
 
-Prepare a separate clean owned synthetic source/run for an authorized live demonstration only if the actual resource budget permits it. Otherwise use the existing current state plus clearly labeled recorded approval evidence; do not hide a reset. The pitch's timing is a script, not a guaranteed cloud-operation duration.
+Prepare a separate clean owned synthetic source/run only when the operator has explicitly authorized it. D28 authorizes the planned live AWS result without a numeric ceiling, while singleton resource limits and exact-source controls remain. Otherwise use the existing current state plus clearly labeled recorded approval evidence; do not hide a reset. The pitch's timing is a script, not a guaranteed cloud-operation duration.
 
 ## 11. Explainability and submission completeness
 
@@ -211,4 +211,4 @@ Before the stage: verify the exact integrated commit, source state, retained bac
 
 The engineer should be able to explain four distinctions without reading a model transcript: clone execution versus source execution; coverage versus correctness; artifact consistency versus trusted provenance; and confirmed rollback versus unknown commit. These are the substantive engineering decisions the demo is meant to make visible.
 
-Operator amendment D26 replaces the original Daytona runtime with the installed native local Linux sandbox; historical upstream research and the immutable PRD retain their original scope. D27 authorizes a USD100 continuation ceiling, not a fabricated instantaneous provider spending stop.
+Operator amendment D26 replaces the original Daytona runtime with the installed native local Linux sandbox; historical upstream research and the immutable PRD retain their original scope. D28 supersedes D27's USD100 ceiling and authorizes the planned live AWS result without a numeric maximum. Singleton resource limits, exact-source controls and both literal human gates remain.
