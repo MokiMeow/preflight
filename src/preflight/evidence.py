@@ -2,6 +2,8 @@
 
 import hashlib
 import json
+import threading
+import time
 from datetime import datetime, timezone
 
 from psycopg import sql
@@ -68,11 +70,14 @@ class EvidenceBundle:
         return "<EvidenceBundle private>"
 
 
-def _capture(connection, contract, existing_columns):
+def _capture(connection, contract, existing_columns, check_deadline):
+    check_deadline()
     metadata = validate_catalog(connection, contract)
+    check_deadline()
     private = {}
     public = []
     for table in contract.tables:
+        check_deadline()
         meta = metadata[table.name]
         columns = [c["name"] for c in meta["columns"]]
         full_columns = existing_columns.get(table.name) if existing_columns is not None else columns
@@ -88,6 +93,7 @@ def _capture(connection, contract, existing_columns):
             )
             cur.execute(sql.SQL("SELECT count(*),COALESCE(sum({}),0) FROM {}").format(sizes, ident))
             count, size = cur.fetchone()
+            check_deadline()
             if count > contract.max_rows_per_table or size > contract.max_bytes_per_table:
                 raise PreflightError("SCAN_BUDGET_EXCEEDED")
         preserved, full, values = {}, {}, {c: [] for c in columns}
@@ -102,6 +108,7 @@ def _capture(connection, contract, existing_columns):
                 )
             )
             for row in cur:
+                check_deadline()
                 encoded = {c: typed_value(v) for c, v in zip(columns, row, strict=True)}
                 raw = canonical([encoded[c] for c in columns])
                 total += len(raw)
@@ -122,6 +129,7 @@ def _capture(connection, contract, existing_columns):
                 )
                 for c in columns:
                     values[c].append(canonical(encoded[c]))
+                check_deadline()
         if count_actual != count:
             raise PreflightError("SCAN_INCONSISTENT")
         private[table.name] = {
@@ -140,6 +148,8 @@ def _capture(connection, contract, existing_columns):
                 schema_summary=meta["columns"],
             )
         )
+        check_deadline()
+    check_deadline()
     return EvidenceBundle(
         PublicEvidence(tables=public),
         private,
@@ -156,6 +166,23 @@ def capture_evidence(
         raise PreflightError("EVIDENCE_TRANSACTION_REQUIRED")
     if not in_transaction and not fresh:
         raise PreflightError("EVIDENCE_SESSION_NOT_FRESH")
+    deadline = time.monotonic() + contract.max_migration_seconds
+    expired = threading.Event()
+
+    def cancel():
+        expired.set()
+        try:
+            connection.cancel_safe(timeout=2)
+        except Exception:
+            pass
+
+    def check_deadline():
+        if expired.is_set() or time.monotonic() >= deadline:
+            raise PreflightError("SCAN_DEADLINE_EXCEEDED") from None
+
+    timer = threading.Timer(contract.max_migration_seconds, cancel)
+    timer.daemon = True
+    timer.start()
     try:
         if fresh:
             with connection.transaction():
@@ -164,12 +191,22 @@ def capture_evidence(
                     "SELECT pg_catalog.set_config('search_path','pg_catalog',true), pg_catalog.set_config('statement_timeout',%s,true)",
                     (str(contract.max_migration_seconds * 1000),),
                 )
-                return _capture(connection, contract, existing_columns)
-        return _capture(connection, contract, existing_columns)
+                evidence = _capture(connection, contract, existing_columns, check_deadline)
+                check_deadline()
+        else:
+            evidence = _capture(connection, contract, existing_columns, check_deadline)
+            check_deadline()
     except PreflightError:
+        check_deadline()
         raise
     except Exception:
+        check_deadline()
         raise PreflightError("EVIDENCE_CAPTURE_FAILED") from None
+    finally:
+        timer.cancel()
+        timer.join()
+    check_deadline()
+    return evidence
 
 
 def baseline_matches(before: EvidenceBundle, after: EvidenceBundle) -> bool:

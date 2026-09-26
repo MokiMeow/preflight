@@ -1,6 +1,7 @@
 """Remaining P11/P12,D09/D10,V28 clauses against disposable loopback PG18."""
 
 import time
+import traceback
 from uuid import uuid4
 
 import psycopg
@@ -180,13 +181,25 @@ def test_d10_serialized_budget_excludes_escape_expansion_overrun(db, contract):
         capture_evidence(db, limits)
 
 
-def test_d10_whole_capture_deadline_includes_row_processing(db, contract):
+@pytest.mark.parametrize("delay_kind", ["row_processing", "fetch_batches"])
+@pytest.mark.parametrize("caller_owned_transaction", [False, True])
+def test_d10_whole_capture_deadline_includes_row_processing(
+    db, contract, delay_kind, caller_owned_transaction
+):
     class SlowScan:
         def __init__(self, cursor):
             self.cursor = cursor
 
         def __getattr__(self, name):
             return getattr(self.cursor, name)
+
+        @property
+        def itersize(self):
+            return self.cursor.itersize
+
+        @itersize.setter
+        def itersize(self, value):
+            self.cursor.itersize = value
 
         def __enter__(self):
             self.cursor.__enter__()
@@ -199,8 +212,10 @@ def test_d10_whole_capture_deadline_includes_row_processing(db, contract):
             # Real catalog/count/FETCH reads still execute on PostgreSQL. This
             # models bounded local CPU/scheduling delay after a completed fetch.
             for index, row in enumerate(self.cursor):
-                if index == 0:
+                if delay_kind == "row_processing" and index == 0:
                     time.sleep(1.15)
+                elif delay_kind == "fetch_batches" and index % self.cursor.itersize == 0:
+                    time.sleep(0.18)
                 yield row
 
     class SlowCapture:
@@ -212,10 +227,54 @@ def test_d10_whole_capture_deadline_includes_row_processing(db, contract):
             return SlowScan(cursor) if kwargs.get("name") else cursor
 
     limits = contract.model_copy(update={"max_migration_seconds": 1})
+    if caller_owned_transaction:
+        db.execute("BEGIN ISOLATION LEVEL READ COMMITTED")
     started = time.monotonic()
-    with pytest.raises(PreflightError):
-        capture_evidence(SlowCapture(), limits)
+    try:
+        with pytest.raises(PreflightError, match="SCAN_DEADLINE_EXCEEDED"):
+            capture_evidence(SlowCapture(), limits, in_transaction=caller_owned_transaction)
+        if caller_owned_transaction:
+            assert db.info.transaction_status != TransactionStatus.IDLE
+    finally:
+        if caller_owned_transaction:
+            db.execute("ROLLBACK")
     assert time.monotonic() - started < 3
+    assert db.info.transaction_status == TransactionStatus.IDLE
+    assert db.execute("SELECT count(*) FROM public.customers").fetchone()[0] == 1000
+
+
+def test_d10_whole_capture_deadline_includes_catalog_processing(db, contract, monkeypatch):
+    import preflight.evidence as evidence
+
+    original = evidence.validate_catalog
+
+    def slow_catalog(connection, limits):
+        result = original(connection, limits)
+        time.sleep(1.15)
+        return result
+
+    monkeypatch.setattr(evidence, "validate_catalog", slow_catalog)
+    limits = contract.model_copy(update={"max_migration_seconds": 1})
+    with pytest.raises(PreflightError, match="SCAN_DEADLINE_EXCEEDED"):
+        capture_evidence(db, limits)
+    assert db.info.transaction_status == TransactionStatus.IDLE
+
+
+def test_d10_deadline_error_suppresses_private_underlying_exception(db, contract, monkeypatch):
+    import preflight.evidence as evidence
+
+    original = evidence.validate_catalog
+
+    def delayed_failure(connection, limits):
+        original(connection, limits)
+        time.sleep(1.15)
+        raise RuntimeError("PRIVATE_ERROR_SENTINEL")
+
+    monkeypatch.setattr(evidence, "validate_catalog", delayed_failure)
+    limits = contract.model_copy(update={"max_migration_seconds": 1})
+    with pytest.raises(PreflightError, match="SCAN_DEADLINE_EXCEEDED") as error:
+        capture_evidence(db, limits)
+    assert "PRIVATE_ERROR_SENTINEL" not in "".join(traceback.format_exception(error.value))
     assert db.info.transaction_status == TransactionStatus.IDLE
 
 
@@ -225,7 +284,7 @@ def test_d10_baseline_query_timeout_cannot_return_partial_evidence(db, admin, co
     admin.execute("LOCK TABLE public.customers IN ACCESS EXCLUSIVE MODE")
     started = time.monotonic()
     try:
-        with pytest.raises(PreflightError, match="EVIDENCE_CAPTURE_FAILED"):
+        with pytest.raises(PreflightError, match="SCAN_DEADLINE_EXCEEDED"):
             capture_evidence(db, limits)
         assert time.monotonic() - started < 4
         assert db.info.transaction_status == TransactionStatus.IDLE
