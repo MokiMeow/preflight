@@ -133,3 +133,26 @@ def test_probe_accepts_only_the_explicit_authorized_non_sol_alias(tmp_path):
             "state": "BLOCKED_EXTERNAL",
             "error_code": "ROUTE_MODEL_INVALID",
         }
+
+
+def test_probe_omits_reasoning_for_none_and_preserves_high():
+    module = (ROOT / "scripts/probe_gateway_responses.mjs").as_uri()
+    expression = (
+        f'import {{ reasoningRequestOptions }} from "{module}"; '
+        "console.log(JSON.stringify({"
+        "none: reasoningRequestOptions('none'), "
+        "high: reasoningRequestOptions('high')"
+        "}));"
+    )
+    result = subprocess.run(
+        ["node", "--input-type=module", "--eval", expression],
+        cwd=ROOT,
+        capture_output=True,
+        text=True,
+        check=False,
+    )
+    assert result.returncode == 0, result.stderr
+    assert json.loads(result.stdout) == {
+        "none": {},
+        "high": {"reasoning": {"effort": "high"}},
+    }

@@ -1,5 +1,6 @@
 import { createHash } from "node:crypto";
 import { readFile } from "node:fs/promises";
+import { pathToFileURL } from "node:url";
 
 import { FinalTextState, ProbeProtocolError, ToolCallState } from "./responses_stream_state.mjs";
 
@@ -121,6 +122,10 @@ function providerFailure(error) {
   return new SafeProbeError("PROVIDER_REQUEST_FAILED", 8);
 }
 
+export function reasoningRequestOptions(reasoningEffort) {
+  return reasoningEffort === "none" ? {} : { reasoning: { effort: reasoningEffort } };
+}
+
 async function execute(config) {
   const apiKey = process.env[config.api_key_env];
   if (typeof apiKey !== "string" || apiKey.length === 0) fail("PROVIDER_CREDENTIAL_MISSING", 4);
@@ -140,7 +145,7 @@ async function execute(config) {
   try {
     const initial = await client.responses.create({
       model: config.model,
-      reasoning: { effort: config.reasoning_effort },
+      ...reasoningRequestOptions(config.reasoning_effort),
       input: "Call status exactly once, then summarize the returned status in one sentence.",
       tools: [
         {
@@ -157,7 +162,7 @@ async function execute(config) {
     const tool = await consume(initial, new ToolCallState());
     const continued = await client.responses.create({
       model: config.model,
-      reasoning: { effort: config.reasoning_effort },
+      ...reasoningRequestOptions(config.reasoning_effort),
       previous_response_id: tool.responseId,
       input: [
         {
@@ -223,4 +228,6 @@ async function main() {
   }
 }
 
-await main();
+if (process.argv[1] && import.meta.url === pathToFileURL(process.argv[1]).href) {
+  await main();
+}
