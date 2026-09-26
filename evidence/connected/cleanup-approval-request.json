@@ -1,0 +1,40 @@
+{
+  "schema_version": "1.0",
+  "status": "CONNECTED_VERIFIED_ALLOW_AND_CLEANUP_RECEIPT",
+  "session_id": "01m3emr1k8m9a4jra91jmhv1tt",
+  "turn_id": "01m3emt7p8warmvg9j8c3qpd1n",
+  "tool": "cleanup_run",
+  "run_id": "e1047953-f206-4e0a-9574-0dac3956a30b",
+  "approval_event_ids": [
+    "01m3emtb1448ecq4pj7z8k7e3w"
+  ],
+  "tool_call_ids": [
+    "call_iROhRtxdtOrbi8FHcC3lOesD"
+  ],
+  "operator_decision": "ALLOW",
+  "underlying_cleanup_execution": "COMPLETE",
+  "ui_allow_deny_visible": true,
+  "coding_agent_clicked_gate": false,
+  "source_apply_enabled": false,
+  "operator_approval_events": [
+    {
+      "turn_id": "01m3emxswkttwm3pby8zbf8j3t",
+      "event_id": "01m3emxswtag9vt1dtxmxchj3h",
+      "tool_call_id": "call_iROhRtxdtOrbi8FHcC3lOesD",
+      "approval": "allow"
+    }
+  ],
+  "cleanup_receipt": {
+    "receipt_id": "da3e1dc4-60df-4fa4-b8f3-7d14d806f58d",
+    "run_id": "e1047953-f206-4e0a-9574-0dac3956a30b",
+    "kind": "cleanup",
+    "created_at": "2026-09-26T10:42:11.484330Z",
+    "actions": {
+      "clone": "ABSENT",
+      "snapshot": "ABSENT"
+    },
+    "cleanup_state": "COMPLETE"
+  },
+  "resources_deleted": false,
+  "scope": "Literal operator Allow followed by guarded exact-resource absence reconciliation. No actual resources existed to delete; source unchanged."
+}

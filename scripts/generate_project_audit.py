@@ -29,7 +29,7 @@ def main():
     OUT.mkdir(parents=True, exist_ok=True)
     paths = subprocess.check_output(["git", "ls-files", "-z"], cwd=ROOT).decode().split("\0")
     paths = sorted(
-        {p for p in paths if p and not p.startswith("docs/audit/")}
+        {p for p in paths if p and p not in {"docs/audit/FILE_FUNCTION_INVENTORY.md", "docs/audit/file-function-inventory.json"}}
         | {p for p in ("KIT_VALIDATION.json", "MANIFEST.json") if (ROOT / p).exists()}
     )
     commit = subprocess.check_output(["git", "rev-parse", "HEAD"], cwd=ROOT).decode().strip()

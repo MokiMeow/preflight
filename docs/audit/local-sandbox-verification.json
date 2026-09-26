@@ -1,0 +1,99 @@
+{
+  "schema_version": "1.0",
+  "full_gate": {
+    "revision": "878d64a",
+    "command": "UV_PROJECT_ENVIRONMENT=.venv-clean PREFLIGHT_TEST_PG_PORT=55438 PREFLIGHT_TEST_PG_CA=<retained-local-CA> py -3.12 -m uv run --locked preflight verify local",
+    "passed": 641,
+    "failed": 0,
+    "errors": 0,
+    "skipped": 0,
+    "elapsed_seconds": 263.6,
+    "exit_code": 0,
+    "backend": "Actual disposable PostgreSQL18.6/TLS and local official MCP; cloud cases use boto Stubber. Pinned native JS and configuration checks are local."
+  },
+  "manifest_delta": {
+    "revision": "8048e79",
+    "command": "py -3.12 -m uv run --locked pytest tests/trueforge/test_configure_trueforge_host.py -q",
+    "passed": 9,
+    "elapsed_seconds": 5.46,
+    "exit_code": 0
+  },
+  "ruff": {
+    "command": "py -3.12 -m uv run --locked ruff check .",
+    "exit_code": 0
+  },
+  "mypy": {
+    "command": "py -3.12 -m uv run --locked mypy src/preflight",
+    "source_files": 18,
+    "exit_code": 0
+  },
+  "deployment": {
+    "revision": "8048e79",
+    "private_state_preserved": true,
+    "service_active": true,
+    "trueforge_active": true,
+    "creation_authorized": false,
+    "source_apply_enabled": false,
+    "operational_guidance_delta": "878d64a",
+    "publisher_delta": "79050b4"
+  },
+  "budget": {
+    "ceiling_usd": "100",
+    "cost_explorer_actual_result": "DataUnavailableException",
+    "actual_query": "aws ce get-cost-and-usage --time-period Start=2026-09-01,End=2026-09-27 --granularity DAILY --metrics UnblendedCost",
+    "publication_config": "MISSING",
+    "actual_linux_admin_result": "BLOCKED/BUDGET_OPERATOR_CONFIGURATION_MISSING",
+    "native_hard_cap_enforced": false,
+    "deployed_reservation_probe": {
+      "reason": "BUDGET_OBSERVATION_UNKNOWN",
+      "admitted": false,
+      "ledger_mode": "0600",
+      "reservation_inserted": false
+    },
+    "publisher_delta_revision": "79050b4",
+    "publisher_affected_tests": {
+      "passed": 46,
+      "elapsed_seconds": 3.75,
+      "exit_code": 0
+    }
+  },
+  "prd_sha256": "5f607b53bd7c439c94e3f97d3826e24e441cb5d007863eca023313347533b6bf",
+  "expert_sessions_used": 0,
+  "distribution": {
+    "source_archive_members": 175,
+    "private_artifacts": 0,
+    "wheel_python_modules": 18,
+    "original_prd_hash_match": true,
+    "installed_wheel_module_matches": 18,
+    "wheel_sha256": "19885c64b95ff04be24a588816d43cac0e7667215f80df0a54c98e69040af859",
+    "isolated_imports": "PASSED",
+    "offline_report_anchor": "EXPECTED_DIGEST_MATCH",
+    "historical_only": true,
+    "current_apply_eligibility": "NOT_EVALUATED"
+  },
+  "manifest_envelope_delta": {
+    "revision": "878d64a",
+    "passed": 9,
+    "elapsed_seconds": 4.86,
+    "exit_code": 0
+  },
+  "human_cleanup": {
+    "decision": "ALLOW",
+    "receipt_id": "da3e1dc4-60df-4fa4-b8f3-7d14d806f58d",
+    "state": "COMPLETE",
+    "actions": {
+      "clone": "ABSENT",
+      "snapshot": "ABSENT"
+    },
+    "coding_agent_clicked_gate": false
+  },
+  "operator_budget_amendment": {
+    "status": "AUTHORIZED_IMPLEMENTATION_IN_PROGRESS",
+    "ceiling_removed": true,
+    "human_gates_preserved": true
+  },
+  "additional_profile_diagnostic": {
+    "status": "RUNNING_WITH_TWO_FAILURES",
+    "scope": "Optional sys.setprofile-instrumented unit/cloud run; not the standard full acceptance gate. Failure details pending; no current function coverage claimed."
+  }
+}

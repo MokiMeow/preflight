@@ -1,0 +1,52 @@
+{
+  "schema_version": "1.0",
+  "kind": "NATIVE_LOCAL_LINUX_CANARIES",
+  "status": "CONNECTED_VERIFIED",
+  "application_revision": "8048e79",
+  "probe_revision": "8051eb9",
+  "vendor_version": "0.2.1",
+  "vendor_sha256": "f1721874969562f995142c5d87a2e3cc75c83d73fbfe061aaa0021d09e922ced",
+  "execution_identity": "preflight service user on existing owned Linux EC2",
+  "python": "python3.12",
+  "host_file_read_write_positive_control": true,
+  "host_positive_controls": {
+    "loopback_listener": true,
+    "private_listener": true,
+    "imds_tcp": true
+  },
+  "checks": {
+    "0_rb_denied": true,
+    "0_ab_denied": true,
+    "1_rb_denied": true,
+    "1_ab_denied": true,
+    "2_rb_denied": true,
+    "3_rb_denied": true,
+    "3_ab_denied": true,
+    "symlink_denied": true,
+    "host_env_absent": true,
+    "host_proc_absent": true,
+    "loopback_tcp_denied": true,
+    "private_tcp_denied": true,
+    "imds_tcp_denied": true,
+    "proxy_present": true,
+    "loopback_proxy_policy_denied": true,
+    "private_proxy_policy_denied": true,
+    "imds_proxy_policy_denied": true,
+    "own_bridge_allowed": true,
+    "foreign_bridge_denied": true,
+    "opt_host_bytes_preserved": true,
+    "opt_host_metadata_preserved": true
+  },
+  "opt_shadow_write_observed": true,
+  "launcher_environment_refused": true,
+  "timeout_elapsed_ms": 1077,
+  "timed_child_marker_absent": true,
+  "timeout_tool_success": false,
+  "accepted": true,
+  "scope": "Controlled harmless canaries only. No AWS SDK call, real credential read, source SQL, model call or approval occurred in this deterministic probe.",
+  "command": "sudo -u preflight env PATH=/opt/preflight/node/bin:/usr/local/bin:/usr/bin:/bin HOME=/var/lib/preflight-user /opt/preflight/node/bin/node /tmp/probe_trueforge_local_sandbox.mjs <guarded-helper> <installed-main> f1721874969562f995142c5d87a2e3cc75c83d73fbfe061aaa0021d09e922ced <controlled-canary>",
+  "earlier_failures": [
+    "Inert TCP positive-control server ECONNRESET handler fixed before accepted rerun.",
+    "Append-open oracle distinguished ephemeral shadow writes from independently verified host integrity; actual write and owner0600 positive control retained."
+  ]
+}

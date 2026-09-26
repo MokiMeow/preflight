@@ -4,7 +4,7 @@
 
 This report records the continuation state after replacing Daytona with the installed TrueForge local Linux sandbox under decision D26. It is a handoff, not a declaration that Preflight is complete. The application and documentation snapshot reviewed here is root commit `8048e79`; the protected budget-fact publisher was introduced at `d45e41a`. The saved-agent instruction correction is included at `8048e79`. The immutable PRD was not changed.
 
-The implementation role for this report was GPT-5.6 Sol with high reasoning. No host, AWS, database, provider, source-apply, cleanup, or approval-gate call was made while writing it. The root deployment of the new application was still in progress, so deployment of `8048e79` is **not** asserted here.
+The implementation role for this report was GPT-5.6 Sol with high reasoning. No host, AWS, database, provider, source-apply, cleanup, or approval-gate call was made while writing it. The root deployed application `8048e79` with publisher delta `79050b4` and saved-agent guidance `878d64a`; both private services were active and persisted state retained.
 
 Status words have their strict meanings:
 
@@ -18,14 +18,14 @@ Status words have their strict meanings:
 
 | Area | Result | Scope and limit |
 |---|---|---|
-| Frozen full suite | **LOCAL_VERIFIED** | Commit `8051eb9`: `636 passed`, zero failures, errors, or skips, in `259.96s`; exit 0. This precedes the manifest-only `8048e79` correction. |
+| Frozen full suite | **LOCAL_VERIFIED** | Commit `878d64a`: `641 passed`, zero failures, errors, or skips, in `263.60s`; exit 0. Actual local PostgreSQL18.6/TLS; cloud cases are Stubber tests. |
 | Manifest-affected check | **LOCAL_VERIFIED** | At `8048e79`: nine affected tests passed in `5.46s`. |
 | Static quality | **LOCAL_VERIFIED** | Ruff passed for the repository; mypy passed all 18 source modules. |
 | Native sandbox boundary canary | **CONNECTED_VERIFIED component** | The reviewed TrueForge patch ran on the actual Linux host. The controlled host-owned `0600` canary supported the intended positive write/restore check while independent host bytes and metadata remained unchanged. Private/sibling reads and writes, process/environment access, direct private/IMDS access, and proxy-mediated access were denied; the proxy path returned 403. The session's own bridge socket was allowed and a foreign socket was denied. `BASH_ENV` was refused before launch. A timeout returned the explicit timeout result after 1,077 ms and the delayed child marker remained absent. The canary result was accepted as true. This proves the tested boundaries only; it is not a general Linux containment proof. |
 | Saved native product agent | **CONNECTED_VERIFIED component / PARTIAL workflow** | Saved agent `preflight` (`01m3em9y0t7jqx20txq6s7pj39`), session `01m3emerb0g1f9cte1fpv1n4he`, turn `01m3emerb53n41nm53pp3znfnm`. The first attempt sent bare Python to the shell and exited 2. The model corrected itself by creating an explicit heredoc/script and invoking Python; sandbox call `call_t4C8Br4WdNBHQxYHXGaDDOlN` exited 0 and observed 1,000 rows, three columns, run state `ERROR`, and `cleanup_state=NOT_REQUESTED`. This is not a first-try success and is not a successful rehearsal. |
-| Human gates | **NOT_RUN** | Neither `apply_to_demo_source` nor `cleanup_run` was approved or clicked. Source apply remains false. |
+| Human gates | **CONNECTED_VERIFIED cleanup / source NOT_RUN** | The operator actually allowed cleanup at 10:42:10 UTC; receipt `da3e1dc4-60df-4fa4-b8f3-7d14d806f58d` records COMPLETE with clone and snapshot ABSENT. The coding agent did not click the gate. Source apply remains false. |
 | RDS rehearsal | **NOT_RUN** | No run-owned snapshot, restored clone, source SQL apply, or complete bad-to-good connected rehearsal has occurred. |
-| Failed-run resources | **CONNECTED_VERIFIED absence / action pending** | The current failed run has both run-owned resources absent. Genuine cleanup remains pending because `cleanup_state=NOT_REQUESTED`; absence does not substitute for the cleanup decision or receipt. |
+| Failed-run resources | **CONNECTED_VERIFIED absence and cleanup receipt** | The real operator Allow produced COMPLETE, with both exact resources ABSENT. No resource was deleted and the source was untouched. |
 | Budget admission | **LOCAL_VERIFIED implementation / BLOCKED_EXTERNAL publication** | The USD 100 operator ceiling is recorded, and protected publication plus durable admission/refusal code exists. Actual Cost Explorer facts remain `DataUnavailable`; current whole-footprint cost and a finite enforceable retention upper bound are unproved. Creation remains false. The publisher refuses missing, incomplete, estimated, stale, wrong-account, wrong-currency, or ambiguous facts. It does not implement or claim an AWS-native hard cap. |
 
 The lead-owned sanitized evidence paths for this checkpoint are:
@@ -34,7 +34,7 @@ The lead-owned sanitized evidence paths for this checkpoint are:
 - `evidence/connected/saved-agent-code-mode.json`
 - `docs/audit/local-sandbox-verification.json`
 
-These receipts were being written by the lead and were not members of frozen commit `8048e79` when this report was drafted. Integration must verify their hashes and contents after they land; this report does not manufacture their contents.
+The lead retained sanitized actual receipts, including `evidence/connected/cleanup-approval-request.json`. A second corrected postdeployment Code Mode call `call_cP0dXmj55AAFu40YuqzVek4Z` observed row_count=1000, column_count=3, phase=ERROR, cleanup_state=COMPLETE. A preceding N/A extraction is explicitly not accepted as business proof.
 
 ## What the local sandbox work implements
 
@@ -84,7 +84,7 @@ No report/offline-verifier, SQL policy, transaction, verdict, human-gate, or pub
 | T24 — deny/allow/replay demonstration | **NOT_RUN / BLOCKED_EXTERNAL** | Literal gates remain configured and source apply is false. | Accepted T27 packet first, then genuine human denial/no-change, explicit allow/one apply, receipt, source recheck, and replay refusal. The coding agent must not click either gate. |
 | T27 — independent boundary review | **PARTIAL connected** | Independent reviews closed the shared-socket, stale helper/module form, launcher environment, timeout, and canary-oracle findings; host canary passed. | Final review tied to the deployed commit, actual IAM/private configuration, saved-agent/provider exports, and any remaining high/critical findings. |
 | T28 — native experience/report | **PARTIAL connected** | Native saved agent and corrected Code Mode step are observable; instructions now match the actual shell API. | Judge-ready BLOCK/PASS/deny/apply/unknown flow on the real rehearsal without unsupported safety claims. |
-| T29 — cleanup/retention | **NOT_RUN connected action** | Both failed-run disposable resources are absent; cleanup state is explicitly `NOT_REQUESTED`. | Genuine cleanup/retention gate decision and receipt; retain recovery evidence as policy requires. |
+| T29 — cleanup/retention | **CONNECTED_VERIFIED failed-run gate component** | Genuine operator Allow and COMPLETE absence receipt are retained. | Cleanup/retention of a future actual clone and recovery backup remains unrun. |
 | T31 — final regression/review | **LOCAL_VERIFIED, connected incomplete** | 636-test gate, affected manifest tests, Ruff, and mypy passed. | Gate the final integrated/deployed revision and close all connected assertions. |
 | T32 — submission | **BLOCKED_EXTERNAL** | Reproducible local materials continue to exist. | Final current distribution/evidence inventory, organizer fields, privacy review, and publication authorization. |
 | T33 — pitch/recording | **NOT_RUN** | Runbook language exists. | Actual sanitized recording and evidence-led rehearsal with the human approver. |
@@ -146,12 +146,16 @@ The successful native turn is not a substitute for the specified E01–E10 case 
 
 - Source apply: **false**.
 - Literal source-apply approval: **not requested/not clicked in this continuation**.
-- Cleanup: **NOT_REQUESTED**; failed-run clone and snapshot are absent.
+- Cleanup: **COMPLETE**, following genuine operator Allow; failed-run clone and snapshot were ABSENT.
 - New run-owned RDS clone/manual snapshot: **none**.
 - Billable creation: **disabled/refused without complete protected budget facts**.
 - USD ceiling: **100**, with current CE facts unavailable and finite-retention bound unproved.
 - Saved-agent native Code Mode: **one corrected successful sandbox execution**, preceded by one exit-2 bare-Python shell mistake; business run remained `ERROR`.
-- Full local gate: **636 passed**, zero failures/errors/skips, `259.96s`, at `8051eb9`.
+- Full local gate: **641 passed**, zero failures/errors/skips, `263.60s`, at `878d64a`.
 - Manifest follow-up: **nine affected tests passed**, `5.46s`, at `8048e79`.
 - Final connected acceptance: **incomplete**.
 
+
+## Latest operator amendment and remaining proof
+
+The operator has explicitly removed the USD100 ceiling. An explicit unlimited-budget configuration and deployment amendment is in progress; this does not fabricate unavailable billing facts or waive ownership, private networking, SQL validation, or human source/cleanup gates. The previous budget blocker is historical once that amendment is deployed. Real snapshot/clone, bad/good migrations, source Allow/Deny and the three-minute recording are still not claimed complete. An optional heavily instrumented function-call diagnostic showed two failures while still running; the standard 641-test gate passed, and no current whole-function coverage is inferred.

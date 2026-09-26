@@ -1,0 +1,60 @@
+{
+  "schema_version": "1.0",
+  "status": "CONNECTED_VERIFIED_COMPONENT",
+  "saved_agent": "preflight",
+  "agent_id": "01m3em9y0t7jqx20txq6s7pj39",
+  "session_id": "01m3emerb0g1f9cte1fpv1n4he",
+  "turn_id": "01m3emerb53n41nm53pp3znfnm",
+  "route": {
+    "alias": "vm-polaris/openai",
+    "resource": "openai/gpt-model",
+    "reasoning": "omitted",
+    "operator_override": "D25"
+  },
+  "native_sandbox_created": true,
+  "generated_python_calls": [
+    "get_source_status",
+    "get_run"
+  ],
+  "executions": [
+    {
+      "tool_call_id": "call_rD138sDUCBJJilb1QcPvdxAY",
+      "success": true,
+      "exit_code": 2,
+      "stdout_or_error": "/usr/bin/bash: line 52: from: command not found\n/usr/bin/bash: line 53: import: command not found\n/usr/bin/bash: eval: line 55: syntax error near unexpected token `('\n/usr/bin/bash: eval: line 55: `async def main():'\n"
+    },
+    {
+      "tool_call_id": "call_t4C8Br4WdNBHQxYHXGaDDOlN",
+      "success": true,
+      "exit_code": 0,
+      "stdout_or_error": "Source status row_count: 1000\nSource status column_count: 3\nRun phase: ERROR\nCleanup status: NOT_REQUESTED\nError code: None\n"
+    }
+  ],
+  "model_correction_observed": true,
+  "source_row_count": 1000,
+  "source_column_count": 3,
+  "observed_run_phase": "ERROR",
+  "observed_cleanup_state": "NOT_REQUESTED",
+  "scope": "Real generated native sandbox Python and typed MCP on owned RDS source. No full clone rehearsal, source mutation or human approval proof.",
+  "postdeployment_corrected_trace": {
+    "application_revision": "8048e79",
+    "guidance_revision": "878d64a",
+    "session_id": "01m3en1hx6015ewzw6frbcd2mw",
+    "turn_id": "01m3en7wz4fs8vmd4mwsbtsa4d",
+    "executions": [
+      {
+        "tool_call_id": "call_cP0dXmj55AAFu40YuqzVek4Z",
+        "success": true,
+        "exit_code": 0,
+        "actual_aggregates": {
+          "row_count": 1000,
+          "column_count": 3,
+          "phase": "ERROR",
+          "cleanup_state": "COMPLETE"
+        }
+      }
+    ],
+    "earlier_NA_extraction_accepted": false,
+    "correction": "Require actual ok/data/error_code envelope and exact schema paths; N/A never indicates inactive state."
+  }
+}
