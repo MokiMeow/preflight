@@ -1,6 +1,6 @@
 # 09 — Live build status and resume ledger (V3)
 
-**Current state:** implemented Python service, deterministic evidence, guarded AWS adapters and pinned native TrueForge integration. Local verification is ongoing; connected deployment and human demonstrations await operator access. The archive began as specifications only.
+**Current state:** implemented Python service, deterministic evidence, guarded AWS adapters and pinned native TrueForge integration. Local verification passed; connected deployment and human demonstrations await operator access. The archive began as specifications only.
 
 ## Current checkpoint
 
@@ -9,12 +9,12 @@
 - Toolchain: uv.lock installed; Python 3.12.10 / MCP 2.2.0 / pglast 8.4 / PostgreSQL18 target.
 - Isolated DB/cloud/integration lanes complete; independent Sol final evidence/fsync recheck closed with no new finding. No grandchildren; observed role models match assignments.
 - Next: obtain operator cloud/provider setup, execute the documented connected probes and authorized bootstrap, accept T27/A1 before any T24 live apply. Keep source apply disabled until actual human demonstration scope is ready.
-- Latest full passing gate: `uv run --locked preflight verify local`: **217 passed, zero failures/skips, 179.06s** at 0d1a461 in fresh `.venv-clean` from `uv sync --locked --python 3.12`. Actual disposable PG18.6 and local boto Stubber; no connected AWS tests. Ruff `check .`, Mypy `src/preflight` (17 source files), immutable PRD hash and package wheel/sdist build passed. Evidence: `evidence/local/verification.json`.
+- Latest full passing gate: `uv run --locked preflight verify local`: **229 passed, zero failures/skips, 92.89s** at 9d73204 in fresh `.venv-clean` from `uv sync --locked --python 3.12`. Actual disposable PG18.6 and local boto Stubber; no connected AWS tests. Ruff `check .`, Mypy `src/preflight` (17 source files), immutable PRD hash and package wheel/sdist build passed. Evidence: `evidence/local/verification.json`.
 - Source apply enabled: false.
 - Connected run/candidate/resource IDs: NONE. Historical disposable local MCP report IDs/digests are retained in `evidence/local/verification.json`; those test databases were dropped. Live UI probe state is empty, source NONE, cloud/apply disabled.
 - Current irreversible action awaiting a human: NONE.
 - Local handoff: native TrueForge UI remains on loopback port 18790 with `preflight-local-probe` Connected to empty/fail-closed MCP port 18000; zero agent/model/tool/gate calls in that native probe. Disposable PG18 cluster was stopped after all tests; its unexported test log was removed. No AWS cleanup occurred.
-- Distribution gate: explicit source-archive directory exclusion and five individually selected reviewed evidence files; `uv build --no-sources` and `python scripts/verify_distribution.py` passed (130 source members, zero private/worktree artifacts, 17 wheel modules, unchanged PRD). Initial nested worktree `.env.example` inclusion was detected and repaired before handoff.
+- Distribution gate: explicit source-archive directory exclusion and five individually selected reviewed evidence files; `uv build --no-sources` and `python scripts/verify_distribution.py` passed (131 source members, zero private/worktree artifacts, 17 wheel modules, unchanged PRD). Initial nested worktree `.env.example` inclusion was detected and repaired before handoff.
 
 ## Task ledger
 
@@ -52,8 +52,8 @@ Use status `NOT_STARTED`, `IN_PROGRESS`, `BLOCKED_EXTERNAL`, `FAILED`, `LOCAL_VE
 | T27 — Perform independent privacy, IAM and boundary review | reviewer | BLOCKED_EXTERNAL | Independent Sol F1-F5/role/source-initializer review closed locally; actual IAM/provider/Daytona/human gates and A1 pending |
 | T28 — Polish the report and native TrueForge experience | integration | BLOCKED_EXTERNAL | Report/native settings and Connected connector observed; actual model-agent/native approval experience requires provider/Daytona/human setup |
 | T29 — Exercise cleanup guards and record deliberate retention | cloud | BLOCKED_EXTERNAL | Local cleanup guard tests passed; actual operator cleanup choice/resources absent |
-| T30 — Verify reproducible installation and operational handoff | lead | LOCAL_VERIFIED | Fresh locked env full217 passed; wheel/sdist built; offline verifier works with/without expected digest; 414-component installed inventory current |
-| T31 — Run the final regression and close review findings | lead | BLOCKED_EXTERNAL | Final local217 gate green at0d1a461, local findings closed; mandatory real AWS/runtime/gate evidence pending |
+| T30 — Verify reproducible installation and operational handoff | lead | LOCAL_VERIFIED | Fresh locked env full229 passed; wheel/sdist built; offline verifier works with/without expected digest; 414-component installed inventory current |
+| T31 — Run the final regression and close review findings | lead | BLOCKED_EXTERNAL | Final local229 gate green at9d73204, local findings closed; mandatory real AWS/runtime/gate evidence pending |
 | T32 — Prepare the complete repository submission | integration | LOCAL_VERIFIED | Runnable source/archive, README/deployment/demo/414-component license inventory and truthful evidence prepared; no remote publication or final event fields inferred |
 | T33 — Record and rehearse the evidence-led pitch | integration | BLOCKED_EXTERNAL | Demo material preparation; actual connected proof/recording pending |
 | T34 — Perform the final read-only demo-readiness audit | lead | BLOCKED_EXTERNAL | Final connected evidence/A1 audit pending; local review ongoing |
@@ -96,6 +96,8 @@ Operator requests independent implementation while credits/access are pending. N
 | F5 missing tagging client in deployed composition | MEDIUM | Static composition, new creation refused | lead | 77113a0/2867449 | Independent Sol closed at a546fd0; inert composition test passed |
 | RDS inherited administrative membership | Safety concern | Local rolsuper=false rds_superuser and server-file membership | lead | 77113a0 | Real PG tests refused both; independent Sol rechecked at a546fd0 |
 | Seed intent lacked filesystem flush | Durability limit | Read-only initializer review; no reproduced mutation | lead | 0d1a461 | Independent Sol closed at code level; physical power-loss behavior NOT_RUN |
+| F6 archive traversal checked after stripping root | MEDIUM | In-memory leading-parent source member | lead | 9d73204 | Independent Sol closed; original repro rejected |
+| F7 wheel inspection counted modules without inspecting other members | MEDIUM | In-memory private file/traversal wheel members | lead | 9d73204 | Independent Sol closed; all 12 adversarial tests passed |
 
 Independent Sol reviewed the retained local report packet and native connector artifact for privacy and truthful scope; both are eligible for deliberate retention. No connected T27 acceptance, human approval or Astra review was conferred.
 
@@ -103,7 +105,7 @@ Independent Sol reviewed the retained local report packet and native connector a
 
 | Gate | Status | Exact command or real observation | Commit/time/backend |
 |---|---|---|---|
-| Local unit/policy/evidence | LOCAL_VERIFIED | Complete 217-test local gate; zero skips | Local only |
+| Local unit/policy/evidence | LOCAL_VERIFIED | Complete 229-test local gate; zero skips | Local only |
 | Real local PostgreSQL | LOCAL_VERIFIED | PG18.6, loopback TLS, separate nonsuperuser fixtures | e5d7368/77113a0 |
 | MCP contract + end-to-end | LOCAL_VERIFIED | Actual HTTP official client and bad-to-good chain | 77113a0 |
 | TrueForge/OpenAI/Daytona | BLOCKED_EXTERNAL | Native TrueForge UI/connector discovers exactly ten strict Preflight tools LOCAL_VERIFIED; paid route/Daytona NOT_RUN | No external credentials |
@@ -120,7 +122,7 @@ Independent Sol reviewed the retained local report packet and native connector a
 ## Resume packet — replace at a meaningful checkpoint
 
 ```text
-Last verified implementation commit: 0d1a461; later documentation/artifact changes only.
+Last verified implementation commit: 9d73204; later checkpoint documentation/evidence changes only.
 Current checkpoint: independent local implementation complete; connected tasks BLOCKED_EXTERNAL.
 Evidence: evidence/local/verification.json, BLOCK/PASS JSON+Markdown reports, integration/trueforge-native-connector-evidence.json, integration/dependency-inventory.json.
 Connected source/run/clone state: NONE; no AWS resources created; UI-probe source NONE.
@@ -132,10 +134,16 @@ Tests after any safety edit: uv run --locked preflight verify local; uv run ruff
 ```
 
 The retained loopback TLS fixture can be restarted from this workspace with
-`& '.worktrees/db/.local-pg/pgsql/bin/pg_ctl.exe' -D '.worktrees/db/.local-pg/data' -l 'var/local-pg-restart.log' start`.
+`& '.worktrees/db/.local-pg/pgsql/bin/pg_ctl.exe' -D '.worktrees/db/.local-pg/data' -l 'var/local-pg-restart.log' -o '-p 55438 -h 127.0.0.1' start`.
 Then set `PREFLIGHT_TEST_PG_PORT=55438` and `PREFLIGHT_TEST_PG_CA` to the absolute
 `.worktrees/db/.local-pg/data/server.crt` path. A fresh checkout instead uses the
 fresh-only `fixtures/local_pg.py` command in README. Never export database logs.
+
+The first final regression attempt at 9d73204 was interrupted with exit 1 after
+database fixture errors: the previous restart command omitted the explicit port
+and started the owned fixture on 5432. The corrected command above was verified
+with `pg_isready` on 55438 before the full rerun. No result is inferred from the
+interrupted attempt, and no source/cloud action occurred.
 
 A restarted coding session first reads this ledger, verifies Git and the referenced evidence, and resumes the next safe task. It never infers that a source operation failed merely because the previous chat or connection stopped.
 

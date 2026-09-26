@@ -1,14 +1,14 @@
 {
   "schema_version": "1",
-  "recorded_at_utc": "2026-09-26T06:43:58.398452+00:00",
-  "implementation_commit": "0d1a461a5e84f525c897f525d7bf4505adcd7bee",
+  "recorded_at_utc": "2026-09-26T07:05:36.090388+00:00",
+  "implementation_commit": "9d732048a5c8b100751bdbb688d4b571b39ce237",
   "backend": "local_postgres_test; cloud tests use injected boto Stubber",
   "command": "uv run --locked preflight verify local",
   "result": {
-    "passed": 217,
+    "passed": 229,
     "failed": 0,
     "skipped": 0,
-    "duration_seconds": 179.06,
+    "duration_seconds": 92.89,
     "exit_code": 0
   },
   "environment": "fresh .venv-clean created by uv sync --locked --python 3.12; existing pinned npm installation",
@@ -82,6 +82,17 @@
         "duration_seconds": 196.2,
         "exit_code": 0
       }
+    },
+    {
+      "commit": "0d1a461a5e84f525c897f525d7bf4505adcd7bee",
+      "command": "uv run --locked preflight verify local",
+      "result": {
+        "passed": 217,
+        "failed": 0,
+        "skipped": 0,
+        "duration_seconds": 179.06,
+        "exit_code": 0
+      }
     }
   ],
   "additional_checks": {
@@ -89,5 +100,15 @@
     "mypy_src_preflight": "17 source files passed",
     "native_tools_digest_recheck": "af26b949290e5ba88ba43d7ee5dac792765cfee05b7c42e8af2218cc8ba648d9",
     "original_prd_sha256": "5f607b53bd7c439c94e3f97d3826e24e441cb5d007863eca023313347533b6bf"
-  }
+  },
+  "interrupted_attempts": [
+    {
+      "commit": "9d732048a5c8b100751bdbb688d4b571b39ce237",
+      "command": "uv run --locked preflight verify local",
+      "exit_code": 1,
+      "status": "INTERRUPTED_AFTER_FIXTURE_ERRORS",
+      "cause": "Fixture restart omitted port; server listened on 5432 instead of 55438",
+      "repair": "Explicit pg_ctl -o port and loopback host; pg_isready confirmed 55438"
+    }
+  ]
 }

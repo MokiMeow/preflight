@@ -15,6 +15,10 @@ npm ci --ignore-scripts --no-audit --no-fund
 cd ..
 ```
 
+Before reinstalling or upgrading on Windows, stop the owned running service
+processes: their executable files can be locked. Restart them after installation.
+For the local probe, use `python -m preflight.cli serve` from the locked environment.
+
 Copy `config/settings.example.json` to the ignored `config/settings.local.json`. Populate only
 authorized nonsecret policy values and Secrets Manager ARN references. Keep source apply disabled
 until its demonstration is authorized, then run:
