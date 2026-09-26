@@ -1,0 +1,55 @@
+{
+  "kind": "POST_BUILD_RECEIPT_NOT_EMBEDDED_IN_ITS_RECORDED_ARCHIVE",
+  "observed_at": "2026-09-26T08:13:06.662258+00:00",
+  "artifact_source_snapshot": "f86a80f",
+  "application_test_commit": "221a79a",
+  "commands": [
+    {
+      "command": "uv build --no-sources",
+      "exit_code": 0
+    },
+    {
+      "command": "uv run --locked python scripts/verify_distribution.py",
+      "exit_code": 0,
+      "actual_result": {
+        "source_archive_members": 144,
+        "private_artifacts": 0,
+        "original_prd_hash_match": true,
+        "wheel_python_modules": 17
+      }
+    },
+    {
+      "command": "uv pip install --python var/wheel-smoke/Scripts/python.exe --offline --no-deps --reinstall <builtwheel>",
+      "exit_code": 0
+    },
+    {
+      "command": "var/wheel-smoke/Scripts/python.exe -I import service/runtime fromwheel site-packages; preflight doctor --json; evidence verify <retainedPASS> --expected-report-sha256 <independentdigest>",
+      "working_directory": "var/wheel-smoke",
+      "exit_code": 0,
+      "actual_result": "Wheel site-packages import observed; localreadytrue/allconnectedandapplyflagsfalse; EXPECTED_DIGEST_MATCH historical_onlytrue/current_apply_eligibilityNOT_EVALUATED"
+    }
+  ],
+  "artifacts": [
+    {
+      "path": "dist/preflight_rehearsal-0.1.0-py3-none-any.whl",
+      "bytes": 55190,
+      "sha256": "a5765379dd37ccf8ed4e6ce8ca23a695ea32bdb767648856946a65454684465a"
+    },
+    {
+      "path": "dist/preflight_rehearsal-0.1.0.tar.gz",
+      "bytes": 585502,
+      "sha256": "c75ba4a61acac7c8333beca77d37358240a9254525f478ff3b7a2ef57aa6fbd1"
+    }
+  ],
+  "limits": [
+    "Receipt generated after build and intentionally not embedded in the recorded source archive; its file hash cannot recursively describe itself.",
+    "No provider/network/realAWS action; wheel dependencies reuse prior locked offline installation.",
+    "No full-suite repeat: changes since221a79a were documentation and static audit tooling only."
+  ],
+  "failed_attempts": [
+    {
+      "command": "Initial wheelimport smoke used an incorrect relative executable path",
+      "result": "Import command NOT_RUN; successful offlinewheel installation retained; corrected separate isolated-directory commands passed."
+    }
+  ]
+}

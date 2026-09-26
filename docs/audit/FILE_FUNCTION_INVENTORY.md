@@ -1,6 +1,6 @@
 # First-party file and function inventory
 
-Snapshot: `221a79aeab19fcb5773358cfd6d4bd9a584cb58a`. 134 files; 660 declared symbols.
+Snapshot: `f86a80facf0a0542ff46f207e27996ab87aebfb9`. 134 files; 660 declared symbols.
 
 Every file below was read as UTF-8 and hashed. JSON and Python were parsed. This inventory is static accounting, not a claim that every branch/function was executed. Private ignored configuration and vendor/runtime directories are excluded. Audit outputs do not hash themselves.
 

@@ -1,6 +1,6 @@
 {
   "kind": "FIRST_PARTY_STATIC_FILE_AND_SYMBOL_ACCOUNTING",
-  "commit": "221a79aeab19fcb5773358cfd6d4bd9a584cb58a",
+  "commit": "f86a80facf0a0542ff46f207e27996ab87aebfb9",
   "scope": "Git-tracked authored files plus two original kit metadata files; audit outputs excluded from self-hashing",
   "exclusions": [
     ".git internals",
