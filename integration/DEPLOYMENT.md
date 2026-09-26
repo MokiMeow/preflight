@@ -172,20 +172,23 @@ python scripts/patch_trueforge_local_sandbox.py --apply \
 Expected baseline → patched SHA-256 pairs are:
 
 - `main.js`: `c6902760304c303edec52e2894370be68ca6d679ca20f922a589c6fbc416f9c0`
-  → `021bfb63b5f6e072aa53fe40d1e7a150ea2ec4112bc412bc840b7eb3a0bc13fb`;
+  → `f1721874969562f995142c5d87a2e3cc75c83d73fbfe061aaa0021d09e922ced`;
 - `trueforge-core/dist/core/sandbox/Sandbox.js`:
   `20cbee8c17afc717ca29ef4d1d851833128b05b50856b4164f09947dab41742f`
-  → `dc08e4e0f1bb6ce08b66882911e08de74c5995be0ee0f0353da29d3e79b993f8`;
+  → `325b72a1feb6efd7ef0c277320f02b706aefc70fb19160ad86dc98b0bbb80dbe`;
 - `trueforge-core/dist/core/sandbox/Sandbox.mjs`:
   `95a9805e69f1176d8189b1bd103b074b6661018653d5a22c6f857db954fc2a4e`
-  → `70149fff33b0a2faff9047bb991a5dd6e910b4b85e99764ab879f4c183461cea`.
+  → `b7c20bc450d66f3cd3b91efaaf235d0877140907e0dfd3e5d2ea93a89530563d`.
 
 Any other input bytes are refused. Restart TrueForge after applying the patch. The journal must say
 `Local sandbox fallback is available` with Linux, the expected shell, and Python >=3.10. A prior
 host probe selected Python 3.9 and failed on a PEP 604 union in `skill_downloader.py`; that failed
 turn is evidence of the compatibility defect, not successful sandbox execution. The patch also
 maps a supervisor timeout to the fixed failed-tool result `Local sandbox command timed out`; it
-does not infer database rollback or any other business outcome from a process timeout.
+does not infer database rollback or any other business outcome from a process timeout. Public
+`sandbox.exec` no longer accepts a caller environment. The native provider admits only its fixed
+server-derived Code Mode, trace, skill and Git helper keys; an input such as `BASH_ENV` fails with
+`Local sandbox environment key is not permitted` before the host launcher starts.
 
 After restart, require all of the following before saving the product agent:
 

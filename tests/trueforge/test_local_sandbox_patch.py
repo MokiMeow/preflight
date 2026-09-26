@@ -64,9 +64,9 @@ def test_apply_narrows_socket_read_and_requires_python_310(tmp_path):
     assert result.returncode == 0, result.stderr
     output = json.loads(result.stdout)
     assert output["state"] == "PATCHED_RESTART_REQUIRED"
-    assert _sha256(main) == "021bfb63b5f6e072aa53fe40d1e7a150ea2ec4112bc412bc840b7eb3a0bc13fb"
-    assert _sha256(core) == "dc08e4e0f1bb6ce08b66882911e08de74c5995be0ee0f0353da29d3e79b993f8"
-    assert _sha256(core_esm) == "70149fff33b0a2faff9047bb991a5dd6e910b4b85e99764ab879f4c183461cea"
+    assert _sha256(main) == "f1721874969562f995142c5d87a2e3cc75c83d73fbfe061aaa0021d09e922ced"
+    assert _sha256(core) == "325b72a1feb6efd7ef0c277320f02b706aefc70fb19160ad86dc98b0bbb80dbe"
+    assert _sha256(core_esm) == "b7c20bc450d66f3cd3b91efaaf235d0877140907e0dfd3e5d2ea93a89530563d"
 
     main_text = main.read_text(encoding="utf-8")
     core_text = core.read_text(encoding="utf-8")
@@ -80,10 +80,12 @@ def test_apply_narrows_socket_read_and_requires_python_310(tmp_path):
     assert 'PYTHON_CANDIDATES = ["python3.12", "python3.11", "python3.10"' in main_text
     assert "sys.version_info >= (3, 10)" in main_text
     assert 'error: "Local sandbox command timed out"' in main_text
-    assert "delete inputEnv.TFY_MCP_SOCK" in core_text
-    assert "...inputEnv" in core_text
-    assert "delete inputEnv.TFY_MCP_SOCK" in core_esm_text
-    assert "...inputEnv" in core_esm_text
+    for source in (core_text, core_esm_text):
+        inject_start = source.index("function injectMCPClientEnv(")
+        inject_end = source.index("var sandboxExecSchema", inject_start)
+        schema_end = source.index("var SANDBOX_EXEC_DESCRIPTION", inject_end)
+        assert "params.env" not in source[inject_start:inject_end]
+        assert "Additional environment variables to set" not in source[inject_end:schema_end]
     for target in (main, core, core_esm):
         syntax = subprocess.run(
             ["node", "--check", str(target)],
@@ -120,7 +122,11 @@ def test_actual_patched_policy_allows_only_current_canonical_socket(tmp_path):
     core_text = core.read_text(encoding="utf-8")
     core_esm_text = core_esm.read_text(encoding="utf-8")
     socket_function = _js_function(main_text, "codeModeSocketAllow", "linuxNetworkSocketAllow")
-    policy_function = _js_function(main_text, "filesystemPolicy", "commandEnv")
+    command_env_start = main_text.index("const LOCAL_SANDBOX_ALLOWED_EXTRA_ENV")
+    policy_start = main_text.index("function filesystemPolicy(")
+    policy_function = main_text[policy_start:command_env_start]
+    command_env_end = main_text.index("function sessionFilesystem", command_env_start)
+    command_env_functions = main_text[command_env_start:command_env_end]
     darwin_paths_function = _js_function(
         main_text, "darwinUnixSocketPaths", "syncDarwinUnixSockets"
     )
@@ -151,8 +157,13 @@ const lstatSync = p => ({{ isSocket: () => !p.includes('regular') }});
 const denySharedDefaultWritePaths = () => ['/tmp'];
 const linuxNetworkSocketAllow = () => ['/run/srt-proxy'];
 const platformAllowRead = () => ['/usr/bin'];
+const join3 = (...parts) => parts.join('/');
+const SANDBOX_VENV_DIR = '.venv';
+const sandboxVenvPath = root => root + '/.venv';
+const commandPath = () => '/usr/local/bin:/usr/bin:/bin';
 {socket_function}
 {policy_function}
+{command_env_functions}
 const own = '/run/tfy-cm/01CURRENT';
 const policy = filesystemPolicy({{sandboxRootPath:'/sandbox/a', platform:'linux', codeModeSocketPath:own}});
 assert(policy.allowRead.includes(own));
@@ -160,6 +171,15 @@ assert(!policy.allowRead.includes(codeModeSocketParentPath));
 assert.throws(() => codeModeSocketAllow('/run/other/01CURRENT'));
 assert.throws(() => codeModeSocketAllow('/run/tfy-cm/symlink'));
 assert.throws(() => codeModeSocketAllow('/run/tfy-cm/regular'));
+const trustedEnv = commandEnv({{sandboxRootPath:'/sandbox/a',platform:'linux',extra:{{TFY_MCP_SOCK:own,PYTHONPATH:'mcp-client'}}}});
+assert.equal(trustedEnv.TFY_MCP_SOCK, own);
+assert.equal(trustedEnv.PYTHONPATH, 'mcp-client');
+for (const key of ['BASH_ENV','ENV','LD_PRELOAD','LD_LIBRARY_PATH','NODE_OPTIONS','PYTHONHOME']) {{
+  assert.throws(
+    () => commandEnv({{sandboxRootPath:'/sandbox/a',platform:'linux',extra:{{[key]:'/outside/marker'}}}}),
+    /Local sandbox environment key is not permitted/
+  );
+}}
 
 const darwinUnixSocketSandboxRoots = new Set();
 const sessionNetwork = params => params;
@@ -174,13 +194,20 @@ const mcpClientLayout = () => undefined;
 const injectTraceContextEnv = () => ({{}});
 {inject_function}
 {esm_inject_function}
-const trusted = injectMCPClientEnv({{env:{{TFY_MCP_SOCK:'/run/tfy-cm/attacker'}}, codeModeEnv:{{TFY_MCP_SOCK:own}}, mcpServers:{{}}, mcpClientInstall:undefined}});
+const attackerEnv = {{TFY_MCP_SOCK:'/run/tfy-cm/attacker',BASH_ENV:'/outside/marker',LD_PRELOAD:'/outside/lib.so',NODE_OPTIONS:'--require=/outside/x'}};
+const trusted = injectMCPClientEnv({{env:attackerEnv, codeModeEnv:{{TFY_MCP_SOCK:own}}, mcpServers:{{}}, mcpClientInstall:undefined}});
 assert.equal(trusted.TFY_MCP_SOCK, own);
-const absent = injectMCPClientEnv({{env:{{TFY_MCP_SOCK:'/run/tfy-cm/attacker'}}, codeModeEnv:undefined, mcpServers:{{}}, mcpClientInstall:undefined}});
+assert.equal(trusted.BASH_ENV, undefined);
+assert.equal(trusted.LD_PRELOAD, undefined);
+assert.equal(trusted.NODE_OPTIONS, undefined);
+const absent = injectMCPClientEnv({{env:attackerEnv, codeModeEnv:undefined, mcpServers:{{}}, mcpClientInstall:undefined}});
 assert.equal(absent.TFY_MCP_SOCK, undefined);
-const esmTrusted = injectMCPClientEnvEsm({{env:{{TFY_MCP_SOCK:'/run/tfy-cm/attacker'}}, codeModeEnv:{{TFY_MCP_SOCK:own}}, mcpServers:{{}}, mcpClientInstall:undefined}});
+const esmTrusted = injectMCPClientEnvEsm({{env:attackerEnv, codeModeEnv:{{TFY_MCP_SOCK:own}}, mcpServers:{{}}, mcpClientInstall:undefined}});
 assert.equal(esmTrusted.TFY_MCP_SOCK, own);
-const esmAbsent = injectMCPClientEnvEsm({{env:{{TFY_MCP_SOCK:'/run/tfy-cm/attacker'}}, codeModeEnv:undefined, mcpServers:{{}}, mcpClientInstall:undefined}});
+assert.equal(esmTrusted.BASH_ENV, undefined);
+assert.equal(esmTrusted.LD_PRELOAD, undefined);
+assert.equal(esmTrusted.NODE_OPTIONS, undefined);
+const esmAbsent = injectMCPClientEnvEsm({{env:attackerEnv, codeModeEnv:undefined, mcpServers:{{}}, mcpClientInstall:undefined}});
 assert.equal(esmAbsent.TFY_MCP_SOCK, undefined);
 
 function classify(session) {{

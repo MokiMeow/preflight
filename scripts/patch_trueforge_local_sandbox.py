@@ -4,7 +4,8 @@
 The patch is refused unless all three installed JavaScript files have their exact
 published-lock installation hashes. It narrows Linux sandbox read access from
 the process-global Code Mode socket parent to the current transport's socket
-and prevents an agent-supplied exec environment from choosing that socket.
+and rejects the public exec environment field before it can affect the host
+shell that launches bubblewrap.
 
 Dry-run is the default. Pass ``--apply`` during the reviewed host deployment,
 then restart TrueForge and run the documented two-session isolation canary.
@@ -24,9 +25,9 @@ from pathlib import Path
 MAIN_BASELINE_SHA256 = "c6902760304c303edec52e2894370be68ca6d679ca20f922a589c6fbc416f9c0"
 CORE_BASELINE_SHA256 = "20cbee8c17afc717ca29ef4d1d851833128b05b50856b4164f09947dab41742f"
 CORE_ESM_BASELINE_SHA256 = "95a9805e69f1176d8189b1bd103b074b6661018653d5a22c6f857db954fc2a4e"
-MAIN_PATCHED_SHA256 = "021bfb63b5f6e072aa53fe40d1e7a150ea2ec4112bc412bc840b7eb3a0bc13fb"
-CORE_PATCHED_SHA256 = "dc08e4e0f1bb6ce08b66882911e08de74c5995be0ee0f0353da29d3e79b993f8"
-CORE_ESM_PATCHED_SHA256 = "70149fff33b0a2faff9047bb991a5dd6e910b4b85e99764ab879f4c183461cea"
+MAIN_PATCHED_SHA256 = "f1721874969562f995142c5d87a2e3cc75c83d73fbfe061aaa0021d09e922ced"
+CORE_PATCHED_SHA256 = "325b72a1feb6efd7ef0c277320f02b706aefc70fb19160ad86dc98b0bbb80dbe"
+CORE_ESM_PATCHED_SHA256 = "b7c20bc450d66f3cd3b91efaaf235d0877140907e0dfd3e5d2ea93a89530563d"
 DEFAULT_MAIN_JS = Path("integration/node_modules/@truefoundry/trueforge/dist/main.js")
 
 
@@ -93,6 +94,40 @@ MAIN_REPLACEMENTS = (
       }),''',
     ),
     (
+        b'''function commandEnv(params) {''',
+        b'''const LOCAL_SANDBOX_ALLOWED_EXTRA_ENV = new Set([
+  "PYTHONPATH",
+  "TFY_MCP_SERVERS",
+  "TFY_MCP_SOCK",
+  "TFY_CM_REQUEST_TIMEOUT_SECONDS",
+  "TFY_TRACEPARENT",
+  "TFY_TRACESTATE",
+  "TFY_ENABLE_AGENT_APPROVALS",
+  "TFY_SKILLS_DIR",
+  "GIT_CONFIG_COUNT",
+  "GIT_CONFIG_KEY_0",
+  "GIT_CONFIG_VALUE_0"
+]);
+function trustedCommandExtra(extra) {
+  if (extra === void 0) {
+    return {};
+  }
+  for (const key of Object.keys(extra)) {
+    if (!LOCAL_SANDBOX_ALLOWED_EXTRA_ENV.has(key)) {
+      throw new Error("Local sandbox environment key is not permitted");
+    }
+  }
+  return extra;
+}
+function commandEnv(params) {''',
+    ),
+    (
+        b'''    ...params.extra,
+    ...locked''',
+        b'''    ...trustedCommandExtra(params.extra),
+    ...locked''',
+    ),
+    (
         b'''    PYTHON_CANDIDATES = ["python3", "python"];''',
         b'''    PYTHON_CANDIDATES = ["python3.12", "python3.11", "python3.10", "python3", "python"];''',
     ),
@@ -121,18 +156,27 @@ MAIN_REPLACEMENTS = (
 
 CORE_REPLACEMENTS = (
     (
-        b'''function injectMCPClientEnv(params) {
-  const codeModeEnv = params.codeModeEnv ?? {};''',
-        b'''function injectMCPClientEnv(params) {
-  const inputEnv = { ...params.env ?? {} };
-  delete inputEnv.TFY_MCP_SOCK;
-  const codeModeEnv = params.codeModeEnv ?? {};''',
-    ),
-    (
         b'''    ...params.env ?? {},
     ...layout !== void 0 && {''',
-        b'''    ...inputEnv,
-    ...layout !== void 0 && {''',
+        b'''    ...layout !== void 0 && {''',
+    ),
+    (
+        b'''  cwd: import_zod.z.string().optional().describe("Working directory for command execution."),
+  env: import_zod.z.record(import_zod.z.string(), import_zod.z.string()).optional().describe("Additional environment variables to set.")
+});''',
+        b'''  cwd: import_zod.z.string().optional().describe("Working directory for command execution.")
+});''',
+    ),
+)
+
+CORE_ESM_REPLACEMENTS = (
+    CORE_REPLACEMENTS[0],
+    (
+        b'''  cwd: z.string().optional().describe("Working directory for command execution."),
+  env: z.record(z.string(), z.string()).optional().describe("Additional environment variables to set.")
+});''',
+        b'''  cwd: z.string().optional().describe("Working directory for command execution.")
+});''',
     ),
 )
 
@@ -171,7 +215,7 @@ def _targets(main_js: Path) -> tuple[Target, ...]:
             core_js.with_suffix(".mjs"),
             CORE_ESM_BASELINE_SHA256,
             CORE_ESM_PATCHED_SHA256,
-            CORE_REPLACEMENTS,
+            CORE_ESM_REPLACEMENTS,
         ),
     )
 
