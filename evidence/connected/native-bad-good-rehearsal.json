@@ -1,0 +1,140 @@
+{
+  "schema_version": "1.0",
+  "status": "CONNECTED_VERIFIED",
+  "scope": "Native TrueForge saved-agent clone-only bad-to-good rehearsal and bounded read-only Code Mode observation",
+  "application_revision": "3dea928",
+  "runtime": {
+    "saved_agent": "preflight",
+    "agent_id": "01m3em9y0t7jqx20txq6s7pj39",
+    "session_id": "01m3eqrpb5wh56dh9j9hc3rvkn",
+    "provider_alias": "vm-polaris/openai",
+    "resolved_model": "gpt-4o-mini-2024-07-18",
+    "native_sandbox": true
+  },
+  "run_id": "7f1a627e-a6d0-4c9f-a5ce-58984b38d41e",
+  "initial_candidate_id": "d77e7d74-7b9f-47fa-af03-5fc64cdc50d8",
+  "guard_observations": [
+    {
+      "kind": "code_mode_mutator_refusal",
+      "turn_id": "01m3eqse3rc7yc14c05s8gc4n0",
+      "tool_call_id": "call_2NTfBJ1nfq7RZabSEI9cXekW",
+      "response_event_id": "01m3eqsta5j0h9x6zd055fpf1x",
+      "exit_code": 0,
+      "safe_result": "Tool 'capture_baseline' on MCP server 'preflight' is destructive and cannot be called in Code Mode; call it directly so it can go through the user approval flow",
+      "mutation_dispatched": false
+    },
+    {
+      "kind": "read_only_recovery",
+      "turn_id": "01m3eqv9h1qkzhvzem8xpemfz8",
+      "tool_call_id": "call_Q769b1U4rBjXj98oSXGOoPWH",
+      "response_event_id": "01m3eqvcycmxgn6k07kra3bfvh",
+      "exit_code": 0,
+      "phase": "READY",
+      "candidate_id": "d77e7d74-7b9f-47fa-af03-5fc64cdc50d8",
+      "cleanup_state": "NOT_REQUESTED"
+    },
+    {
+      "kind": "exact_candidate_hash_refusal",
+      "turn_id": "01m3er6csx3hcr43dvn7mhzs87",
+      "tool_call_id": "call_PHsqlkvY6ztYWZwu5aDU1lEC",
+      "response_event_id": "01m3er6g2cjq35gq8j5mhh1dm9",
+      "error_code": "MIGRATION_HASH_MISMATCH",
+      "expected_byte_size": 183,
+      "received_byte_size": 184,
+      "candidate_created": false
+    }
+  ],
+  "baseline": {
+    "turn_id": "01m3eqze7am4687vfe608cyjxr",
+    "tool_call_id": "call_ziuzfRgxz8ViQGyi4BFlNuaD",
+    "response_event_id": "01m3eqzhbmj1qcaqz3jpx2hvtp",
+    "ok": true,
+    "baseline_id": "b8aff8811c99020a531eb1580084522aed6bfcc9bf017cb316d9869373b127ec",
+    "coverage_count": 1
+  },
+  "bad_rehearsal": {
+    "candidate_id": "d77e7d74-7b9f-47fa-af03-5fc64cdc50d8",
+    "migration_sha256": "10101d7c639d383807f6fbe855b63bfa15b6a7f603ca44b85d9f44eaa7349c64",
+    "apply": {
+      "turn_id": "01m3er4t3rt4kq4129hbzaem9y",
+      "tool_call_id": "call_R4hIynzZ9oM0p9jRGiKuogUh",
+      "response_event_id": "01m3er4xx32wf95d8s2rng3zmp",
+      "ok": true,
+      "transaction_outcome": "rolled_back",
+      "baseline_unchanged": true
+    },
+    "validation": {
+      "turn_id": "01m3er5knjtjnzn1wxkmex3pjc",
+      "tool_call_id": "call_YZIVqpAZ04UWQoBiPF7soXMm",
+      "response_event_id": "01m3er5np1cy3s7h3qzmmeq08b",
+      "ok": true,
+      "verdict": "BLOCK",
+      "report_sha256": "c6332b9c508fcab0dd228f5d225654fe939575511f41e87561d492b8c0e82a61"
+    }
+  },
+  "good_revision": {
+    "registration": {
+      "turn_id": "01m3er856ygdfpr8fpbhjnxj3b",
+      "tool_call_id": "call_bHSdPpv82CrdCdVAtmwFd4hL",
+      "response_event_id": "01m3er89432a5jbnyxq1hqkjxg",
+      "ok": true,
+      "candidate_id": "a09bf95e-30e3-4bd2-95e9-f62fa2551be7",
+      "parent_candidate_id": "d77e7d74-7b9f-47fa-af03-5fc64cdc50d8",
+      "migration_sha256": "5060eff8b32278aaf28e2ad69fa6bfd6f59ec910ed5e22f9a46244bf314bf97b",
+      "contract_sha256": "f4fa48668e17afa31ee04ced68c898c0428f437dc7ed8f9a387738ece62ca548",
+      "byte_size": 183,
+      "attached": true
+    },
+    "apply": {
+      "turn_id": "01m3er8sp8pn8zvmzpsy4ecqym",
+      "tool_call_id": "call_sfYd0GeLStiiu6FLPvONW7Cq",
+      "response_event_id": "01m3er8wy45s1rz2qvjfft2rcw",
+      "ok": true,
+      "transaction_outcome": "committed"
+    },
+    "validation": {
+      "turn_id": "01m3er9bvj9vre793erqjsa2t4",
+      "tool_call_id": "call_ViGkvIFBbaN76WUdrI5JB3s6",
+      "response_event_id": "01m3er9ebfn2377ykcxpsd6ay1",
+      "ok": true,
+      "verdict": "PASS",
+      "report_sha256": "6e069069851c9af3a2f1c021a9afb9ba43ba24f586c27556faa78e3cdda562ab"
+    }
+  },
+  "final_read_only_code_mode": {
+    "turn_id": "01m3erh85px61gkhqw3tyjpw3v",
+    "tool_call_id": "call_BdXMaUx8CJ3iFZ2QRyymEk34",
+    "response_event_id": "01m3erhcyx8r5c5z9e6cqc1fq3",
+    "generated_python_calls": [
+      "get_run"
+    ],
+    "exec_success": true,
+    "exit_code": 0,
+    "phase": "AWAITING_APPROVAL",
+    "candidate_id": "a09bf95e-30e3-4bd2-95e9-f62fa2551be7",
+    "cleanup_state": "NOT_REQUESTED",
+    "error_code": null
+  },
+  "separate_read_only_confirmation": {
+    "source_row_count": 1000,
+    "source_column_count": 3,
+    "source_sql_untouched_during_this_workflow": true,
+    "bad_report_anchor_verified": true,
+    "good_report_anchor_verified": true,
+    "verification_owner": "lead"
+  },
+  "safety": {
+    "backend": "aws_rds",
+    "source_apply_calls": 0,
+    "cleanup_calls": 0,
+    "human_approval_clicks_by_coding_agent": 0,
+    "aws_creation_calls_by_integration_agent": 0,
+    "service_restarts": 0,
+    "new_runs_created": 0,
+    "raw_rows_recorded": false,
+    "sql_bytes_recorded": false,
+    "credentials_recorded": false,
+    "private_endpoints_recorded": false
+  },
+  "interpretation": "The bad exact candidate was rolled back and deterministically BLOCKed. A separately registered same-contract revision committed on the disposable clone and deterministically PASSed. The final run state is AWAITING_APPROVAL; PASS is evidence and does not authorize source application."
+}
