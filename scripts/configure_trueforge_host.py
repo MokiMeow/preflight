@@ -1,14 +1,22 @@
 #!/usr/bin/env python3
-"""Configure the pinned TrueForge host without exposing stored credentials.
+"""Configure pinned TrueForge with its isolated standalone Linux sandbox.
 
-Dry-run is the default. ``--execute`` reads the two protected secret files and
-performs only settings/agent configuration requests against a loopback
+Dry-run is the default. ``--execute`` reads the protected Gateway credential
+and performs only settings/agent configuration requests against a loopback
 TrueForge server. It never invokes an MCP tool or creates a model turn.
+
+TrueForge 0.2.1 exposes Daytona only through the sandbox-provider settings API.
+Its local sandbox is instead an automatic standalone fallback after the startup
+SRT probe succeeds. The pinned Linux transport currently shares one readable
+Code Mode socket parent among same-UID sandboxes, so complete mode refuses to
+save an agent until a separately reviewed runtime fix provides session-scoped
+bridge isolation. It never stores a fake local-provider manifest.
 """
 
 from __future__ import annotations
 
 import argparse
+import hashlib
 import json
 import os
 import stat
@@ -41,6 +49,16 @@ EXPECTED_TOOLS = (
 APPROVAL_TOOLS = ("apply_to_demo_source", "cleanup_run")
 MAX_SECRET_JSON_BYTES = 16_384
 MAX_RESPONSE_BYTES = 1_048_576
+LOCAL_SANDBOX_ISOLATION_BLOCKER = "LOCAL_SANDBOX_SESSION_ISOLATION_UNVERIFIED"
+LOCAL_SANDBOX_MAIN_PATCH_SHA256 = (
+    "61deb0b09fc65610afa13b8d356d7225ae9b93c1322bdd90d5414045d85fcd40"
+)
+LOCAL_SANDBOX_CORE_PATCH_SHA256 = (
+    "dc08e4e0f1bb6ce08b66882911e08de74c5995be0ee0f0353da29d3e79b993f8"
+)
+DEFAULT_TRUEFORGE_MAIN_JS = Path(
+    "integration/node_modules/@truefoundry/trueforge/dist/main.js"
+)
 
 
 class BootstrapError(Exception):
@@ -146,7 +164,12 @@ def _agent_payload(template_path: Path) -> dict[str, Any]:
     config = manifest.get("config")
     if not isinstance(config, dict):
         raise BootstrapError("AGENT_TEMPLATE_INVALID")
-    if config.get("sandbox") != {"enabled": True}:
+    sandbox = config.get("sandbox")
+    if (
+        not isinstance(sandbox, dict)
+        or sandbox.get("enabled") is not True
+        or sandbox.get("file_downloads") is not False
+    ):
         raise BootstrapError("AGENT_SANDBOX_REQUIRED")
     if config.get("dynamic_sub_agents") != {"enabled": False}:
         raise BootstrapError("AGENT_DYNAMIC_SUBAGENTS_FORBIDDEN")
@@ -234,19 +257,6 @@ def _mcp_body() -> dict[str, Any]:
     }
 
 
-def _sandbox_body(api_key: str) -> dict[str, Any]:
-    return {
-        "manifest": {
-            "type": "daytona",
-            "auth": {"api_key": api_key},
-            "exec_timeout_ms": 60_000,
-            "auto_stop_interval_in_minutes": 15,
-            "auto_archive_interval_in_minutes": 0,
-            "auto_delete_interval_in_minutes": 0,
-        }
-    }
-
-
 def _verify_tools(response: dict[str, Any]) -> None:
     data = response.get("data")
     if not isinstance(data, list):
@@ -297,7 +307,45 @@ def _step(operation: str, completed: list[str], callback):
         raise
 
 
-def _plan(daytona_path: Path, stage: str) -> dict[str, Any]:
+def _verify_local_sandbox_patch(main_js: Path) -> None:
+    core_js = main_js.parent.parent.parent / "trueforge-core/dist/core/sandbox/Sandbox.js"
+    for path, expected in (
+        (main_js, LOCAL_SANDBOX_MAIN_PATCH_SHA256),
+        (core_js, LOCAL_SANDBOX_CORE_PATCH_SHA256),
+    ):
+        try:
+            info = path.lstat()
+            if stat.S_ISLNK(info.st_mode) or not stat.S_ISREG(info.st_mode):
+                raise OSError
+            actual = hashlib.sha256(path.read_bytes()).hexdigest()
+        except OSError as error:
+            raise BootstrapError(LOCAL_SANDBOX_ISOLATION_BLOCKER, 5) from error
+        if actual != expected:
+            raise BootstrapError(LOCAL_SANDBOX_ISOLATION_BLOCKER, 5)
+
+
+def _verify_local_sandbox(client: TrueForgeClient, main_js: Path) -> None:
+    try:
+        client.request("GET", "/api/v1/settings/sandbox-providers")
+    except BootstrapError as error:
+        if error.code != "TRUEFORGE_HTTP_404":
+            raise
+    else:
+        # A persisted provider takes precedence over the standalone fallback.
+        raise BootstrapError("LOCAL_SANDBOX_PROVIDER_CONFLICT", 5)
+
+    capabilities = client.request("GET", "/api/v1/capabilities")
+    data = capabilities.get("data")
+    sandbox = data.get("sandbox") if isinstance(data, dict) else None
+    if not isinstance(sandbox, dict) or sandbox.get("enabled") is not True:
+        raise BootstrapError("LOCAL_SANDBOX_UNAVAILABLE", 5)
+    # Capability=true proves availability, not same-UID session isolation. The
+    # exact reviewed patch narrows read access to the current Code Mode socket
+    # and strips an agent-provided TFY_MCP_SOCK before transport injection.
+    _verify_local_sandbox_patch(main_js.resolve())
+
+
+def _plan(stage: str) -> dict[str, Any]:
     return {
         "ok": False,
         "state": "NOT_RUN",
@@ -305,11 +353,14 @@ def _plan(daytona_path: Path, stage: str) -> dict[str, Any]:
         "credentials_read": False,
         "requests_sent": False,
         "stage": stage,
-        "daytona_input": (
-            "not_required_for_stage"
+        "sandbox_mode": "standalone_local_fallback",
+        "sandbox_provider_secret_required": False,
+        "sandbox_precondition": (
+            "not_checked_for_provider-mcp"
             if stage == "provider-mcp"
-            else ("present" if daytona_path.is_file() else "DAYTONA_CREDENTIAL_MISSING")
+            else "startup_probe_supported_no_provider_and_session_bridge_isolated"
         ),
+        "known_blocker": None if stage == "provider-mcp" else LOCAL_SANDBOX_ISOLATION_BLOCKER,
         "model_provider": "openai",
         "model_alias": GATEWAY_MODEL_ID,
         "model_resource": MODEL_FQN,
@@ -319,7 +370,7 @@ def _plan(daytona_path: Path, stage: str) -> dict[str, Any]:
         "literal_approval_tools": list(APPROVAL_TOOLS),
         "model_tool_roundtrip": {
             "executed": False,
-            "create_session": "POST /api/v1/sessions/ with agent.name=preflight",
+            "create_session": "POST /api/v1/sessions with agent.name=preflight",
             "create_turn": "POST /api/v1/sessions/{session_id}/turns",
             "safe_prompt": "Call get_run once for supplied nonexistent UUIDs; report RUN_NOT_FOUND.",
             "poll": "GET /api/v1/sessions/{session_id}/turns/{turn_id} with a bounded deadline",
@@ -332,22 +383,15 @@ def execute(args: argparse.Namespace) -> dict[str, Any]:
     payload = _agent_payload(args.agent_template)
     # Read and validate every local input before the first HTTP mutation.
     gateway_key = _read_secret(args.gateway_secret, "GATEWAY_CREDENTIAL")
-    daytona_key = (
-        _read_secret(args.daytona_secret, "DAYTONA_CREDENTIAL")
-        if args.stage == "complete"
-        else None
-    )
     client = TrueForgeClient(base_url, args.timeout_seconds)
     completed: list[str] = []
-    if daytona_key is not None:
+    if args.stage == "complete":
         _step(
-            "daytona",
+            "local_sandbox",
             completed,
-            lambda: client.request(
-                "PUT", "/api/v1/settings/sandbox-providers", body=_sandbox_body(daytona_key)
-            ),
+            lambda: _verify_local_sandbox(client, args.trueforge_main_js),
         )
-        completed.append("daytona")
+        completed.append("local_sandbox")
     _step(
         "model_provider",
         completed,
@@ -378,11 +422,14 @@ def execute(args: argparse.Namespace) -> dict[str, Any]:
             "model_resource": MODEL_FQN,
             "reasoning_parameter": "omitted",
             "mcp_url": MCP_URL,
-            "sandbox": "NOT_RUN",
+            "sandbox": "NOT_CHECKED",
             "agent": "NOT_RUN",
             "approval_invocations": 0,
             "model_turns": 0,
-            "next_step": "Provide protected Daytona credentials and run --stage complete.",
+            "next_step": (
+                "Apply and independently review the session-scoped Code Mode bridge fix; "
+                "run its two-session host canary, then rerun this bootstrap in complete mode."
+            ),
         }
     agent_action, agent_id = _step(
         "agent", completed, lambda: _save_agent(client, payload)
@@ -390,17 +437,18 @@ def execute(args: argparse.Namespace) -> dict[str, Any]:
     completed.append(f"agent_{agent_action}")
     return {
         "ok": True,
-        "state": "LOCAL_CONFIGURED",
+        "state": "LOCAL_SANDBOX_CONFIGURED",
         "completed": completed,
         "model_alias": GATEWAY_MODEL_ID,
         "model_resource": MODEL_FQN,
         "reasoning_parameter": "omitted",
         "mcp_url": MCP_URL,
+        "sandbox": "STANDALONE_LOCAL_FALLBACK",
         "agent_id": agent_id,
         "literal_approval_tools": list(APPROVAL_TOOLS),
         "approval_invocations": 0,
         "model_turns": 0,
-        "next_step": "Run the separately authorized bounded model-tool roundtrip described by dry-run output.",
+        "next_step": "Run the bounded read-only MCP bridge trace and direct approval pauses; do not approve either literal gate.",
     }
 
 
@@ -413,10 +461,10 @@ def parse_args(argv: list[str]) -> argparse.Namespace:
         "--gateway-secret", type=Path, default=Path("/var/lib/preflight/gateway.secret.json")
     )
     parser.add_argument(
-        "--daytona-secret", type=Path, default=Path("/var/lib/preflight/daytona.secret.json")
+        "--agent-template", type=Path, default=Path("config/preflight-agent.yaml")
     )
     parser.add_argument(
-        "--agent-template", type=Path, default=Path("config/trueforge-agent.example.json")
+        "--trueforge-main-js", type=Path, default=DEFAULT_TRUEFORGE_MAIN_JS
     )
     parser.add_argument("--timeout-seconds", type=int, default=15)
     args = parser.parse_args(argv)
@@ -428,7 +476,7 @@ def parse_args(argv: list[str]) -> argparse.Namespace:
 def main(argv: list[str] | None = None) -> int:
     try:
         args = parse_args(sys.argv[1:] if argv is None else argv)
-        result = execute(args) if args.execute else _plan(args.daytona_secret, args.stage)
+        result = execute(args) if args.execute else _plan(args.stage)
         print(json.dumps(result, separators=(",", ":")))
         return 0 if result.get("ok") else 4
     except BootstrapError as error:

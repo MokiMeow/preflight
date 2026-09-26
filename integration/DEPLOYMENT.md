@@ -70,6 +70,7 @@ On the private host, with the repository checkout and runtime settings already p
 ```bash
 cd integration
 export HOST=127.0.0.1
+export PATH=/opt/preflight/node/bin:/usr/local/bin:/usr/bin:/bin
 export OUTBOUND_URL_ALLOWED_HOSTS='["127.0.0.1"]'
 npx trueforge --port 8790
 ```
@@ -93,7 +94,7 @@ to bind an unauthenticated standalone UI publicly.
 
 The Preflight service runs separately on the same host and exposes its Streamable HTTP connector
 at `http://127.0.0.1:8000/mcp`. Its database and AWS credentials remain in the service process.
-They never enter TrueForge instructions or Daytona.
+They never enter TrueForge instructions or local sandbox code.
 
 ## Configure the model route
 
@@ -140,35 +141,101 @@ endpoint, key, or final model prose. HTTP/auth/rate/stream errors collapse to fi
 use a Chat Completions `none` fallback unless the operator separately chooses and records that route;
 it is outside this Sol/high Responses probe.
 
-## Configure Daytona
+## Prepare and patch the standalone Linux sandbox
 
-Configure Daytona through TrueForge's supported sandbox-provider settings. The local Windows
-startup probe reported that TrueForge's local sandbox fallback supports macOS and Linux only; it
-did not prove Daytona access. Do not add a separate Daytona SDK or put AWS/database credentials in
-the sandbox.
+Decision D26 uses TrueForge's installed local Linux fallback. It is automatic in standalone mode
+when no row exists at `/api/v1/settings/sandbox-providers`; the settings API itself supports
+Daytona, not a synthetic `local` manifest. Install and retain these host dependencies:
 
-Before the connected gate can pass, record a real Daytona execution ID and a meaningful bounded
-program that calls typed Preflight tools through the harness bridge. Read-only observation may poll
-`get_run` with a monotonic deadline and bounded backoff. It must never call
-`apply_to_demo_source` or `cleanup_run` from an automatic loop.
+- `bubblewrap` (`/usr/bin/bwrap`), `socat` (`/usr/bin/socat`) and `ripgrep`
+  (`/usr/local/bin/rg` on the prepared host);
+- `/usr/bin/bash` or `/usr/bin/sh`;
+- Python 3.12, 3.11 or 3.10 with `venv`; the runtime creates a sandbox-local virtual environment
+  and installs `pydantic>=2,<3` through its restricted package-network policy.
+
+The prepared Amazon Linux 2023 host observed `bubblewrap 0.10.0`, `socat 1.7.4.2`, `ripgrep
+14.1.1`, `user.max_user_namespaces=15078`, and a successful unprivileged bubblewrap canary. These
+are host observations, not portable defaults. Keep `/usr/local/bin` in the TrueForge service PATH
+so the startup dependency probe finds `rg`.
+
+Unmodified TrueForge `0.2.1` exposes one process-global Code Mode socket parent to every same-UID
+Linux sandbox. Apply the narrow reviewed patch only when the installed files match both exact
+baseline hashes. Dry-run first:
+
+```bash
+python scripts/patch_trueforge_local_sandbox.py \
+  --main-js integration/node_modules/@truefoundry/trueforge/dist/main.js
+python scripts/patch_trueforge_local_sandbox.py --apply \
+  --main-js integration/node_modules/@truefoundry/trueforge/dist/main.js
+```
+
+Expected baseline → patched SHA-256 pairs are:
+
+- `main.js`: `c6902760304c303edec52e2894370be68ca6d679ca20f922a589c6fbc416f9c0`
+  → `61deb0b09fc65610afa13b8d356d7225ae9b93c1322bdd90d5414045d85fcd40`;
+- `trueforge-core/dist/core/sandbox/Sandbox.js`:
+  `20cbee8c17afc717ca29ef4d1d851833128b05b50856b4164f09947dab41742f`
+  → `dc08e4e0f1bb6ce08b66882911e08de74c5995be0ee0f0353da29d3e79b993f8`.
+
+Any other input bytes are refused. Restart TrueForge after applying the patch. The journal must say
+`Local sandbox fallback is available` with Linux, the expected shell, and Python >=3.10. A prior
+host probe selected Python 3.9 and failed on a PEP 604 union in `skill_downloader.py`; that failed
+turn is evidence of the compatibility defect, not successful sandbox execution. The patch also
+maps a supervisor timeout to the fixed failed-tool result `Local sandbox command timed out`; it
+does not infer database rollback or any other business outcome from a process timeout.
+
+After restart, require all of the following before saving the product agent:
+
+1. `GET /api/v1/settings/sandbox-providers` returns 404 and
+   `GET /api/v1/capabilities` returns `data.sandbox.enabled=true`.
+2. A harmless `sandbox` / `exec` turn reports the selected Python and `rg` versions without reading
+   environment variables, credentials, other files, processes, network, or MCP tools.
+3. Two concurrent sessions prove that each can use its own Code Mode bridge but cannot list, read,
+   or connect to the other session's Unix socket. Record only session/tool IDs and pass/fail.
+4. Filesystem canaries can write inside the session root but cannot read the Gateway secret or
+   write a shared host path. Environment inspection reports variable **names only** and confirms no
+   AWS, database, Gateway or Preflight secret names. Never print values.
+5. Requests to instance metadata (`169.254.169.254`) and an unallowlisted public host are blocked.
+   The allowed PyPI/GitHub domains remain a package/bootstrap capability, not a general egress path.
+6. A bounded generated Python call to read-only `get_run` reaches only the current Preflight bridge.
+   An attempted Code Mode call to either destructive tool is refused before MCP dispatch. Test each
+   direct literal approval separately and leave it pending or have the operator deny it; the coding
+   agent never clicks a decision.
+
+Until the two-session test passes under the exact patched hashes, local Code Mode is
+`BLOCKED_EXTERNAL`, even when the startup capability says enabled.
 
 ## Register the connector and saved agent
 
 1. Create the connector named `preflight` for `http://127.0.0.1:8000/mcp`.
-2. Confirm discovery exposes exactly the ten tools in `config/trueforge-agent.example.json`.
-3. Copy the example config and replace only the model placeholder with the verified TrueForge
-   model resource name.
-4. Validate the configured copy without `--template`:
+2. Confirm discovery exposes exactly the ten tools in `config/preflight-agent.yaml`.
+3. Validate `config/preflight-agent.yaml` against the installed `AgentSpecSchema`. It is JSON and
+   therefore valid YAML 1.2; there is no claim that TrueForge imports arbitrary YAML.
+4. Validate the configured model/approval policy:
 
    ```bash
-   python scripts/probe_trueforge_config.py /path/to/configured-agent.json
+   python scripts/probe_trueforge_config.py config/preflight-agent.yaml
    ```
 
-5. Save/import the agent using the installed UI or API. The observed `0.2.1` create request is
+5. After the patched two-session isolation canary passes, save the agent using the installed UI or API. The observed `0.2.1` create request is
    `{name, description, manifest}`; the template uses only fields present in that schema.
 6. Reopen the effective saved configuration. Confirm the enabled list has exactly ten business
    tools and the literal approval list is exactly `apply_to_demo_source` and `cleanup_run`.
-7. Test direct and Code Mode calls separately. Stop the deployment if either literal gate is lost.
+7. Test direct gates and Code Mode refusal separately. Stop the deployment if either literal gate
+   is lost or generated code can dispatch a destructive tool.
+
+The bootstrap is dry-run by default. `provider-mcp` configures only the exact Gateway alias and
+loopback MCP connector. `complete` additionally verifies the absent provider row, sandbox
+capability, both patched runtime hashes, ten tools, and the saved agent before it reports success:
+
+```bash
+python scripts/configure_trueforge_host.py --stage provider-mcp
+python scripts/configure_trueforge_host.py --execute --stage provider-mcp \
+  --gateway-secret /var/lib/preflight/gateway.secret.json
+python scripts/configure_trueforge_host.py --execute --stage complete \
+  --gateway-secret /var/lib/preflight/gateway.secret.json \
+  --trueforge-main-js integration/node_modules/@truefoundry/trueforge/dist/main.js
+```
 
 The coding agent must never click Allow or Deny for the operator. Source apply and cleanup are two
 separate human decisions. The service still rechecks hashes, state, backup, target, and drift after
@@ -186,7 +253,7 @@ node scripts/probe_trueforge_mcp_client.mjs http://127.0.0.1:18002/mcp
 
 The expected output identifies `probe_only`, both observed SDK versions, Streamable HTTP, and the
 single `status` tool. This proves local wire interoperability only. It is not a Gateway response,
-Daytona run, Preflight business trace, or approval test.
+sandbox run, Preflight business trace, or approval test.
 
 ## Native UI connector evidence and resume state
 
@@ -195,7 +262,7 @@ The sanitized local observation is recorded in
 TrueForge REST API created the `preflight-local-probe` connector in an isolated SQLite database and
 discovered exactly the ten Preflight business tools from `http://127.0.0.1:18000/mcp`. Every input
 schema was an object with `additionalProperties: false`, every tool exposed an output schema, and
-the two literal gate names were present. No MCP tool, agent, model, provider, Daytona, source apply,
+the two literal gate names were present. No MCP tool, agent, model, provider, sandbox, source apply,
 cleanup, or human decision ran during this observation.
 
 To resume this local proof without touching personal TrueForge state:
@@ -251,11 +318,11 @@ The deployment is connected-verified only after all of these are observed and sa
 - streamed Responses arguments, stable tool-call ID, structured tool result, and final answer;
 - exact effective Sol model and effort on the authorized Gateway route;
 - actual private Preflight connector schemas and result shape;
-- real Daytona Code Mode execution;
-- literal source-apply and cleanup pauses through direct and Code Mode calls;
+- real patched local Linux Code Mode execution and two-session bridge isolation;
+- Code Mode refusal of both destructive tools and literal source-apply/cleanup pauses through
+  separate direct calls;
 - denial with no backend apply call, and a separate human-approved request when authorized;
 - request logging/cache settings and secret redaction.
 
-Provider credits/access, Daytona credentials/quota, private host deployment, and human approval were
-not available to this local task. Those checks remain `BLOCKED_EXTERNAL`; do not replace them with
-fixtures or screenshots.
+Private-host patched sandbox canaries and human approval are connected checks. Keep any unobserved
+item `BLOCKED_EXTERNAL`; do not replace it with fixtures or screenshots.

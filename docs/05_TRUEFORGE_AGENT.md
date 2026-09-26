@@ -35,9 +35,11 @@ Use current model parameters: for reasoning with these GPT-6 models remove unsup
 
 Use a disposable **separate** probe server, with a harmless echo/status tool and no DB/cloud credentials; do not add an eleventh business tool to Preflight. Prove: authorized text reply; streamed tool arguments form valid JSON; one tool execution with a stable call ID; tool result fed back correctly; final answer; structured result decoding; bounded error/reconnect behavior. Capture sanitized endpoint family, selected adapter, resolved model, supported effort, package versions and result.
 
-Then verify TrueForge can call the actual private Preflight connector, run meaningful Daytona Code Mode and pause at literal approvals. A text-only “hello” response is not tool compatibility. Do not make the real source-write path available just to test a model route.
+Then verify TrueForge can call the actual private Preflight connector and run meaningful Code Mode in the installed standalone Linux sandbox. A text-only “hello” response is not tool compatibility. Do not make the real source-write path available just to test a model route.
 
-Configure Daytona using TrueForge's supported provider settings, with the documented sandbox/snapshot permissions and actual quota. The harness owns the Daytona SDK integration; do not add an unrelated Python Daytona SDK just to use the newest version. Provisioning/warm-up has observable state, not a guaranteed duration. DB/AWS credentials must never enter the sandbox.
+Decision D26 replaces Daytona with TrueForge's installed local Linux fallback. The fallback is selected automatically in standalone mode only when no sandbox-provider record exists and its startup probe succeeds. Do not create a fake `local` provider through the Daytona-only settings schema. The pinned runtime requires `bubblewrap`, `socat`, `ripgrep`, a shell, and Python **>=3.10**. DB/AWS credentials must never enter the sandbox.
+
+The unmodified `0.2.1` Linux bridge grants every same-UID sandbox read access to one process-global Code Mode socket directory. Its Unix-socket protocol has no per-session credential, so `capabilities.sandbox.enabled=true` alone is insufficient. Before saving the product agent, apply the repository's full-hash-guarded patch and independently review it. The patch changes only the local runtime bundle: it removes the shared parent from the Linux base read policy, permits the canonical current socket for that exec, strips an agent-supplied `TFY_MCP_SOCK` before trusted transport injection, selects Python 3.12/3.11/3.10 before generic Python while rejecting versions below 3.10, and preserves command timeout as an explicit failed tool result. It does not change network or approval policy. Record both pre/post hashes and prove that one concurrent sandbox cannot list or connect to the other's bridge before calling the patch accepted.
 
 ### 1C. Failure and trace behavior
 
@@ -47,9 +49,9 @@ Capture Gateway/model request IDs, resolved-model headers and usage only when ac
 
 ## 2. Register the connector and saved agent
 
-Create a connector named **`preflight`** under TrueForge Settings → Connectors, pointing to the service's Streamable HTTP endpoint `http://127.0.0.1:8000/mcp` on the same host. A connector token, if configured, stays in the harness/service settings. It never appears in Daytona Python or the agent instructions.
+Create a connector named **`preflight`** under TrueForge Settings → Connectors, pointing to the service's Streamable HTTP endpoint `http://127.0.0.1:8000/mcp` on the same host. A connector token, if configured, stays in the harness/service settings. It never appears in sandbox Python or the agent instructions.
 
-Use [the manifest template](../config/trueforge-agent.example.json) and substitute the exact verified TrueForge model resource name plus the instruction block below. The outer name/description/manifest shape is an API creation example; validate it against the installed version or configure the same fields in the UI. Reject placeholder values before use. Do not assume a JSON file automatically installs itself.
+Use [the host manifest](../config/preflight-agent.yaml). It is an exact JSON document, which is also valid YAML 1.2, matching the installed `{name, description, manifest}` API body. The bootstrap validates its `manifest` with the installed `AgentSpecSchema`; the `.yaml` suffix does not imply a native YAML importer. Do not assume the file installs itself.
 
 Required saved-agent settings:
 
@@ -64,7 +66,7 @@ Required saved-agent settings:
 | Dynamic subagents | Explicitly disabled |
 | Other tools/connectors | Disabled unless an upstream-required built-in sandbox operation is needed |
 
-Do not rely on `@destructive`: selectors depend on server annotations. Inspect the saved agent's effective overview/configuration to verify both literal gates survived saving. Confirm the gate applies when the tool is called inside generated Code Mode, not just a direct model tool call. If the selected version cannot enforce this, block source apply and repair/choose a compatible verified version.
+Do not rely on `@destructive`: selectors depend on server annotations. Inspect the saved agent's effective overview/configuration to verify both literal gates survived saving. In pinned `0.2.1`, the Code Mode bridge refuses destructive tools before dispatch; generated code must return to a direct model tool call, where the two literal TrueForge approvals pause for the operator. If either direct gate is absent, block source apply.
 
 ## 3. Runtime system instructions — paste into the saved agent
 
@@ -98,11 +100,14 @@ use get_run to inspect progress. Snapshot creation and restore are asynchronous;
 show observed state and elapsed time, never invented readiness or percentage.
 Do not create a fresh run merely because a poll or request timed out.
 
-Use the enabled Daytona Code Mode for a real bounded Python orchestration step
+Use the enabled local Linux Code Mode for a real bounded Python orchestration step
 that sequences typed MCP calls and formats aggregate evidence. Discover actual
 schemas/result shape before indexing results. Calls go through the harness
-bridge; never use a database client or AWS credentials in Daytona. Keep scripts
-small and bounded; do not spawn an open-ended polling loop or additional agents.
+Unix-socket bridge; never use a database client or AWS credentials in sandbox
+code. Keep scripts small and bounded; do not spawn an open-ended polling loop or
+additional agents. The pinned bridge blocks destructive tools in Code Mode.
+Never call apply_to_demo_source or cleanup_run from generated code; return to a
+direct tool call so its literal approval can pause for the engineer.
 
 When the clone is READY, capture its baseline before applying SQL. Require the
 service's complete baseline/source equality and policy checks. Only then call
@@ -194,11 +199,11 @@ Inspect the connector's actual tool output schema and result once, then use the 
 
 A useful visible generated program waits for at most a small bounded number of status checks, then—only when READY—captures baseline, applies the chosen candidate, validates, and prints a compact report summary. It must branch on actual states and return promptly when still pending or denied. The service continues its persisted infrastructure job independently; repeated Code Mode invocations may inspect that same run. There is no need for hundreds of printed polls or an artificial progress bar.
 
-Demonstrate at least one real sandbox execution that calls multiple typed tools or analyzes their actual aggregate results; a hello-world script plus unrelated direct tool calls is weak evidence of meaningful sandbox use. Source apply inside Code Mode must visibly pause the harness for the human gate, preserving the script/tool trace around that pause.
+Demonstrate at least one real sandbox execution that calls multiple read-only typed tools or analyzes their actual aggregate results; a hello-world script plus unrelated direct tool calls is weak evidence of meaningful sandbox use. Separately prove that Code Mode refuses each destructive tool before dispatch and that a direct tool call exposes the corresponding literal human gate. Never approve either gate as part of the refusal probe.
 
 ## 5. Actual integration proof
 
-Capture redacted evidence of: installed TrueForge version, configured OpenAI model/adapter/API family and Gateway route when used, saved agent, ten tool schemas, effective literal approval list, a real Daytona execution ID/trace, real bridged MCP requests, and AWS resource IDs that match the immutable report. Check actual UI behavior in the running environment using available browser tools or manual inspection.
+Capture redacted evidence of: installed TrueForge version and exact reviewed patch hashes, configured OpenAI model/adapter/API family and Gateway route when used, saved agent, ten tool schemas, effective literal approval list, a real local sandbox execution/trace, real bridged MCP requests, and AWS resource IDs that match the immutable report. Check actual UI behavior in the running environment using available browser tools or manual inspection.
 
 For denial, capture the pending tool name/arguments, the engineer's Deny action and the subsequent source read-only check. The MCP service should show **no executed apply call** for the denied request; do not fabricate a backend “denied” event for a call that never reached it. For Allow, capture a new explicit request, the real UI decision, accepted service call and resulting receipt.
 
@@ -213,8 +218,8 @@ Rate limits/provider failure do not require rebuilding the deterministic engine 
 
 ## V3 bounded observation and runtime acceptance
 
-The real pending RDS job stays in the service's durable worker; the agent is not its scheduler. Code Mode may poll `get_run` in a bounded read-only batch (example design: at most six polls, exponential waits capped at 20 seconds and a 90-second total deadline, shortened to fit observed Daytona execution limits). Use a monotonic deadline and keep each network timeout shorter than the remaining batch budget. Defaults are operational ceilings to test, not provider limits or promised completion times. Emit changed phase, safe error/terminal state or a still-pending checkpoint; do not print every identical JSON response. Returning pending preserves the run ID and does not trigger another paid restore.
+The real pending RDS job stays in the service's durable worker; the agent is not its scheduler. Code Mode may poll `get_run` in a bounded read-only batch (example design: at most six polls, exponential waits capped at 20 seconds and a 90-second total deadline, shortened to fit the observed local execution limit). Use a monotonic deadline and keep each network timeout shorter than the remaining batch budget. Defaults are operational ceilings to test, not provider limits or promised completion times. Emit changed phase, safe error/terminal state or a still-pending checkpoint; do not print every identical JSON response. Returning pending preserves the run ID and does not trigger another paid restore.
 
-During a pause/reconnect, inspect the stored state before resuming. Approval calls remain distinct deliberate user-visible events. No polling script calls source apply or cleanup, regardless of whether Code Mode technically supports gated calls. The explicitly tested gate-through-Code-Mode case remains separate from normal read-only polling. Do not create an always-running agent loop or auto-approve to save tokens.
+During a pause/reconnect, inspect the stored state before resuming. Approval calls remain distinct deliberate user-visible events. No polling script calls source apply or cleanup. Test Code Mode's destructive-tool refusal separately from each direct literal approval pause. Do not create an always-running agent loop or auto-approve to save tokens.
 
 Run the actual trace-based cases in [agent-evaluation-plan.json](../config/agent-evaluation-plan.json). Model replies alone do not pass them: compare tool traces, service state and actual absence/presence of authorized side effects. Record selected/observed model, effort, transport, commit and whatever usage is actually exposed; missing usage is null. Changing a runtime model requires redoing its representative tool/approval/injection tests on the same frozen service, not reapplying an already committed migration.
