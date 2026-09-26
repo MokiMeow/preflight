@@ -1,6 +1,7 @@
 import json
 import platform
 import subprocess
+import sys
 from pathlib import Path
 
 import pytest
@@ -28,11 +29,14 @@ def test_inventory_records_project_pglast_and_trueforge_license_status():
 
 
 def test_installed_dependency_inventory_is_current():
-    if platform.system() != "Windows":
-        pytest.fail("committed dependency inventory must be verified on its recorded Windows host")
+    recorded_os = json.loads(INVENTORY.read_text(encoding="utf-8"))["environment"]["os"]
+    if platform.system() != recorded_os:
+        pytest.fail(
+            "regenerate the installed dependency inventory on this target host before verification"
+        )
     result = subprocess.run(
         [
-            str(ROOT / ".venv/Scripts/python.exe"),
+            sys.executable,
             str(ROOT / "scripts/generate_dependency_inventory.py"),
             "--check",
         ],
