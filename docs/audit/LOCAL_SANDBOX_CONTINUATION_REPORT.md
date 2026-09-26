@@ -1,6 +1,6 @@
 # Local sandbox continuation report
 
-**Latest state:** D28 is implemented and deployed at `d3715ca`: the operator-authorized unlimited mode removes financial admission without fabricated billing data. Creation is enabled; source apply remains disabled. The actual encrypted AWS snapshot for run `fef79c61-dcea-42c3-a760-c2f9c4235abc` is creating (provider reported 1% at 11:01:02 UTC). A clone, migration result and source approval are still pending. New affected tests: 172 passed in 6.60s; independent review: 111 passed in 3.14s, no blocking finding. The new full gate passed 648 tests, zero failures/errors/skips, 265.83s, at `db34940`. [Actual run receipt](../../evidence/connected/unlimited-rehearsal.json) and [three-minute walkthrough](THREE_MINUTE_WALKTHROUGH.md).
+**Latest state:** D28 is implemented and deployed at `d3715ca`: the operator-authorized unlimited mode removes financial admission without fabricated billing data. Creation is enabled; source apply remains disabled. The actual encrypted AWS snapshot for run `fef79c61-dcea-42c3-a760-c2f9c4235abc` reached AVAILABLE/100. Restore then failed because the runtime role lacked the exact subnet-group restore permission; the required narrowly scoped grants are now attached/readback. The run retains ERROR, its clone is absent, and its real snapshot awaits the cleanup decision. A successful clone, migration result and source approval remain pending. New affected tests: 172 passed in 6.60s; independent review: 111 passed in 3.14s, no blocking finding. The new full gate passed 648 tests, zero failures/errors/skips, 265.83s, at `db34940`. [Actual run receipt](../../evidence/connected/unlimited-rehearsal.json) and [three-minute walkthrough](THREE_MINUTE_WALKTHROUGH.md).
 
 ## Scope and provenance
 
@@ -20,13 +20,13 @@ Status words have their strict meanings:
 
 | Area | Result | Scope and limit |
 |---|---|---|
-| Frozen full suite | **LOCAL_VERIFIED** | Commit `878d64a`: `641 passed`, zero failures, errors, or skips, in `263.60s`; exit 0. Actual local PostgreSQL18.6/TLS; cloud cases are Stubber tests. |
+| Frozen full suite | **LOCAL_VERIFIED** | Commit `db34940`: `648 passed`, zero failures, errors, or skips, in `265.83s`; exit 0. Actual local PostgreSQL18.6/TLS; cloud cases are Stubber tests. |
 | Manifest-affected check | **LOCAL_VERIFIED** | At `8048e79`: nine affected tests passed in `5.46s`. |
 | Static quality | **LOCAL_VERIFIED** | Ruff passed for the repository; mypy passed all 18 source modules. |
 | Native sandbox boundary canary | **CONNECTED_VERIFIED component** | The reviewed TrueForge patch ran on the actual Linux host. The controlled host-owned `0600` canary supported the intended positive write/restore check while independent host bytes and metadata remained unchanged. Private/sibling reads and writes, process/environment access, direct private/IMDS access, and proxy-mediated access were denied; the proxy path returned 403. The session's own bridge socket was allowed and a foreign socket was denied. `BASH_ENV` was refused before launch. A timeout returned the explicit timeout result after 1,077 ms and the delayed child marker remained absent. The canary result was accepted as true. This proves the tested boundaries only; it is not a general Linux containment proof. |
 | Saved native product agent | **CONNECTED_VERIFIED component / PARTIAL workflow** | Saved agent `preflight` (`01m3em9y0t7jqx20txq6s7pj39`), session `01m3emerb0g1f9cte1fpv1n4he`, turn `01m3emerb53n41nm53pp3znfnm`. The first attempt sent bare Python to the shell and exited 2. The model corrected itself by creating an explicit heredoc/script and invoking Python; sandbox call `call_t4C8Br4WdNBHQxYHXGaDDOlN` exited 0 and observed 1,000 rows, three columns, run state `ERROR`, and `cleanup_state=NOT_REQUESTED`. This is not a first-try success and is not a successful rehearsal. |
 | Human gates | **CONNECTED_VERIFIED cleanup / source NOT_RUN** | The operator actually allowed cleanup at 10:42:10 UTC; receipt `da3e1dc4-60df-4fa4-b8f3-7d14d806f58d` records COMPLETE with clone and snapshot ABSENT. The coding agent did not click the gate. Source apply remains false. |
-| RDS rehearsal | **NOT_RUN** | No run-owned snapshot, restored clone, source SQL apply, or complete bad-to-good connected rehearsal has occurred. |
+| RDS rehearsal | **FAILED restore; narrow policy repaired** | The real encrypted run-owned snapshot is AVAILABLE. Restore was denied on the exact subnet group; narrowly scoped required permissions are now attached/readback. No clone, migration PASS or source SQL apply occurred. |
 | Failed-run resources | **CONNECTED_VERIFIED absence and cleanup receipt** | The real operator Allow produced COMPLETE, with both exact resources ABSENT. No resource was deleted and the source was untouched. |
 | Budget admission | **LOCAL_VERIFIED implementation / BLOCKED_EXTERNAL publication** | The USD 100 operator ceiling is recorded, and protected publication plus durable admission/refusal code exists. Actual Cost Explorer facts remain `DataUnavailable`; current whole-footprint cost and a finite enforceable retention upper bound are unproved. Creation remains false. The publisher refuses missing, incomplete, estimated, stale, wrong-account, wrong-currency, or ambiguous facts. It does not implement or claim an AWS-native hard cap. |
 
@@ -149,11 +149,11 @@ The successful native turn is not a substitute for the specified E01–E10 case 
 - Source apply: **false**.
 - Literal source-apply approval: **not requested/not clicked in this continuation**.
 - Cleanup: **COMPLETE**, following genuine operator Allow; failed-run clone and snapshot were ABSENT.
-- New run-owned RDS clone/manual snapshot: **none**.
-- Billable creation: **disabled/refused without complete protected budget facts**.
-- USD ceiling: **100**, with current CE facts unavailable and finite-retention bound unproved.
+- New run-owned RDS clone: **ABSENT**; encrypted manual snapshot: **AVAILABLE**, awaiting genuine cleanup decision for the failed run.
+- Billable creation: **enabled under D28 explicit unlimited mode**; failed-run cleanup must be resolved before a replacement run.
+- Numeric USD ceiling: **revoked by D28**; reported billing remains unknown and no cost facts are fabricated.
 - Saved-agent native Code Mode: **one corrected successful sandbox execution**, preceded by one exit-2 bare-Python shell mistake; business run remained `ERROR`.
-- Full local gate: **641 passed**, zero failures/errors/skips, `263.60s`, at `878d64a`.
+- Full local gate: **648 passed**, zero failures/errors/skips, `265.83s`, at `db34940`.
 - Manifest follow-up: **nine affected tests passed**, `5.46s`, at `8048e79`.
 - Final connected acceptance: **incomplete**.
 
