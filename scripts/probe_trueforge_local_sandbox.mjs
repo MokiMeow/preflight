@@ -129,6 +129,22 @@ for label,host,port in [('loopback','127.0.0.1',${tcpPort}),('private',${JSON.st
  except OSError: allowed=False
  finally: s.close()
  checks[label+'_tcp_denied']=not allowed
+import http.client,urllib.parse,base64
+proxy=os.environ.get('HTTP_PROXY') or os.environ.get('http_proxy')
+checks['proxy_present']=bool(proxy)
+parsed=urllib.parse.urlsplit(proxy)
+headers={}
+if parsed.username is not None:
+ auth=urllib.parse.unquote(parsed.username)+':'+urllib.parse.unquote(parsed.password or '')
+ headers['Proxy-Authorization']='Basic '+base64.b64encode(auth.encode()).decode()
+for label,host,port in [('loopback','127.0.0.1',${tcpPort}),('private',${JSON.stringify(privateHost)},${tcpPort}),('imds','169.254.169.254',80)]:
+ conn=http.client.HTTPConnection(parsed.hostname,parsed.port,timeout=2)
+ try:
+  conn.request('GET','http://'+host+':'+str(port)+'/preflight-inert-canary',headers=headers)
+  response=conn.getresponse();denied=response.status==403;response.close()
+ except OSError: denied=False
+ finally: conn.close()
+ checks[label+'_proxy_policy_denied']=denied
 for label,p,expected in [('own',${JSON.stringify(aPath)},'own'),('foreign',${JSON.stringify(bPath)},'foreign')]:
  s=socket.socket(socket.AF_UNIX);s.settimeout(1)
  try:
