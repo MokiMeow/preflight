@@ -183,11 +183,13 @@ def _patched_runtime(tmp_path: Path) -> Path:
     scope = tmp_path / "node_modules/@truefoundry"
     main = scope / "trueforge/dist/main.js"
     core = scope / "trueforge-core/dist/core/sandbox/Sandbox.js"
+    core_esm = core.with_suffix(".mjs")
     main.parent.mkdir(parents=True)
     core.parent.mkdir(parents=True)
     installed = ROOT / "integration/node_modules/@truefoundry"
     shutil.copyfile(installed / "trueforge/dist/main.js", main)
     shutil.copyfile(installed / "trueforge-core/dist/core/sandbox/Sandbox.js", core)
+    shutil.copyfile(installed / "trueforge-core/dist/core/sandbox/Sandbox.mjs", core_esm)
     result = subprocess.run(
         [sys.executable, str(PATCH_SCRIPT), "--main-js", str(main), "--apply"],
         cwd=ROOT,

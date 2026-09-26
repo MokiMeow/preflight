@@ -51,10 +51,13 @@ MAX_SECRET_JSON_BYTES = 16_384
 MAX_RESPONSE_BYTES = 1_048_576
 LOCAL_SANDBOX_ISOLATION_BLOCKER = "LOCAL_SANDBOX_SESSION_ISOLATION_UNVERIFIED"
 LOCAL_SANDBOX_MAIN_PATCH_SHA256 = (
-    "61deb0b09fc65610afa13b8d356d7225ae9b93c1322bdd90d5414045d85fcd40"
+    "021bfb63b5f6e072aa53fe40d1e7a150ea2ec4112bc412bc840b7eb3a0bc13fb"
 )
 LOCAL_SANDBOX_CORE_PATCH_SHA256 = (
     "dc08e4e0f1bb6ce08b66882911e08de74c5995be0ee0f0353da29d3e79b993f8"
+)
+LOCAL_SANDBOX_CORE_ESM_PATCH_SHA256 = (
+    "70149fff33b0a2faff9047bb991a5dd6e910b4b85e99764ab879f4c183461cea"
 )
 DEFAULT_TRUEFORGE_MAIN_JS = Path(
     "integration/node_modules/@truefoundry/trueforge/dist/main.js"
@@ -312,6 +315,7 @@ def _verify_local_sandbox_patch(main_js: Path) -> None:
     for path, expected in (
         (main_js, LOCAL_SANDBOX_MAIN_PATCH_SHA256),
         (core_js, LOCAL_SANDBOX_CORE_PATCH_SHA256),
+        (core_js.with_suffix(".mjs"), LOCAL_SANDBOX_CORE_ESM_PATCH_SHA256),
     ):
         try:
             info = path.lstat()

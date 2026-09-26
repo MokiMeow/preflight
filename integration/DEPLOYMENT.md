@@ -172,10 +172,13 @@ python scripts/patch_trueforge_local_sandbox.py --apply \
 Expected baseline → patched SHA-256 pairs are:
 
 - `main.js`: `c6902760304c303edec52e2894370be68ca6d679ca20f922a589c6fbc416f9c0`
-  → `61deb0b09fc65610afa13b8d356d7225ae9b93c1322bdd90d5414045d85fcd40`;
+  → `021bfb63b5f6e072aa53fe40d1e7a150ea2ec4112bc412bc840b7eb3a0bc13fb`;
 - `trueforge-core/dist/core/sandbox/Sandbox.js`:
   `20cbee8c17afc717ca29ef4d1d851833128b05b50856b4164f09947dab41742f`
-  → `dc08e4e0f1bb6ce08b66882911e08de74c5995be0ee0f0353da29d3e79b993f8`.
+  → `dc08e4e0f1bb6ce08b66882911e08de74c5995be0ee0f0353da29d3e79b993f8`;
+- `trueforge-core/dist/core/sandbox/Sandbox.mjs`:
+  `95a9805e69f1176d8189b1bd103b074b6661018653d5a22c6f857db954fc2a4e`
+  → `70149fff33b0a2faff9047bb991a5dd6e910b4b85e99764ab879f4c183461cea`.
 
 Any other input bytes are refused. Restart TrueForge after applying the patch. The journal must say
 `Local sandbox fallback is available` with Linux, the expected shell, and Python >=3.10. A prior
