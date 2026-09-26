@@ -90,15 +90,15 @@ No need to duplicate those already executed assertions.
 
 | ID | Honest remaining status and exact missing assertion |
 |---|---|
-| U06 | PARTIAL: sequential one-active-run and separate cloud reservation tests exist; simultaneous service start + transactional combined run/resource cap evidence is still a lead/cloud boundary. |
+| U06 | LOCAL_VERIFIED by the subsequent state-race gate below: two service instances force simultaneous run publication, with actual shared SQLite and JobStore reservations; a separate two-store reservation race and retained cap refusal both pass. |
 | U07 | PARTIAL: traversal/invalid envelope refusals exist; all candidate/run/source variants with every file/DB/cloud effect spy are not jointly observed. |
-| U08 | PARTIAL: phase CAS race is proven; competing candidate-parent attachment remains missing. |
+| U08 | LOCAL_VERIFIED by the subsequent state-race gate below: two service instances validate the same full baseline/parent, then race the actual publication CAS; exactly one child attaches and the other returns STATE_CONFLICT. |
 | U13 | PARTIAL: lost-state cloud inventory refuses creation; actual wrong-state Doctor/bootstrap EC2/EBS behavior is outside DB proof. |
 | N21 | PARTIAL, concrete defect found: `RehearsalService.call` takes the same run RLock for get_run and long apply_to_clone/apply_to_demo_source. Concurrent run status waits until the migration releases that lock. A transport health endpoint being responsive does not satisfy the required health/status conjunction. New RV::`test_n21_run_status_remains_responsive_during_long_mutation` is red for both real SQLite MIGRATING and APPLYING states; `test_n21_run_status_envelope_uses_same_phase_snapshot` is red because envelope state rereads VALIDATING while data.phase is MIGRATING. Mutation handlers are event-held local faults; there are no DB/AWS clients and exactly one invocation. Service owner is repairing get_run only; no application edit authorized here. Cancellation/unknown outcomes separately have DB/SC proof. |
 | N27/P10 | PARTIAL/BLOCKED_EXTERNAL: inert SQL comments and escaped/suppressed metadata are locally proven, but actual model target/permission/approval behavior is not. |
 | A18–A20 | BLOCKED_EXTERNAL in the shared matrix: actual deleted-resource eligibility/runtime UI denial/provider failure trace remains outside this local gate. The local historical-report and replay guard tests cannot impersonate those observations. |
 | V01/V02/V05/V06/V23/V24/V27 | Existing PARTIAL workflow/runtime observations remain unchanged: complete actual model-role traces, failure-promotion decisions, expert admission/review provenance, Code Mode polling/checkpoints and genuine gate demonstrations are not SQL/DB test cases. |
-| C02–C06/C08/C13 | Cloud lifecycle/deletion/report-after-cleanup gaps remain with the cloud/integration owner. The DB tests do not prove provider ambiguity, state recovery, missing live tags or actual unavailable AWS-to-TLS readiness. |
+| C02–C06/C08 | Cloud lifecycle/deletion gaps remain with the cloud/integration owner. The DB tests do not prove provider ambiguity, state recovery, missing live tags or actual unavailable AWS-to-TLS readiness. C13 local report/receipt retention is now closed by the subsequent real disposable clone-deletion test below. |
 | M03/M08/N01–N07/N11/N12/N17/N20/N22/N24/N25/N29/N31/N32 | Connector, model, packaging, transport or workflow scope; statuses unchanged by this database packet. No claim of full audit closure. |
 
 The matrix classifies P02 as BLOCKED_EXTERNAL despite its required assertion being
@@ -132,3 +132,36 @@ integrated gate, update the shared scenario manifest's exact nodes/statuses, and
 repair/recheck N21 under service ownership. PostgreSQL remains running and its
 exclusive test lane has been returned to the lead. Connected acceptance and all
 literal human gates remain separate requirements.
+
+
+## Subsequent U06/U08/C13 state-race gate
+
+Explicit new checkout base `ac7b130ba61a53b8470ad1ce9331644a8ba7032a` on branch
+`preflight/db-state-races`, same isolated DB worktree. This follow-up owns only
+`tests/postgres/test_remaining_state_races.py` and this document. It does not
+include the lead's uncommitted N21 service repair or claim that repair passed.
+The source-apply feature remains disabled throughout. There are no source SQL
+writes, AWS calls, client credentials, approval clicks or migrations in this gate.
+Actual disposable loopback clone SQL and local state transitions are identified
+below; their synthetic fixture metadata never becomes real RDS evidence.
+
+| ID | Exact pytest node and assertion closure |
+|---|---|
+| U06 | `tests/postgres/test_remaining_state_races.py::test_u06_simultaneous_service_starts_share_active_run_and_job_caps`: two independent RehearsalService instances share real StateStore SQLite and two JobStore handles. A barrier immediately before each actual create_run forces overlap; one request succeeds, the other ACTIVE_RUN_LIMIT. Exactly one persisted run and one matching resource intent remain, with clone_reserved=1 and snapshot_reserved=1. Runtime uses real AwsRuntime naming/enqueue methods; its infrastructure worker does observation bookkeeping only and never claims a provider restore. |
+| U06 | `tests/postgres/test_remaining_state_races.py::test_u06_simultaneous_job_reservations_enforce_retained_clone_cap`: two actual JobStore handles race BEGIN IMMEDIATE reservation transactions. One intent persists; the other REHEARSAL_ACTIVE. Moving the local job record to AVAILABLE without releasing its reservation then refuses another intent with RESOURCE_CAP_REACHED; registry/counts stay unchanged. No mock counter replaces SQLite. |
+| U08 | `tests/postgres/test_remaining_state_races.py::test_u08_same_parent_race_publishes_one_revision_with_unchanged_full_baseline`: actual failed PG candidate confirms rollback and BLOCK. Two services separately hold equivalent private full baseline maps and share the same immutable canonical contract/parent. Barrier at actual publish_candidate makes both complete their fresh clone checks before either CAS publishes. One success, one STATE_CONFLICT (stale revision/phase), one CANDIDATE_ATTACHED event, exactly one incremented run revision and one published child; the full PG baseline remains unchanged and writer_count=0. The losing candidate's private staged artifacts are not a published attachment; no stale child enters records. The safe stale-CAS reason is STATE_CONFLICT, not the distinct STALE_CANDIDATE reason used for wrong parents. |
+| C13 | `tests/postgres/test_remaining_state_races.py::test_c13_actual_local_clone_deletion_retains_anchored_report_and_receipt`: before cleanup, retain sealed report bytes and its independently returned report digest. The fixture cleanup deletes the actual disposable clone database, confirms absence in pg_database, and retains the synthetic snapshot marker. Selected clone cleanup is complete (CLONE_DELETED); it does not mislabel all resources COMPLETE. Report bytes remain identical and verify EXPECTED_DIGEST_MATCH against the retained digest; current eligibility is NOT_EVALUATED by offline verification and false in live local status. The separate canonical cleanup receipt equals its SQLite record and verifies against a separately retained file digest. No source writer is acquired. An empty disposable clone database is recreated only for the fixture's final teardown; it contains no source rows and never confers eligibility. No RDS deletion or real human gate is claimed. |
+
+Command, explicit worktree cwd:
+`PYTHONPATH=src PREFLIGHT_TEST_PG_PORT=55438 ../../.venv/Scripts/python.exe -m pytest tests/postgres/test_remaining_state_races.py -q --tb=short`
+(PowerShell environment assignment syntax was used in the actual invocation).
+Observed **4 passed,0 failures/errors/skips,4.99s**. Ruff check and format --check
+for the new file and git diff --check passed. An initial harness used the wrong
+existing helper/result names (JobStore.observe instead of update, verifier trust
+instead of anchor_status); both were corrected to the actual interfaces without
+product changes or weakening assertions.
+
+No new product defect was found. U06/U08/C13 are ready for LOCAL_VERIFIED after
+lead integration. Existing N21 deliberately failing regressions remain pending
+service-owner repair and its own recheck. PG55438 remains running; this worker
+returns the exclusive lane to the lead without stopping the retained cluster.
